@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BlobCity</string>
+    <string name="str_chapter">Chapters</string>
+    <string name="str_classXcbse">CLASS X</string>
+    <string name="str_cbse">CBSE</string>
+    <string name="str_upgrade_to_all_chapters">Upgrade to Practice all Chapters</string>
 </resources>

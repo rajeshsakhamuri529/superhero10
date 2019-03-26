@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="0.5dp"
+    android:id="@+id/rl_single_topics"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_topic_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="01"
+        android:textColor="@color/dark_purple"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:fontFamily="@font/quicksand_bold"
+        android:textSize="@dimen/_11ssp"/>
+
+    <TextView
+        android:id="@+id/tv_topic_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Real Numbers"
+        android:layout_centerVertical="true"
+        android:textColor="@color/dark_purple"
+        android:layout_marginLeft="@dimen/_30sdp"
+        android:layout_toRightOf="@id/tv_topic_number"
+        android:fontFamily="@font/quicksand_medium"
+        android:textSize="@dimen/_11ssp"/>
+
+    <ImageView
+        android:id="@+id/iv_progress_icon1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/progress_icon"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_10sdp"/>
+
+    <ImageView
+            android:id="@+id/iv_progress_icon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/progress_icon"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_below="@id/iv_progress_icon1"
+            android:layout_marginRight="@dimen/_10sdp"/>
+
+    <ImageView
+            android:id="@+id/iv_progress_icon3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/progress_icon"
+            android:layout_below="@id/iv_progress_icon2"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginBottom="@dimen/_5sdp"/>
+
+</RelativeLayout>
