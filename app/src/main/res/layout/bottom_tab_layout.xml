@@ -2,7 +2,7 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_70sdp"
+        android:layout_height="@dimen/_60sdp"
         android:layout_gravity="bottom"
         android:layout_alignParentBottom="true"
         android:paddingLeft="@dimen/_20sdp"
@@ -25,8 +25,8 @@
                 android:orientation="vertical">
 
             <ImageView
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:src="@drawable/chapter_icon"/>
 
             <TextView
@@ -36,7 +36,7 @@
                     android:text="Chapters"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/notosans_bold"
-                    android:textSize="@dimen/_11ssp"
+                    android:textSize="@dimen/_10ssp"
                     android:gravity="center_horizontal"/>
 
 
@@ -51,8 +51,8 @@
                 android:orientation="vertical">
 
             <ImageView
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:src="@drawable/astra_card_icon"/>
 
             <TextView
@@ -62,7 +62,7 @@
                     android:text="Astra Cards"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/notosans_bold"
-                    android:textSize="@dimen/_11ssp"
+                    android:textSize="@dimen/_10ssp"
                     android:gravity="center_horizontal"/>
 
 
@@ -77,8 +77,8 @@
                 android:orientation="vertical">
 
             <ImageView
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
+                    android:layout_width="@dimen/_23sdp"
+                    android:layout_height="@dimen/_23sdp"
                     android:src="@drawable/settings_icon"/>
 
             <TextView
@@ -88,7 +88,7 @@
                     android:text="Settings"
                     android:layout_marginTop="@dimen/_2sdp"
                     android:fontFamily="@font/notosans_bold"
-                    android:textSize="@dimen/_11ssp"
+                    android:textSize="@dimen/_10ssp"
                     android:gravity="center_horizontal"/>
 
 
