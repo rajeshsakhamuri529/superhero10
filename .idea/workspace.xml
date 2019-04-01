@@ -885,15 +885,16 @@
     <session id="1710804401">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.13" value="1" />
-          <entry key="project.open.time.16" value="2" />
+          <entry key="project.open.time.16" value="3" />
           <entry key="project.open.time.17" value="1" />
           <entry key="project.open.time.18" value="3" />
+          <entry key="project.open.time.19" value="1" />
           <entry key="project.open.time.22" value="1" />
           <entry key="project.open.time.24" value="1" />
-          <entry key="project.opened" value="10" />
+          <entry key="project.opened" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -921,14 +922,14 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="12" />
-          <entry key="kt" value="5539" />
+          <entry key="kt" value="5815" />
           <entry key="xml" value="1620" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="12" />
-          <entry key="Kotlin" value="5539" />
+          <entry key="Kotlin" value="5815" />
           <entry key="XML" value="1620" />
         </counts>
       </usages-collector>
@@ -939,8 +940,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/DashboardActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="599" selection-start-line="599" selection-end-line="599" />
+            <state relative-caret-position="38">
+              <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+              <folding>
+                <element signature="e#36566#36582#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -948,7 +952,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/Utils.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="825">
+            <state relative-caret-position="893">
               <caret line="53" column="58" selection-start-line="53" selection-start-column="58" selection-end-line="53" selection-end-column="58" />
             </state>
           </provider>
@@ -957,19 +961,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/Constant.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="535">
-              <caret line="134" column="29" selection-start-line="134" selection-start-column="12" selection-end-line="134" selection-end-column="29" />
-              <caret line="135" column="29" selection-start-line="135" selection-start-column="12" selection-end-line="135" selection-end-column="29" />
-              <caret line="136" column="29" selection-start-line="136" selection-start-column="12" selection-end-line="136" selection-end-column="29" />
-              <caret line="137" column="29" selection-start-line="137" selection-start-column="12" selection-end-line="137" selection-end-column="29" />
-              <caret line="138" column="32" selection-start-line="138" selection-start-column="12" selection-end-line="138" selection-end-column="32" />
-              <caret line="139" column="32" selection-start-line="139" selection-start-column="12" selection-end-line="139" selection-end-column="32" />
-              <caret line="140" column="32" selection-start-line="140" selection-start-column="12" selection-end-line="140" selection-end-column="32" />
-              <caret line="141" column="32" selection-start-line="141" selection-start-column="12" selection-end-line="141" selection-end-column="32" />
-              <caret line="142" column="36" selection-start-line="142" selection-start-column="12" selection-end-line="142" selection-end-column="36" />
-              <caret line="143" column="36" selection-start-line="143" selection-start-column="12" selection-end-line="143" selection-end-column="36" />
-              <caret line="144" column="36" selection-start-line="144" selection-start-column="12" selection-end-line="144" selection-end-column="36" />
-              <caret line="145" column="36" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="36" />
+            <state relative-caret-position="177">
+              <caret line="171" column="23" selection-start-line="171" selection-start-column="23" selection-end-line="171" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -997,12 +990,12 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/topics_single_layout.xml">
-          <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="114">
               <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
             </state>
           </provider>
+          <provider editor-type-id="android-designer2" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -3482,6 +3475,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -3492,6 +3487,11 @@
             <path>
               <item name="master" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+            </path>
+            <path>
+              <item name="master" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
             </path>
             <path>
@@ -3506,14 +3506,6 @@
               <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
               <item name="output" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="Test_Course" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="master" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="output" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="Test_Course" type="462c0819:PsiDirectoryNode" />
-              <item name="topic-nine" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -3586,8 +3578,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -3754,6 +3744,7 @@
     <frame x="64" y="-11" width="1217" height="1036" extended-state="6" />
     <editor active="true" />
     <layout>
+      <window_info anchor="top" id="Device File Explorer" order="0" sideWeight="0.5008518" side_tool="true" weight="0.3286385" />
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -3762,22 +3753,21 @@
       <window_info id="Designer" order="5" />
       <window_info id="Capture Tool" order="6" />
       <window_info content_ui="combo" id="Project" order="7" weight="0.25064158" />
-      <window_info anchor="bottom" id="Version Control" order="0" weight="0.32914287" />
+      <window_info anchor="bottom" id="Version Control" order="0" weight="0.3286385" />
       <window_info anchor="bottom" id="Logcat" order="1" weight="0.37485716" />
       <window_info anchor="bottom" id="TODO" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" weight="0.327252" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.32611173" />
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Build" order="5" weight="0.32914287" />
       <window_info anchor="bottom" id="Android Profiler" order="6" />
       <window_info anchor="bottom" id="Run" order="7" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.32914287" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32914287" />
-      <window_info anchor="right" id="Device File Explorer" order="0" sideWeight="0.5008518" side_tool="true" weight="0.32934132" />
-      <window_info anchor="right" id="Capture Analysis" order="1" />
-      <window_info anchor="right" id="Gradle" order="2" sideWeight="0.49914822" weight="0.32934132" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="right" id="Palette&#9;" order="4" />
-      <window_info anchor="right" id="Preview" order="5" weight="0.32934132" />
+      <window_info anchor="right" id="Capture Analysis" order="0" />
+      <window_info anchor="right" id="Gradle" order="1" sideWeight="0.49914822" weight="0.32934132" />
+      <window_info anchor="right" id="Theme Preview" order="2" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="right" id="Preview" order="4" weight="0.32934132" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -3874,23 +3864,22 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider editor-type-id="android-manifest" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
           <caret line="6" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
+      <provider editor-type-id="android-manifest" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
           <caret line="6" column="31" selection-start-line="6" selection-start-column="31" selection-end-line="6" selection-end-column="31" />
         </state>
       </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/bottom_tab_layout.xml">
-      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="551">
           <caret line="29" column="41" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="41" />
@@ -3908,17 +3897,25 @@
           </folding>
         </state>
       </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_dashboard.xml">
-      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
           <caret line="213" column="46" selection-start-line="213" selection-start-column="46" selection-end-line="213" selection-end-column="46" />
         </state>
       </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/assets/output/Test_Course/topic-one/advanced.json">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/Utils.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="893">
+          <caret line="53" column="58" selection-start-line="53" selection-start-column="58" selection-end-line="53" selection-end-column="58" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/MainActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -3938,12 +3935,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/topics_single_layout.xml">
-      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
           <caret line="6" column="37" selection-start-line="6" selection-start-column="37" selection-end-line="6" selection-end-column="37" />
         </state>
       </provider>
+      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
@@ -3966,35 +3963,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/Utils.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="825">
-          <caret line="53" column="58" selection-start-line="53" selection-start-column="58" selection-end-line="53" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/Constant.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="535">
-          <caret line="134" column="29" selection-start-line="134" selection-start-column="12" selection-end-line="134" selection-end-column="29" />
-          <caret line="135" column="29" selection-start-line="135" selection-start-column="12" selection-end-line="135" selection-end-column="29" />
-          <caret line="136" column="29" selection-start-line="136" selection-start-column="12" selection-end-line="136" selection-end-column="29" />
-          <caret line="137" column="29" selection-start-line="137" selection-start-column="12" selection-end-line="137" selection-end-column="29" />
-          <caret line="138" column="32" selection-start-line="138" selection-start-column="12" selection-end-line="138" selection-end-column="32" />
-          <caret line="139" column="32" selection-start-line="139" selection-start-column="12" selection-end-line="139" selection-end-column="32" />
-          <caret line="140" column="32" selection-start-line="140" selection-start-column="12" selection-end-line="140" selection-end-column="32" />
-          <caret line="141" column="32" selection-start-line="141" selection-start-column="12" selection-end-line="141" selection-end-column="32" />
-          <caret line="142" column="36" selection-start-line="142" selection-start-column="12" selection-end-line="142" selection-end-column="36" />
-          <caret line="143" column="36" selection-start-line="143" selection-start-column="12" selection-end-line="143" selection-end-column="36" />
-          <caret line="144" column="36" selection-start-line="144" selection-start-column="12" selection-end-line="144" selection-end-column="36" />
-          <caret line="145" column="36" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="36" />
+        <state relative-caret-position="177">
+          <caret line="171" column="23" selection-start-line="171" selection-start-column="23" selection-end-line="171" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/DashboardActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="599" selection-start-line="599" selection-end-line="599" />
+        <state relative-caret-position="38">
+          <caret line="2" column="7" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="e#36566#36582#0" />
+          </folding>
         </state>
       </provider>
     </entry>

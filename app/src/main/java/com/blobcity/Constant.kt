@@ -5,6 +5,10 @@ import android.os.Environment
 class Constant {
     companion object {
                             /**assetPath**/
+
+        val assetOutputPath = "output/"
+        val assetTestCoursePath = assetOutputPath+"Test_Course/"
+
         val assetTopicOnePath = "output/Test_Course/topic-one/"
         val assetBasic394Path: String = assetTopicOnePath+"basic-394"
         val assetBasic395Path: String = assetTopicOnePath+"basic-395"
@@ -144,6 +148,20 @@ class Constant {
         val assetIntermediate497Path: String = assetTopicNinePath+"intermediate-497"
         val assetIntermediate498Path: String = assetTopicNinePath+"intermediate-498"
         val assetIntermediate501Path: String = assetTopicNinePath+"intermediate-501"
+
+        val assetTopicTenPath: String = "output/Test_Course/topic-ten/"
+        val assetBasic502Path: String = assetTopicTenPath+"basic-502"
+        val assetBasic503Path: String = assetTopicTenPath+"basic-503"
+        val assetBasic504Path: String = assetTopicTenPath+"basic-504"
+        val assetBasic505Path: String = assetTopicTenPath+"basic-505"
+        val assetAdvanced506Path: String = assetTopicTenPath+"advanced-506"
+        val assetAdvanced507Path: String = assetTopicTenPath+"advanced-507"
+        val assetAdvanced511Path: String = assetTopicTenPath+"advanced-511"
+        val assetAdvanced512Path: String = assetTopicTenPath+"advanced-512"
+        val assetIntermediate508Path: String = assetTopicTenPath+"intermediate-508"
+        val assetIntermediate509Path: String = assetTopicTenPath+"intermediate-509"
+        val assetIntermediate510Path: String = assetTopicTenPath+"intermediate-510"
+        val assetIntermediate513Path: String = assetTopicTenPath+"intermediate-513"
 
 
                             /**localPath**/
@@ -292,5 +310,19 @@ class Constant {
         val localIntermediate497Path: String = localTopicNinePath+"/intermediate-497/"
         val localIntermediate498Path: String = localTopicNinePath+"/intermediate-498/"
         val localIntermediate501Path: String = localTopicNinePath+"/intermediate-501/"
+
+        val localTopicTenPath: String = localTestCoursePath+"/topic-ten"
+        val localBasic502Path: String = localTopicTenPath+"/basic-502/"
+        val localBasic503Path: String = localTopicTenPath+"/basic-503/"
+        val localBasic504Path: String = localTopicTenPath+"/basic-504/"
+        val localBasic505Path: String = localTopicTenPath+"/basic-505/"
+        val localAdvanced506Path: String = localTopicTenPath+"/advanced-506/"
+        val localAdvanced507Path: String = localTopicTenPath+"/advanced-507/"
+        val localAdvanced511Path: String = localTopicTenPath+"/advanced-511/"
+        val localAdvanced512Path: String = localTopicTenPath+"/advanced-512/"
+        val localIntermediate508Path: String = localTopicTenPath+"/intermediate-508/"
+        val localIntermediate509Path: String = localTopicTenPath+"/intermediate-509/"
+        val localIntermediate510Path: String = localTopicTenPath+"/intermediate-510/"
+        val localIntermediate513Path: String = localTopicTenPath+"/intermediate-513/"
     }
 }

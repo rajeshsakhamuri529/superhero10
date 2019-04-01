@@ -44,6 +44,10 @@ import com.blobcity.Constant.Companion.assetAdvanced494Path
 import com.blobcity.Constant.Companion.assetAdvanced495Path
 import com.blobcity.Constant.Companion.assetAdvanced499Path
 import com.blobcity.Constant.Companion.assetAdvanced500Path
+import com.blobcity.Constant.Companion.assetAdvanced506Path
+import com.blobcity.Constant.Companion.assetAdvanced507Path
+import com.blobcity.Constant.Companion.assetAdvanced511Path
+import com.blobcity.Constant.Companion.assetAdvanced512Path
 import com.blobcity.Constant.Companion.assetBasic1421Path
 import com.blobcity.Constant.Companion.assetBasic1422Path
 import com.blobcity.Constant.Companion.assetBasic1423Path
@@ -84,6 +88,10 @@ import com.blobcity.Constant.Companion.assetBasic490Path
 import com.blobcity.Constant.Companion.assetBasic491Path
 import com.blobcity.Constant.Companion.assetBasic492Path
 import com.blobcity.Constant.Companion.assetBasic493Path
+import com.blobcity.Constant.Companion.assetBasic502Path
+import com.blobcity.Constant.Companion.assetBasic503Path
+import com.blobcity.Constant.Companion.assetBasic504Path
+import com.blobcity.Constant.Companion.assetBasic505Path
 import com.blobcity.Constant.Companion.assetBasic550Path
 import com.blobcity.Constant.Companion.assetIntermediate1425Path
 import com.blobcity.Constant.Companion.assetIntermediate1426Path
@@ -125,13 +133,20 @@ import com.blobcity.Constant.Companion.assetIntermediate496Path
 import com.blobcity.Constant.Companion.assetIntermediate497Path
 import com.blobcity.Constant.Companion.assetIntermediate498Path
 import com.blobcity.Constant.Companion.assetIntermediate501Path
+import com.blobcity.Constant.Companion.assetIntermediate508Path
+import com.blobcity.Constant.Companion.assetIntermediate509Path
+import com.blobcity.Constant.Companion.assetIntermediate510Path
+import com.blobcity.Constant.Companion.assetIntermediate513Path
 import com.blobcity.Constant.Companion.assetIntermediate549Path
+import com.blobcity.Constant.Companion.assetOutputPath
+import com.blobcity.Constant.Companion.assetTestCoursePath
 import com.blobcity.Constant.Companion.assetTopicEightPath
 import com.blobcity.Constant.Companion.assetTopicFivePath
 import com.blobcity.Constant.Companion.assetTopicFourPath
 import com.blobcity.Constant.Companion.assetTopicNinePath
 import com.blobcity.Constant.Companion.assetTopicOnePath
 import com.blobcity.Constant.Companion.assetTopicSixPath
+import com.blobcity.Constant.Companion.assetTopicTenPath
 import com.blobcity.Constant.Companion.assetTopicThreePath
 import com.blobcity.Constant.Companion.assetTopicTwoPath
 import com.blobcity.Constant.Companion.localAdvanced1429Path
@@ -174,6 +189,10 @@ import com.blobcity.Constant.Companion.localAdvanced494Path
 import com.blobcity.Constant.Companion.localAdvanced495Path
 import com.blobcity.Constant.Companion.localAdvanced499Path
 import com.blobcity.Constant.Companion.localAdvanced500Path
+import com.blobcity.Constant.Companion.localAdvanced506Path
+import com.blobcity.Constant.Companion.localAdvanced507Path
+import com.blobcity.Constant.Companion.localAdvanced511Path
+import com.blobcity.Constant.Companion.localAdvanced512Path
 import com.blobcity.Constant.Companion.localBasic1421Path
 import com.blobcity.Constant.Companion.localBasic1422Path
 import com.blobcity.Constant.Companion.localBasic1423Path
@@ -214,6 +233,10 @@ import com.blobcity.Constant.Companion.localBasic490Path
 import com.blobcity.Constant.Companion.localBasic491Path
 import com.blobcity.Constant.Companion.localBasic492Path
 import com.blobcity.Constant.Companion.localBasic493Path
+import com.blobcity.Constant.Companion.localBasic502Path
+import com.blobcity.Constant.Companion.localBasic503Path
+import com.blobcity.Constant.Companion.localBasic504Path
+import com.blobcity.Constant.Companion.localBasic505Path
 import com.blobcity.Constant.Companion.localBasic550Path
 import com.blobcity.Constant.Companion.localIntermediate1425Path
 import com.blobcity.Constant.Companion.localIntermediate1426Path
@@ -255,6 +278,10 @@ import com.blobcity.Constant.Companion.localIntermediate496Path
 import com.blobcity.Constant.Companion.localIntermediate497Path
 import com.blobcity.Constant.Companion.localIntermediate498Path
 import com.blobcity.Constant.Companion.localIntermediate501Path
+import com.blobcity.Constant.Companion.localIntermediate508Path
+import com.blobcity.Constant.Companion.localIntermediate509Path
+import com.blobcity.Constant.Companion.localIntermediate510Path
+import com.blobcity.Constant.Companion.localIntermediate513Path
 import com.blobcity.Constant.Companion.localIntermediate549Path
 import com.blobcity.Constant.Companion.localOutputPath
 import com.blobcity.Constant.Companion.localTestCoursePath
@@ -265,6 +292,7 @@ import com.blobcity.Constant.Companion.localTopicNinePath
 import com.blobcity.Constant.Companion.localTopicOnePath
 import com.blobcity.Constant.Companion.localTopicSevenPath
 import com.blobcity.Constant.Companion.localTopicSixPath
+import com.blobcity.Constant.Companion.localTopicTenPath
 import com.blobcity.Constant.Companion.localTopicThreePath
 import com.blobcity.Constant.Companion.localTopicTwoPath
 import com.blobcity.Utils.Companion.copyAssetFile
@@ -291,15 +319,20 @@ class DashboardActivity : AppCompatActivity(), PermissionListener{
             .check()
     }
 
-
-
     override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
         
     }
 
     override fun onPermissionGranted() {
+        storeFileLocally()
+    }
+
+    fun storeFileLocally(){
         makeDir(localOutputPath)
         makeDir(localTestCoursePath)
+
+        copyAssetFile("Courses.json", assetOutputPath, localOutputPath, this)
+        copyAssetFile("topic.json", assetTestCoursePath, localTestCoursePath, this)
 
         makeDir(localTopicOnePath)
         makeDir(localBasic394Path)
@@ -614,5 +647,37 @@ class DashboardActivity : AppCompatActivity(), PermissionListener{
         copyAssetFile("advanced.json", assetTopicNinePath, localTopicNinePath, this)
         copyAssetFile("basic.json", assetTopicNinePath, localTopicNinePath, this)
         copyAssetFile("intermediate.json", assetTopicNinePath, localTopicNinePath, this)
+
+
+        makeDir(localTopicTenPath)
+        makeDir(localBasic502Path)
+        makeDir(localBasic503Path)
+        makeDir(localBasic504Path)
+        makeDir(localBasic505Path)
+        makeDir(localAdvanced506Path)
+        makeDir(localAdvanced507Path)
+        makeDir(localAdvanced511Path)
+        makeDir(localAdvanced512Path)
+        makeDir(localIntermediate508Path)
+        makeDir(localIntermediate509Path)
+        makeDir(localIntermediate510Path)
+        makeDir(localIntermediate513Path)
+
+        copyFolder(assetBasic502Path, localBasic502Path, this)
+        copyFolder(assetBasic503Path, localBasic503Path, this)
+        copyFolder(assetBasic504Path, localBasic504Path, this)
+        copyFolder(assetBasic505Path, localBasic505Path, this)
+        copyFolder(assetAdvanced506Path, localAdvanced506Path, this)
+        copyFolder(assetAdvanced507Path, localAdvanced507Path, this)
+        copyFolder(assetAdvanced511Path, localAdvanced511Path, this)
+        copyFolder(assetAdvanced512Path, localAdvanced512Path, this)
+        copyFolder(assetIntermediate508Path, localIntermediate508Path, this)
+        copyFolder(assetIntermediate509Path, localIntermediate509Path, this)
+        copyFolder(assetIntermediate510Path, localIntermediate510Path, this)
+        copyFolder(assetIntermediate513Path, localIntermediate513Path, this)
+
+        copyAssetFile("advanced.json", assetTopicTenPath, localTopicTenPath, this)
+        copyAssetFile("basic.json", assetTopicTenPath, localTopicTenPath, this)
+        copyAssetFile("intermediate.json", assetTopicTenPath, localTopicTenPath, this)
     }
 }
