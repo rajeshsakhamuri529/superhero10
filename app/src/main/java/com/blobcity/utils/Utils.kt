@@ -1,12 +1,15 @@
-package com.blobcity
+package com.blobcity.utils
 
 import android.content.Context
 import android.content.res.AssetManager
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.io.OutputStream
+import android.os.Environment
+import android.util.Log
+import java.io.*
 import java.lang.Exception
+import java.nio.charset.Charset
+import android.os.Environment.getExternalStorageDirectory
+import java.nio.channels.FileChannel
+
 
 class Utils {
     companion object {
@@ -69,6 +72,40 @@ class Utils {
             while (inStream.read(buffer) != -1) {
                 out.write(buffer, 0, inStream.read(buffer))
             }
+        }
+
+        fun loadJSONFromAsset(context: Context, path: String): String?{
+            var json: String? = null
+            try {
+                val inputStream: InputStream = context.assets.open(path)
+                val size: Int = inputStream.available()
+                val buffer = ByteArray(size)
+                inputStream.read(buffer)
+                inputStream.close()
+                json = String(buffer, Charset.forName("UTF-8"))
+            }catch (ex: Exception){
+                ex.printStackTrace()
+                return null
+            }
+            return json
+        }
+
+        fun readFromFile(context: Context, path: String): String? {
+
+            val yourFile = File(path)
+            val stream = FileInputStream(yourFile)
+            var jsonStr: String? = null
+            try {
+                val fc = stream.getChannel()
+                val bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size())
+
+                jsonStr = Charset.defaultCharset().decode(bb).toString()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                stream.close()
+            }
+            return jsonStr!!
         }
     }
 }

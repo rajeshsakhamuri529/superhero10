@@ -3,5 +3,9 @@
     <string name="str_chapter">Chapters</string>
     <string name="str_classXcbse">CLASS X</string>
     <string name="str_cbse">CBSE</string>
+    <string name="str_Quiz_1">Quiz I</string>
+    <string name="str_Quiz_2">Quiz II</string>
+    <string name="str_astra_quiz">Astra Quiz</string>
     <string name="str_upgrade_to_all_chapters">Upgrade to Practice all Chapters</string>
+    <string name="str_topic_title">03  Pair of Linear Equations in Two Variables</string>
 </resources>
