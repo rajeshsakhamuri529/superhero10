@@ -16,8 +16,11 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Utils {
+
     public static void makeDir(String path){
         File folder = new File(path);
         if (!folder.exists()){
@@ -27,28 +30,40 @@ public class Utils {
 
     public static void copyFolder(String name, String outPath, Context context){
         AssetManager assetManager = context.getAssets();
-        String[] files = null;
-        try {
-            files = assetManager.list(name);
-        } catch (IOException e) {
-            Log.e("tag", e.getMessage());
-        }
-        for(String filename : files) {
-            InputStream in = null;
-            OutputStream out = null;
-            try {
-                in = assetManager.open(name+"/"+filename);   // if files resides inside the "Files" directory itself
-                out = new FileOutputStream(outPath+ filename);
-                copyFile(in, out);
-                in.close();
-                in = null;
-                out.flush();
-                out.close();
-                out = null;
-            } catch(Exception e) {
-                Log.e("tag", e.getMessage());
+        List<String> files = getListOfFilesFromAsset(name, context);
+        if (files != null) {
+            for (String filename : files) {
+                InputStream in = null;
+                OutputStream out = null;
+                try {
+                    in = assetManager.open(name + "/" + filename);   // if files resides inside the "Files" directory itself
+                    out = new FileOutputStream(outPath + filename);
+                    copyFile(in, out);
+                    in.close();
+                    in = null;
+                    out.flush();
+                    out.close();
+                    out = null;
+                } catch (Exception e) {
+                    Log.e("tag", e.getMessage());
+                }
             }
         }
+    }
+
+    public static List<String> getListOfFilesFromAsset(String path, Context context){
+        AssetManager assetManager = context.getAssets();
+        try {
+            return Arrays.asList(assetManager.list(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static List<String> getListOfFilesFromFolder(String path){
+        File file = new File(path);
+        return Arrays.asList(file.list());
     }
 
     public static void copyAssetFile(String name, String path, String outPath, Context context){
@@ -125,7 +140,8 @@ public class Utils {
         return jsonStr;
     }
 
-    void encrypt(String fileName, String path, String ePath) throws IOException, NoSuchAlgorithmException,
+    void encrypt(String fileName, String path, String ePath)
+            throws IOException, NoSuchAlgorithmException,
             NoSuchPaddingException, InvalidKeyException {
         // Here you read the cleartext.
         File extStore = Environment.getExternalStorageDirectory();
@@ -155,10 +171,10 @@ public class Utils {
         fis.close();
     }
 
-    void decrypt(String fileName, String path, String dPath) throws IOException, NoSuchAlgorithmException,
+    void decrypt(String fileName, String path, String dPath)
+            throws IOException, NoSuchAlgorithmException,
             NoSuchPaddingException, InvalidKeyException {
 
-        /*File extStore = Environment.getExternalStorageDirectory();*/
         FileInputStream fis = new FileInputStream(path + fileName);
 
         FileOutputStream fos = new FileOutputStream(dPath + fileName);

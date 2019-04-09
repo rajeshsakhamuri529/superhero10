@@ -1,10 +1,12 @@
-package com.blobcity
+package com.blobcity.activity
 
 import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.support.v7.app.AppCompatActivity
+import com.blobcity.R
+import com.blobcity.adapter.ChaptersAdapter
 import com.blobcity.model.BranchesItem
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath.*
@@ -13,11 +15,12 @@ import com.google.gson.Gson
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import java.util.*
 
 class DashBoardActivity : AppCompatActivity(), PermissionListener {
 
-    var encryptPath = Environment.getExternalStorageDirectory().toString() + "/Encrypt/"
-    var decryptPath = Environment.getExternalStorageDirectory().toString() + "/Decrypt/"
+    private var encryptPath = Environment.getExternalStorageDirectory().toString() + "/Encrypt/"
+    private var decryptPath = Environment.getExternalStorageDirectory().toString() + "/Decrypt/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,9 +31,11 @@ class DashBoardActivity : AppCompatActivity(), PermissionListener {
             startActivity(intent
             )
         }
+
         TedPermission.with(this)
             .setPermissionListener(this)
-            .setDeniedMessage("If you reject permission,you can not use this service\n" + "\nPlease turn on permissions at [Setting] > [Permission]")
+            .setDeniedMessage("If you reject permission,you can not use this service\n"
+                    + "\nPlease turn on permissions at [Setting] > [Permission]")
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
     }
@@ -43,7 +48,7 @@ class DashBoardActivity : AppCompatActivity(), PermissionListener {
 
     }
 
-    internal fun storeFileLocally() {
+    private fun storeFileLocally() {
         makeDir(encryptPath)
         makeDir(decryptPath)
         makeDir(localOutputPath)

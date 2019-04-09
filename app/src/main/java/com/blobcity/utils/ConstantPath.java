@@ -3,10 +3,13 @@ package com.blobcity.utils;
 import android.os.Environment;
 
 public class ConstantPath {
-    public static String assetOutputPath = "output/";
-    public static String assetTestCoursePath = assetOutputPath +"Test_Course/";
 
-    public static String assetTopicOnePath = "output/Test_Course/topic-one/";
+                                /*assetPath*/
+
+    public static String assetOutputPath = "output/";
+    public static String assetTestCoursePath = assetOutputPath +"Test Course/";
+
+    public static String assetTopicOnePath = assetTestCoursePath+"topic-one/";
     public static String assetBasic394Path = assetTopicOnePath +"basic-394";
     public static String assetBasic395Path = assetTopicOnePath +"basic-395";
     public static String assetBasic396Path = assetTopicOnePath +"basic-396";
@@ -34,7 +37,7 @@ public class ConstantPath {
     public static String assetIntermediate1427Path = assetTopicOnePath +"intermediate-1427";
     public static String assetIntermediate1428Path = assetTopicOnePath +"intermediate-1428";
 
-    public static String assetTopicTwoPath = "output/Test_Course/topic-two/";
+    public static String assetTopicTwoPath = assetTestCoursePath+"topic-two/";
     public static String assetBasic406Path = assetTopicTwoPath +"basic-406";
     public static String assetBasic407Path = assetTopicTwoPath +"basic-407";
     public static String assetBasic1423Path = assetTopicTwoPath +"basic-1423";
@@ -48,7 +51,7 @@ public class ConstantPath {
     public static String assetIntermediate417Path = assetTopicTwoPath +"intermediate-417";
     public static String assetIntermediate1425Path = assetTopicTwoPath +"intermediate-1425";
 
-    public static String assetTopicThreePath = "output/Test_Course/topic-three/";
+    public static String assetTopicThreePath = assetTestCoursePath+"topic-three/";
     public static String assetBasic418Path = assetTopicThreePath +"basic-418";
     public static String assetBasic419Path = assetTopicThreePath +"basic-419";
     public static String assetBasic420Path = assetTopicThreePath +"basic-420";
@@ -62,7 +65,7 @@ public class ConstantPath {
     public static String assetIntermediate426Path = assetTopicThreePath +"intermediate-426";
     public static String assetIntermediate429Path = assetTopicThreePath +"intermediate-429";
 
-    public static String assetTopicFourPath = "output/Test_Course/topic-four/";
+    public static String assetTopicFourPath = assetTestCoursePath+"topic-four/";
     public static String assetBasic430Path = assetTopicFourPath +"basic-430";
     public static String assetBasic431Path = assetTopicFourPath +"basic-431";
     public static String assetBasic432Path = assetTopicFourPath +"basic-432";
@@ -76,7 +79,7 @@ public class ConstantPath {
     public static String assetIntermediate438Path = assetTopicFourPath +"intermediate-438";
     public static String assetIntermediate441Path = assetTopicFourPath +"intermediate-441";
 
-    public static String assetTopicFivePath = "output/Test_Course/topic-five/";
+    public static String assetTopicFivePath = assetTestCoursePath+"topic-five/";
     public static String assetBasic442Path = assetTopicFivePath +"basic-442";
     public static String assetBasic443Path = assetTopicFivePath +"basic-443";
     public static String assetBasic444Path = assetTopicFivePath +"basic-444";
@@ -90,7 +93,7 @@ public class ConstantPath {
     public static String assetIntermediate450Path = assetTopicFivePath +"intermediate-450";
     public static String assetIntermediate453Path = assetTopicFivePath +"intermediate-453";
 
-    public static String assetTopicSixPath = "output/Test_Course/topic-six/";
+    public static String assetTopicSixPath = assetTestCoursePath+"topic-six/";
     public static String assetBasic454Path = assetTopicSixPath +"basic-454";
     public static String assetBasic455Path = assetTopicSixPath +"basic-455";
     public static String assetBasic456Path = assetTopicSixPath +"basic-456";
@@ -104,7 +107,7 @@ public class ConstantPath {
     public static String assetIntermediate462Path = assetTopicSixPath +"intermediate-462";
     public static String assetIntermediate465Path = assetTopicSixPath +"intermediate-465";
 
-    public static String assetTopicSevenPath = "output/Test_Course/topic-seven/";
+    public static String assetTopicSevenPath = assetTestCoursePath+"topic-seven/";
     public static String assetBasic466Path = assetTopicSevenPath +"basic-466";
     public static String assetBasic467Path = assetTopicSevenPath +"basic-467";
     public static String assetBasic468Path = assetTopicSevenPath +"basic-468";
@@ -118,7 +121,7 @@ public class ConstantPath {
     public static String assetIntermediate474Path = assetTopicSevenPath +"intermediate-474";
     public static String assetIntermediate477Path = assetTopicSevenPath +"intermediate-477";
 
-    public static String assetTopicEightPath = "output/Test_Course/topic-eight/";
+    public static String assetTopicEightPath = assetTestCoursePath+"topic-eight/";
     public static String assetBasic478Path = assetTopicEightPath +"basic-478";
     public static String assetBasic479Path = assetTopicEightPath +"basic-479";
     public static String assetBasic480Path = assetTopicEightPath +"basic-480";
@@ -132,7 +135,7 @@ public class ConstantPath {
     public static String assetIntermediate486Path = assetTopicEightPath +"intermediate-486";
     public static String assetIntermediate489Path = assetTopicEightPath +"intermediate-489";
 
-    public static String assetTopicNinePath = "output/Test_Course/topic-nine/";
+    public static String assetTopicNinePath = assetTestCoursePath+"topic-nine/";
     public static String assetBasic490Path = assetTopicNinePath +"basic-490";
     public static String assetBasic491Path = assetTopicNinePath +"basic-491";
     public static String assetBasic492Path = assetTopicNinePath +"basic-492";
@@ -146,7 +149,7 @@ public class ConstantPath {
     public static String assetIntermediate498Path = assetTopicNinePath +"intermediate-498";
     public static String assetIntermediate501Path = assetTopicNinePath +"intermediate-501";
 
-    public static String assetTopicTenPath = "output/Test_Course/topic-ten/";
+    public static String assetTopicTenPath = assetTestCoursePath+"topic-ten/";
     public static String assetBasic502Path = assetTopicTenPath +"basic-502";
     public static String assetBasic503Path = assetTopicTenPath +"basic-503";
     public static String assetBasic504Path = assetTopicTenPath +"basic-504";
@@ -161,11 +164,11 @@ public class ConstantPath {
     public static String assetIntermediate513Path = assetTopicTenPath +"intermediate-513";
 
 
-    /**localPath**/
+                                    /**localPath**/
 
     public static String localPath = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static String localOutputPath = localPath +"/blobcity";
-    public static String localTestCoursePath = localOutputPath +"/Test_Course";
+    public static String localTestCoursePath = localOutputPath +"/Test Course";
 
     public static String localTopicOnePath = localTestCoursePath +"/topic-one";
     public static String localBasic394Path = localTopicOnePath +"/basic-394/";

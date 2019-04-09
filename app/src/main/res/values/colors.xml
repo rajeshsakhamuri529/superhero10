@@ -8,4 +8,6 @@
     <color name="dark_purple">#48106A</color>
     <color name="grey">#999999</color>
     <color name="black">#000000</color>
+    <color name="purple_hint_btn_bg">#BD2ED0</color>
+    <color name="purple_opt_bg">#6A0887</color>
 </resources>
