@@ -4,7 +4,10 @@ import android.os.Environment;
 
 public class ConstantPath {
 
-                                /*assetPath*/
+    public static String FOLDER_NAME = "folder_name";
+    public static String DYNAMIC_PATH = "dynamic_path";
+
+    /*assetPath*/
 
     public static String assetOutputPath = "output/";
     public static String assetTestCoursePath = assetOutputPath +"Test Course/";

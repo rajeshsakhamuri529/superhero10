@@ -14,7 +14,7 @@
             android:theme="@style/AppTheme">
         <activity android:name=".activity.TestQuestionActivity">
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.QuizLevelActivity">
         </activity>
         <activity android:name=".activity.DashBoardActivity">
             <intent-filter>
