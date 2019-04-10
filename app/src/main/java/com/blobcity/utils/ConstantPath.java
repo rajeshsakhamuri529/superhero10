@@ -6,6 +6,9 @@ public class ConstantPath {
 
     public static String FOLDER_NAME = "folder_name";
     public static String DYNAMIC_PATH = "dynamic_path";
+    public static String WEBVIEW_PATH = "file:///android_asset/";
+    public static String UNIQUE_KEY_LIST= "key_list";
+    public static String ARRAY_MAP_LIST = "map_list";
 
     /*assetPath*/
 

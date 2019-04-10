@@ -2,7 +2,9 @@ package com.blobcity.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class TopicOneQuestionsItem {
+import java.io.Serializable;
+
+public class TopicOneQuestionsItem implements Serializable {
 
 	@SerializedName("bank")
 	private String bank;

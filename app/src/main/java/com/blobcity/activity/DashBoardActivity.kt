@@ -19,9 +19,6 @@ import java.util.*
 
 class DashBoardActivity : AppCompatActivity(), PermissionListener {
 
-    private var encryptPath = Environment.getExternalStorageDirectory().toString() + "/Encrypt/"
-    private var decryptPath = Environment.getExternalStorageDirectory().toString() + "/Decrypt/"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)

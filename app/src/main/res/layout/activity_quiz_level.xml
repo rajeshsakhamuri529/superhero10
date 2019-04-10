@@ -105,6 +105,7 @@
             android:layout_below="@id/ll_quiz_1">
 
         <Button
+                android:id="@+id/btn_quiz2"
                 android:layout_width="@dimen/_85sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/button_bg"
@@ -133,6 +134,7 @@
             android:layout_below="@id/ll_quiz_2">
 
         <Button
+                android:id="@+id/btn_quiz3"
                 android:layout_width="@dimen/_85sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/button_bg"
