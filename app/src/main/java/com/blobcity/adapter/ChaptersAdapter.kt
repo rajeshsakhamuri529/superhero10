@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.blobcity.R
+import com.blobcity.interfaces.TopicClickListener
 import com.blobcity.model.BranchesItem
 import kotlinx.android.synthetic.main.topics_single_layout.view.*
 
-class ChaptersAdapter(val context: Context, val branchesItemList: List<BranchesItem>) :
+class ChaptersAdapter(val context: Context,
+                      val branchesItemList: List<BranchesItem>,
+                      val topicClickListener: TopicClickListener) :
     RecyclerView.Adapter<ChaptersAdapter.ChaptersViewHolder>()
 {
 
@@ -29,6 +32,9 @@ class ChaptersAdapter(val context: Context, val branchesItemList: List<BranchesI
         holder.tv_topic_name.text = branchesItemList[position].topic.title
         if (branchesItemList.size-1 == position){
             holder.singleTopic.setBackgroundResource(R.drawable.dashboard_bottom_corner)
+        }
+        holder.singleTopic.setOnClickListener {
+            topicClickListener.onClick(branchesItemList[position].topic.folderName)
         }
     }
 

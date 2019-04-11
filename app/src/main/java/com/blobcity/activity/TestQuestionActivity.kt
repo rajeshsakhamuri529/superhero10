@@ -52,87 +52,13 @@ class TestQuestionActivity : AppCompatActivity() {
             tv_count.text = count
             questionsItem = arrayMap!!.get(listWithUniqueString!!.get(position))
             if (questionsItem!!.size > 1){
-
                 val randomPosition = Random.nextInt(questionsItem!!.size)
-
                 val path = assetOutputPath+questionsItem!!.get(randomPosition).id
-
-                val listOfString = ArrayList<String>()
-                for (filename in Utils.getListOfFilesFromAsset(path, this)){
-                    if (filename.contains("opt")){
-                        listOfString.add(filename)
-                    }
-                    if (filename.contains("question")){
-                        questionPath = WEBVIEW_PATH+path+"/"+filename
-                    }
-                }
-
-                if (listOfString.size > 2){
-                    Collections.shuffle(listOfString)
-                    opt1Path = WEBVIEW_PATH+path+"/"+listOfString.get(0)
-                    opt2Path = WEBVIEW_PATH+path+"/"+listOfString.get(1)
-                    opt3Path = WEBVIEW_PATH+path+"/"+listOfString.get(2)
-                    opt4Path = WEBVIEW_PATH+path+"/"+listOfString.get(3)
-                    webView_option1.loadUrl(opt1Path)
-                    webView_option2.loadUrl(opt2Path)
-                    webView_option3.loadUrl(opt3Path)
-                    webView_option4.loadUrl(opt4Path)
-                }else{
-                    opt1Path = WEBVIEW_PATH+path+"/"+listOfString.get(0)
-                    opt2Path = WEBVIEW_PATH+path+"/"+listOfString.get(1)
-                    webView_option1.loadUrl(opt2Path)
-                    webView_option2.loadUrl(opt1Path)
-                    webView_option3.visibility = View.GONE
-                    webView_option4.visibility = View.GONE
-                }
-
-                webView_question.setBackgroundColor(0)
-                webView_option1.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
-                webView_option2.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
-                webView_option3.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
-                webView_option4.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
-
-                webView_question.loadUrl(questionPath)
+                loadDataInWebView(path)
             } else
             {
                 val path = assetOutputPath+questionsItem!!.get(0).id
-
-                val listOfString = ArrayList<String>()
-                for (filename in Utils.getListOfFilesFromAsset(path, this)){
-                    if (filename.contains("opt")){
-                        listOfString.add(filename)
-                    }
-                    if (filename.contains("question")){
-                        questionPath = WEBVIEW_PATH+path+"/"+filename
-                    }
-                }
-
-                if (listOfString.size > 2){
-                    Collections.shuffle(listOfString)
-                    opt1Path = WEBVIEW_PATH+path+"/"+listOfString.get(0)
-                    opt2Path = WEBVIEW_PATH+path+"/"+listOfString.get(1)
-                    opt3Path = WEBVIEW_PATH+path+"/"+listOfString.get(2)
-                    opt4Path = WEBVIEW_PATH+path+"/"+listOfString.get(3)
-                    webView_option1.loadUrl(opt1Path)
-                    webView_option2.loadUrl(opt2Path)
-                    webView_option3.loadUrl(opt3Path)
-                    webView_option4.loadUrl(opt4Path)
-                }else{
-                    opt1Path = WEBVIEW_PATH+path+"/"+listOfString.get(0)
-                    opt2Path = WEBVIEW_PATH+path+"/"+listOfString.get(1)
-                    webView_option1.loadUrl(opt2Path)
-                    webView_option2.loadUrl(opt1Path)
-                    webView_option3.visibility = View.GONE
-                    webView_option4.visibility = View.GONE
-                }
-
-                webView_question.setBackgroundColor(0)
-                webView_option1.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
-                webView_option2.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
-                webView_option3.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
-                webView_option4.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
-
-                webView_question.loadUrl(questionPath)
+                loadDataInWebView(path)
             }
         }
     }
@@ -171,5 +97,44 @@ class TestQuestionActivity : AppCompatActivity() {
             Log.e("is list Correct", "yes")
         }
         onBtnNext()
+    }
+
+    private fun loadDataInWebView(path: String){
+        val listOfString = ArrayList<String>()
+        for (filename in Utils.getListOfFilesFromAsset(path, this)){
+            if (filename.contains("opt")){
+                listOfString.add(filename)
+            }
+            if (filename.contains("question")){
+                questionPath = WEBVIEW_PATH+path+"/"+filename
+            }
+        }
+
+        if (listOfString.size > 2){
+            Collections.shuffle(listOfString)
+            opt1Path = WEBVIEW_PATH+path+"/"+listOfString.get(0)
+            opt2Path = WEBVIEW_PATH+path+"/"+listOfString.get(1)
+            opt3Path = WEBVIEW_PATH+path+"/"+listOfString.get(2)
+            opt4Path = WEBVIEW_PATH+path+"/"+listOfString.get(3)
+            webView_option1.loadUrl(opt1Path)
+            webView_option2.loadUrl(opt2Path)
+            webView_option3.loadUrl(opt3Path)
+            webView_option4.loadUrl(opt4Path)
+        }else{
+            opt1Path = WEBVIEW_PATH+path+"/"+listOfString.get(0)
+            opt2Path = WEBVIEW_PATH+path+"/"+listOfString.get(1)
+            webView_option1.loadUrl(opt2Path)
+            webView_option2.loadUrl(opt1Path)
+            webView_option3.visibility = View.GONE
+            webView_option4.visibility = View.GONE
+        }
+
+        webView_question.setBackgroundColor(0)
+        webView_option1.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
+        webView_option2.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
+        webView_option3.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
+        webView_option4.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
+
+        webView_question.loadUrl(questionPath)
     }
 }
