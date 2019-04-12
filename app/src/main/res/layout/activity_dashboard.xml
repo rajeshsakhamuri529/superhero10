@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/bg"
-        tools:context=".DashboardActivity">
+        tools:context=".activity.DashBoardActivity">
 
     <android.support.v4.widget.NestedScrollView
             android:id="@+id/nsv"

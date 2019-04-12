@@ -30,6 +30,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/view"
-            android:layout_marginTop="@dimen/_20sdp"/>
+            android:id="@+id/webview_hint"
+            android:layout_marginLeft="@dimen/_40sdp"
+            android:layout_marginRight="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_30sdp"/>
+
+    <Button android:layout_width="wrap_content"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_below="@id/webview_hint"
+            android:id="@+id/btn_gotIt"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_40sdp"
+            android:background="@drawable/hint_button_bg"
+            android:text="Got it"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="@dimen/_13ssp"
+            android:paddingLeft="@dimen/_20sdp"
+            android:paddingRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"/>
 
 </RelativeLayout>

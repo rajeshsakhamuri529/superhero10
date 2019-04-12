@@ -1,5 +1,7 @@
 package com.blobcity.activity
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.ArrayMap
@@ -15,21 +17,25 @@ import kotlinx.android.synthetic.main.activity_test_question.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
+import android.support.v7.app.AlertDialog
+import android.webkit.WebView
+import android.widget.Button
 
 class TestQuestionActivity : AppCompatActivity() {
 
-    var questionPath: String?=""
-    var opt1Path: String?=""
-    var opt2Path: String?=""
-    var opt3Path: String?=""
-    var opt4Path: String?=""
-    var arrayMap: ArrayMap<String, List<TopicOneQuestionsItem>>?=null
-    var listWithUniqueString: ArrayList<String>?=null
-    var position: Int = -1
-    var questionsItem: List<TopicOneQuestionsItem>?=null
-    var totalQuestion: Int?=null
-    var listSize: Int?=null
-    var countInt: Int =0
+    private var questionPath: String?=""
+    private var hintPath: String?=""
+    private var opt1Path: String?=""
+    private var opt2Path: String?=""
+    private var opt3Path: String?=""
+    private var opt4Path: String?=""
+    private var arrayMap: ArrayMap<String, List<TopicOneQuestionsItem>>?=null
+    private var listWithUniqueString: ArrayList<String>?=null
+    private var position: Int = -1
+    private var questionsItem: List<TopicOneQuestionsItem>?=null
+    private var totalQuestion: Int?=null
+    private var listSize: Int?=null
+    private var countInt: Int =0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +45,13 @@ class TestQuestionActivity : AppCompatActivity() {
 
         createArrayMapList(path)
 
-        btn_next.setOnClickListener({
+        btn_next.setOnClickListener{
             onBtnNext()
-        })
+        }
+
+        btn_hint.setOnClickListener {
+            hintAlertDialog()
+        }
     }
 
     private fun onBtnNext(){
@@ -108,6 +118,9 @@ class TestQuestionActivity : AppCompatActivity() {
             if (filename.contains("question")){
                 questionPath = WEBVIEW_PATH+path+"/"+filename
             }
+            if (filename.contains("hint")){
+                hintPath = WEBVIEW_PATH+path+"/"+filename
+            }
         }
 
         if (listOfString.size > 2){
@@ -136,5 +149,23 @@ class TestQuestionActivity : AppCompatActivity() {
         webView_option4.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
 
         webView_question.loadUrl(questionPath)
+    }
+
+    private fun hintAlertDialog(){
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
+        dialogBuilder.setView(dialogView)
+
+        val webview = dialogView.findViewById(R.id.webview_hint) as WebView
+        val btn_gotIt = dialogView.findViewById(R.id.btn_gotIt) as Button
+        webview.loadUrl(hintPath)
+        webview.setBackgroundColor(0)
+        val alertDialog = dialogBuilder.create()
+        btn_gotIt.setOnClickListener({
+            alertDialog.dismiss()
+        })
+        alertDialog.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show()
     }
 }
