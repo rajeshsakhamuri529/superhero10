@@ -21,7 +21,7 @@ import android.support.v7.app.AlertDialog
 import android.webkit.WebView
 import android.widget.Button
 
-class TestQuestionActivity : AppCompatActivity() {
+class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
     private var questionPath: String?=""
     private var hintPath: String?=""
@@ -45,13 +45,39 @@ class TestQuestionActivity : AppCompatActivity() {
 
         createArrayMapList(path)
 
-        btn_next.setOnClickListener{
-            onBtnNext()
-        }
+        btn_next.setOnClickListener(this)
+        btn_hint.setOnClickListener(this)
+    }
 
-        btn_hint.setOnClickListener {
-            hintAlertDialog()
+    override fun onClick(v: View?) {
+        when(v!!.id){
+            R.id.btn_next ->{
+                onBtnNext()
+            }
+
+            R.id.btn_hint ->{
+                hintAlertDialog()
+            }
         }
+    }
+
+    private fun hintAlertDialog(){
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
+        dialogBuilder.setView(dialogView)
+
+        val webview = dialogView.findViewById(R.id.webview_hint) as WebView
+        val btn_gotIt = dialogView.findViewById(R.id.btn_gotIt) as Button
+        webview.loadUrl(hintPath)
+        webview.setBackgroundColor(0)
+        val alertDialog = dialogBuilder.create()
+        btn_gotIt.setOnClickListener({
+            alertDialog.dismiss()
+        })
+
+        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show()
     }
 
     private fun onBtnNext(){
@@ -149,23 +175,5 @@ class TestQuestionActivity : AppCompatActivity() {
         webView_option4.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
 
         webView_question.loadUrl(questionPath)
-    }
-
-    private fun hintAlertDialog(){
-        val dialogBuilder = AlertDialog.Builder(this)
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
-        dialogBuilder.setView(dialogView)
-
-        val webview = dialogView.findViewById(R.id.webview_hint) as WebView
-        val btn_gotIt = dialogView.findViewById(R.id.btn_gotIt) as Button
-        webview.loadUrl(hintPath)
-        webview.setBackgroundColor(0)
-        val alertDialog = dialogBuilder.create()
-        btn_gotIt.setOnClickListener({
-            alertDialog.dismiss()
-        })
-        alertDialog.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-        alertDialog.show()
     }
 }
