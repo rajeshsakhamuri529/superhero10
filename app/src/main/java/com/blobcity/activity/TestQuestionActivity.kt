@@ -18,10 +18,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 import android.support.v7.app.AlertDialog
+import android.view.MotionEvent
 import android.webkit.WebView
 import android.widget.Button
+import android.widget.Toast
 
-class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
+class TestQuestionActivity : AppCompatActivity(), View.OnClickListener, View.OnTouchListener {
 
     private var questionPath: String?=""
     private var hintPath: String?=""
@@ -36,6 +38,8 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private var totalQuestion: Int?=null
     private var listSize: Int?=null
     private var countInt: Int =0
+    private var listOfOptions: ArrayList<String>? = null
+    private var randomPosition: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +49,14 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
         createArrayMapList(path)
 
+        btn_hint.visibility = View.GONE
+
         btn_next.setOnClickListener(this)
         btn_hint.setOnClickListener(this)
+        webView_option1.setOnTouchListener(this)
+        webView_option2.setOnTouchListener(this)
+        webView_option3.setOnTouchListener(this)
+        webView_option4.setOnTouchListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -61,6 +71,27 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+        when(v!!.id){
+            R.id.webView_option1 -> {
+                checkAnswer(0, "true")
+            }
+
+            R.id.webView_option2 -> {
+                checkAnswer(1, "false")
+            }
+
+            R.id.webView_option3 -> {
+                checkAnswer(2, "")
+            }
+
+            R.id.webView_option4 -> {
+                checkAnswer(3, "")
+            }
+        }
+        return false
+    }
+
     private fun hintAlertDialog(){
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
@@ -72,9 +103,9 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
         webview.loadUrl(hintPath)
         webview.setBackgroundColor(0)
         val alertDialog = dialogBuilder.create()
-        btn_gotIt.setOnClickListener({
+        btn_gotIt.setOnClickListener {
             alertDialog.dismiss()
-        })
+        }
 
         alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
@@ -82,13 +113,14 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun onBtnNext(){
         position++
+        btn_hint.visibility = View.GONE
         if (position < totalQuestion!!){
             countInt++
             val count = "$countInt of $totalQuestion"
             tv_count.text = count
             questionsItem = arrayMap!!.get(listWithUniqueString!!.get(position))
             if (questionsItem!!.size > 1){
-                val randomPosition = Random.nextInt(questionsItem!!.size)
+                randomPosition = Random.nextInt(questionsItem!!.size)
                 val path = assetOutputPath+questionsItem!!.get(randomPosition).id
                 loadDataInWebView(path)
             } else
@@ -136,10 +168,10 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun loadDataInWebView(path: String){
-        val listOfString = ArrayList<String>()
+        listOfOptions = ArrayList()
         for (filename in Utils.getListOfFilesFromAsset(path, this)){
             if (filename.contains("opt")){
-                listOfString.add(filename)
+                listOfOptions!!.add(filename)
             }
             if (filename.contains("question")){
                 questionPath = WEBVIEW_PATH+path+"/"+filename
@@ -149,19 +181,21 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
 
-        if (listOfString.size > 2){
-            Collections.shuffle(listOfString)
-            opt1Path = WEBVIEW_PATH+path+"/"+listOfString.get(0)
-            opt2Path = WEBVIEW_PATH+path+"/"+listOfString.get(1)
-            opt3Path = WEBVIEW_PATH+path+"/"+listOfString.get(2)
-            opt4Path = WEBVIEW_PATH+path+"/"+listOfString.get(3)
+        if (listOfOptions!!.size > 2){
+            webView_option3.visibility = View.VISIBLE
+            webView_option4.visibility = View.VISIBLE
+            Collections.shuffle(listOfOptions!!)
+            opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
+            opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
+            opt3Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(2)
+            opt4Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(3)
             webView_option1.loadUrl(opt1Path)
             webView_option2.loadUrl(opt2Path)
             webView_option3.loadUrl(opt3Path)
             webView_option4.loadUrl(opt4Path)
         }else{
-            opt1Path = WEBVIEW_PATH+path+"/"+listOfString.get(0)
-            opt2Path = WEBVIEW_PATH+path+"/"+listOfString.get(1)
+            opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
+            opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
             webView_option1.loadUrl(opt2Path)
             webView_option2.loadUrl(opt1Path)
             webView_option3.visibility = View.GONE
@@ -175,5 +209,30 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
         webView_option4.setBackgroundColor(resources.getColor(R.color.purple_opt_bg))
 
         webView_question.loadUrl(questionPath)
+    }
+
+    private fun checkAnswer(optionClicked: Int, answer: String){
+        if (listOfOptions!!.size > 2){
+            if (listOfOptions!!.get(optionClicked).contains("opt1")){
+                Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+            }else{
+                btn_hint.visibility = View.VISIBLE
+            }
+        }
+        else{
+            if (questionsItem!!.size > 1) {
+                if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
+                    Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+                } else {
+                    btn_hint.visibility = View.VISIBLE
+                }
+            }else{
+                if (answer.equals(questionsItem!!.get(0).text, true)) {
+                    Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+                } else {
+                    btn_hint.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }

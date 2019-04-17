@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "443492773909",
+    "firebase_url": "https://astraquiz-9b2bf.firebaseio.com",
+    "project_id": "astraquiz-9b2bf",
+    "storage_bucket": "astraquiz-9b2bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443492773909:android:40cc6a70141f4ef7",
+        "android_client_info": {
+          "package_name": "com.blobcity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443492773909-4t7es6176g98idet8gs253fqupifu818.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blobcity",
+            "certificate_hash": "623ae520bac7274ebaf0a0f9f4fb5e9a8b3add5a"
+          }
+        },
+        {
+          "client_id": "443492773909-uso9864f2ouacr2suqbj9tad2ioj9ph0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB20HB1Tp_zRb4en0UxjtHqYgpS-hOFfUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443492773909-uso9864f2ouacr2suqbj9tad2ioj9ph0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
