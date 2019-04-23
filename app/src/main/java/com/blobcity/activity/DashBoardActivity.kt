@@ -2,8 +2,6 @@ package com.blobcity.activity
 
 import android.Manifest
 import android.content.Intent
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.blobcity.R
 import com.blobcity.adapter.ChaptersAdapter
@@ -18,15 +16,16 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
-class DashBoardActivity : AppCompatActivity(), PermissionListener,
+class DashBoardActivity : BaseActivity(), PermissionListener,
     View.OnClickListener, TopicClickListener {
 
     private var branchesItemList:List<BranchesItem>?=null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+    override fun setLayout(): Int {
+        return R.layout.activity_dashboard
+    }
 
+    override fun initView() {
         TedPermission.with(this)
             .setPermissionListener(this)
             .setDeniedMessage("If you reject permission,you can not use this service\n"

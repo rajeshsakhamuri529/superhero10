@@ -1,32 +1,23 @@
 package com.blobcity.activity
 
 import android.content.Intent
-import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.util.ArrayMap
-import android.util.Log
 import android.view.View
 import com.blobcity.R
-import com.blobcity.model.TopicOneBasicResponseModel
-import com.blobcity.model.TopicOneQuestionsItem
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.Utils.*
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_quiz_level.*
-import java.io.Serializable
-import java.util.*
-import kotlin.collections.ArrayList
 
-class QuizLevelActivity : AppCompatActivity(), View.OnClickListener {
+class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
     var jsonStringBasic: String? =""
     var jsonStringIntermediate: String? =""
     var jsonStringAdvanced: String? =""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(com.blobcity.R.layout.activity_quiz_level)
+    override fun setLayout(): Int {
+        return R.layout.activity_quiz_level
+    }
 
+    override fun initView() {
         val folderName = intent.getStringExtra(FOLDER_NAME)
         val folderPath = assetTestCoursePath+folderName
 

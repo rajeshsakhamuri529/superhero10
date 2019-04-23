@@ -3,9 +3,7 @@ package com.blobcity.activity
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.os.Bundle
 import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.util.ArrayMap
 import android.util.Log
 import android.view.MotionEvent
@@ -13,6 +11,7 @@ import android.view.View
 import android.webkit.WebView
 import android.widget.Button
 import android.widget.Toast
+import com.blobcity.R
 import com.blobcity.model.TopicOneBasicResponseModel
 import com.blobcity.model.TopicOneQuestionsItem
 import com.blobcity.utils.ConstantPath.*
@@ -24,7 +23,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 
-class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
+class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private var questionPath: String?=""
     private var hintPath: String?=""
@@ -52,21 +51,18 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
     var webView_option4: WebView ?=  null
     var startClickTime: Long? = null
     private val MAX_CLICK_DURATION = 200
+    private var isAnswerCorrect: Boolean = false
+    private var isLifeZero: Boolean = false
+
+    override fun setLayout(): Int {
+        return R.layout.activity_test_question
+    }
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(com.blobcity.R.layout.activity_test_question)
-
+    override fun initView(){
         val path = intent.getStringExtra(DYNAMIC_PATH)
 
-        btn_hint = findViewById(com.blobcity.R.id.btn_hint) as Button
-        btn_next = findViewById(com.blobcity.R.id.btn_next) as Button
-        webView_question = findViewById(com.blobcity.R.id.webView_question) as WebView
-        webView_option1 = findViewById(com.blobcity.R.id.webView_option1) as WebView
-        webView_option2 = findViewById(com.blobcity.R.id.webView_option2) as WebView
-        webView_option3 = findViewById(com.blobcity.R.id.webView_option3) as WebView
-        webView_option4 = findViewById(com.blobcity.R.id.webView_option4) as WebView
+        initializeView()
 
         createArrayMapList(path)
 
@@ -95,6 +91,16 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun initializeView(){
+        btn_hint = findViewById(com.blobcity.R.id.btn_hint) as Button
+        btn_next = findViewById(com.blobcity.R.id.btn_next) as Button
+        webView_question = findViewById(com.blobcity.R.id.webView_question) as WebView
+        webView_option1 = findViewById(com.blobcity.R.id.webView_option1) as WebView
+        webView_option2 = findViewById(com.blobcity.R.id.webView_option2) as WebView
+        webView_option3 = findViewById(com.blobcity.R.id.webView_option3) as WebView
+        webView_option4 = findViewById(com.blobcity.R.id.webView_option4) as WebView
+    }
+
     private fun clickOptions(event: MotionEvent, position: Int, stringAns: String){
         if (event.getAction() == MotionEvent.ACTION_DOWN){
             startClickTime = Calendar.getInstance().getTimeInMillis()
@@ -110,11 +116,11 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v!!.id){
-            com.blobcity.R.id.btn_next ->{
+            R.id.btn_next ->{
                 onBtnNext()
             }
 
-            com.blobcity.R.id.btn_hint ->{
+            R.id.btn_hint ->{
                 hintAlertDialog()
             }
         }
@@ -123,7 +129,7 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
     private fun hintAlertDialog(){
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(com.blobcity.R.layout.hint_dialog_layout, null)
+        val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
         dialogBuilder.setView(dialogView)
 
         val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
@@ -140,36 +146,29 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onBtnNext(){
-        position++
-        btn_hint!!.visibility = View.GONE
-        if (position < totalQuestion!!){
-            countInt++
-            val count = "$countInt of $totalQuestion"
-            tv_count.text = count
-            questionsItem = arrayMap!!.get(listWithUniqueString!!.get(position))
-            if (questionsItem!!.size > 1){
-                randomPosition = Random.nextInt(questionsItem!!.size)
-                val path = assetOutputPath+questionsItem!!.get(randomPosition).id
-                loadDataInWebView(path)
-            } else
-            {
-                val path = assetOutputPath+questionsItem!!.get(0).id
-                loadDataInWebView(path)
+        if (!isLifeZero) {
+            if (isAnswerCorrect) {
+                createPath()
+                isAnswerCorrect = false
+            } else {
+                Toast.makeText(this, "Please select right option.", Toast.LENGTH_LONG).show()
             }
+        }else{
+            Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun createArrayMapList(path: String) {
         val gsonFile = Gson()
         val questionResponseModel = gsonFile.fromJson(path, TopicOneBasicResponseModel::class.java)
-        val questionsItem = questionResponseModel.questions
+        val questionsItems = questionResponseModel.questions
         val listWithDuplicateKeys = ArrayList<String>()
 
         totalQuestion = questionResponseModel.questionCount
         var questionItemList: ArrayList<TopicOneQuestionsItem>
         arrayMap = ArrayMap()
 
-        for (questionItem in questionsItem){
+        for (questionItem in questionsItems){
             val questionBank = questionItem.bank
             listWithDuplicateKeys.add(questionBank)
             if (!arrayMap!!.contains(questionBank)){
@@ -201,7 +200,27 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
             availableLife = 2
             totalLife = 2
         }
-        onBtnNext()
+        createPath()
+    }
+
+    private fun createPath(){
+        position++
+        btn_hint!!.visibility = View.GONE
+        if (position < totalQuestion!!) {
+            countInt++
+            val count = "$countInt of $totalQuestion"
+            tv_count.text = count
+            val paths: String
+            questionsItem = arrayMap!!.get(listWithUniqueString!!.get(position))
+            if (questionsItem!!.size > 1) {
+                randomPosition = Random.nextInt(questionsItem!!.size)
+                paths = assetOutputPath + questionsItem!!.get(randomPosition).id
+                loadDataInWebView(paths)
+            } else {
+                paths = assetOutputPath + questionsItem!!.get(0).id
+                loadDataInWebView(paths)
+            }
+        }
     }
 
     private fun loadDataInWebView(path: String){
@@ -249,36 +268,45 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun checkAnswer(optionClicked: Int, answer: String){
-        if (listOfOptions!!.size > 2){
-            if (listOfOptions!!.get(optionClicked).contains("opt1")){
-                Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
-            }else{
-                btn_hint!!.visibility = View.VISIBLE
-                val intLife = availableLife!!.dec()
-                checkLife(intLife)
-                availableLife = intLife
-            }
-        }
-        else{
-            if (questionsItem!!.size > 1) {
-                if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
+        if (!isLifeZero) {
+            if (listOfOptions!!.size > 2) {
+                if (listOfOptions!!.get(optionClicked).contains("opt1")) {
+                    isAnswerCorrect = true
                     Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                 } else {
+                    isAnswerCorrect = false
                     btn_hint!!.visibility = View.VISIBLE
                     val intLife = availableLife!!.dec()
                     checkLife(intLife)
                     availableLife = intLife
                 }
-            }else{
-                if (answer.equals(questionsItem!!.get(0).text, true)) {
-                    Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+            } else {
+                if (questionsItem!!.size > 1) {
+                    if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
+                        isAnswerCorrect = true
+                        Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+                    } else {
+                        isAnswerCorrect = false
+                        btn_hint!!.visibility = View.VISIBLE
+                        val intLife = availableLife!!.dec()
+                        checkLife(intLife)
+                        availableLife = intLife
+                    }
                 } else {
-                    btn_hint!!.visibility = View.VISIBLE
-                    val intLife = availableLife!!.dec()
-                    checkLife(intLife)
-                    availableLife = intLife
+                    if (answer.equals(questionsItem!!.get(0).text, true)) {
+                        isAnswerCorrect = true
+                        Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+                    } else {
+                        isAnswerCorrect = false
+                        btn_hint!!.visibility = View.VISIBLE
+                        val intLife = availableLife!!.dec()
+                        checkLife(intLife)
+                        availableLife = intLife
+                    }
                 }
             }
+        }else{
+            Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -296,14 +324,11 @@ class TestQuestionActivity : AppCompatActivity(), View.OnClickListener {
                 .into(iv_life2)
         }
         if (life == 0){
+            isLifeZero = true
             Glide.with(this)
                 .load(com.blobcity.R.drawable.inactive_heart)
                 .into(iv_life1)
-            webView_option1!!.setOnTouchListener(null)
-            webView_option2!!.setOnTouchListener(null)
-            webView_option3!!.setOnTouchListener(null)
-            webView_option4!!.setOnTouchListener(null)
-            Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Game Over", Toast.LENGTH_SHORT).show()
         }
     }
 }
