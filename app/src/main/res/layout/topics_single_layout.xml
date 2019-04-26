@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:src="@drawable/progress_icon"
+        android:src="@drawable/progress_icon_grey"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginRight="@dimen/_10sdp"/>
 
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/progress_icon"
+            android:src="@drawable/progress_icon_grey"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_below="@id/iv_progress_icon1"
             android:layout_marginRight="@dimen/_10sdp"/>
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/progress_icon"
+            android:src="@drawable/progress_icon_grey"
             android:layout_below="@id/iv_progress_icon2"
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginRight="@dimen/_10sdp"

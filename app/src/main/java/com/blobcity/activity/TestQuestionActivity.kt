@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AlertDialog
+import android.text.TextUtils
 import android.util.ArrayMap
 import android.util.Log
 import android.view.MotionEvent
@@ -12,11 +13,16 @@ import android.webkit.WebView
 import android.widget.Button
 import android.widget.Toast
 import com.blobcity.R
+import com.blobcity.model.BranchesItem
 import com.blobcity.model.TopicOneBasicResponseModel
 import com.blobcity.model.TopicOneQuestionsItem
+import com.blobcity.model.TopicStatusModel
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_test_question.*
 import java.util.*
@@ -40,7 +46,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private var countInt: Int =0
     private var listOfOptions: ArrayList<String>? = null
     private var randomPosition: Int = -1
-    private var availableLife: Int? = null
+    private var availableLife: Int  = -1
     private var totalLife: Int? = null
     var btn_hint: Button ?=  null
     var btn_next: Button ?=  null
@@ -53,6 +59,12 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private val MAX_CLICK_DURATION = 200
     private var isAnswerCorrect: Boolean = false
     private var isLifeZero: Boolean = false
+    private var isLevelCompleted: Boolean = false
+    var databaseRefrence: DatabaseReference?= null
+    var courseId: String? =""
+    var topicId: String? =""
+    var topicLevel: String? = ""
+    var complete: String?=""
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
@@ -61,12 +73,20 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     @SuppressLint("ClickableViewAccessibility")
     override fun initView(){
         val path = intent.getStringExtra(DYNAMIC_PATH)
+        courseId = intent.getStringExtra(COURSE_ID)
+        topicId = intent.getStringExtra(TOPIC_ID)
+        topicLevel = intent.getStringExtra(TOPIC_LEVEL)
+        complete = intent.getStringExtra(LEVEL_COMPLETED)
+        databaseRefrence = FirebaseDatabase.getInstance()
+            .getReference("topic_status")
+        databaseRefrence!!.keepSynced(true)
 
         initializeView()
 
         createArrayMapList(path)
 
         btn_hint!!.visibility = View.GONE
+        btn_next!!.visibility = View.GONE
 
         btn_next!!.setOnClickListener(this)
         btn_hint!!.setOnClickListener(this)
@@ -101,7 +121,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option4 = findViewById(com.blobcity.R.id.webView_option4) as WebView
     }
 
-    private fun clickOptions(event: MotionEvent, position: Int, stringAns: String){
+    private fun clickOptions(event: MotionEvent,
+                             position: Int,
+                             stringAns: String){
         if (event.getAction() == MotionEvent.ACTION_DOWN){
             startClickTime = Calendar.getInstance().getTimeInMillis()
         }
@@ -149,7 +171,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (!isLifeZero) {
             if (isAnswerCorrect) {
                 createPath()
-                isAnswerCorrect = false
             } else {
                 Toast.makeText(this, "Please select right option.", Toast.LENGTH_LONG).show()
             }
@@ -208,6 +229,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         btn_hint!!.visibility = View.GONE
         if (position < totalQuestion!!) {
             countInt++
+            isAnswerCorrect = false
+            btn_next!!.visibility = View.GONE
             val count = "$countInt of $totalQuestion"
             tv_count.text = count
             val paths: String
@@ -220,6 +243,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 paths = assetOutputPath + questionsItem!!.get(0).id
                 loadDataInWebView(paths)
             }
+        }
+        if (position >= totalQuestion!!){
+            isLevelCompleted = true
+            onBackPressed()
         }
     }
 
@@ -272,36 +299,36 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             if (listOfOptions!!.size > 2) {
                 if (listOfOptions!!.get(optionClicked).contains("opt1")) {
                     isAnswerCorrect = true
+                    btn_next!!.visibility = View.VISIBLE
                     Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                 } else {
                     isAnswerCorrect = false
                     btn_hint!!.visibility = View.VISIBLE
-                    val intLife = availableLife!!.dec()
-                    checkLife(intLife)
-                    availableLife = intLife
+                    availableLife--
+                    checkLife(availableLife)
                 }
             } else {
                 if (questionsItem!!.size > 1) {
                     if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
                         isAnswerCorrect = true
+                        btn_next!!.visibility = View.VISIBLE
                         Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                     } else {
                         isAnswerCorrect = false
                         btn_hint!!.visibility = View.VISIBLE
-                        val intLife = availableLife!!.dec()
-                        checkLife(intLife)
-                        availableLife = intLife
+                        availableLife--
+                        checkLife(availableLife)
                     }
                 } else {
                     if (answer.equals(questionsItem!!.get(0).text, true)) {
                         isAnswerCorrect = true
+                        btn_next!!.visibility = View.VISIBLE
                         Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                     } else {
                         isAnswerCorrect = false
                         btn_hint!!.visibility = View.VISIBLE
-                        val intLife = availableLife!!.dec()
-                        checkLife(intLife)
-                        availableLife = intLife
+                        availableLife--
+                        checkLife(availableLife)
                     }
                 }
             }
@@ -330,5 +357,28 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 .into(iv_life1)
             Toast.makeText(this, "Game Over", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (isLevelCompleted){
+            if (TextUtils.isEmpty(complete)) {
+                addDataInDb()
+            }
+        }
+    }
+
+    fun addDataInDb(){
+        val id: String? = databaseRefrence!!.push().key
+        val uuId: String = UniqueUUid.id(this)
+        val topicStatusModel = TopicStatusModel()
+        topicStatusModel.id = id
+        topicStatusModel.courseId = courseId
+        topicStatusModel.topicId = topicId
+        topicStatusModel.uuId = uuId
+        topicStatusModel.topicLevel = topicLevel
+        topicStatusModel.isLevelComplete = 1
+        databaseRefrence!!.child(id!!).setValue(topicStatusModel)
+
     }
 }

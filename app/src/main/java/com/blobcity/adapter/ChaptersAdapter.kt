@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.blobcity.R
 import com.blobcity.interfaces.TopicClickListener
 import com.blobcity.model.BranchesItem
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.topics_single_layout.view.*
 
 class ChaptersAdapter(val context: Context,
@@ -33,8 +34,27 @@ class ChaptersAdapter(val context: Context,
         if (branchesItemList.size-1 == position){
             holder.singleTopic.setBackgroundResource(R.drawable.dashboard_bottom_corner)
         }
+        if (position == 0){
+            holder.singleTopic.setBackgroundResource(R.drawable.dashboard_top_corner)
+        }
         holder.singleTopic.setOnClickListener {
-            topicClickListener.onClick(branchesItemList[position].topic.folderName)
+            topicClickListener.onClick(branchesItemList[position].topic.folderName,
+                branchesItemList[position].id)
+        }
+        if (branchesItemList[position].basic == 1){
+            Glide.with(context)
+                .load(R.drawable.progress_icon)
+                .into(holder.iv_progress1)
+        }
+        if (branchesItemList[position].intermediate == 1){
+            Glide.with(context)
+                .load(R.drawable.progress_icon)
+                .into(holder.iv_progress2)
+        }
+        if (branchesItemList[position].advance == 1){
+            Glide.with(context)
+                .load(R.drawable.progress_icon)
+                .into(holder.iv_progress3)
         }
     }
 
@@ -42,5 +62,8 @@ class ChaptersAdapter(val context: Context,
         val singleTopic = itemView.rl_single_topics
         val tv_topic_number = itemView.tv_topic_number
         val tv_topic_name = itemView.tv_topic_name
+        val iv_progress1 = itemView.iv_progress_icon1
+        val iv_progress2 = itemView.iv_progress_icon2
+        val iv_progress3 = itemView.iv_progress_icon3
     }
 }

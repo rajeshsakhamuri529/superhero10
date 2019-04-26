@@ -19,6 +19,36 @@ public class BranchesItem{
 	@SerializedName("ud")
 	private String ud;
 
+	private int basic = 0;
+
+	private int intermediate = 0;
+
+	private int advance = 0;
+
+	public int getBasic() {
+		return basic;
+	}
+
+	public void setBasic(int basic) {
+		this.basic = basic;
+	}
+
+	public int getIntermediate() {
+		return intermediate;
+	}
+
+	public void setIntermediate(int intermediate) {
+		this.intermediate = intermediate;
+	}
+
+	public int getAdvance() {
+		return advance;
+	}
+
+	public void setAdvance(int advance) {
+		this.advance = advance;
+	}
+
 	public void setCd(String cd){
 		this.cd = cd;
 	}
