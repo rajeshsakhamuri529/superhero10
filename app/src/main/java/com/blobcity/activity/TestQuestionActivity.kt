@@ -375,7 +375,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicStatusModel.id = id
         topicStatusModel.courseId = courseId
         topicStatusModel.topicId = topicId
-        topicStatusModel.uuId = uuId
+        topicStatusModel.uId = uuId
         topicStatusModel.topicLevel = topicLevel
         topicStatusModel.isLevelComplete = 1
         databaseRefrence!!.child(id!!).setValue(topicStatusModel)

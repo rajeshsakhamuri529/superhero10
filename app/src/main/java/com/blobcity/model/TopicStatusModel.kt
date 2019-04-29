@@ -4,7 +4,7 @@ class TopicStatusModel {
 
     var id: String? = ""
 
-    var uuId: String?=""
+    var uId: String?=""
 
     var courseId: String?=""
 

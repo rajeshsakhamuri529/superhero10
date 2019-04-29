@@ -65,7 +65,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                                 val branchId = branchItem.id
                                 for (topicStatusModels in topicStatusModelList!!) {
                                     if (UniqueUUid.id(this@DashBoardActivity)
-                                            .equals(topicStatusModels.uuId)) {
+                                            .equals(topicStatusModels.uId)) {
                                         val id = topicStatusModels.topicId
                                         val level = topicStatusModels.topicLevel
 

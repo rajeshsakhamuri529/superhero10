@@ -65,7 +65,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                                 for (topicStatusModels in topicStatusModelList!!) {
 
                                     if (UniqueUUid.id(this@QuizLevelActivity)
-                                            .equals(topicStatusModels.uuId)) {
+                                            .equals(topicStatusModels.uId)) {
                                         val id = topicStatusModels.topicId
                                         val level = topicStatusModels.topicLevel
 
