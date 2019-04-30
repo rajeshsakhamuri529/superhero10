@@ -60,7 +60,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private var isAnswerCorrect: Boolean = false
     private var isLifeZero: Boolean = false
     private var isLevelCompleted: Boolean = false
-    var databaseRefrence: DatabaseReference?= null
+    var dbRStatus: DatabaseReference?= null
     var courseId: String? =""
     var topicId: String? =""
     var topicLevel: String? = ""
@@ -77,9 +77,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicId = intent.getStringExtra(TOPIC_ID)
         topicLevel = intent.getStringExtra(TOPIC_LEVEL)
         complete = intent.getStringExtra(LEVEL_COMPLETED)
-        databaseRefrence = FirebaseDatabase.getInstance()
+        dbRStatus = FirebaseDatabase.getInstance()
             .getReference("topic_status")
-        databaseRefrence!!.keepSynced(true)
+        dbRStatus!!.keepSynced(true)
 
         initializeView()
 
@@ -369,16 +369,15 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun addDataInDb(){
-        val id: String? = databaseRefrence!!.push().key
-        val uuId: String = UniqueUUid.id(this)
+        val id: String? = dbRStatus!!.push().key
+        val uId: String = UniqueUUid.id(this)
         val topicStatusModel = TopicStatusModel()
         topicStatusModel.id = id
         topicStatusModel.courseId = courseId
         topicStatusModel.topicId = topicId
-        topicStatusModel.uId = uuId
+        topicStatusModel.uId = uId
         topicStatusModel.topicLevel = topicLevel
         topicStatusModel.isLevelComplete = 1
-        databaseRefrence!!.child(id!!).setValue(topicStatusModel)
-
+        dbRStatus!!.child(uId).child(id!!).setValue(topicStatusModel)
     }
 }

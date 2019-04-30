@@ -26,7 +26,6 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     private var branchesItemList:List<BranchesItem>?=null
     var courseId: String?=""
-    var topicId: String? =""
     var databaseRefrence: DatabaseReference?= null
     var topicStatusModelList: ArrayList<TopicStatusModel>?=null
     var adapter: ChaptersAdapter?= null
@@ -37,7 +36,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     override fun initView() {
         databaseRefrence = FirebaseDatabase.getInstance()
-            .getReference("topic_status")
+            .getReference("topic_status/"+UniqueUUid.id(this))
         databaseRefrence!!.keepSynced(true)
         topicStatusModelList = ArrayList()
         TedPermission.with(this)
@@ -57,28 +56,25 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (postSnapshot in dataSnapshot.children) {
                     Log.e("snap", postSnapshot.value.toString())
-                    val topicStatusModel: TopicStatusModel = postSnapshot.getValue(TopicStatusModel::class.java)!!
+                    val topicStatusModel: TopicStatusModel = postSnapshot!!.getValue(TopicStatusModel::class.java)!!
                     topicStatusModelList!!.add(topicStatusModel)
                     if (topicStatusModelList != null){
                         if (topicStatusModelList!!.size > 0){
                             for (branchItem in branchesItemList!!) {
                                 val branchId = branchItem.id
                                 for (topicStatusModels in topicStatusModelList!!) {
-                                    if (UniqueUUid.id(this@DashBoardActivity)
-                                            .equals(topicStatusModels.uId)) {
-                                        val id = topicStatusModels.topicId
-                                        val level = topicStatusModels.topicLevel
+                                    val id = topicStatusModels.topicId
+                                    val level = topicStatusModels.topicLevel
 
-                                        if (id!!.contains(branchId)) {
-                                            if (level!!.contains("basic")) {
-                                                branchItem.basic = 1
-                                            }
-                                            if (level.contains("intermediate")) {
-                                                branchItem.intermediate = 1
-                                            }
-                                            if (level.contains("advance")) {
-                                                branchItem.advance = 1
-                                            }
+                                    if (id!!.contains(branchId)) {
+                                        if (level!!.contains("basic")) {
+                                            branchItem.basic = 1
+                                        }
+                                        if (level.contains("intermediate")) {
+                                            branchItem.intermediate = 1
+                                        }
+                                        if (level.contains("advance")) {
+                                            branchItem.advance = 1
                                         }
                                     }
                                 }
