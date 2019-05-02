@@ -39,21 +39,39 @@ class ChaptersAdapter(val context: Context,
         }
         holder.singleTopic.setOnClickListener {
             topicClickListener.onClick(branchesItemList[position].topic.folderName,
-                branchesItemList[position].id)
+                branchesItemList[position].id, branchesItemList[position].topic.title)
         }
+
         if (branchesItemList[position].basic == 1){
             Glide.with(context)
                 .load(R.drawable.progress_icon)
                 .into(holder.iv_progress1)
         }
+        else{
+            Glide.with(context)
+                .load(R.drawable.progress_icon_grey)
+                .into(holder.iv_progress1)
+        }
+
         if (branchesItemList[position].intermediate == 1){
             Glide.with(context)
                 .load(R.drawable.progress_icon)
                 .into(holder.iv_progress2)
         }
+        else{
+            Glide.with(context)
+                .load(R.drawable.progress_icon_grey)
+                .into(holder.iv_progress2)
+        }
+
         if (branchesItemList[position].advance == 1){
             Glide.with(context)
                 .load(R.drawable.progress_icon)
+                .into(holder.iv_progress3)
+        }
+        else{
+            Glide.with(context)
+                .load(R.drawable.progress_icon_grey)
                 .into(holder.iv_progress3)
         }
     }

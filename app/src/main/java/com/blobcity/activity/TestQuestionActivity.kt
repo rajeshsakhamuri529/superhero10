@@ -13,7 +13,7 @@ import android.webkit.WebView
 import android.widget.Button
 import android.widget.Toast
 import com.blobcity.R
-import com.blobcity.model.BranchesItem
+import com.blobcity.model.TrackingModel
 import com.blobcity.model.TopicOneBasicResponseModel
 import com.blobcity.model.TopicOneQuestionsItem
 import com.blobcity.model.TopicStatusModel
@@ -31,12 +31,13 @@ import kotlin.random.Random
 
 class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
-    private var questionPath: String?=""
     private var hintPath: String?=""
     private var opt1Path: String?=""
     private var opt2Path: String?=""
     private var opt3Path: String?=""
     private var opt4Path: String?=""
+    var courseName: String?=""
+    var topicName: String?=""
     private var arrayMap: ArrayMap<String, List<TopicOneQuestionsItem>>?=null
     private var listWithUniqueString: ArrayList<String>?=null
     private var position: Int = -1
@@ -61,10 +62,19 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private var isLifeZero: Boolean = false
     private var isLevelCompleted: Boolean = false
     var dbRStatus: DatabaseReference?= null
+    var dbTrackingStatus: DatabaseReference?=null
+    var dbTrackingHintStatus: DatabaseReference?=null
     var courseId: String? =""
     var topicId: String? =""
     var topicLevel: String? = ""
     var complete: String?=""
+    var dbAttempts: Int = 0
+    var dbTimeStamp: Long ?= 0
+    var dbQuestionBank: String?=""
+    var dbQPaths: String = ""
+    var dbQLevel: String = ""
+    var isDbCorrectAnswer: String = ""
+    var dbAnswer: String = ""
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
@@ -75,10 +85,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val path = intent.getStringExtra(DYNAMIC_PATH)
         courseId = intent.getStringExtra(COURSE_ID)
         topicId = intent.getStringExtra(TOPIC_ID)
+        courseName = intent.getStringExtra(COURSE_NAME)
         topicLevel = intent.getStringExtra(TOPIC_LEVEL)
+        topicName = intent.getStringExtra(TOPIC_NAME)
         complete = intent.getStringExtra(LEVEL_COMPLETED)
         dbRStatus = FirebaseDatabase.getInstance()
             .getReference("topic_status")
+        dbTrackingStatus = FirebaseDatabase.getInstance().getReference("quiz_tracking")
+        dbTrackingHintStatus = FirebaseDatabase.getInstance().getReference("hint_tracking")
         dbRStatus!!.keepSynced(true)
 
         initializeView()
@@ -149,22 +163,29 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun hintAlertDialog(){
-        val dialogBuilder = AlertDialog.Builder(this)
-        val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
-        dialogBuilder.setView(dialogView)
+        if (!isLifeZero) {
+            if (!isAnswerCorrect) {
+                addTrackDataInDb("hint")
+                val dialogBuilder = AlertDialog.Builder(this)
+                val inflater = this.layoutInflater
+                val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
+                dialogBuilder.setView(dialogView)
 
-        val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
-        val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
-        webview.loadUrl(hintPath)
-        webview.setBackgroundColor(0)
-        val alertDialog = dialogBuilder.create()
-        btn_gotIt.setOnClickListener {
-            alertDialog.dismiss()
+                val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
+                val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
+                webview.loadUrl(hintPath)
+                webview.setBackgroundColor(0)
+                val alertDialog = dialogBuilder.create()
+                btn_gotIt.setOnClickListener {
+                    alertDialog.dismiss()
+                }
+
+                alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+                alertDialog.show()
+            }
+        }else{
+            Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
         }
-
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-        alertDialog.show()
     }
 
     private fun onBtnNext(){
@@ -227,6 +248,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private fun createPath(){
         position++
         btn_hint!!.visibility = View.GONE
+        dbAttempts = 0
         if (position < totalQuestion!!) {
             countInt++
             isAnswerCorrect = false
@@ -237,10 +259,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             questionsItem = arrayMap!!.get(listWithUniqueString!!.get(position))
             if (questionsItem!!.size > 1) {
                 randomPosition = Random.nextInt(questionsItem!!.size)
-                paths = assetOutputPath + questionsItem!!.get(randomPosition).id
+                dbQPaths = questionsItem!!.get(randomPosition).id
+                dbQuestionBank = questionsItem!!.get(randomPosition).bank
+                dbQLevel = questionsItem!!.get(randomPosition).level
+                paths = assetOutputPath + dbQPaths
                 loadDataInWebView(paths)
             } else {
-                paths = assetOutputPath + questionsItem!!.get(0).id
+                dbQPaths = questionsItem!!.get(0).id
+                dbQuestionBank = questionsItem!!.get(0).bank
+                dbQLevel = questionsItem!!.get(0).level
+                paths = assetOutputPath + dbQPaths
                 loadDataInWebView(paths)
             }
         }
@@ -252,9 +280,12 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun loadDataInWebView(path: String){
         listOfOptions = ArrayList()
+        var questionPath = ""
         for (filename in Utils.getListOfFilesFromAsset(path, this)){
             if (filename.contains("opt")){
-                listOfOptions!!.add(filename)
+                if (!filename.contains("opt5")) {
+                    listOfOptions!!.add(filename)
+                }
             }
             if (filename.contains("question")){
                 questionPath = WEBVIEW_PATH+path+"/"+filename
@@ -296,41 +327,65 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun checkAnswer(optionClicked: Int, answer: String){
         if (!isLifeZero) {
-            if (listOfOptions!!.size > 2) {
-                if (listOfOptions!!.get(optionClicked).contains("opt1")) {
-                    isAnswerCorrect = true
-                    btn_next!!.visibility = View.VISIBLE
-                    Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
-                } else {
-                    isAnswerCorrect = false
-                    btn_hint!!.visibility = View.VISIBLE
-                    availableLife--
-                    checkLife(availableLife)
-                }
-            } else {
-                if (questionsItem!!.size > 1) {
-                    if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
+            if (!isAnswerCorrect) {
+                dbAttempts++
+                if (listOfOptions!!.size > 2) {
+                    if (listOfOptions!!.get(optionClicked).contains("opt1")) {
                         isAnswerCorrect = true
+                        isDbCorrectAnswer = "true"
+                        dbAnswer = "opt1"
                         btn_next!!.visibility = View.VISIBLE
                         Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                     } else {
+                        if (listOfOptions!!.get(optionClicked).contains("opt2")){
+                            dbAnswer = "opt2"
+                        }
+                        if (listOfOptions!!.get(optionClicked).contains("opt3")){
+                            dbAnswer = "opt3"
+                        }
+                        if (listOfOptions!!.get(optionClicked).contains("opt4")){
+                            dbAnswer = "opt4"
+                        }
                         isAnswerCorrect = false
+                        isDbCorrectAnswer = "false"
                         btn_hint!!.visibility = View.VISIBLE
                         availableLife--
                         checkLife(availableLife)
                     }
                 } else {
-                    if (answer.equals(questionsItem!!.get(0).text, true)) {
-                        isAnswerCorrect = true
-                        btn_next!!.visibility = View.VISIBLE
-                        Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+                    if (questionsItem!!.size > 1) {
+                        if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
+                            isAnswerCorrect = true
+                            isDbCorrectAnswer = "true"
+                            dbAnswer = answer
+                            btn_next!!.visibility = View.VISIBLE
+                            Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+                        } else {
+                            isAnswerCorrect = false
+                            isDbCorrectAnswer = "false"
+                            dbAnswer = answer
+                            btn_hint!!.visibility = View.VISIBLE
+                            availableLife--
+                            checkLife(availableLife)
+                        }
                     } else {
-                        isAnswerCorrect = false
-                        btn_hint!!.visibility = View.VISIBLE
-                        availableLife--
-                        checkLife(availableLife)
+                        if (answer.equals(questionsItem!!.get(0).text, true)) {
+                            isAnswerCorrect = true
+                            isDbCorrectAnswer = "true"
+                            dbAnswer = answer
+                            btn_next!!.visibility = View.VISIBLE
+                            Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
+                        } else {
+                            isAnswerCorrect = false
+                            isDbCorrectAnswer = "false"
+                            dbAnswer = answer
+                            btn_hint!!.visibility = View.VISIBLE
+                            availableLife--
+                            checkLife(availableLife)
+                        }
                     }
                 }
+                addTrackDataInDb("answer")
             }
         }else{
             Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
@@ -368,7 +423,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    fun addDataInDb(){
+    private fun addDataInDb(){
         val id: String? = dbRStatus!!.push().key
         val uId: String = UniqueUUid.id(this)
         val topicStatusModel = TopicStatusModel()
@@ -379,5 +434,31 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicStatusModel.topicLevel = topicLevel
         topicStatusModel.isLevelComplete = 1
         dbRStatus!!.child(uId).child(id!!).setValue(topicStatusModel)
+    }
+
+    private fun addTrackDataInDb(type: String){
+        val id: String? = dbTrackingStatus!!.push().key
+        val uId: String = UniqueUUid.id(this)
+        dbTimeStamp = System.currentTimeMillis()/1000
+        val timeStamp: String = dbTimeStamp.toString()
+        val trackingModel = TrackingModel()
+        trackingModel.timeStamp = timeStamp
+        trackingModel.uid = uId
+        trackingModel.id = id!!
+        trackingModel.type = type
+        trackingModel.grade = courseName
+        trackingModel.topic = topicName
+        trackingModel.quizLevel = dbQLevel
+        trackingModel.qb = dbQuestionBank
+        trackingModel.questionPath = dbQPaths
+        trackingModel.attempt = dbAttempts
+        if (type.equals("answer")) {
+            trackingModel.answer = dbAnswer
+            trackingModel.answerStatus = isDbCorrectAnswer
+            dbTrackingStatus!!.child(dbQPaths).child(id).setValue(trackingModel)
+        }else{
+            dbTrackingHintStatus!!.child(dbQPaths).child(id).setValue(trackingModel)
+        }
+
     }
 }

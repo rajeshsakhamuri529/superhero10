@@ -12,7 +12,9 @@ public class ConstantPath {
     public static String UNIQUE_KEY_LIST= "key_list";
     public static String ARRAY_MAP_LIST = "map_list";
     public static String COURSE_ID = "course_id";
+    public static String COURSE_NAME = "course_name";
     public static String TOPIC_ID = "topic_id";
+    public static String TOPIC_NAME = "topic_name";
     public static String TOPIC_LEVEL = "topic_level";
     public static String LEVEL_COMPLETED = "level_completed";
     public static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";

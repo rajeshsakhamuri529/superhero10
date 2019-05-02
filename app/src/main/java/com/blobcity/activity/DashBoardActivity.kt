@@ -26,6 +26,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     private var branchesItemList:List<BranchesItem>?=null
     var courseId: String?=""
+    var courseName: String?=""
     var databaseRefrence: DatabaseReference?= null
     var topicStatusModelList: ArrayList<TopicStatusModel>?=null
     var adapter: ChaptersAdapter?= null
@@ -38,7 +39,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         databaseRefrence = FirebaseDatabase.getInstance()
             .getReference("topic_status/"+UniqueUUid.id(this))
         databaseRefrence!!.keepSynced(true)
-        topicStatusModelList = ArrayList()
+
         TedPermission.with(this)
             .setPermissionListener(this)
             .setDeniedMessage("If you reject permission,you can not use this service\n"
@@ -54,6 +55,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                topicStatusModelList = ArrayList()
                 for (postSnapshot in dataSnapshot.children) {
                     Log.e("snap", postSnapshot.value.toString())
                     val topicStatusModel: TopicStatusModel = postSnapshot!!.getValue(TopicStatusModel::class.java)!!
@@ -62,6 +64,9 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                         if (topicStatusModelList!!.size > 0){
                             for (branchItem in branchesItemList!!) {
                                 val branchId = branchItem.id
+                                branchItem.basic = 0
+                                branchItem.intermediate = 0
+                                branchItem.advance = 0
                                 for (topicStatusModels in topicStatusModelList!!) {
                                     val id = topicStatusModels.topicId
                                     val level = topicStatusModels.topicLevel
@@ -77,6 +82,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                                             branchItem.advance = 1
                                         }
                                     }
+
                                 }
                             }
                         }
@@ -101,7 +107,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         val topicResponseModel = gsonFile.fromJson(jsonString, TopicResponseModel::class.java)
         val courseResponseModel = gsonFile.fromJson(courseJsonString, CoursesResponseModel::class.java)
         courseId = courseResponseModel.courses[0].id
-
+        courseName = courseResponseModel.courses[0].syllabus.title
         branchesItemList = topicResponseModel.branches
 
         /*val branchesItemList2 = ArrayList<BranchesItem>()
@@ -137,15 +143,17 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         }*/
     }
 
-    private fun callIntent(path: String, topicId: String){
+    private fun callIntent(path: String, topicId: String, topicName: String){
         val intent = Intent(this, QuizLevelActivity::class.java)
         intent.putExtra(FOLDER_NAME, path)
         intent.putExtra(COURSE_ID, courseId)
+        intent.putExtra(COURSE_NAME, courseName)
         intent.putExtra(TOPIC_ID, topicId)
+        intent.putExtra(TOPIC_NAME, topicName)
         startActivity(intent)
     }
 
-    override fun onClick(path: String, topicId: String) {
-        callIntent(path, topicId)
+    override fun onClick(path: String, topicId: String,topicName: String) {
+        callIntent(path, topicId, topicName)
     }
 }

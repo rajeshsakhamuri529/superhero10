@@ -1,5 +1,6 @@
 package com.blobcity.activity
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
@@ -19,25 +20,31 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var jsonStringIntermediate: String? =""
     var jsonStringAdvanced: String? =""
     var courseId: String? =""
+    var courseName: String?=""
     var topicId: String? =""
+    var topicName: String?=""
     var databaseRefrence: DatabaseReference?= null
     var topicStatusModelList: ArrayList<TopicStatusModel>?=null
     var isBasicCompleted: Boolean = false
     var isIntermediateCompleted: Boolean = false
     var isAdvancedCompleted: Boolean = false
+    var context: Context ?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_quiz_level
     }
 
     override fun initView() {
+        context = this
         val folderName = intent.getStringExtra(FOLDER_NAME)
         courseId = intent.getStringExtra(COURSE_ID)
         topicId = intent.getStringExtra(TOPIC_ID)
+        topicName = intent.getStringExtra(TOPIC_NAME)
+        courseName = intent.getStringExtra(COURSE_NAME)
         databaseRefrence = FirebaseDatabase.getInstance()
             .getReference("topic_status/"+UniqueUUid.id(this))
         databaseRefrence!!.keepSynced(true)
-        topicStatusModelList = ArrayList()
+
         val folderPath = assetTestCoursePath+folderName
 
         jsonStringBasic = loadJSONFromAsset(this,"$folderPath/basic.json")
@@ -54,36 +61,49 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (postSnapshot in dataSnapshot.children) {
-                    Log.e("snap", postSnapshot.value.toString())
-                    if (postSnapshot !=null) {
-                        val topicStatusModel: TopicStatusModel = postSnapshot.getValue(TopicStatusModel::class.java)!!
-                        topicStatusModelList!!.add(topicStatusModel)
-                        if (topicStatusModelList != null) {
-                            if (topicStatusModelList!!.size > 0) {
-                                val branchId = topicId
-                                for (topicStatusModels in topicStatusModelList!!) {
-                                    val id = topicStatusModels.topicId
-                                    val level = topicStatusModels.topicLevel
+                if (context != null) {
+                    topicStatusModelList = ArrayList()
+                    Glide.with(this@QuizLevelActivity)
+                        .load(R.drawable.progress_icon_grey)
+                        .into(iv_level1)
+                    Glide.with(this@QuizLevelActivity)
+                        .load(R.drawable.progress_icon_grey)
+                        .into(iv_level2)
+                    Glide.with(this@QuizLevelActivity)
+                        .load(R.drawable.progress_icon_grey)
+                        .into(iv_level3)
+                    for (postSnapshot in dataSnapshot.children) {
+                        Log.e("snap", postSnapshot.value.toString())
+                        if (postSnapshot != null) {
+                            val topicStatusModel: TopicStatusModel =
+                                postSnapshot.getValue(TopicStatusModel::class.java)!!
+                            topicStatusModelList!!.add(topicStatusModel)
+                            if (topicStatusModelList != null) {
+                                if (topicStatusModelList!!.size > 0) {
+                                    val branchId = topicId
+                                    for (topicStatusModels in topicStatusModelList!!) {
+                                        val id = topicStatusModels.topicId
+                                        val level = topicStatusModels.topicLevel
 
-                                    if (id!!.contains(branchId!!)) {
-                                        if (level!!.contains("basic")) {
-                                            Glide.with(this@QuizLevelActivity)
-                                                .load(R.drawable.green_tick)
-                                                .into(iv_level1)
-                                            isBasicCompleted = true
-                                        }
-                                        if (level.contains("intermediate")) {
-                                            Glide.with(this@QuizLevelActivity)
-                                                .load(R.drawable.green_tick)
-                                                .into(iv_level2)
-                                            isIntermediateCompleted = true
-                                        }
-                                        if (level.contains("advance")) {
-                                            Glide.with(this@QuizLevelActivity)
-                                                .load(R.drawable.green_tick)
-                                                .into(iv_level3)
-                                            isAdvancedCompleted = true
+                                        if (id!!.contains(branchId!!)) {
+                                            if (level!!.contains("basic")) {
+                                                Glide.with(this@QuizLevelActivity)
+                                                    .load(R.drawable.green_tick)
+                                                    .into(iv_level1)
+                                                isBasicCompleted = true
+                                            }
+                                            if (level.contains("intermediate")) {
+                                                Glide.with(this@QuizLevelActivity)
+                                                    .load(R.drawable.green_tick)
+                                                    .into(iv_level2)
+                                                isIntermediateCompleted = true
+                                            }
+                                            if (level.contains("advance")) {
+                                                Glide.with(this@QuizLevelActivity)
+                                                    .load(R.drawable.green_tick)
+                                                    .into(iv_level3)
+                                                isAdvancedCompleted = true
+                                            }
                                         }
                                     }
                                 }
@@ -134,8 +154,17 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(DYNAMIC_PATH, path)
         intent.putExtra(COURSE_ID, courseId)
         intent.putExtra(TOPIC_ID, topicId)
+        intent.putExtra(COURSE_NAME, courseName)
+        intent.putExtra(TOPIC_NAME, topicName)
         intent.putExtra(TOPIC_LEVEL, level)
         intent.putExtra(LEVEL_COMPLETED, complete)
         startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (context != null){
+            context = null
+        }
     }
 }
