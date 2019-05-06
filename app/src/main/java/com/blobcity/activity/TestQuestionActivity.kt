@@ -3,20 +3,25 @@ package com.blobcity.activity
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.util.ArrayMap
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.webkit.WebView
 import android.widget.Button
 import android.widget.Toast
 import com.blobcity.R
-import com.blobcity.model.TrackingModel
 import com.blobcity.model.TopicOneBasicResponseModel
 import com.blobcity.model.TopicOneQuestionsItem
 import com.blobcity.model.TopicStatusModel
+import com.blobcity.model.TrackingModel
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils
@@ -49,8 +54,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private var randomPosition: Int = -1
     private var availableLife: Int  = -1
     private var totalLife: Int? = null
-    var btn_hint: Button ?=  null
-    var btn_next: Button ?=  null
     var webView_question: WebView ?=  null
     var webView_option1: WebView ?=  null
     var webView_option2: WebView ?=  null
@@ -61,6 +64,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private var isAnswerCorrect: Boolean = false
     private var isLifeZero: Boolean = false
     private var isLevelCompleted: Boolean = false
+    private var isHandlerExecuted: Boolean = false
     var dbRStatus: DatabaseReference?= null
     var dbTrackingStatus: DatabaseReference?=null
     var dbTrackingHintStatus: DatabaseReference?=null
@@ -75,12 +79,19 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var dbQLevel: String = ""
     var isDbCorrectAnswer: String = ""
     var dbAnswer: String = ""
+    val handler = Handler()
+    var animationFadeIn: Animation ?= null
+    var animationFadeIn1500: Animation ?= null
+    var animationFadeIn1000: Animation ?= null
+    var animationFadeIn500: Animation ?= null
+    var type:String = ""
+    var child: View ?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun initView(){
         val path = intent.getStringExtra(DYNAMIC_PATH)
         courseId = intent.getStringExtra(COURSE_ID)
@@ -89,18 +100,32 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicLevel = intent.getStringExtra(TOPIC_LEVEL)
         topicName = intent.getStringExtra(TOPIC_NAME)
         complete = intent.getStringExtra(LEVEL_COMPLETED)
+        animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
+        animationFadeIn1500 = AnimationUtils.loadAnimation(this, R.anim.fade_in_500)
+        animationFadeIn1000 = AnimationUtils.loadAnimation(this, R.anim.fade_in_300)
+        animationFadeIn500 = AnimationUtils.loadAnimation(this, R.anim.fade_in_100)
         dbRStatus = FirebaseDatabase.getInstance()
             .getReference("topic_status")
         dbTrackingStatus = FirebaseDatabase.getInstance().getReference("quiz_tracking")
         dbTrackingHintStatus = FirebaseDatabase.getInstance().getReference("hint_tracking")
         dbRStatus!!.keepSynced(true)
 
-        initializeView()
+
 
         createArrayMapList(path)
 
         btn_hint!!.visibility = View.GONE
         btn_next!!.visibility = View.GONE
+
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initializeView(view: View){
+        webView_question = view.findViewById(R.id.webView_question)
+        webView_option1 = view.findViewById(R.id.webView_option1)
+        webView_option2 = view.findViewById(R.id.webView_option2)
+        webView_option3 = view.findViewById(R.id.webView_option3)
+        webView_option4 = view.findViewById(R.id.webView_option4)
 
         btn_next!!.setOnClickListener(this)
         btn_hint!!.setOnClickListener(this)
@@ -114,25 +139,20 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             true
         }
 
-        webView_option3!!.setOnTouchListener { v, event ->
-            clickOptions(event, 2, "")
-            true
+        if (webView_option3 != null) {
+
+            webView_option3!!.setOnTouchListener { v, event ->
+                clickOptions(event, 2, "")
+                true
+            }
         }
 
-        webView_option4!!.setOnTouchListener { v, event ->
-            clickOptions(event, 3, "")
-            true
+        if (webView_option4 != null) {
+            webView_option4!!.setOnTouchListener { v, event ->
+                clickOptions(event, 3, "")
+                true
+            }
         }
-    }
-
-    private fun initializeView(){
-        btn_hint = findViewById(com.blobcity.R.id.btn_hint) as Button
-        btn_next = findViewById(com.blobcity.R.id.btn_next) as Button
-        webView_question = findViewById(com.blobcity.R.id.webView_question) as WebView
-        webView_option1 = findViewById(com.blobcity.R.id.webView_option1) as WebView
-        webView_option2 = findViewById(com.blobcity.R.id.webView_option2) as WebView
-        webView_option3 = findViewById(com.blobcity.R.id.webView_option3) as WebView
-        webView_option4 = findViewById(com.blobcity.R.id.webView_option4) as WebView
     }
 
     private fun clickOptions(event: MotionEvent,
@@ -249,6 +269,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         position++
         btn_hint!!.visibility = View.GONE
         dbAttempts = 0
+        handler.removeCallbacksAndMessages(null)
+        if (child != null) {
+            ll_inflate.removeView(child!!)
+        }
         if (position < totalQuestion!!) {
             countInt++
             isAnswerCorrect = false
@@ -263,12 +287,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 dbQuestionBank = questionsItem!!.get(randomPosition).bank
                 dbQLevel = questionsItem!!.get(randomPosition).level
                 paths = assetOutputPath + dbQPaths
+                type = questionsItem!!.get(randomPosition).type
                 loadDataInWebView(paths)
             } else {
                 dbQPaths = questionsItem!!.get(0).id
                 dbQuestionBank = questionsItem!!.get(0).bank
                 dbQLevel = questionsItem!!.get(0).level
                 paths = assetOutputPath + dbQPaths
+                type = questionsItem!!.get(0).type
                 loadDataInWebView(paths)
             }
         }
@@ -295,9 +321,28 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
-        if (listOfOptions!!.size > 2){
-            webView_option3!!.visibility = View.VISIBLE
-            webView_option4!!.visibility = View.VISIBLE
+        if (type.equals("4100")){
+            inflateView4100()
+            setWebViewBGDefault()
+            webView_question!!.visibility = View.GONE
+            webView_option1!!.visibility = View.GONE
+            webView_option2!!.visibility = View.GONE
+            webView_option3!!.visibility = View.GONE
+            webView_option4!!.visibility = View.GONE
+            handler.postDelayed(object : Runnable{
+                override fun run() {
+                    webView_option1!!.visibility = View.VISIBLE
+                    webView_option1!!.startAnimation(animationFadeIn500)
+                    webView_option2!!.visibility = View.VISIBLE
+                    webView_option2!!.startAnimation(animationFadeIn1000)
+                    webView_option3!!.visibility = View.VISIBLE
+                    webView_option3!!.startAnimation(animationFadeIn1500)
+                    webView_option4!!.visibility = View.VISIBLE
+                    webView_option4!!.startAnimation(animationFadeIn)
+
+                }
+
+            }, 2500)
             Collections.shuffle(listOfOptions!!)
             opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
             opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
@@ -307,22 +352,106 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             webView_option2!!.loadUrl(opt2Path)
             webView_option3!!.loadUrl(opt3Path)
             webView_option4!!.loadUrl(opt4Path)
-        }else{
+        }
+
+        if (type.equals("2201")){
+            inflateView2201()
+            setWebViewBGDefault()
+            webView_question!!.visibility = View.GONE
+            webView_option1!!.visibility = View.GONE
+            webView_option2!!.visibility = View.GONE
+            webView_option3!!.visibility = View.GONE
+            webView_option4!!.visibility = View.GONE
+            handler.postDelayed(object : Runnable{
+                override fun run() {
+                    webView_option1!!.visibility = View.VISIBLE
+                    webView_option1!!.startAnimation(animationFadeIn500)
+                    webView_option2!!.visibility = View.VISIBLE
+                    webView_option2!!.startAnimation(animationFadeIn1000)
+                    webView_option3!!.visibility = View.VISIBLE
+                    webView_option3!!.startAnimation(animationFadeIn1500)
+                    webView_option4!!.visibility = View.VISIBLE
+                    webView_option4!!.startAnimation(animationFadeIn)
+                }
+            }, 2500)
+            Collections.shuffle(listOfOptions!!)
+            opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
+            opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
+            opt3Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(2)
+            opt4Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(3)
+            webView_option1!!.loadUrl(opt1Path)
+            webView_option2!!.loadUrl(opt2Path)
+            webView_option3!!.loadUrl(opt3Path)
+            webView_option4!!.loadUrl(opt4Path)
+        }
+
+        if (type.equals("2100")){
+            inflateView2100()
+            setWebViewBGDefault()
+            webView_question!!.visibility = View.GONE
+            webView_option1!!.visibility = View.GONE
+            webView_option2!!.visibility = View.GONE
+            handler.postDelayed(object : Runnable{
+                override fun run() {
+                    webView_option1!!.visibility = View.VISIBLE
+                    webView_option1!!.startAnimation(animationFadeIn500)
+                    webView_option2!!.visibility = View.VISIBLE
+                    webView_option2!!.startAnimation(animationFadeIn1000)
+                }
+
+            }, 2500)
             opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
             opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
             webView_option1!!.loadUrl(opt2Path)
             webView_option2!!.loadUrl(opt1Path)
-            webView_option3!!.visibility = View.GONE
-            webView_option4!!.visibility = View.GONE
+        }
+        webView_question!!.setBackgroundColor(0)
+        setWebViewBGDefault()
+        handler.postDelayed(object : Runnable{
+            override fun run() {
+                webView_question!!.visibility = View.VISIBLE
+                webView_question!!.startAnimation(animationFadeIn500)
+
+            }
+
+        }, 500)
+        webView_question!!.loadUrl(questionPath)
+    }
+
+    private fun inflateView4100(){
+        child = layoutInflater.inflate(R.layout.webview_4100_layout, null)
+        ll_inflate.addView(child)
+        initializeView(child!!)
+    }
+
+    private fun inflateView2201(){
+        child = layoutInflater.inflate(R.layout.webview_2200_layout, null)
+        ll_inflate.addView(child)
+        initializeView(child!!)
+    }
+
+    private fun inflateView2100(){
+        child = layoutInflater.inflate(R.layout.webview_2100_layout, null)
+        ll_inflate.addView(child)
+        initializeView(child!!)
+    }
+
+    private fun setWebViewBGDefault(){
+        webView_option1!!.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option2!!.setBackgroundResource(R.drawable.option_curved_border)
+        if (webView_option3 != null) {
+            webView_option3!!.setBackgroundResource(R.drawable.option_curved_border)
+            webView_option3!!.setBackgroundColor(0x00000000)
+        }
+        if (webView_option4 != null) {
+            webView_option4!!.setBackgroundResource(R.drawable.option_curved_border)
+            webView_option4!!.setBackgroundColor(0x00000000)
         }
 
-        webView_question!!.setBackgroundColor(0)
-        webView_option1!!.setBackgroundColor(resources.getColor(com.blobcity.R.color.purple_opt_bg))
-        webView_option2!!.setBackgroundColor(resources.getColor(com.blobcity.R.color.purple_opt_bg))
-        webView_option3!!.setBackgroundColor(resources.getColor(com.blobcity.R.color.purple_opt_bg))
-        webView_option4!!.setBackgroundColor(resources.getColor(com.blobcity.R.color.purple_opt_bg))
+        webView_option1!!.setBackgroundColor(0x00000000)
+        webView_option2!!.setBackgroundColor(0x00000000)
 
-        webView_question!!.loadUrl(questionPath)
+
     }
 
     private fun checkAnswer(optionClicked: Int, answer: String){
@@ -333,6 +462,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     if (listOfOptions!!.get(optionClicked).contains("opt1")) {
                         isAnswerCorrect = true
                         isDbCorrectAnswer = "true"
+                        checkWebView(optionClicked, isAnswerCorrect)
                         dbAnswer = "opt1"
                         btn_next!!.visibility = View.VISIBLE
                         Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
@@ -347,6 +477,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                             dbAnswer = "opt4"
                         }
                         isAnswerCorrect = false
+                        checkWebView(optionClicked, isAnswerCorrect)
                         isDbCorrectAnswer = "false"
                         btn_hint!!.visibility = View.VISIBLE
                         availableLife--
@@ -357,12 +488,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
                             isAnswerCorrect = true
                             isDbCorrectAnswer = "true"
+                            checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_next!!.visibility = View.VISIBLE
                             Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                         } else {
                             isAnswerCorrect = false
                             isDbCorrectAnswer = "false"
+                            checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_hint!!.visibility = View.VISIBLE
                             availableLife--
@@ -372,12 +505,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         if (answer.equals(questionsItem!!.get(0).text, true)) {
                             isAnswerCorrect = true
                             isDbCorrectAnswer = "true"
+                            checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_next!!.visibility = View.VISIBLE
                             Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                         } else {
                             isAnswerCorrect = false
                             isDbCorrectAnswer = "false"
+                            checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_hint!!.visibility = View.VISIBLE
                             availableLife--
@@ -390,6 +525,52 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }else{
             Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun checkWebView(optionClicked: Int, isRightAnswer: Boolean){
+        if (isRightAnswer) {
+            if (optionClicked == 0) {
+                setCorrectBackground(webView_option1!!)
+            }
+            if (optionClicked == 1) {
+                setCorrectBackground(webView_option2!!)
+            }
+            if (optionClicked == 2) {
+                setCorrectBackground(webView_option3!!)
+            }
+            if (optionClicked == 3) {
+                setCorrectBackground(webView_option4!!)
+            }
+        }else{
+            if (optionClicked == 0) {
+                setWrongBackground(webView_option1!!)
+            }
+            if (optionClicked == 1) {
+                setWrongBackground(webView_option2!!)
+            }
+            if (optionClicked == 2) {
+                setWrongBackground(webView_option3!!)
+            }
+            if (optionClicked == 3) {
+                setWrongBackground(webView_option4!!)
+            }
+        }
+    }
+
+    private fun setCorrectBackground(webView: WebView){
+        handler.postDelayed(object : Runnable{
+            override fun run() {
+                isHandlerExecuted = true
+                webView.setBackgroundResource(R.drawable.option_correct_curved_border)
+            }
+
+        }, 1000)
+        webView.setBackgroundResource(R.drawable.option_correct_green_border)
+
+    }
+
+    private fun setWrongBackground(webView: WebView){
+        webView.setBackgroundResource(R.drawable.option_red_wrong_broder)
     }
 
     private fun checkLife(life: Int){
@@ -407,6 +588,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
         if (life == 0){
             isLifeZero = true
+            btn_next.visibility = View.VISIBLE
             Glide.with(this)
                 .load(com.blobcity.R.drawable.inactive_heart)
                 .into(iv_life1)
