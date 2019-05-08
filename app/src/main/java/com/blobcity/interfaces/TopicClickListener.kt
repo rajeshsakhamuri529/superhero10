@@ -1,5 +1,7 @@
 package com.blobcity.interfaces
 
+import com.blobcity.model.Topic
+
 interface TopicClickListener {
-    fun onClick(path: String, topicId: String, topicName: String)
+    fun onClick(topic: Topic, topicId: String)
 }

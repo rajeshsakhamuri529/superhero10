@@ -11,6 +11,9 @@ class TopicStatusEntity {
     @ColumnInfo(name = "id")
     var id: Int = 0
 
+    @ColumnInfo(name = "U_Id")
+    var uid: String?=""
+
     @ColumnInfo(name = "Course_Id")
     var courseId: String?=""
 

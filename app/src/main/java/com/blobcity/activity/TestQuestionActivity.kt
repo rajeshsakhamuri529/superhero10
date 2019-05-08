@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_test_question.*
+import kotlinx.android.synthetic.main.activity_test_question.view.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
@@ -86,11 +87,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var animationFadeIn500: Animation ?= null
     var type:String = ""
     var child: View ?= null
+    var isOption1Wrong = false
+    var isOption2Wrong = false
+    var isOption3Wrong = false
+    var isOption4Wrong = false
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
     }
-
 
     override fun initView(){
         val path = intent.getStringExtra(DYNAMIC_PATH)
@@ -110,8 +114,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         dbTrackingHintStatus = FirebaseDatabase.getInstance().getReference("hint_tracking")
         dbRStatus!!.keepSynced(true)
 
-
-
         createArrayMapList(path)
 
         btn_hint!!.visibility = View.GONE
@@ -127,29 +129,41 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option3 = view.findViewById(R.id.webView_option3)
         webView_option4 = view.findViewById(R.id.webView_option4)
 
+        webView_option1!!.isScrollbarFadingEnabled = false
+        webView_option2!!.isScrollbarFadingEnabled = false
+
         btn_next!!.setOnClickListener(this)
         btn_hint!!.setOnClickListener(this)
         webView_option1!!.setOnTouchListener { v, event ->
-            clickOptions(event, 0, "true")
+            if (!isOption1Wrong){
+                clickOptions(event, 0, "true")
+            }
             true
         }
 
         webView_option2!!.setOnTouchListener { v, event ->
-            clickOptions(event, 1, "false")
+            if (!isOption2Wrong){
+                clickOptions(event, 1, "false")
+            }
             true
         }
 
         if (webView_option3 != null) {
-
+            webView_option3!!.isScrollbarFadingEnabled = false
             webView_option3!!.setOnTouchListener { v, event ->
-                clickOptions(event, 2, "")
+                if (!isOption3Wrong) {
+                    clickOptions(event, 2, "")
+                }
                 true
             }
         }
 
         if (webView_option4 != null) {
+            webView_option4!!.isScrollbarFadingEnabled = false
             webView_option4!!.setOnTouchListener { v, event ->
-                clickOptions(event, 3, "")
+                if (!isOption4Wrong) {
+                    clickOptions(event, 3, "")
+                }
                 true
             }
         }
@@ -274,6 +288,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             ll_inflate.removeView(child!!)
         }
         if (position < totalQuestion!!) {
+            isOption1Wrong = false
+            isOption2Wrong = false
+            isOption3Wrong = false
+            isOption4Wrong = false
             countInt++
             isAnswerCorrect = false
             btn_next!!.visibility = View.GONE
@@ -543,15 +561,19 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
         }else{
             if (optionClicked == 0) {
+                isOption1Wrong = true
                 setWrongBackground(webView_option1!!)
             }
             if (optionClicked == 1) {
+                isOption2Wrong = true
                 setWrongBackground(webView_option2!!)
             }
             if (optionClicked == 2) {
+                isOption3Wrong = true
                 setWrongBackground(webView_option3!!)
             }
             if (optionClicked == 3) {
+                isOption4Wrong = true
                 setWrongBackground(webView_option4!!)
             }
         }

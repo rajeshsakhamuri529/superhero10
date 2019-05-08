@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.blobcity.R
+import com.blobcity.model.Topic
 import com.blobcity.model.TopicStatusModel
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
@@ -36,15 +37,19 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
     override fun initView() {
         context = this
-        val folderName = intent.getStringExtra(FOLDER_NAME)
+        val topic: Topic = intent.getSerializableExtra(TOPIC) as Topic
+        val folderName = topic.folderName
         courseId = intent.getStringExtra(COURSE_ID)
         topicId = intent.getStringExtra(TOPIC_ID)
-        topicName = intent.getStringExtra(TOPIC_NAME)
+        topicName = topic.title
+        val index = topic.index
         courseName = intent.getStringExtra(COURSE_NAME)
         databaseRefrence = FirebaseDatabase.getInstance()
             .getReference("topic_status/"+UniqueUUid.id(this))
         databaseRefrence!!.keepSynced(true)
 
+        val title = "$index $topicName"
+        tv_title.text = title
         val folderPath = assetTestCoursePath+folderName
 
         jsonStringBasic = loadJSONFromAsset(this,"$folderPath/basic.json")

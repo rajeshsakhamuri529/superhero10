@@ -14,6 +14,7 @@ public class ConstantPath {
     public static String COURSE_ID = "course_id";
     public static String COURSE_NAME = "course_name";
     public static String TOPIC_ID = "topic_id";
+    public static String TOPIC = "topic";
     public static String TOPIC_NAME = "topic_name";
     public static String TOPIC_LEVEL = "topic_level";
     public static String LEVEL_COMPLETED = "level_completed";

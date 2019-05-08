@@ -14,8 +14,7 @@ import kotlinx.android.synthetic.main.topics_single_layout.view.*
 class ChaptersAdapter(val context: Context,
                       val branchesItemList: List<BranchesItem>,
                       val topicClickListener: TopicClickListener) :
-    RecyclerView.Adapter<ChaptersAdapter.ChaptersViewHolder>()
-{
+    RecyclerView.Adapter<ChaptersAdapter.ChaptersViewHolder>() {
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ChaptersViewHolder {
         return ChaptersViewHolder(
@@ -38,8 +37,8 @@ class ChaptersAdapter(val context: Context,
             holder.singleTopic.setBackgroundResource(R.drawable.dashboard_top_corner)
         }
         holder.singleTopic.setOnClickListener {
-            topicClickListener.onClick(branchesItemList[position].topic.folderName,
-                branchesItemList[position].id, branchesItemList[position].topic.title)
+            topicClickListener.onClick(branchesItemList[position].topic,
+                branchesItemList[position].id)
         }
 
         if (branchesItemList[position].basic == 1){

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        tools:context=".activity.StartQuizActivity">
+
+    <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/button_dismiss"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_medium"
+            android:textColor="@color/white"
+            android:id="@+id/tv_chapter_title"
+            android:textSize="@dimen/_20ssp"
+            android:text="Topic one"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+    <Button
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="start"
+            android:textColor="@color/black_text"
+            android:background="@drawable/btn_yellow_curved_border"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="@dimen/_13ssp"/>
+
+</RelativeLayout>

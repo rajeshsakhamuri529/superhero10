@@ -2,7 +2,9 @@ package com.blobcity.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Topic{
+import java.io.Serializable;
+
+public class Topic implements Serializable {
 
 	@SerializedName("updated_at")
 	private String updatedAt;

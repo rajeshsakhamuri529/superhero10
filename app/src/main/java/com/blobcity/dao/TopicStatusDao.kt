@@ -15,6 +15,6 @@ interface TopicStatusDao {
     @Query("SELECT * FROM topic_status")
     fun getAllTopicStatus() : LiveData<List<TopicStatusEntity>>
 
-    @Query("SELECT * FROM topic_status WHERE Topic_Id = :topicId")
-    fun getSingleTopicStatus(topicId: String) : LiveData<TopicStatusEntity>
+    @Query("SELECT * FROM topic_status WHERE U_Id = :uid")
+    fun getSingleTopicStatus(uid: String) : LiveData<TopicStatusEntity>
 }

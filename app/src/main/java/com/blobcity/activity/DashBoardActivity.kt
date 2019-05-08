@@ -7,10 +7,7 @@ import android.view.View
 import com.blobcity.R
 import com.blobcity.adapter.ChaptersAdapter
 import com.blobcity.interfaces.TopicClickListener
-import com.blobcity.model.BranchesItem
-import com.blobcity.model.CoursesResponseModel
-import com.blobcity.model.TopicResponseModel
-import com.blobcity.model.TopicStatusModel
+import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils.loadJSONFromAsset
@@ -143,17 +140,16 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         }*/
     }
 
-    private fun callIntent(path: String, topicId: String, topicName: String){
+    private fun callIntent(topic: Topic, topicId: String){
         val intent = Intent(this, QuizLevelActivity::class.java)
-        intent.putExtra(FOLDER_NAME, path)
+        intent.putExtra(TOPIC, topic)
         intent.putExtra(COURSE_ID, courseId)
         intent.putExtra(COURSE_NAME, courseName)
         intent.putExtra(TOPIC_ID, topicId)
-        intent.putExtra(TOPIC_NAME, topicName)
         startActivity(intent)
     }
 
-    override fun onClick(path: String, topicId: String,topicName: String) {
-        callIntent(path, topicId, topicName)
+    override fun onClick(topic: Topic, topicId: String) {
+        callIntent(topic, topicId)
     }
 }

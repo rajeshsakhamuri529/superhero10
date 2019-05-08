@@ -12,6 +12,8 @@
     <color name="purple_opt_bg">#6A0887</color>
     <color name="pink_hint_bg">#8231A7</color>
     <color name="pink_hint_button_bg">#C249CE</color>
-    <color name="green_right_answer">#A7F45A</color>
+    <color name="green_right_answer">#AFF977</color>
     <color name="red_wrong_answer">#940404</color>
+    <color name="yellow">#FFDA5B</color>
+    <color name="black_text">#333333</color>
 </resources>
