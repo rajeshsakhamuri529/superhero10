@@ -155,7 +155,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun callIntent(path: String, level: String, complete: String){
-        val intent = Intent(this, TestQuestionActivity::class.java)
+        val intent = Intent(this, StartQuizActivity::class.java)
         intent.putExtra(DYNAMIC_PATH, path)
         intent.putExtra(COURSE_ID, courseId)
         intent.putExtra(TOPIC_ID, topicId)

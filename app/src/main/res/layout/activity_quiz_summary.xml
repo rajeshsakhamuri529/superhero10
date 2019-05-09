@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg"
+        tools:context=".activity.QuizSummaryActivity">
+
+    <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/button_dismiss"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_medium"
+            android:textColor="@color/white"
+            android:id="@+id/tv_chapter_title"
+            android:textSize="@dimen/_17ssp"
+            android:text="Topic one"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+    <TextView
+            android:id="@+id/tv_quiz_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quiz"
+            android:layout_below="@id/tv_chapter_title"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_18ssp"
+            android:textAllCaps="true"
+            android:textColor="@color/pink_quiz_text"
+            android:fontFamily="@font/quicksand_bold"/>
+
+    <TextView
+            android:id="@+id/tv_answer_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_completion_status"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:textSize="@dimen/_17ssp"
+            android:text="8"
+            android:textColor="@color/white"
+            android:fontFamily="@font/quicksand_bold"/>
+
+    <TextView
+            android:id="@+id/tv_completion_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_17sdp"
+            android:textSize="@dimen/_12ssp"
+            android:text="questions"
+            android:textAllCaps="true"
+            android:textColor="@color/white_80"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_above="@id/ll_summary_buttons"/>
+
+    <LinearLayout
+            android:id="@+id/ll_summary_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_45sdp">
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

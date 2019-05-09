@@ -16,4 +16,6 @@
     <color name="red_wrong_answer">#940404</color>
     <color name="yellow">#FFDA5B</color>
     <color name="black_text">#333333</color>
+    <color name="pink_quiz_text">#ff71e7</color>
+    <color name="white_80">#80ffffff</color>
 </resources>

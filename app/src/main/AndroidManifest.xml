@@ -13,6 +13,8 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity android:name=".activity.QuizSummaryActivity">
+        </activity>
         <activity android:name=".activity.StartQuizActivity">
         </activity>
         <activity android:name=".activity.TestQuestionActivity">
