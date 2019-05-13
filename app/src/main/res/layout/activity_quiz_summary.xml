@@ -67,10 +67,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:weightSum="3"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/_45sdp">
 
+        <Button
+                android:id="@+id/btn_play_again"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.1"
+                android:text="Play Again"
+                android:textSize="@dimen/_12ssp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:fontFamily="@font/quicksand_bold"
+                android:background="@drawable/hint_button_bg"/>
 
+        <Button
+                android:id="@+id/btn_review"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:text="Review"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:textSize="@dimen/_12ssp"
+                android:fontFamily="@font/quicksand_bold"
+                android:layout_marginLeft="@dimen/_7sdp"
+                android:layout_marginRight="@dimen/_7sdp"
+                android:background="@drawable/review_button_bg"/>
+
+        <Button
+                android:id="@+id/btn_quiz"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.1"
+                android:text="Quiz"
+                android:textSize="@dimen/_12ssp"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:fontFamily="@font/quicksand_bold"
+                android:background="@drawable/hint_button_bg"/>
 
     </LinearLayout>
 

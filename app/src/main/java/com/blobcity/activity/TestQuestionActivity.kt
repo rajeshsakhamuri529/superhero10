@@ -1,6 +1,7 @@
 package com.blobcity.activity
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Handler
@@ -18,16 +19,15 @@ import android.webkit.WebView
 import android.widget.Button
 import android.widget.Toast
 import com.blobcity.R
-import com.blobcity.model.TopicOneBasicResponseModel
-import com.blobcity.model.TopicOneQuestionsItem
-import com.blobcity.model.TopicStatusModel
-import com.blobcity.model.TrackingModel
+import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils
 import com.bumptech.glide.Glide
+import com.example.firebasedbexample.Bank
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_test_question.*
 import kotlinx.android.synthetic.main.activity_test_question.view.*
@@ -64,7 +64,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private val MAX_CLICK_DURATION = 200
     private var isAnswerCorrect: Boolean = false
     private var isLifeZero: Boolean = false
-    private var isLevelCompleted: Boolean = false
     private var isHandlerExecuted: Boolean = false
     var dbRStatus: DatabaseReference?= null
     var dbTrackingStatus: DatabaseReference?=null
@@ -91,6 +90,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var isOption2Wrong = false
     var isOption3Wrong = false
     var isOption4Wrong = false
+    var firestore: FirebaseFirestore?=null
+    var quizTimer: Timer ?= null
+    var quizTimerCount = 0
+    var perQuizTimer: Timer ?= null
+    var perQuizTimerCount = 0
+    val bank: Bank ?= null
+    val bankList: ArrayList<Bank> = ArrayList()
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
@@ -104,10 +110,15 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicLevel = intent.getStringExtra(TOPIC_LEVEL)
         topicName = intent.getStringExtra(TOPIC_NAME)
         complete = intent.getStringExtra(LEVEL_COMPLETED)
+        quizTimer = Timer()
+        perQuizTimer = Timer()
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
         animationFadeIn1500 = AnimationUtils.loadAnimation(this, R.anim.fade_in_500)
         animationFadeIn1000 = AnimationUtils.loadAnimation(this, R.anim.fade_in_300)
         animationFadeIn500 = AnimationUtils.loadAnimation(this, R.anim.fade_in_100)
+
+        firestore = FirebaseFirestore.getInstance()
+
         dbRStatus = FirebaseDatabase.getInstance()
             .getReference("topic_status")
         dbTrackingStatus = FirebaseDatabase.getInstance().getReference("quiz_tracking")
@@ -283,11 +294,24 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         position++
         btn_hint!!.visibility = View.GONE
         dbAttempts = 0
+        quizTimer!!.scheduleAtFixedRate(object : TimerTask(){
+            override fun run() {
+                quizTimerCount++
+            }
+
+        },1000,1000)
         handler.removeCallbacksAndMessages(null)
         if (child != null) {
             ll_inflate.removeView(child!!)
         }
         if (position < totalQuestion!!) {
+
+            perQuizTimer!!.scheduleAtFixedRate(object : TimerTask(){
+                override fun run() {
+                    perQuizTimerCount++
+                }
+
+            },1000,1000)
             isOption1Wrong = false
             isOption2Wrong = false
             isOption3Wrong = false
@@ -317,8 +341,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
         }
         if (position >= totalQuestion!!){
-            isLevelCompleted = true
-            onBackPressed()
+            navigateToSummaryScreen(true)
         }
     }
 
@@ -611,6 +634,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (life == 0){
             isLifeZero = true
             btn_next.visibility = View.VISIBLE
+            navigateToSummaryScreen(false)
             Glide.with(this)
                 .load(com.blobcity.R.drawable.inactive_heart)
                 .into(iv_life1)
@@ -618,13 +642,23 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
+    private fun navigateToSummaryScreen(isLevelCompleted: Boolean){
+        quizTimer!!.cancel()
         if (isLevelCompleted){
             if (TextUtils.isEmpty(complete)) {
                 addDataInDb()
+                addAllDataInDb()
             }
         }
+
+        val intent = Intent(this, QuizSummaryActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun addAllDataInDb(){
+        val quiz = Quiz()
+        quiz.androidVersion = android.os.Build.VERSION.SDK_INT
     }
 
     private fun addDataInDb(){

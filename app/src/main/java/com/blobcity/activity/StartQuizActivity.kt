@@ -57,6 +57,7 @@ class StartQuizActivity : BaseActivity() {
             intent.putExtra(ConstantPath.TOPIC_LEVEL, topicLevel)
             intent.putExtra(ConstantPath.LEVEL_COMPLETED, complete)
             startActivity(intent)
+            finish()
         }
     }
 }
