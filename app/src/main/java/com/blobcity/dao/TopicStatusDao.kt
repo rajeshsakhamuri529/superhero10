@@ -13,7 +13,7 @@ interface TopicStatusDao {
     fun insert(topicStatusEntity: TopicStatusEntity)
 
     @Query("SELECT * FROM topic_status")
-    fun getAllTopicStatus() : LiveData<List<TopicStatusEntity>>
+    fun getAllTopicStatus() : LiveData<ArrayList<TopicStatusEntity>>
 
     @Query("SELECT * FROM topic_status WHERE U_Id = :uid")
     fun getSingleTopicStatus(uid: String) : LiveData<TopicStatusEntity>

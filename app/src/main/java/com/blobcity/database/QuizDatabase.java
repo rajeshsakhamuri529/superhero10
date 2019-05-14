@@ -12,7 +12,7 @@ public abstract class QuizDatabase extends RoomDatabase {
 
     public abstract TopicStatusDao getTopicStatusDao();
 
-    static QuizDatabase getDatabase(final Context context){
+    public static QuizDatabase getDatabase(final Context context){
         if (database == null){
             synchronized (QuizDatabase.class){
                 if (database == null){

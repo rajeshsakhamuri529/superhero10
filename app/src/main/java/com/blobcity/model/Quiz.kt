@@ -1,14 +1,12 @@
 package com.blobcity.model
 
-import com.example.firebasedbexample.Bank
-
 class Quiz {
 
     var appversion: Int ?= null
     var completed: Boolean ?= null
-    var courseId: Int ?= null
+    var courseId: String ?= null
     var courseName: String ?= null
-    var os: String = "android"
+    var os: String = ""
     var quizSession: Map<String, Bank> ?= null
 
     fun toMap(type: String, bank: Bank): Map<String, Bank> {
@@ -22,8 +20,8 @@ class Quiz {
     var result: Boolean ?= null
     var timeStamp: Long ?= null
     var timeTaken: Int ?= null
-    var topicId: Int ?= null
+    var topicId: String ?= null
     var topicName: String?= null
     var uId: String?= null
-    var androidVersion: Int?= null
+    var osv: Int?= null
 }

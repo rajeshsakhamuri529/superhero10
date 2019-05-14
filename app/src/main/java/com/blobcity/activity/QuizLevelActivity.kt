@@ -44,9 +44,9 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         topicName = topic.title
         val index = topic.index
         courseName = intent.getStringExtra(COURSE_NAME)
-        databaseRefrence = FirebaseDatabase.getInstance()
+        /*databaseRefrence = FirebaseDatabase.getInstance()
             .getReference("topic_status/"+UniqueUUid.id(this))
-        databaseRefrence!!.keepSynced(true)
+        databaseRefrence!!.keepSynced(true)*/
 
         val title = "$index $topicName"
         tv_title.text = title
@@ -60,7 +60,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         btn_quiz2.setOnClickListener(this)
         btn_quiz3.setOnClickListener(this)
 
-        databaseRefrence!!.addValueEventListener(object : ValueEventListener {
+        /*databaseRefrence!!.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 
             }
@@ -117,7 +117,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             }
-        })
+        })*/
     }
 
     override fun onClick(v: View?) {

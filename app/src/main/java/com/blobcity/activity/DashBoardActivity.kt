@@ -12,6 +12,10 @@ import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils.loadJSONFromAsset
 import com.google.firebase.database.*
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.gson.Gson
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -33,9 +37,9 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     }
 
     override fun initView() {
-        databaseRefrence = FirebaseDatabase.getInstance()
+        /*databaseRefrence = FirebaseDatabase.getInstance()
             .getReference("topic_status/"+UniqueUUid.id(this))
-        databaseRefrence!!.keepSynced(true)
+        databaseRefrence!!.keepSynced(true)*/
 
         TedPermission.with(this)
             .setPermissionListener(this)
@@ -46,7 +50,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     }
 
     override fun onPermissionGranted() {
-        databaseRefrence!!.addValueEventListener(object : ValueEventListener{
+        /*databaseRefrence!!.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
 
             }
@@ -88,7 +92,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                     Log.e("topicStatusDb", topicStatusModel.topicLevel)
                 }
             }
-        })
+        })*/
         readFileLocally()
     }
 

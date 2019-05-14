@@ -1,8 +1,7 @@
-package com.example.firebasedbexample
+package com.blobcity.model
 
 class Bank {
 
-    var questionBank : String = ""
     var answer : ArrayList<String> ?= null
     var attempts: Int ?= null
     var hint: Boolean?= null

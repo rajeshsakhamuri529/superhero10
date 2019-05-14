@@ -2,6 +2,7 @@ package com.blobcity.activity
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Handler
@@ -24,13 +25,16 @@ import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils
 import com.bumptech.glide.Glide
-import com.example.firebasedbexample.Bank
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_test_question.*
 import kotlinx.android.synthetic.main.activity_test_question.view.*
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
@@ -95,8 +99,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var quizTimerCount = 0
     var perQuizTimer: Timer ?= null
     var perQuizTimerCount = 0
-    val bank: Bank ?= null
+    var bank: Bank ?= null
+    var dbIsHintUsed = false
     val bankList: ArrayList<Bank> = ArrayList()
+    var answerList: ArrayList<String> ?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
@@ -111,7 +117,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicName = intent.getStringExtra(TOPIC_NAME)
         complete = intent.getStringExtra(LEVEL_COMPLETED)
         quizTimer = Timer()
-        perQuizTimer = Timer()
+
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
         animationFadeIn1500 = AnimationUtils.loadAnimation(this, R.anim.fade_in_500)
         animationFadeIn1000 = AnimationUtils.loadAnimation(this, R.anim.fade_in_300)
@@ -119,11 +125,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         firestore = FirebaseFirestore.getInstance()
 
-        dbRStatus = FirebaseDatabase.getInstance()
+        /*dbRStatus = FirebaseDatabase.getInstance()
             .getReference("topic_status")
         dbTrackingStatus = FirebaseDatabase.getInstance().getReference("quiz_tracking")
         dbTrackingHintStatus = FirebaseDatabase.getInstance().getReference("hint_tracking")
-        dbRStatus!!.keepSynced(true)
+        dbRStatus!!.keepSynced(true)*/
 
         createArrayMapList(path)
 
@@ -139,9 +145,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option2 = view.findViewById(R.id.webView_option2)
         webView_option3 = view.findViewById(R.id.webView_option3)
         webView_option4 = view.findViewById(R.id.webView_option4)
-
-        webView_option1!!.isScrollbarFadingEnabled = false
-        webView_option2!!.isScrollbarFadingEnabled = false
 
         btn_next!!.setOnClickListener(this)
         btn_hint!!.setOnClickListener(this)
@@ -160,7 +163,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
 
         if (webView_option3 != null) {
-            webView_option3!!.isScrollbarFadingEnabled = false
             webView_option3!!.setOnTouchListener { v, event ->
                 if (!isOption3Wrong) {
                     clickOptions(event, 2, "")
@@ -170,7 +172,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
 
         if (webView_option4 != null) {
-            webView_option4!!.isScrollbarFadingEnabled = false
             webView_option4!!.setOnTouchListener { v, event ->
                 if (!isOption4Wrong) {
                     clickOptions(event, 3, "")
@@ -210,6 +211,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private fun hintAlertDialog(){
         if (!isLifeZero) {
             if (!isAnswerCorrect) {
+                dbIsHintUsed = true
                 addTrackDataInDb("hint")
                 val dialogBuilder = AlertDialog.Builder(this)
                 val inflater = this.layoutInflater
@@ -293,7 +295,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private fun createPath(){
         position++
         btn_hint!!.visibility = View.GONE
-        dbAttempts = 0
         quizTimer!!.scheduleAtFixedRate(object : TimerTask(){
             override fun run() {
                 quizTimerCount++
@@ -304,8 +305,21 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (child != null) {
             ll_inflate.removeView(child!!)
         }
+        if (bank != null){
+            addBankData()
+            bankList.add(bank!!)
+            bank = null
+            dbIsHintUsed = false
+            dbAttempts = 0
+        }
+        if (perQuizTimer != null){
+            perQuizTimer = null
+            perQuizTimerCount = 0
+        }
         if (position < totalQuestion!!) {
-
+            bank = Bank()
+            answerList = ArrayList()
+            perQuizTimer = Timer()
             perQuizTimer!!.scheduleAtFixedRate(object : TimerTask(){
                 override fun run() {
                     perQuizTimerCount++
@@ -343,6 +357,15 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (position >= totalQuestion!!){
             navigateToSummaryScreen(true)
         }
+    }
+
+    private fun addBankData(){
+        bank!!.answer = answerList
+        bank!!.attempts = dbAttempts
+        bank!!.result = isAnswerCorrect
+        bank!!.timeTaken = perQuizTimerCount
+        bank!!.hint = dbIsHintUsed
+        bank!!.id = dbQPaths.substring(dbQPaths.length - 3)
     }
 
     private fun loadDataInWebView(path: String){
@@ -561,6 +584,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         }
                     }
                 }
+                answerList!!.add(dbAnswer)
                 addTrackDataInDb("answer")
             }
         }else{
@@ -644,25 +668,63 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToSummaryScreen(isLevelCompleted: Boolean){
         quizTimer!!.cancel()
-        if (isLevelCompleted){
+        /*if (isLevelCompleted){
             if (TextUtils.isEmpty(complete)) {
                 addDataInDb()
-                addAllDataInDb()
-            }
-        }
 
+            }
+        }*/
+        addAllDataInDb(isLevelCompleted)
         val intent = Intent(this, QuizSummaryActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-    private fun addAllDataInDb(){
+    private fun addAllDataInDb(isLevelCompleted : Boolean){
+        val pinfo : PackageInfo = getPackageManager().getPackageInfo(getPackageName(), 0)
+        val versionNumber : Int = pinfo.versionCode
         val quiz = Quiz()
-        quiz.androidVersion = android.os.Build.VERSION.SDK_INT
+        quiz.osv = android.os.Build.VERSION.SDK_INT
+        quiz.timeTaken = quizTimerCount
+        quiz.topicId = topicId
+        quiz.topicName = topicName
+        quiz.uId = UniqueUUid.id(this)
+        quiz.timeStamp = System.currentTimeMillis()/1000
+        quiz.result = isLevelCompleted
+        quiz.os = "android"
+        quiz.courseId = courseId
+        quiz.courseName = courseName
+        quiz.completed = isLevelCompleted
+        quiz.appversion = versionNumber
+        quiz.quizType = topicLevel
+        val bankHashList: HashMap<String, Bank> = HashMap()
+        if (bankList.size > 0){
+            bankList.forEachIndexed { index, bank ->
+                bankHashList.put("b"+(index+1), bank)
+            }
+        }
+        quiz.quizSession = bankHashList
+
+        firestore!!.collection("quiz")
+            .add(quiz)
+            .addOnSuccessListener { object : OnSuccessListener<DocumentReference> {
+                override fun onSuccess(p0: DocumentReference?) {
+                    Toast.makeText(getApplicationContext(), "Note has been added!", Toast.LENGTH_SHORT).show()
+                }
+
+            } }
+            .addOnFailureListener(object : OnFailureListener {
+                override fun onFailure(p0: Exception) {
+                    Log.e("failure", p0.message)
+                    Toast.makeText(getApplicationContext(), "Note could not be added!", Toast.LENGTH_SHORT).show()
+                }
+
+            })
+
     }
 
     private fun addDataInDb(){
-        val id: String? = dbRStatus!!.push().key
+        /*val id: String? = dbRStatus!!.push().key
         val uId: String = UniqueUUid.id(this)
         val topicStatusModel = TopicStatusModel()
         topicStatusModel.id = id
@@ -671,11 +733,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicStatusModel.uId = uId
         topicStatusModel.topicLevel = topicLevel
         topicStatusModel.isLevelComplete = 1
-        dbRStatus!!.child(uId).child(id!!).setValue(topicStatusModel)
+        dbRStatus!!.child(uId).child(id!!).setValue(topicStatusModel)*/
     }
 
     private fun addTrackDataInDb(type: String){
-        val id: String? = dbTrackingStatus!!.push().key
+        /*val id: String? = dbTrackingStatus!!.push().key
         val uId: String = UniqueUUid.id(this)
         dbTimeStamp = System.currentTimeMillis()/1000
         val timeStamp: String = dbTimeStamp.toString()
@@ -696,7 +758,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             dbTrackingStatus!!.child(dbQPaths).child(id).setValue(trackingModel)
         }else{
             dbTrackingHintStatus!!.child(dbQPaths).child(id).setValue(trackingModel)
-        }
+        }*/
 
     }
 }
