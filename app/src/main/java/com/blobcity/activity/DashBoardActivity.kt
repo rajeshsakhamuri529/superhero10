@@ -1,16 +1,21 @@
 package com.blobcity.activity
 
 import android.Manifest
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.util.Log
 import android.view.View
 import com.blobcity.R
 import com.blobcity.adapter.ChaptersAdapter
+import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.interfaces.TopicClickListener
 import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils.loadJSONFromAsset
+import com.blobcity.viewmodel.TopicStatusVM
+import com.blobcity.viewmodel.TopicStatusViewModel
 import com.google.firebase.database.*
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,8 +34,9 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     var courseId: String?=""
     var courseName: String?=""
     var databaseRefrence: DatabaseReference?= null
-    var topicStatusModelList: ArrayList<TopicStatusModel>?=null
+    var topicStatusModelList: ArrayList<TopicStatusEntity>?=null
     var adapter: ChaptersAdapter?= null
+    var topicStatusVM: TopicStatusVM?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_dashboard
@@ -50,6 +56,45 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     }
 
     override fun onPermissionGranted() {
+        topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+        topicStatusVM!!.getAllTopicStatus().observe(this,
+            object : Observer<List<TopicStatusEntity>>{
+                override fun onChanged(t: List<TopicStatusEntity>?) {
+                    topicStatusModelList = ArrayList()
+                    topicStatusModelList!!.addAll(t!!)
+                    for (item in topicStatusModelList!!){
+                        if (topicStatusModelList != null){
+                            if (topicStatusModelList!!.size > 0){
+                                for (branchItem in branchesItemList!!) {
+                                    val branchId = branchItem.id
+                                    branchItem.basic = 0
+                                    branchItem.intermediate = 0
+                                    branchItem.advance = 0
+                                    for (topicStatusModels in topicStatusModelList!!) {
+                                        val id = topicStatusModels.topicId
+                                        val level = topicStatusModels.topicLevel
+
+                                        if (id!!.contains(branchId)) {
+                                            if (level!!.contains("basic")) {
+                                                branchItem.basic = 1
+                                            }
+                                            if (level.contains("intermediate")) {
+                                                branchItem.intermediate = 1
+                                            }
+                                            if (level.contains("advance")) {
+                                                branchItem.advance = 1
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                        adapter!!.notifyDataSetChanged()
+                    }
+                }
+
+            })
         /*databaseRefrence!!.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
 

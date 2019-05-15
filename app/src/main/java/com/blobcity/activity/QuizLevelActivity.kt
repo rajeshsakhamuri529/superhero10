@@ -1,16 +1,20 @@
 package com.blobcity.activity
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.blobcity.R
+import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.Topic
 import com.blobcity.model.TopicStatusModel
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils.*
+import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_quiz_level.*
@@ -25,11 +29,12 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var topicId: String? =""
     var topicName: String?=""
     var databaseRefrence: DatabaseReference?= null
-    var topicStatusModelList: ArrayList<TopicStatusModel>?=null
+    var topicStatusModelList: ArrayList<TopicStatusEntity>?=null
     var isBasicCompleted: Boolean = false
     var isIntermediateCompleted: Boolean = false
     var isAdvancedCompleted: Boolean = false
     var context: Context ?= null
+    var topicStatusVM: TopicStatusVM?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_quiz_level
@@ -59,7 +64,65 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         btn_quiz1.setOnClickListener(this)
         btn_quiz2.setOnClickListener(this)
         btn_quiz3.setOnClickListener(this)
+        topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+        topicStatusVM!!.getSingleTopicStatus(topicId!!).observe(this,
+            object : Observer<List<TopicStatusEntity>>{
+                override fun onChanged(t: List<TopicStatusEntity>?) {
+                    topicStatusModelList = ArrayList()
+                    Glide.with(this@QuizLevelActivity)
+                        .load(R.drawable.inactive_button)
+                        .into(iv_level1)
+                    Glide.with(this@QuizLevelActivity)
+                        .load(R.drawable.inactive_button)
+                        .into(iv_level2)
+                    Glide.with(this@QuizLevelActivity)
+                        .load(R.drawable.inactive_button)
+                        .into(iv_level3)
+                    topicStatusModelList!!.addAll(t!!)
+                    if (topicStatusModelList != null) {
+                        if (topicStatusModelList!!.size > 0) {
+                            val branchId = topicId
+                            for (topicStatusModels in topicStatusModelList!!) {
+                                val id = topicStatusModels.topicId
+                                val level = topicStatusModels.topicLevel
 
+                                if (id!!.contains(branchId!!)) {
+                                    if (level!!.contains("basic")) {
+                                        Glide.with(this@QuizLevelActivity)
+                                            .load(R.drawable.green_tick)
+                                            .into(iv_level1)
+                                        isBasicCompleted = true
+                                    }
+                                    if (level.contains("intermediate")) {
+                                        Glide.with(this@QuizLevelActivity)
+                                            .load(R.drawable.green_tick)
+                                            .into(iv_level2)
+                                        isIntermediateCompleted = true
+                                    }
+                                    if (level.contains("advance")) {
+                                        Glide.with(this@QuizLevelActivity)
+                                            .load(R.drawable.green_tick)
+                                            .into(iv_level3)
+                                        isAdvancedCompleted = true
+                                    }
+                                }
+                            }
+                            if (isBasicCompleted && isIntermediateCompleted){
+                                btn_quiz3.setBackgroundResource(R.drawable.button_bg)
+                                btn_quiz3.setTextColor(resources.getColor(R.color.white))
+                            }
+                        }
+                    }
+                    /*for (postSnapshot in t!!) {
+                        Log.e("snap", postSnapshot.value.toString())
+                        if (postSnapshot != null) {
+                            val topicStatusModel: TopicStatusModel =
+                                postSnapshot.getValue(TopicStatusModel::class.java)!!
+
+                        }
+                    }*/
+                }
+            })
         /*databaseRefrence!!.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
 

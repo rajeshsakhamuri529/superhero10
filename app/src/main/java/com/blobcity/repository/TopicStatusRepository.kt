@@ -9,7 +9,7 @@ import com.blobcity.entity.TopicStatusEntity
 
 class TopicStatusRepository(application: Application) {
     private var topicStatusDao: TopicStatusDao ?= null
-    private var mAllTopicStatusEntity: LiveData<ArrayList<TopicStatusEntity>> ?= null
+    private var mAllTopicStatusEntity: LiveData<List<TopicStatusEntity>> ?= null
 
     init {
         val db : QuizDatabase = QuizDatabase.getDatabase(application)
@@ -17,8 +17,12 @@ class TopicStatusRepository(application: Application) {
         mAllTopicStatusEntity = topicStatusDao!!.getAllTopicStatus()
     }
 
-    fun getAllTopicStatus() : LiveData<ArrayList<TopicStatusEntity>>{
+    fun getAllTopicStatus() : LiveData<List<TopicStatusEntity>>{
         return mAllTopicStatusEntity!!
+    }
+
+    fun getSingleTopicStatus(topicID: String) : LiveData<List<TopicStatusEntity>>{
+        return topicStatusDao!!.getSingleTopicStatus(topicID)
     }
 
     fun insert(topicStatusEntity: TopicStatusEntity){

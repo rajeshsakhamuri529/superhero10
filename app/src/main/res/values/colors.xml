@@ -5,7 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="light_purple">#C980DD</color>
     <color name="white">#ffffff</color>
-    <color name="dark_purple">#48106A</color>
+    <color name="dark_purple">#330D51</color>
     <color name="grey">#999999</color>
     <color name="black">#000000</color>
     <color name="purple_hint_btn_bg">#C249CE</color>
@@ -19,4 +19,5 @@
     <color name="pink_quiz_text">#ff71e7</color>
     <color name="white_80">#80ffffff</color>
     <color name="purple">#7A2ADB</color>
+    <color name="pink_inactive">#9b45ba</color>
 </resources>

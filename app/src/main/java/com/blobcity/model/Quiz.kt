@@ -8,14 +8,16 @@ class Quiz {
     var courseName: String ?= null
     var os: String = ""
     var quizSession: Map<String, Bank> ?= null
+    var quizSessionId: String ?= null
+    var quit: Boolean ?= null
 
-    fun toMap(type: String, bank: Bank): Map<String, Bank> {
+    /*fun toMap(type: String, bank: Bank): Map<String, Bank> {
 
         val result = HashMap<String, Bank>()
         result.put(type, bank)
 
         return result
-    }
+    }*/
     var quizType: String ?= null
     var result: Boolean ?= null
     var timeStamp: Long ?= null

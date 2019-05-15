@@ -1,31 +1,25 @@
 package com.blobcity.activity
 
-import android.util.Log
+import android.content.Intent
 import com.blobcity.R
-import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
+import com.blobcity.model.ReviewModel
+import com.blobcity.utils.ConstantPath
+import kotlinx.android.synthetic.main.activity_quiz_summary.*
 
 class QuizSummaryActivity : BaseActivity() {
 
-    var firestore: FirebaseFirestore?=null
+    var reviewModelList: ArrayList<ReviewModel>?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_quiz_summary
     }
 
     override fun initView() {
-        firestore = FirebaseFirestore.getInstance()
-        firestore!!.collection("quiz")
-            .addSnapshotListener(object : EventListener<QuerySnapshot>{
-                override fun onEvent(p0: QuerySnapshot?, p1: FirebaseFirestoreException?) {
-                    if (p1 != null) {
-                        Log.e("listen:error", p1.message);
-                        return;
-                    }
-                }
-
-            })
+        reviewModelList = intent.getSerializableExtra(ConstantPath.REVIEW_MODEL) as ArrayList<ReviewModel>?
+        btn_review.setOnClickListener {
+            val intent = Intent(this, ReviewActivity::class.java)
+            intent.putExtra(ConstantPath.REVIEW_MODEL, reviewModelList)
+            startActivity(intent)
+        }
     }
 }
