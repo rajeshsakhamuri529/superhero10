@@ -19,6 +19,7 @@ public class ConstantPath {
     public static String TOPIC_LEVEL = "topic_level";
     public static String LEVEL_COMPLETED = "level_completed";
     public static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
+    public static final String ANONYMOUS_USER = "ANONYMOUS_USER";
 
     /*assetPath*/
 
