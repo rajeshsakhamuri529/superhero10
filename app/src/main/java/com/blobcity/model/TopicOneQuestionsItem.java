@@ -19,7 +19,7 @@ public class TopicOneQuestionsItem implements Serializable {
 	private String text;
 
 	@SerializedName("type")
-	private String type;
+	private int type;
 
 	@SerializedName("funny")
 	private boolean funny;
@@ -56,11 +56,11 @@ public class TopicOneQuestionsItem implements Serializable {
 		return text;
 	}
 
-	public void setType(String type){
+	public void setType(int type){
 		this.type = type;
 	}
 
-	public String getType(){
+	public int getType(){
 		return type;
 	}
 

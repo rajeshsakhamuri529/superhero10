@@ -36,33 +36,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_8sdp"/>
 
-    <ImageView
-            android:id="@+id/iv_life1"
-            android:layout_width="@dimen/_13sdp"
-            android:layout_height="@dimen/_13sdp"
-            android:src="@drawable/active_heart_copy"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_19sdp"/>
-
-    <ImageView
-            android:id="@+id/iv_life2"
-            android:layout_width="@dimen/_13sdp"
-            android:layout_height="@dimen/_13sdp"
-            android:src="@drawable/active_heart_copy"
-            android:layout_toLeftOf="@id/iv_life1"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_19sdp"/>
-
-    <ImageView
-            android:id="@+id/iv_life3"
-            android:layout_width="@dimen/_13sdp"
-            android:layout_height="@dimen/_13sdp"
-            android:src="@drawable/active_heart_copy"
-            android:layout_toLeftOf="@id/iv_life2"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_19sdp"/>
-
     <LinearLayout
             android:id="@+id/ll_inflate"
             android:layout_width="match_parent"
@@ -72,7 +45,8 @@
             android:paddingLeft="@dimen/_20sdp"
             android:paddingRight="@dimen/_20sdp"
             android:layout_above="@id/rl_hint_next"
-            android:layout_marginTop="@dimen/_20sdp"/>
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"/>
 
     <!--<include
             layout="@layout/webview_4100_layout"
@@ -94,8 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_30sdp">
+            android:layout_marginRight="@dimen/_20sdp">
 
         <Button
                 android:layout_width="wrap_content"
@@ -105,7 +78,34 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:background="@drawable/button_white_corner_border"
                 android:text="Next"
+                android:layout_centerVertical="true"
                 android:textColor="@color/dark_purple"/>
+
+        <ImageView
+                android:id="@+id/iv_life1"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:src="@drawable/active_heart_copy"
+                android:layout_toRightOf="@id/iv_life2"
+                android:layout_centerVertical="true"/>
+
+        <ImageView
+                android:id="@+id/iv_life2"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:src="@drawable/active_heart_copy"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_6sdp"
+                android:layout_marginRight="@dimen/_6sdp"/>
+
+        <ImageView
+                android:id="@+id/iv_life3"
+                android:layout_width="@dimen/_17sdp"
+                android:layout_height="@dimen/_17sdp"
+                android:src="@drawable/active_heart_copy"
+                android:layout_toLeftOf="@id/iv_life2"
+                android:layout_centerVertical="true"/>
 
         <Button
                 android:layout_width="wrap_content"
@@ -113,9 +113,8 @@
                 android:id="@+id/btn_hint"
                 android:background="@drawable/hint_button_bg"
                 android:text="Hint"
+                android:layout_centerVertical="true"
                 android:fontFamily="@font/quicksand_bold"
-                android:textColor="@color/white"
-
-        />
+                android:textColor="@color/white"/>
     </RelativeLayout>
 </RelativeLayout>

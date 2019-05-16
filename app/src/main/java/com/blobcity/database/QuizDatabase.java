@@ -1,14 +1,16 @@
 package com.blobcity.database;
 
+import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 import com.blobcity.dao.TopicStatusDao;
+import com.blobcity.entity.TopicStatusEntity;
 
-/*@Database(entities = {TopicStatusEntity.class}, version = 1)*/
+@Database(entities = {TopicStatusEntity.class}, version = 1, exportSchema = false)
 public abstract class QuizDatabase extends RoomDatabase {
 
-    private static volatile QuizDatabase database;
+    private static QuizDatabase database;
 
     public abstract TopicStatusDao getTopicStatusDao();
 

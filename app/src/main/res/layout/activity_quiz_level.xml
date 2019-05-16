@@ -91,7 +91,7 @@
                 android:id="@+id/iv_level1"
                 android:layout_width="@dimen/_17sdp"
                 android:layout_height="@dimen/_17sdp"
-                android:src="@drawable/progress_icon_grey"
+                android:src="@drawable/inactive_button"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/_10sdp"/>
 
@@ -121,7 +121,7 @@
                 android:id="@+id/iv_level2"
                 android:layout_width="@dimen/_17sdp"
                 android:layout_height="@dimen/_17sdp"
-                android:src="@drawable/progress_icon_grey"
+                android:src="@drawable/inactive_button"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/_10sdp"/>
 
@@ -140,8 +140,8 @@
                 android:id="@+id/btn_quiz3"
                 android:layout_width="@dimen/_85sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/button_bg"
-                android:textColor="@color/white"
+                android:background="@drawable/quiz_button_inactive"
+                android:textColor="@color/pink_inactive"
                 android:text="@string/str_astra_quiz"
                 android:fontFamily="@font/quicksand_medium"
                 android:textAllCaps="false"
@@ -151,7 +151,7 @@
                 android:id="@+id/iv_level3"
                 android:layout_width="@dimen/_17sdp"
                 android:layout_height="@dimen/_17sdp"
-                android:src="@drawable/progress_icon_grey"
+                android:src="@drawable/inactive_button"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/_10sdp"/>
 

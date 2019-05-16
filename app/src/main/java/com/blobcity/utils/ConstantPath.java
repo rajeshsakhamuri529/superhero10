@@ -17,8 +17,14 @@ public class ConstantPath {
     public static String TOPIC = "topic";
     public static String TOPIC_NAME = "topic_name";
     public static String TOPIC_LEVEL = "topic_level";
+    public static String QUIZ_COUNT = "quiz_count";
     public static String LEVEL_COMPLETED = "level_completed";
     public static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
+    public static String REVIEW_MODEL = "review_model";
+    public static int type4100 = 4100;
+    public static int type2100 = 2100;
+    public static int type2210 = 2210;
+    public static int type2201 = 2201;
     public static final String ANONYMOUS_USER = "ANONYMOUS_USER";
 
     /*assetPath*/
