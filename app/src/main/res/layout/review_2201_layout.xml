@@ -3,8 +3,8 @@
         android:id="@+id/cardView"
         android:layout_gravity="center"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="300dp"
-        android:layout_height="400dp"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_360sdp"
         android:layout_margin="4dp"
         app:cardBackgroundColor="@color/dark_purple"
         android:orientation="vertical"
@@ -21,17 +21,20 @@
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_gravity="center_horizontal"
         tools:context=".activity.TestQuestionActivity">
 
     <WebView
             android:id="@+id/webView_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
             android:scrollbars="none"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/ll_options"
             android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
+            android:id="@+id/ll_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

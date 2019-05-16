@@ -24,6 +24,7 @@ import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.*
+import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils
@@ -115,6 +116,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var answerList: ArrayList<String> ?= null
     val reviewModelList : ArrayList<ReviewModel> = ArrayList()
     var reviewModel : ReviewModel ?= null
+    var optionsWithAnswerList: ArrayList<OptionsWithAnswer>?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
@@ -249,12 +251,24 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun onBtnNext(){
         if (!isLifeZero) {
+            if (reviewModel != null){
+                reviewData()
+                reviewModelList.add(reviewModel!!)
+                reviewModel = null
+            }
             if (isAnswerCorrect) {
                 createPath()
             } else {
                 Toast.makeText(this, "Please select right option.", Toast.LENGTH_LONG).show()
             }
         }else{
+
+            if (reviewModel != null){
+                reviewData()
+                reviewModelList.add(reviewModel!!)
+                reviewModel = null
+            }
+            navigateToSummaryScreen(false)
             Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
         }
     }
@@ -324,20 +338,20 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             dbIsHintUsed = false
             dbAttempts = 0
         }
-        if (reviewModel != null){
-            reviewData()
-            reviewModelList.add(reviewModel!!)
-            Log.e("review data", reviewModelList.get(0).listOfOptions!!.get(0))
-            reviewModel = null
-        }
         if (perQuizTimer != null){
             perQuizTimer = null
             perQuizTimerCount = 0
         }
+       /* if (reviewModel != null){
+            reviewData()
+            reviewModelList.add(reviewModel!!)
+            reviewModel = null
+        }*/
         if (position < totalQuestion!!) {
             bank = Bank()
             reviewModel = ReviewModel()
             answerList = ArrayList()
+            optionsWithAnswerList = ArrayList()
             perQuizTimer = Timer()
             perQuizTimer!!.scheduleAtFixedRate(object : TimerTask(){
                 override fun run() {
@@ -651,34 +665,59 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkWebView(optionClicked: Int, isRightAnswer: Boolean){
+        val optionsWithAnswer = OptionsWithAnswer()
         if (isRightAnswer) {
             if (optionClicked == 0) {
+                optionsWithAnswer!!.option = 0
+                optionsWithAnswer!!.istrue = true
+                optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setCorrectBackground(webView_option1!!)
             }
             if (optionClicked == 1) {
+                optionsWithAnswer!!.option = 1
+                optionsWithAnswer!!.istrue = true
+                optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setCorrectBackground(webView_option2!!)
             }
             if (optionClicked == 2) {
+                optionsWithAnswer!!.option = 2
+                optionsWithAnswer!!.istrue = true
+                optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setCorrectBackground(webView_option3!!)
             }
             if (optionClicked == 3) {
+                optionsWithAnswer!!.option = 3
+                optionsWithAnswer!!.istrue = true
+                optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setCorrectBackground(webView_option4!!)
             }
         }else{
             if (optionClicked == 0) {
                 isOption1Wrong = true
+                optionsWithAnswer!!.option = 0
+                optionsWithAnswer!!.istrue = false
+                optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setWrongBackground(webView_option1!!)
             }
             if (optionClicked == 1) {
                 isOption2Wrong = true
+                optionsWithAnswer!!.option = 1
+                optionsWithAnswer!!.istrue = false
+                optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setWrongBackground(webView_option2!!)
             }
             if (optionClicked == 2) {
                 isOption3Wrong = true
+                optionsWithAnswer!!.option = 2
+                optionsWithAnswer!!.istrue = false
+                optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setWrongBackground(webView_option3!!)
             }
             if (optionClicked == 3) {
                 isOption4Wrong = true
+                optionsWithAnswer!!.option = 3
+                optionsWithAnswer!!.istrue = false
+                optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setWrongBackground(webView_option4!!)
             }
         }
@@ -716,7 +755,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (life == 0){
             isLifeZero = true
             btn_next.visibility = View.VISIBLE
-            navigateToSummaryScreen(false)
+            /*navigateToSummaryScreen(false)*/
             Glide.with(this)
                 .load(com.blobcity.R.drawable.inactive_heart)
                 .into(iv_life1)
@@ -734,6 +773,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         addAllDataInDb(isLevelCompleted, false)
         val intent = Intent(this, QuizSummaryActivity::class.java)
         intent.putExtra(REVIEW_MODEL, reviewModelList)
+        intent.putExtra(TOPIC_NAME, topicName)
+        intent.putExtra(TOPIC_LEVEL, topicLevel)
+        intent.putExtra(QUIZ_COUNT, totalQuestion)
+        intent.putExtra(TOPIC_ID, topicId)
         startActivity(intent)
         finish()
     }
@@ -840,8 +883,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun reviewData(){
-        reviewModel!!.answerList = answerList
         reviewModel!!.questionsItem = singleQuestionsItem
+        reviewModel!!.optionsWithAnswerList = optionsWithAnswerList
         reviewModel!!.listOfOptions = listOfOptions
     }
 

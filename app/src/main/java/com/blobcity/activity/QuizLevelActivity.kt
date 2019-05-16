@@ -212,7 +212,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                     Toast.makeText(this, "Please Complete Quiz2.", Toast.LENGTH_SHORT).show()
                     return
                 }
-                callIntent(jsonStringAdvanced!!, "advance", complete)
+                callIntent(jsonStringAdvanced!!, "advanced", complete)
             }
         }
     }

@@ -3,8 +3,8 @@
         android:id="@+id/cardView"
         android:layout_gravity="center"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="300dp"
-        android:layout_height="400dp"
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_360sdp"
         android:layout_margin="4dp"
         app:cardBackgroundColor="@color/dark_purple"
         android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -18,20 +18,22 @@
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_gravity="center_horizontal"
         tools:context=".activity.TestQuestionActivity">
 
     <WebView
             android:id="@+id/webView_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_20sdp"
             android:scrollbars="none"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/ll_options"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
+            android:id="@+id/ll_options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -39,7 +41,7 @@
         <WebView
                 android:id="@+id/webView_option1"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:clickable="true"
                 android:scrollbars="none"
                 android:layout_above="@id/webView_option2"
@@ -49,7 +51,7 @@
         <WebView
                 android:id="@+id/webView_option2"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:clickable="true"
                 android:scrollbars="none"
                 app:layout_constraintBottom_toBottomOf="parent"/>

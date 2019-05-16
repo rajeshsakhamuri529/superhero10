@@ -20,4 +20,5 @@
     <color name="white_80">#80ffffff</color>
     <color name="purple">#7A2ADB</color>
     <color name="pink_inactive">#9b45ba</color>
+    <color name="orange_level_failed">#F15A24</color>
 </resources>

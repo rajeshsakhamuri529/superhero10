@@ -84,12 +84,64 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         return -1
     }
 
-    override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
-        listOfOptions = reviewModelList.get(p1).listOfOptions
-        path = reviewModelList.get(p1).questionsItem!!.id
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        listOfOptions = reviewModelList.get(position).listOfOptions
+        path = assetOutputPath + reviewModelList.get(position).questionsItem!!.id
         for (filename in Utils.getListOfFilesFromAsset(path, context)){
             if (filename.contains("question")){
                 questionPath = WEBVIEW_PATH+path+"/"+filename
+            }
+        }
+
+        var webView_option1: WebView ?= null
+        var webView_option2: WebView ?= null
+        var webView_option3: WebView ?= null
+        var webView_option4: WebView ?= null
+        var webView_question: WebView ?= null
+
+        when(reviewModelList.get(position).questionsItem!!.type){
+            type2100 ->{
+                webView_option1 = (holder as Layout2100ViewHolder).webView_option1!!
+                webView_option2 = holder.webView_option2!!
+                webView_question = holder.webView_question!!
+                setWebViewBGDefault(webView_question, webView_option1, webView_option2, position)
+                loadDataWebview(webView_question, webView_option1, webView_option2)
+            }
+
+            type4100 ->{
+                webView_option1 = (holder as Layout4100ViewHolder).webView_option1!!
+                webView_option2 = holder.webView_option2!!
+                webView_question = holder.webView_question!!
+                webView_option3 = holder.webView_option3!!
+                webView_option4=holder.webView_option4!!
+                setWebViewBGDefault(webView_question, webView_option1,
+                    webView_option2, webView_option3, webView_option4, position)
+                loadDataWebview(webView_question, webView_option1,
+                    webView_option2, webView_option3, webView_option4)
+            }
+
+            type2210 ->{
+                webView_option1 = (holder as Layout2210ViewHolder).webView_option1!!
+                webView_option2 = holder.webView_option2!!
+                webView_question = holder.webView_question!!
+                webView_option3 = holder.webView_option3!!
+                webView_option4=holder.webView_option4!!
+                setWebViewBGDefault(webView_question, webView_option1,
+                    webView_option2, webView_option3, webView_option4, position)
+                loadDataWebview(webView_question, webView_option1,
+                    webView_option2, webView_option3, webView_option4)
+            }
+
+            type2201 ->{
+                webView_option1 = (holder as Layout2201ViewHolder).webView_option1!!
+                webView_option2 = holder.webView_option2!!
+                webView_question = holder.webView_question!!
+                webView_option3 = holder.webView_option3!!
+                webView_option4=holder.webView_option4!!
+                setWebViewBGDefault(webView_question, webView_option1,
+                    webView_option2, webView_option3, webView_option4, position)
+                loadDataWebview(webView_question, webView_option1,
+                    webView_option2, webView_option3, webView_option4)
             }
         }
     }
@@ -111,6 +163,17 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         webView_option4.loadUrl(opt4Path)
     }
 
+    private fun loadDataWebview(webView_question: WebView,
+                                webView_option1: WebView,
+                                webView_option2: WebView){
+
+        webView_question.loadUrl(questionPath)
+        opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
+        opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
+        webView_option1.loadUrl(opt2Path)
+        webView_option2.loadUrl(opt1Path)
+    }
+
     class Layout4100ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var webView_question: WebView?=  null
         var webView_option1: WebView?=  null
@@ -124,7 +187,6 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
             webView_option2 = itemView.findViewById(R.id.webView_option2)
             webView_option3 = itemView.findViewById(R.id.webView_option3)
             webView_option4 = itemView.findViewById(R.id.webView_option4)
-            //        this.txtHead = (TextView) itemView.findViewById(R.id.txtHead);
         }
 
     }
@@ -138,7 +200,6 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
             webView_question = itemView.findViewById(R.id.webView_question)
             webView_option1 = itemView.findViewById(R.id.webView_option1)
             webView_option2 = itemView.findViewById(R.id.webView_option2)
-            //        this.txtHead = (TextView) itemView.findViewById(R.id.txtHead);
         }
     }
 
@@ -155,7 +216,6 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
             webView_option2 = itemView.findViewById(R.id.webView_option2)
             webView_option3 = itemView.findViewById(R.id.webView_option3)
             webView_option4 = itemView.findViewById(R.id.webView_option4)
-            //        this.txtHead = (TextView) itemView.findViewById(R.id.txtHead);
         }
     }
 
@@ -172,7 +232,6 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
             webView_option2 = itemView.findViewById(R.id.webView_option2)
             webView_option3 = itemView.findViewById(R.id.webView_option3)
             webView_option4 = itemView.findViewById(R.id.webView_option4)
-            //        this.txtHead = (TextView) itemView.findViewById(R.id.txtHead);
         }
     }
 
@@ -180,20 +239,115 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                                     webView_option1: WebView,
                                     webView_option2: WebView,
                                     webView_option3: WebView,
-                                    webView_option4: WebView){
+                                    webView_option4: WebView, position: Int){
+        webView_question.setBackgroundColor(0)
+
+        webView_option1.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option2.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option3.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option4.setBackgroundResource(R.drawable.option_curved_border)
+
+        webView_option1.setBackgroundColor(0x00000000)
+        webView_option2.setBackgroundColor(0x00000000)
+        webView_option3.setBackgroundColor(0x00000000)
+        webView_option4.setBackgroundColor(0x00000000)
+
+
+        reviewModelList.get(position).listOfOptions!!.forEachIndexed { index, s ->
+
+        }
+
+        for (item in reviewModelList.get(position).optionsWithAnswerList!!){
+            if (0 == item.option) {
+                if (item.istrue!!) {
+                    webView_option1.setBackgroundResource(R.drawable.option_correct_curved_border)
+                } else {
+                    webView_option1.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                }
+            }
+            if (1 == item.option) {
+                if (item.istrue!!){
+                    webView_option2.setBackgroundResource(R.drawable.option_correct_curved_border)
+                }else{
+                    webView_option2.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                }
+            }
+
+            if (2 == item.option) {
+                if (item.istrue!!){
+                    webView_option3.setBackgroundResource(R.drawable.option_correct_curved_border)
+                }else{
+                    webView_option3.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                }
+            }
+            if (3 == item.option) {
+                if (item.istrue!!){
+                    webView_option4.setBackgroundResource(R.drawable.option_correct_curved_border)
+                }else{
+                    webView_option4.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                }
+            }
+        }
+
+        /*if (reviewModelList.get(position).optionsWithAnswerList!!.get(1).istrue!!){
+            webView_option2.setBackgroundResource(R.drawable.option_correct_green_border)
+        }else{
+            webView_option2.setBackgroundResource(R.drawable.option_red_wrong_broder)
+        }
+
+        if (reviewModelList.get(position).optionsWithAnswerList!!.get(2).istrue!!){
+            webView_option3.setBackgroundResource(R.drawable.option_correct_green_border)
+        }else{
+            webView_option3.setBackgroundResource(R.drawable.option_red_wrong_broder)
+        }
+        if (reviewModelList.get(position).optionsWithAnswerList!!.get(3).istrue!!){
+            webView_option4.setBackgroundResource(R.drawable.option_correct_green_border)
+        }else{
+            webView_option4.setBackgroundResource(R.drawable.option_red_wrong_broder)
+        }*/
+    }
+
+    fun setWebViewBGDefault(webView_question: WebView,
+                            webView_option1: WebView,
+                            webView_option2: WebView, position: Int){
         webView_question!!.setBackgroundColor(0)
         webView_option1!!.setBackgroundResource(R.drawable.option_curved_border)
         webView_option2!!.setBackgroundResource(R.drawable.option_curved_border)
-        if (webView_option3 != null) {
-            webView_option3!!.setBackgroundResource(R.drawable.option_curved_border)
-            webView_option3!!.setBackgroundColor(0x00000000)
-        }
-        if (webView_option4 != null) {
-            webView_option4!!.setBackgroundResource(R.drawable.option_curved_border)
-            webView_option4!!.setBackgroundColor(0x00000000)
-        }
 
         webView_option1!!.setBackgroundColor(0x00000000)
         webView_option2!!.setBackgroundColor(0x00000000)
+
+        reviewModelList.get(position).listOfOptions!!.forEachIndexed { index, s ->
+            for (item in reviewModelList.get(position).optionsWithAnswerList!!){
+                if (index == item.option){
+                    if (item.option == 0){
+                        if (item.istrue!!){
+                            webView_option1.setBackgroundResource(R.drawable.option_correct_curved_border)
+                        }else{
+                            webView_option1.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                        }
+                    }
+                    if (item.option == 1){
+                        if (item.istrue!!){
+                            webView_option2.setBackgroundResource(R.drawable.option_correct_curved_border)
+                        }else{
+                            webView_option2.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                        }
+                    }
+                }
+            }
+        }
+
+        /*if (reviewModelList.get(position).optionsWithAnswerList!!.get(0).istrue!!){
+            webView_option1.setBackgroundResource(R.drawable.option_correct_green_border)
+        }else{
+            webView_option1.setBackgroundResource(R.drawable.option_red_wrong_broder)
+        }
+
+        if (reviewModelList.get(position).optionsWithAnswerList!!.get(1).istrue!!){
+            webView_option2.setBackgroundResource(R.drawable.option_correct_green_border)
+        }else{
+            webView_option2.setBackgroundResource(R.drawable.option_red_wrong_broder)
+        }*/
     }
 }
