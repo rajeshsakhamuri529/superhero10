@@ -91,10 +91,10 @@ class ReviewActivity : BaseActivity() {
                     res = item.toString() + " of " + totalItemCount
                     for (filename in Utils.getListOfFilesFromAsset(
                         assetOutputPath +
-                                reviewModelList!!.get(item!!).questionsItem!!.id, context)) {
+                                reviewModelList!!.get(item!! - 1).questionsItem!!.id, context)) {
                         if (filename.contains("hint")) {
                             hintPath = ConstantPath.WEBVIEW_PATH + assetOutputPath +
-                                    reviewModelList!!.get(item!!).questionsItem!!.id + "/" + filename
+                                    reviewModelList!!.get(item!! - 1).questionsItem!!.id + "/" + filename
                         }
                     }
                     tv_count.setText(res)
