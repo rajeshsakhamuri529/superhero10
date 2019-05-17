@@ -3,31 +3,37 @@ package com.blobcity.activity
 import android.Manifest
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.support.design.widget.Snackbar
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.adapter.ChaptersAdapter
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.interfaces.TopicClickListener
 import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils.loadJSONFromAsset
+import com.google.firebase.auth.FirebaseAuth
 import com.blobcity.viewmodel.TopicStatusVM
 import com.blobcity.viewmodel.TopicStatusViewModel
 import com.google.firebase.database.*
-import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
 import com.google.gson.Gson
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_dashboard.*
 
 class DashBoardActivity : BaseActivity(), PermissionListener,
-    View.OnClickListener, TopicClickListener{
+    View.OnClickListener, TopicClickListener/*, ConnectivityReceiver.ConnectivityReceiverListener*/{
+
+    var TAG: String?= "Dashboard"
+    private lateinit var auth: FirebaseAuth
+    /*val sharedPref: SharedPreferences = this.getSharedPreferences(ANONYMOUS_USER, Context.MODE_PRIVATE)
+    val editor = sharedPref.edit()*/
+    private var mSnackBar: Snackbar? = null
 
 
     private var branchesItemList:List<BranchesItem>?=null
@@ -38,6 +44,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     var adapter: ChaptersAdapter?= null
     var topicStatusVM: TopicStatusVM?= null
 
+
     override fun setLayout(): Int {
         return R.layout.activity_dashboard
     }
@@ -46,13 +53,58 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         /*databaseRefrence = FirebaseDatabase.getInstance()
             .getReference("topic_status/"+UniqueUUid.id(this))
         databaseRefrence!!.keepSynced(true)*/
+        val sharedPreferences = getSharedPreferences(ANONYMOUS_USER, Context.MODE_PRIVATE)
+        auth = FirebaseAuth.getInstance()
 
-        TedPermission.with(this)
-            .setPermissionListener(this)
-            .setDeniedMessage("If you reject permission,you can not use this service\n"
-                    + "\nPlease turn on permissions at [Setting] > [Permission]")
-            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .check()
+        signin(sharedPreferences)
+
+    }
+
+    private fun signin(sharedPreferences: SharedPreferences) {
+        val editor = sharedPreferences.edit()
+        if (sharedPreferences.getBoolean("isLoggedIn", false)) {
+            Log.d(TAG, "signInAnonymously:Already Logged In")
+            val uid : String = sharedPreferences.getString("uid","noVALUE");
+            Log.d(TAG,uid)
+            Toast.makeText(baseContext, "UID "+uid, Toast.LENGTH_SHORT).show()
+
+            val user = auth.currentUser
+            TedPermission.with(this)
+                .setPermissionListener(this)
+                .setDeniedMessage("If you reject permission,you can not use this service\n"
+                        + "\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check()
+
+        } else {
+            auth.signInAnonymously()
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Toast.makeText(baseContext, "Logged In", Toast.LENGTH_SHORT).show()
+                        Log.d(TAG, "signInAnonymously:success")
+                        val user = auth.currentUser
+                        editor.putBoolean("isLoggedIn", true)
+                        editor.putString("uid", user!!.uid)
+                        editor.apply()
+
+                        TedPermission.with(this)
+                            .setPermissionListener(this)
+                            .setDeniedMessage("If you reject permission,you can not use this service\n"
+                                    + "\nPlease turn on permissions at [Setting] > [Permission]")
+                            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            .check()
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInAnonymously:failure", task.exception)
+                        //.makeText(baseContext, "Authentication failed. Check Internet Connection", Toast.LENGTH_SHORT).show()
+                        mSnackBar = Snackbar.make(findViewById(R.id.rl_dashboard), "Auth Failed :(", Snackbar.LENGTH_LONG) //Assume "rootLayout" as the root layout of every activity.
+                        mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+                        mSnackBar?.setAction("Retry",{signin(sharedPreferences)})
+                        mSnackBar?.show()
+                    }
+                }
+        }
     }
 
     override fun onPermissionGranted() {
@@ -145,6 +197,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     }
 
+
     private fun readFileLocally() {
         val courseJsonString = loadJSONFromAsset(this, assetOutputPath+"Courses.json")
         val jsonString = loadJSONFromAsset(this, assetTestCoursePath+"topic.json")
@@ -200,5 +253,11 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     override fun onClick(topic: Topic, topicId: String) {
         callIntent(topic, topicId)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("onStart","Dashboard");
+
     }
 }
