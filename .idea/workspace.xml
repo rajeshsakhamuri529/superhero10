@@ -16,37 +16,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="80d9a107-0ae4-4f5b-b77f-d6202dbb9059" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/AstraCardAdapter.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/EqualSpacingItemDecoration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/pink_card.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/pink_card.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/pink_card.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/pink_card.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/pink_card.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/astra_card_single_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/dao/TopicStatusDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/dao/TopicStatusDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/ChapterFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/ChapterFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/repository/TopicStatusRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/repository/TopicStatusRepository.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/viewmodel/TopicStatusVM.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/viewmodel/TopicStatusVM.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/centre_card.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/purple_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/clip_group.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-hdpi/golden_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/centre_card.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/purple_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/clip_group.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-mdpi/golden_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/centre_card.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/purple_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/clip_group.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xhdpi/golden_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/centre_card.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/purple_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/clip_group.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxhdpi/golden_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/centre_card.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/purple_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/clip_group.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable-xxxhdpi/golden_card.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_start_quiz.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_start_quiz.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/astra_card_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/astra_card_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chapter_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chapter_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-    </list>
+    <list default="true" id="80d9a107-0ae4-4f5b-b77f-d6202dbb9059" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,8 +132,8 @@
           <entry key="iml" value="2" />
           <entry key="java" value="2195" />
           <entry key="json" value="12" />
-          <entry key="kt" value="27018" />
-          <entry key="xml" value="6680" />
+          <entry key="kt" value="27031" />
+          <entry key="xml" value="6683" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
@@ -172,9 +142,9 @@
           <entry key="IDEA_MODULE" value="2" />
           <entry key="JAVA" value="2195" />
           <entry key="JSON" value="12" />
-          <entry key="Kotlin" value="27018" />
+          <entry key="Kotlin" value="27031" />
           <entry key="PLAIN_TEXT" value="17" />
-          <entry key="XML" value="6680" />
+          <entry key="XML" value="6683" />
         </counts>
       </usages-collector>
     </session>
@@ -200,11 +170,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="385">
-              <caret line="55" column="55" selection-start-line="55" selection-start-column="55" selection-end-line="55" selection-end-column="55" />
+            <state relative-caret-position="366">
+              <caret line="54" column="46" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
               <folding>
                 <element signature="e#1497#1543#0" expanded="true" />
               </folding>
@@ -212,13 +182,14 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/astra_card_layout.xml">
           <provider editor-type-id="android-designer2" />
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="186">
-              <caret line="41" column="51" selection-start-line="41" selection-start-column="51" selection-end-line="41" selection-end-column="51" />
+            <state relative-caret-position="252">
+              <caret line="202" column="56" selection-start-line="202" selection-start-column="56" selection-end-line="202" selection-end-column="56" />
               <folding>
+                <element signature="e#1895#1910#0" expanded="true" />
                 <element signature="e#9687#9702#0" expanded="true" />
                 <element signature="e#9750#9765#0" expanded="true" />
               </folding>
@@ -2810,8 +2781,8 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/EqualSpacingItemDecoration.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/AstraCardAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/astra_card_single_layout.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/astra_card_layout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/astra_card_layout.xml" />
       </list>
     </option>
   </component>
@@ -3171,7 +3142,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1217" height="1036" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info id="Structure" order="1" side_tool="true" />
@@ -3184,18 +3154,18 @@
       <window_info anchor="bottom" id="Version Control" order="0" show_stripe_button="false" weight="0.328" />
       <window_info anchor="bottom" id="Logcat" order="1" weight="0.4457143" />
       <window_info anchor="bottom" id="TODO" order="2" weight="0.32914287" />
-      <window_info anchor="bottom" id="Terminal" order="3" weight="0.31542858" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.31542858" />
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Build" order="5" weight="0.33942857" />
       <window_info anchor="bottom" id="Android Profiler" order="6" />
       <window_info anchor="bottom" id="Run" order="7" weight="0.32914287" />
-      <window_info anchor="bottom" id="Debug" order="8" visible="true" weight="0.32914287" />
+      <window_info anchor="bottom" id="Debug" order="8" weight="0.32914287" />
       <window_info anchor="bottom" id="Find" order="9" weight="0.32914287" />
       <window_info anchor="bottom" id="Messages" order="10" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Theme Preview" order="1" />
       <window_info anchor="right" id="Palette&#9;" order="2" />
-      <window_info anchor="right" id="Preview" order="3" weight="0.30538923" />
+      <window_info anchor="right" id="Preview" order="3" visible="true" weight="0.30538923" />
       <window_info anchor="right" id="Device File Explorer" order="4" sideWeight="0.5008518" side_tool="true" weight="0.32848588" />
       <window_info anchor="right" id="Kotlin Bytecode" order="5" weight="0.2917023" />
       <window_info anchor="right" id="Gradle" order="6" sideWeight="0.49914822" weight="0.32934132" />
@@ -3629,24 +3599,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/astra_card_layout.xml">
-      <provider editor-type-id="android-designer2" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
-          <caret line="41" column="51" selection-start-line="41" selection-start-column="51" selection-end-line="41" selection-end-column="51" />
+        <state relative-caret-position="366">
+          <caret line="54" column="46" selection-start-line="54" selection-start-column="46" selection-end-line="54" selection-end-column="46" />
           <folding>
-            <element signature="e#9687#9702#0" expanded="true" />
-            <element signature="e#9750#9765#0" expanded="true" />
+            <element signature="e#1497#1543#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/astra_card_layout.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="385">
-          <caret line="55" column="55" selection-start-line="55" selection-start-column="55" selection-end-line="55" selection-end-column="55" />
+        <state relative-caret-position="252">
+          <caret line="202" column="56" selection-start-line="202" selection-start-column="56" selection-end-line="202" selection-end-column="56" />
           <folding>
-            <element signature="e#1497#1543#0" expanded="true" />
+            <element signature="e#1895#1910#0" expanded="true" />
+            <element signature="e#9687#9702#0" expanded="true" />
+            <element signature="e#9750#9765#0" expanded="true" />
           </folding>
         </state>
       </provider>
