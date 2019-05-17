@@ -27,6 +27,8 @@ public class ConstantPath {
     public static int type2210 = 2210;
     public static int type2201 = 2201;
     public static final String ANONYMOUS_USER = "ANONYMOUS_USER";
+    public static final String SETTINGS = "SETTINGS";
+
 
     /*assetPath*/
 
