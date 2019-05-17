@@ -37,6 +37,42 @@
             android:textColor="@color/pink_quiz_text"
             android:fontFamily="@font/quicksand_bold"/>
 
+    <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_quiz_level"
+            android:layout_above="@id/tv_answer_status"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp">
+
+        <ImageView
+                android:id="@+id/iv_card_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clip_group"
+                android:visibility="invisible"/>
+    </FrameLayout>
+
+    <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_quiz_level"
+            android:layout_above="@id/tv_answer_status"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp">
+        <ImageView
+                android:id="@+id/iv_card_front"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/centre_card"
+                android:visibility="invisible"/>
+    </FrameLayout>
+
+
+
+
+
+
     <TextView
             android:id="@+id/tv_answer_status"
             android:layout_width="wrap_content"

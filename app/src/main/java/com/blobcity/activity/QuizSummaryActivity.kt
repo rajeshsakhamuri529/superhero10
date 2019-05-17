@@ -1,9 +1,15 @@
 package com.blobcity.activity
 
+import android.animation.AnimatorInflater
+import android.animation.AnimatorSet
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.os.Handler
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.ReviewModel
@@ -24,6 +30,11 @@ class QuizSummaryActivity : BaseActivity() {
     var isBasicCompleted: Boolean = false
     var isIntermediateCompleted: Boolean = false
     var isAdvancedCompleted: Boolean = false
+    private var mSetRightOut: AnimatorSet? = null
+    private var mSetLeftIn: AnimatorSet? = null
+    private var zoomOutAnimation: Animation?= null
+    private var zoominAnimation: Animation?= null
+    val handler = Handler()
 
     override fun setLayout(): Int {
         return R.layout.activity_quiz_summary
@@ -36,6 +47,8 @@ class QuizSummaryActivity : BaseActivity() {
         topicId = intent.getStringExtra(TOPIC_ID)
         totalQuestion = intent.getIntExtra(QUIZ_COUNT, 0)
         tv_chapter_title.text = topicName
+        changeCameraDistance()
+        loadAnimations()
         if (topicLevel!!.contains("basic")) {
             tv_quiz_level.text = "Quiz I"
         }
@@ -43,6 +56,8 @@ class QuizSummaryActivity : BaseActivity() {
             tv_quiz_level.text = "Quiz II"
         }
         if (topicLevel!!.contains("advanced")) {
+            iv_card_back.visibility = View.VISIBLE
+            iv_card_front.visibility = View.VISIBLE
             tv_quiz_level.text = "Astra Quiz"
         }
         val size = reviewModelList!!.size
@@ -83,6 +98,16 @@ class QuizSummaryActivity : BaseActivity() {
                                     }
                                     if (level.contains("advance")) {
                                         isAdvancedCompleted = true
+                                        handler.postDelayed(object : Runnable{
+                                            override fun run() {
+                                                iv_card_front.startAnimation(zoomOutAnimation)
+                                                mSetRightOut!!.setTarget(iv_card_front)
+                                                mSetLeftIn!!.setTarget(iv_card_back)
+                                                iv_card_back.startAnimation(zoominAnimation)
+                                                mSetRightOut!!.start()
+                                                mSetLeftIn!!.start()
+                                            }
+                                        }, 1500)
                                     }
                                 }
                             }
@@ -109,5 +134,20 @@ class QuizSummaryActivity : BaseActivity() {
                     }
                 }
             })
+    }
+
+    private fun changeCameraDistance() {
+        val distance = 6000
+        val scale = resources.displayMetrics.density * distance
+        iv_card_front!!.setCameraDistance(scale)
+        iv_card_back!!.setCameraDistance(scale)
+    }
+
+    @SuppressLint("ResourceType")
+    private fun loadAnimations() {
+        zoominAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
+        zoomOutAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_out)
+        mSetRightOut = AnimatorInflater.loadAnimator(this, R.anim.out_animation) as AnimatorSet
+        mSetLeftIn = AnimatorInflater.loadAnimator(this, R.anim.in_animation) as AnimatorSet
     }
 }

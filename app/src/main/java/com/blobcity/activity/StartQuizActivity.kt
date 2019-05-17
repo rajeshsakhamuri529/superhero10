@@ -22,6 +22,7 @@ class StartQuizActivity : BaseActivity() {
         val topicLevel = intent.getStringExtra(ConstantPath.TOPIC_LEVEL)
         val topicName = intent.getStringExtra(ConstantPath.TOPIC_NAME)
         val complete = intent.getStringExtra(ConstantPath.LEVEL_COMPLETED)
+        val position: Int = intent.getIntExtra(ConstantPath.TOPIC_POSITION, -1)
         var level = ""
 
         val gsonFile = Gson()
@@ -36,6 +37,7 @@ class StartQuizActivity : BaseActivity() {
         }
 
         if (topicLevel.equals("advanced")){
+            iv_lock_card.visibility = View.VISIBLE
             level = "Astra Quiz"
         }
 
@@ -56,6 +58,7 @@ class StartQuizActivity : BaseActivity() {
             intent.putExtra(ConstantPath.TOPIC_NAME, topicName)
             intent.putExtra(ConstantPath.TOPIC_LEVEL, topicLevel)
             intent.putExtra(ConstantPath.LEVEL_COMPLETED, complete)
+            intent.putExtra(ConstantPath.TOPIC_POSITION, position)
             startActivity(intent)
             finish()
         }

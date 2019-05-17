@@ -38,7 +38,7 @@ class ChaptersAdapter(val context: Context,
         }
         holder.singleTopic.setOnClickListener {
             topicClickListener.onClick(branchesItemList[position].topic,
-                branchesItemList[position].id)
+                branchesItemList[position].id, position)
         }
 
         if (branchesItemList[position].basic == 1){

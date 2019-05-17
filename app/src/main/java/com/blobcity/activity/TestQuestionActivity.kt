@@ -45,6 +45,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private var opt2Path: String?=""
     private var opt3Path: String?=""
     private var opt4Path: String?=""
+    var dbPosition: Int ?= null
     var courseName: String?=""
     var topicName: String?=""
     private var arrayMap: ArrayMap<String, List<TopicOneQuestionsItem>>?=null
@@ -121,6 +122,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicLevel = intent.getStringExtra(TOPIC_LEVEL)
         topicName = intent.getStringExtra(TOPIC_NAME)
         complete = intent.getStringExtra(LEVEL_COMPLETED)
+        dbPosition = intent.getIntExtra(TOPIC_POSITION, -1)
         quizTimer = Timer()
 
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
@@ -768,6 +770,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(TOPIC_LEVEL, topicLevel)
         intent.putExtra(QUIZ_COUNT, totalQuestion)
         intent.putExtra(TOPIC_ID, topicId)
+        intent.putExtra(TOPIC_POSITION, dbPosition)
         startActivity(intent)
         finish()
     }
@@ -835,6 +838,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicStatusEntity.uid = uId
         topicStatusEntity.topicLevel = topicLevel
         topicStatusEntity.isLevelComplete = 1
+        topicStatusEntity.topicPosition = dbPosition!!
         topicStatusVM.insert(topicStatusEntity)
         /*val id: String? = dbRStatus!!.push().key
         val uId: String = UniqueUUid.id(this)

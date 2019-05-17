@@ -8,4 +8,8 @@
     <string name="str_astra_quiz">Astra Quiz</string>
     <string name="str_upgrade_to_all_chapters">Upgrade to Practice all Chapters</string>
     <string name="str_topic_title">03 Pair of Linear Equations in Two Variables</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

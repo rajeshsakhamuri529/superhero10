@@ -28,6 +28,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var courseName: String?=""
     var topicId: String? =""
     var topicName: String?=""
+    var position: Int ?= null
     var databaseRefrence: DatabaseReference?= null
     var topicStatusModelList: ArrayList<TopicStatusEntity>?=null
     var isBasicCompleted: Boolean = false
@@ -47,6 +48,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         courseId = intent.getStringExtra(COURSE_ID)
         topicId = intent.getStringExtra(TOPIC_ID)
         topicName = topic.title
+        position = intent.getIntExtra(TOPIC_POSITION, -1)
         val index = topic.index
         courseName = intent.getStringExtra(COURSE_NAME)
         /*databaseRefrence = FirebaseDatabase.getInstance()
@@ -113,14 +115,6 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
                     }
-                    /*for (postSnapshot in t!!) {
-                        Log.e("snap", postSnapshot.value.toString())
-                        if (postSnapshot != null) {
-                            val topicStatusModel: TopicStatusModel =
-                                postSnapshot.getValue(TopicStatusModel::class.java)!!
-
-                        }
-                    }*/
                 }
             })
         /*databaseRefrence!!.addValueEventListener(object : ValueEventListener {
@@ -226,6 +220,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(TOPIC_NAME, topicName)
         intent.putExtra(TOPIC_LEVEL, level)
         intent.putExtra(LEVEL_COMPLETED, complete)
+        intent.putExtra(TOPIC_POSITION, position)
         startActivity(intent)
     }
 

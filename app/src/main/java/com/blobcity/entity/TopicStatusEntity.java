@@ -25,6 +25,17 @@ public class TopicStatusEntity {
     @ColumnInfo(name = "is_level_completed")
     private int isLevelComplete = 0;
 
+    @ColumnInfo(name = "topic_position")
+    private int topicPosition = -1;
+
+    public int getTopicPosition() {
+        return topicPosition;
+    }
+
+    public void setTopicPosition(int topicPosition) {
+        this.topicPosition = topicPosition;
+    }
+
     public int getId() {
         return id;
     }
