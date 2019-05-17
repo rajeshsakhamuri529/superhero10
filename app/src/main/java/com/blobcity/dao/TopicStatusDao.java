@@ -18,4 +18,7 @@ public interface TopicStatusDao {
 
     @Query("SELECT * FROM topic_status WHERE Topic_Id = :topicId")
     LiveData<List<TopicStatusEntity>> getSingleTopicStatus( String topicId);
+
+    @Query("SELECT * FROM topic_status WHERE Topic_Level = :topic_level")
+    LiveData<List<TopicStatusEntity>> getTopicByLevel( String topic_level);
 }

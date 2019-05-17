@@ -23,6 +23,10 @@ class TopicStatusVM(application: Application) : AndroidViewModel(Application()) 
         return topicStatusRepository!!.getSingleTopicStatus(topicId)
     }
 
+    fun getTopicsByLevel(topicLevel: String) : LiveData<List<TopicStatusEntity>>{
+        return topicStatusRepository!!.getTopicsByLevel(topicLevel)
+    }
+
     fun insert(topicStatusEntity: TopicStatusEntity){
         topicStatusRepository!!.insert(topicStatusEntity)
     }

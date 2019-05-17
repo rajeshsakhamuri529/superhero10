@@ -109,7 +109,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
 
         adapter = ChaptersAdapter(context!!, branchesItemList!!, this)
 
-        rcv_dashboard.adapter = adapter
+        rcv_chapter.adapter = adapter
         /*rl_chapter_one.setOnClickListener(this)
         rl_chapter_two.setOnClickListener(this)*/
     }

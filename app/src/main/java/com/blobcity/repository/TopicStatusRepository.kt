@@ -25,6 +25,10 @@ class TopicStatusRepository(application: Application) {
         return topicStatusDao!!.getSingleTopicStatus(topicID)
     }
 
+    fun getTopicsByLevel(topicLevel: String) : LiveData<List<TopicStatusEntity>>{
+        return topicStatusDao!!.getTopicByLevel(topicLevel)
+    }
+
     fun insert(topicStatusEntity: TopicStatusEntity){
         insertAsyncTask(topicStatusDao!!).execute(topicStatusEntity)
     }
