@@ -3,6 +3,8 @@ package com.blobcity.activity
 import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -67,6 +69,8 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     private fun signin(sharedPreferences: SharedPreferences) {
         val editor = sharedPreferences.edit()
         if (sharedPreferences.getBoolean("isLoggedIn", false)) {
+
+
             Log.d(TAG, "signInAnonymously:Already Logged In")
             val uid : String = sharedPreferences.getString("uid","noVALUE");
             Log.d(TAG,uid)
@@ -81,33 +85,54 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                 .check()
 
         } else {
-            auth.signInAnonymously()
-                .addOnCompleteListener(this) { task ->
-                    if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(baseContext, "Logged In", Toast.LENGTH_SHORT).show()
-                        Log.d(TAG, "signInAnonymously:success")
-                        val user = auth.currentUser
-                        editor.putBoolean("isLoggedIn", true)
-                        editor.putString("uid", user!!.uid)
-                        editor.apply()
+            val connectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnected == true
+            Log.d("isConnected",isConnected.toString()+"!")
+            if(isConnected) {
+                auth.signInAnonymously()
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(baseContext, "Logged In", Toast.LENGTH_SHORT).show()
+                            Log.d(TAG, "signInAnonymously:success")
+                            val user = auth.currentUser
+                            editor.putBoolean("isLoggedIn", true)
+                            editor.putString("uid", user!!.uid)
+                            editor.apply()
 
-                        TedPermission.with(this)
-                            .setPermissionListener(this)
-                            .setDeniedMessage("If you reject permission,you can not use this service\n"
-                                    + "\nPlease turn on permissions at [Setting] > [Permission]")
-                            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                            .check()
-                    } else {
-                        // If sign in fails, display a message to the user.
-                        Log.w(TAG, "signInAnonymously:failure", task.exception)
-                        //.makeText(baseContext, "Authentication failed. Check Internet Connection", Toast.LENGTH_SHORT).show()
-                        mSnackBar = Snackbar.make(findViewById(R.id.rl_dashboard), "Auth Failed :(", Snackbar.LENGTH_LONG) //Assume "rootLayout" as the root layout of every activity.
-                        mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
-                        mSnackBar?.setAction("Retry",{signin(sharedPreferences)})
-                        mSnackBar?.show()
+                            TedPermission.with(this)
+                                .setPermissionListener(this)
+                                .setDeniedMessage(
+                                    "If you reject permission,you can not use this service\n"
+                                            + "\nPlease turn on permissions at [Setting] > [Permission]"
+                                )
+                                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                .check()
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInAnonymously:failure", task.exception)
+                            //.makeText(baseContext, "Authentication failed. Check Internet Connection", Toast.LENGTH_SHORT).show()
+                            mSnackBar = Snackbar.make(
+                                findViewById(R.id.rl_dashboard),
+                                "Auth Failed :(",
+                                Snackbar.LENGTH_LONG
+                            ) //Assume "rootLayout" as the root layout of every activity.
+                            mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+                            mSnackBar?.setAction("Retry", { signin(sharedPreferences) })
+                            mSnackBar?.show()
+                        }
                     }
-                }
+            }else{
+                mSnackBar = Snackbar.make(
+                    findViewById(R.id.rl_dashboard),
+                    "No Internet Connection",
+                    Snackbar.LENGTH_LONG
+                ) //Assume "rootLayout" as the root layout of every activity.
+                mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+                mSnackBar?.setAction("Retry", { signin(sharedPreferences) })
+                mSnackBar?.show()
+            }
         }
     }
 
