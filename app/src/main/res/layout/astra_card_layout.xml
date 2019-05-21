@@ -198,11 +198,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_cards_count"
-                    android:layout_marginLeft="@dimen/_15sdp"
-                    android:layout_marginRight="@dimen/_15sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:nestedScrollingEnabled="false"
                     android:layout_marginBottom="@dimen/_40sdp"/>
+
+            <ImageView
+                    android:id="@+id/iv_anim_card"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_250sdp"
+                    android:layout_below="@id/tv_cards_count"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_50sdp"
+                    android:visibility="invisible"
+                    android:src="@drawable/purple_card"/>
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>

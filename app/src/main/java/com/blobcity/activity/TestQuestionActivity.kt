@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.Animation
+import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.webkit.WebView
 import android.widget.Button
@@ -588,7 +589,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         checkWebView(optionClicked, isAnswerCorrect)
                         dbAnswer = "opt1"
                         btn_next!!.visibility = View.VISIBLE
-                        Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                     } else {
                         if (listOfOptions!!.get(optionClicked).contains("opt2")){
                             dbAnswer = "opt2"
@@ -617,7 +617,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                             checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_next!!.visibility = View.VISIBLE
-                            Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                         } else {
                             isAnswerCorrect = false
                             isDbCorrectAnswer = "false"
@@ -637,7 +636,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                             checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_next!!.visibility = View.VISIBLE
-                            Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                         } else {
                             isAnswerCorrect = false
                             isDbCorrectAnswer = "false"
@@ -733,26 +731,70 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun checkLife(life: Int){
+        val zoominAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
+        val zoomOutAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_out)
+        val bounceAnim = AnimationUtils.loadAnimation(this, R.anim.blink_anim)
+        val animationSet = AnimationSet(false)
+        animationSet.addAnimation(bounceAnim)
         if (totalLife == 3){
             if (life == 2){
-                Glide.with(this)
-                    .load(com.blobcity.R.drawable.inactive_heart)
-                    .into(iv_life3)
+                iv_life3.startAnimation(animationSet)
+                animationSet.setAnimationListener(object : Animation.AnimationListener{
+                    override fun onAnimationRepeat(animation: Animation?) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animation?) {
+                        Glide.with(this@TestQuestionActivity)
+                            .load(R.drawable.inactive_heart)
+                            .into(iv_life3)
+                    }
+
+                    override fun onAnimationStart(animation: Animation?) {
+
+                    }
+                })
             }
         }
         if (life == 1){
-            Glide.with(this)
-                .load(com.blobcity.R.drawable.inactive_heart)
-                .into(iv_life2)
+            iv_life2.startAnimation(animationSet)
+            animationSet.setAnimationListener(object : Animation.AnimationListener{
+                override fun onAnimationRepeat(animation: Animation?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    Glide.with(this@TestQuestionActivity)
+                        .load(com.blobcity.R.drawable.inactive_heart)
+                        .into(iv_life2)
+                }
+
+                override fun onAnimationStart(animation: Animation?) {
+
+                }
+            })
+
         }
         if (life == 0){
+            iv_life1.startAnimation(animationSet)
+            animationSet.setAnimationListener(object : Animation.AnimationListener{
+                override fun onAnimationRepeat(animation: Animation?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    Glide.with(this@TestQuestionActivity)
+                        .load(com.blobcity.R.drawable.inactive_heart)
+                        .into(iv_life1)
+                }
+
+                override fun onAnimationStart(animation: Animation?) {
+
+                }
+            })
             isLifeZero = true
             btn_next.visibility = View.VISIBLE
             /*navigateToSummaryScreen(false)*/
-            Glide.with(this)
-                .load(com.blobcity.R.drawable.inactive_heart)
-                .into(iv_life1)
-            Toast.makeText(this, "Game Over", Toast.LENGTH_SHORT).show()
         }
     }
 
