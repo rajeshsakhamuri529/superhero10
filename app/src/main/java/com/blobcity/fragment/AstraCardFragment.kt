@@ -1,5 +1,6 @@
 package com.blobcity.fragment
 
+import android.app.SharedElementCallback
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -12,6 +13,7 @@ import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import com.blobcity.R
 import com.blobcity.activity.CardReviewActivity
@@ -31,6 +33,16 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
 
     var topicStatusVM: TopicStatusVM?= null
     private var branchesItemList:List<BranchesItem>?=null
+    companion object {
+        const val EXTRA_STARTING_ALBUM_POSITION = "extra_starting_item_position"
+        const val EXTRA_CURRENT_ALBUM_POSITION = "extra_current_item_position"
+    }
+
+    val mCallback : SharedElementCallback = object : SharedElementCallback() {
+        override fun onMapSharedElements(names: MutableList<String>?, sharedElements: MutableMap<String, View>?) {
+            super.onMapSharedElements(names, sharedElements)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -68,6 +80,23 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         val imageViewPair = Pair.create<View, String>(imageView, "ImageTransition")
         val options = ActivityOptionsCompat
             .makeSceneTransitionAnimation(activity!!, imageViewPair)
+        intent.putExtra("pos", position)
         startActivity(intent, options.toBundle())
     }
+
+    fun activityReenter( position: Int){
+        rcv_astra_card.scrollToPosition(position)
+        postponeEnterTransition()
+        rcv_astra_card.viewTreeObserver.addOnPreDrawListener(object : ViewTreeObserver.OnPreDrawListener{
+            override fun onPreDraw(): Boolean {
+                rcv_astra_card.getViewTreeObserver().removeOnPreDrawListener(this)
+                rcv_astra_card.requestLayout()
+                startPostponedEnterTransition()
+                return true
+            }
+
+        })
+    }
+
+
 }

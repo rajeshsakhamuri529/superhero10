@@ -9,13 +9,53 @@
         tools:context=".activity.CardReviewActivity">
 
     <ImageView
-            android:id="@+id/iv_demo"
-            android:transitionName="ImageTransition"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/button_dismiss"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_medium"
+            android:textColor="@color/white"
+            android:id="@+id/tv_chapter_title"
+            android:textSize="@dimen/_18ssp"
+            android:text="Topic one"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_35sdp"/>
+
+    <TextView
+            android:id="@+id/tv_topic_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_chapter_title"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_15ssp"
+            android:textAllCaps="true"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:textColor="@color/pink_quiz_text"
+            android:fontFamily="@font/quicksand_bold"/>
+
+    <com.blobcity.utils.InfiniteViewPager
+            android:id="@+id/vp_card_review"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/purple_card"
-            android:layout_centerInParent="true"
-            android:layout_margin="@dimen/_40sdp"
-    />
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:layout_below="@id/tv_topic_count"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp" />
+
+    <!--<com.blobcity.utils.HorizontalCarouselRecyclerView
+            android:id="@+id/rcv_card_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_below="@id/tv_topic_count"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:clipToPadding="false"
+            android:overScrollMode="never" />-->
 
 </RelativeLayout>

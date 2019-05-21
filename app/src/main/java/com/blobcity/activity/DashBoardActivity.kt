@@ -1,7 +1,9 @@
 package com.blobcity.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
@@ -30,9 +32,10 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     /*val sharedPref: SharedPreferences = this.getSharedPreferences(ANONYMOUS_USER, Context.MODE_PRIVATE)
     val editor = sharedPref.edit()*/
     private var mSnackBar: Snackbar? = null
+    var fragment : Fragment ?= null
 
     override fun setLayout(): Int {
-        return R.layout.activity_dashboard
+        return com.blobcity.R.layout.activity_dashboard
     }
 
     override fun initView() {
@@ -47,18 +50,16 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        var fragment : Fragment ?= null;
-
         when (item.getItemId()) {
-            R.id.nav_chapter ->{
+            com.blobcity.R.id.nav_chapter ->{
                 fragment = ChapterFragment()
             }
 
-            R.id.nav_astra_cards->{
+            com.blobcity.R.id.nav_astra_cards->{
                 fragment = AstraCardFragment()
             }
 
-            R.id.nav_settings->{
+            com.blobcity.R.id.nav_settings->{
                 fragment = SettingFragment()
             }
         }
@@ -114,7 +115,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                             Log.w(TAG, "signInAnonymously:failure", task.exception)
                             //.makeText(baseContext, "Authentication failed. Check Internet Connection", Toast.LENGTH_SHORT).show()
                             mSnackBar = Snackbar.make(
-                                findViewById(R.id.rl_dashboard),
+                                findViewById(com.blobcity.R.id.rl_dashboard),
                                 "Auth Failed :(",
                                 Snackbar.LENGTH_LONG
                             ) //Assume "rootLayout" as the root layout of every activity.
@@ -125,7 +126,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                     }
             }else{
                 mSnackBar = Snackbar.make(
-                    findViewById(R.id.rl_dashboard),
+                    findViewById(com.blobcity.R.id.rl_dashboard),
                     "No Internet Connection",
                     Snackbar.LENGTH_LONG
                 ) //Assume "rootLayout" as the root layout of every activity.
@@ -195,7 +196,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         if (fragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
+                    .replace(com.blobcity.R.id.fragment_container, fragment)
                     .commit()
             return true
         }
@@ -223,5 +224,18 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         super.onStart()
         Log.d("onStart","Dashboard");
 
+    }
+
+    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+        super.onActivityReenter(resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            val position = data!!.getIntExtra("currentPosition", 0)
+            (fragment as AstraCardFragment).activityReenter(position)
+        }
+        /*val myFragment = fragmentManager.findFragmentByTag("AstraCardFragment") as AstraCardFragment
+        if (myFragment != null && myFragment!!.isVisible()) {
+            // add your code here
+
+        }*/
     }
 }
