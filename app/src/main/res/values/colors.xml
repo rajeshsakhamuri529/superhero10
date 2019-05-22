@@ -21,4 +21,5 @@
     <color name="purple">#7A2ADB</color>
     <color name="pink_inactive">#9b45ba</color>
     <color name="orange_level_failed">#F15A24</color>
+    <color name="purple_save">#5F19CE</color>
 </resources>

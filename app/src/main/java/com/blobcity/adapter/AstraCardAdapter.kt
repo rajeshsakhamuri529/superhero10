@@ -36,6 +36,10 @@ class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
         return branchesItemList.size
     }
 
+    fun getItem(position: Int) : BranchesItem{
+        return branchesItemList[position]
+    }
+
     override fun onBindViewHolder(holder: AstraCardViewHolder, position: Int) {
         /*val topicStatusEntity = topicStatusEntityList.get(position)*/
         loadImage(R.drawable.purple_card, holder.iv_astra_card)

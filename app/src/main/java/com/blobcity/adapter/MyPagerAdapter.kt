@@ -15,6 +15,7 @@ class MyPagerAdapter(var context: Context,var listOfImages: ArrayList<Int>) : Pa
         val view = LayoutInflater.from(context).inflate(R.layout.card_review_single_layout, null)
         val iv_card_review = view.iv_card_review
         val linMain = view.linMain
+        linMain.setTag(position)
         Glide.with(context)
             .load(listOfImages[position])
             .into(iv_card_review)

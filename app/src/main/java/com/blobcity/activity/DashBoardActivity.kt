@@ -7,12 +7,18 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
+import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.fragment.AstraCardFragment
@@ -51,7 +57,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
-            com.blobcity.R.id.nav_chapter ->{
+            R.id.nav_chapter ->{
                 fragment = ChapterFragment()
             }
 
@@ -196,8 +202,9 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         if (fragment != null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(com.blobcity.R.id.fragment_container, fragment)
+                    .replace(R.id.fragment_container, fragment)
                     .commit()
+
             return true
         }
         return false
@@ -228,9 +235,10 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     override fun onActivityReenter(resultCode: Int, data: Intent?) {
         super.onActivityReenter(resultCode, data)
+        postponeEnterTransition()
         if (resultCode == Activity.RESULT_OK) {
             val position = data!!.getIntExtra("currentPosition", 0)
-            (fragment as AstraCardFragment).activityReenter(position)
+            (fragment as AstraCardFragment).activityReenter(data)
         }
         /*val myFragment = fragmentManager.findFragmentByTag("AstraCardFragment") as AstraCardFragment
         if (myFragment != null && myFragment!!.isVisible()) {

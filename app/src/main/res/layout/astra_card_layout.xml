@@ -19,16 +19,11 @@
             android:layout_marginTop="@dimen/_30sdp"
             android:fontFamily="@font/montserrat_bold"/>
 
-    <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nsv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_13sdp"
-            android:layout_below="@id/tv_chapter">
-
         <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_13sdp"
+                android:layout_below="@id/tv_chapter">
 
             <View
                     android:layout_width="match_parent"
@@ -202,7 +197,7 @@
                     android:layout_marginRight="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_15sdp"
                     android:nestedScrollingEnabled="false"
-                    android:layout_marginBottom="@dimen/_40sdp"/>
+                    android:layout_marginBottom="@dimen/_5sdp"/>
 
             <ImageView
                     android:id="@+id/iv_anim_card"
@@ -216,6 +211,5 @@
                     android:src="@drawable/purple_card"/>
 
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>
