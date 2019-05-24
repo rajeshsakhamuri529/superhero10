@@ -11,8 +11,10 @@ import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.util.ArrayMap
 import android.util.Log
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.webkit.WebView
@@ -40,31 +42,31 @@ import kotlin.random.Random
 
 class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
-    private var hintPath: String?=""
-    private var opt1Path: String?=""
-    private var opt2Path: String?=""
-    private var opt3Path: String?=""
-    private var opt4Path: String?=""
-    var dbPosition: Int ?= null
-    var courseName: String?=""
-    var topicName: String?=""
-    private var arrayMap: ArrayMap<String, List<TopicOneQuestionsItem>>?=null
-    private var listWithUniqueString: ArrayList<String>?=null
+    private var hintPath: String? = ""
+    private var opt1Path: String? = ""
+    private var opt2Path: String? = ""
+    private var opt3Path: String? = ""
+    private var opt4Path: String? = ""
+    var dbPosition: Int? = null
+    var courseName: String? = ""
+    var topicName: String? = ""
+    private var arrayMap: ArrayMap<String, List<TopicOneQuestionsItem>>? = null
+    private var listWithUniqueString: ArrayList<String>? = null
     private var position: Int = -1
-    private var questionsItem: List<TopicOneQuestionsItem>?=null
-    private var singleQuestionsItem: TopicOneQuestionsItem?=null
-    private var totalQuestion: Int?=null
-    private var listSize: Int?=null
-    private var countInt: Int =0
+    private var questionsItem: List<TopicOneQuestionsItem>? = null
+    private var singleQuestionsItem: TopicOneQuestionsItem? = null
+    private var totalQuestion: Int? = null
+    private var listSize: Int? = null
+    private var countInt: Int = 0
     private var listOfOptions: ArrayList<String>? = null
     private var randomPosition: Int = -1
-    private var availableLife: Int  = -1
+    private var availableLife: Int = -1
     private var totalLife: Int? = null
-    var webView_question: WebView ?=  null
-    var webView_option1: WebView ?=  null
-    var webView_option2: WebView ?=  null
-    var webView_option3: WebView ?=  null
-    var webView_option4: WebView ?=  null
+    var webView_question: WebView? = null
+    var webView_option1: WebView? = null
+    var webView_option2: WebView? = null
+    var webView_option3: WebView? = null
+    var webView_option4: WebView? = null
     var startClickTime: Long? = null
     private val MAX_CLICK_DURATION = 200
     private var isLevelCompleted: Boolean = false
@@ -72,49 +74,49 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private var isAnswerCorrect: Boolean = false
     private var isLifeZero: Boolean = false
     private var isHandlerExecuted: Boolean = false
-    var dbRStatus: DatabaseReference?= null
-    var dbTrackingStatus: DatabaseReference?=null
-    var dbTrackingHintStatus: DatabaseReference?=null
-    var courseId: String? =""
-    var topicId: String? =""
+    var dbRStatus: DatabaseReference? = null
+    var dbTrackingStatus: DatabaseReference? = null
+    var dbTrackingHintStatus: DatabaseReference? = null
+    var courseId: String? = ""
+    var topicId: String? = ""
     var topicLevel: String? = ""
-    var complete: String?=""
+    var complete: String? = ""
     var dbAttempts: Int = 0
-    var dbTimeStamp: Long ?= 0
-    var dbQuestionBank: String?=""
+    var dbTimeStamp: Long? = 0
+    var dbQuestionBank: String? = ""
     var dbQPaths: String = ""
     var dbQLevel: String = ""
     var isDbCorrectAnswer: String = ""
     var dbAnswer: String = ""
     val handler = Handler()
-    var animationFadeIn: Animation ?= null
-    var animationFadeIn1500: Animation ?= null
-    var animationFadeIn1000: Animation ?= null
-    var animationFadeIn500: Animation ?= null
-    var type:Int = 0
-    var child: View ?= null
+    var animationFadeIn: Animation? = null
+    var animationFadeIn1500: Animation? = null
+    var animationFadeIn1000: Animation? = null
+    var animationFadeIn500: Animation? = null
+    var type: Int = 0
+    var child: View? = null
     var isOption1Wrong = false
     var isOption2Wrong = false
     var isOption3Wrong = false
     var isOption4Wrong = false
-    var firestore: FirebaseFirestore?=null
-    var quizTimer: Timer ?= null
+    var firestore: FirebaseFirestore? = null
+    var quizTimer: Timer? = null
     var quizTimerCount = 0
-    var perQuizTimer: Timer ?= null
+    var perQuizTimer: Timer? = null
     var perQuizTimerCount = 0
-    var bank: Bank ?= null
+    var bank: Bank? = null
     var dbIsHintUsed = false
     val bankList: ArrayList<Bank> = ArrayList()
-    var answerList: ArrayList<String> ?= null
-    val reviewModelList : ArrayList<ReviewModel> = ArrayList()
-    var reviewModel : ReviewModel ?= null
-    var optionsWithAnswerList: ArrayList<OptionsWithAnswer>?= null
+    var answerList: ArrayList<String>? = null
+    val reviewModelList: ArrayList<ReviewModel> = ArrayList()
+    var reviewModel: ReviewModel? = null
+    var optionsWithAnswerList: ArrayList<OptionsWithAnswer>? = null
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
     }
 
-    override fun initView(){
+    override fun initView() {
         val path = intent.getStringExtra(DYNAMIC_PATH)
         courseId = intent.getStringExtra(COURSE_ID)
         topicId = intent.getStringExtra(TOPIC_ID)
@@ -146,7 +148,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    private fun initializeView(view: View){
+    private fun initializeView(view: View) {
         webView_question = view.findViewById(R.id.webView_question)
         webView_option1 = view.findViewById(R.id.webView_option1)
         webView_option2 = view.findViewById(R.id.webView_option2)
@@ -155,15 +157,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         btn_next!!.setOnClickListener(this)
         btn_hint!!.setOnClickListener(this)
+        iv_cancel_test_question!!.setOnClickListener(this)
         webView_option1!!.setOnTouchListener { v, event ->
-            if (!isOption1Wrong){
+            if (!isOption1Wrong) {
                 clickOptions(event, 0, "true")
             }
             true
         }
 
         webView_option2!!.setOnTouchListener { v, event ->
-            if (!isOption2Wrong){
+            if (!isOption2Wrong) {
                 clickOptions(event, 1, "false")
             }
             true
@@ -188,63 +191,68 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun clickOptions(event: MotionEvent,
-                             position: Int,
-                             stringAns: String){
-        if (event.getAction() == MotionEvent.ACTION_DOWN){
+    private fun clickOptions(
+        event: MotionEvent,
+        position: Int,
+        stringAns: String
+    ) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
             startClickTime = Calendar.getInstance().getTimeInMillis()
         }
 
-        if (event.action == MotionEvent.ACTION_UP){
+        if (event.action == MotionEvent.ACTION_UP) {
             val clickDuration = Calendar.getInstance().timeInMillis - startClickTime!!
-            if (clickDuration < MAX_CLICK_DURATION){
+            if (clickDuration < MAX_CLICK_DURATION) {
                 checkAnswer(position, stringAns)
             }
         }
     }
 
     override fun onClick(v: View?) {
-        when(v!!.id){
-            R.id.btn_next ->{
+        when (v!!.id) {
+            R.id.iv_cancel_test_question -> {
+                onBackPressed()
+            }
+            R.id.btn_next -> {
                 onBtnNext()
             }
 
-            R.id.btn_hint ->{
+            R.id.btn_hint -> {
                 hintAlertDialog()
             }
         }
     }
 
-    private fun hintAlertDialog(){
+    private fun hintAlertDialog() {
         if (!isLifeZero) {
-            if (!isAnswerCorrect) {
-                dbIsHintUsed = true
-                addTrackDataInDb("hint")
-                val dialogBuilder = AlertDialog.Builder(this)
-                val inflater = this.layoutInflater
-                val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
-                dialogBuilder.setView(dialogView)
+            // if (!isAnswerCorrect) {
+            dbIsHintUsed = true
+            addTrackDataInDb("hint")
+            val dialogBuilder = AlertDialog.Builder(this)
+            val inflater = this.layoutInflater
+            val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
+            dialogBuilder.setView(dialogView)
 
-                val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
-                val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
-                webview.loadUrl(hintPath)
-                webview.setBackgroundColor(0)
-                val alertDialog = dialogBuilder.create()
-                btn_gotIt.setOnClickListener {
-                    alertDialog.dismiss()
-                }
-
-                alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-                alertDialog.show()
+            val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
+            val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
+            webview.loadUrl(hintPath)
+            webview.setBackgroundColor(0)
+            val alertDialog = dialogBuilder.create()
+            btn_gotIt.setOnClickListener {
+                alertDialog.dismiss()
             }
-        }else{
+
+            alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            alertDialog.show()
+            // }
+        } else {
             Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun onBtnNext(){
+    private fun onBtnNext() {
         if (!isLifeZero) {
-            if (reviewModel != null){
+            if (reviewModel != null) {
                 reviewData()
                 reviewModelList.add(reviewModel!!)
                 reviewModel = null
@@ -254,9 +262,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             } else {
                 Toast.makeText(this, "Please select right option.", Toast.LENGTH_LONG).show()
             }
-        }else{
+        } else {
 
-            if (reviewModel != null){
+            if (reviewModel != null) {
                 reviewData()
                 reviewModelList.add(reviewModel!!)
                 reviewModel = null
@@ -276,14 +284,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         var questionItemList: ArrayList<TopicOneQuestionsItem>
         arrayMap = ArrayMap()
 
-        for (questionItem in questionsItems){
+        for (questionItem in questionsItems) {
             val questionBank = questionItem.bank
             listWithDuplicateKeys.add(questionBank)
-            if (!arrayMap!!.contains(questionBank)){
+            if (!arrayMap!!.contains(questionBank)) {
                 questionItemList = ArrayList()
                 questionItemList.add(questionItem)
                 arrayMap!![questionBank] = questionItemList
-            }else{
+            } else {
                 questionItemList = arrayMap!![questionBank] as ArrayList<TopicOneQuestionsItem>
                 questionItemList.add(questionItem)
             }
@@ -292,18 +300,18 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         listWithUniqueString = ArrayList(setWithUniqueValues)
 
         Collections.sort(listWithUniqueString)
-        for (strings in listWithUniqueString!!){
+        for (strings in listWithUniqueString!!) {
             Log.e("unique", strings)
         }
         listSize = arrayMap!!.size
-        if (questionResponseModel.questionCount == arrayMap!!.size){
+        if (questionResponseModel.questionCount == arrayMap!!.size) {
             Log.e("is list Correct", "yes")
         }
-        if (questionResponseModel.questionCount > 4){
+        if (questionResponseModel.questionCount > 4) {
             iv_life3.visibility = View.VISIBLE
             availableLife = 3
             totalLife = 3
-        }else{
+        } else {
             iv_life3.visibility = View.GONE
             availableLife = 2
             totalLife = 2
@@ -311,47 +319,47 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         createPath()
     }
 
-    private fun createPath(){
+    private fun createPath() {
         position++
         btn_hint!!.visibility = View.INVISIBLE
-        quizTimer!!.scheduleAtFixedRate(object : TimerTask(){
+        quizTimer!!.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
                 quizTimerCount++
             }
 
-        },1000,1000)
+        }, 1000, 1000)
         handler.removeCallbacksAndMessages(null)
         if (child != null) {
             ll_inflate.removeView(child!!)
         }
-        if (bank != null){
+        if (bank != null) {
             addBankData()
             bankList.add(bank!!)
             bank = null
             dbIsHintUsed = false
             dbAttempts = 0
         }
-        if (perQuizTimer != null){
+        if (perQuizTimer != null) {
             perQuizTimer = null
             perQuizTimerCount = 0
         }
-       /* if (reviewModel != null){
-            reviewData()
-            reviewModelList.add(reviewModel!!)
-            reviewModel = null
-        }*/
+        /* if (reviewModel != null){
+             reviewData()
+             reviewModelList.add(reviewModel!!)
+             reviewModel = null
+         }*/
         if (position < totalQuestion!!) {
             bank = Bank()
             reviewModel = ReviewModel()
             answerList = ArrayList()
             optionsWithAnswerList = ArrayList()
             perQuizTimer = Timer()
-            perQuizTimer!!.scheduleAtFixedRate(object : TimerTask(){
+            perQuizTimer!!.scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     perQuizTimerCount++
                 }
 
-            },1000,1000)
+            }, 1000, 1000)
             isOption1Wrong = false
             isOption2Wrong = false
             isOption3Wrong = false
@@ -382,12 +390,12 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 loadDataInWebView(paths)
             }
         }
-        if (position >= totalQuestion!!){
+        if (position >= totalQuestion!!) {
             navigateToSummaryScreen(true)
         }
     }
 
-    private fun addBankData(){
+    private fun addBankData() {
         bank!!.answer = answerList
         bank!!.attempts = dbAttempts
         bank!!.result = isAnswerCorrect
@@ -396,24 +404,24 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         bank!!.id = dbQPaths.substring(dbQPaths.length - 3)
     }
 
-    private fun loadDataInWebView(path: String){
+    private fun loadDataInWebView(path: String) {
         listOfOptions = ArrayList()
         var questionPath = ""
-        for (filename in Utils.getListOfFilesFromAsset(path, this)){
-            if (filename.contains("opt")){
+        for (filename in Utils.getListOfFilesFromAsset(path, this)) {
+            if (filename.contains("opt")) {
                 if (!filename.contains("opt5")) {
                     listOfOptions!!.add(filename)
                 }
             }
-            if (filename.contains("question")){
-                questionPath = WEBVIEW_PATH+path+"/"+filename
+            if (filename.contains("question")) {
+                questionPath = WEBVIEW_PATH + path + "/" + filename
             }
-            if (filename.contains("hint")){
-                hintPath = WEBVIEW_PATH+path+"/"+filename
+            if (filename.contains("hint")) {
+                hintPath = WEBVIEW_PATH + path + "/" + filename
             }
         }
 
-        if (type == 4100){
+        if (type == 4100) {
             inflateView4100()
             setWebViewBGDefault()
             webView_question!!.visibility = View.GONE
@@ -421,7 +429,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             webView_option2!!.visibility = View.GONE
             webView_option3!!.visibility = View.GONE
             webView_option4!!.visibility = View.GONE
-            handler.postDelayed(object : Runnable{
+            handler.postDelayed(object : Runnable {
                 override fun run() {
                     webView_option1!!.visibility = View.VISIBLE
                     webView_option1!!.startAnimation(animationFadeIn500)
@@ -434,21 +442,21 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 }
             }, 2500)
             Collections.shuffle(listOfOptions!!)
-            opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
-            opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
-            opt3Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(2)
-            opt4Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(3)
+            opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
+            opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
+            opt3Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(2)
+            opt4Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(3)
             webView_option1!!.loadUrl(opt1Path)
             webView_option2!!.loadUrl(opt2Path)
             webView_option3!!.loadUrl(opt3Path)
             webView_option4!!.loadUrl(opt4Path)
         }
 
-        if (type == 2201){
+        if (type == 2201) {
             inflateView2201()
             setWebViewBGDefault()
             webViewGone()
-            handler.postDelayed(object : Runnable{
+            handler.postDelayed(object : Runnable {
                 override fun run() {
                     webViewAnimation()
                 }
@@ -456,11 +464,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             webViewPathAndLoad(path)
         }
 
-        if (type == 2210){
+        if (type == 2210) {
             inflateView2210()
             setWebViewBGDefault()
             webViewGone()
-            handler.postDelayed(object : Runnable{
+            handler.postDelayed(object : Runnable {
                 override fun run() {
                     webViewAnimation()
                 }
@@ -468,13 +476,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             webViewPathAndLoad(path)
         }
 
-        if (type == 2100){
+        if (type == 2100) {
             inflateView2100()
             setWebViewBGDefault()
             webView_question!!.visibility = View.GONE
             webView_option1!!.visibility = View.GONE
             webView_option2!!.visibility = View.GONE
-            handler.postDelayed(object : Runnable{
+            handler.postDelayed(object : Runnable {
                 override fun run() {
                     webView_option1!!.visibility = View.VISIBLE
                     webView_option1!!.startAnimation(animationFadeIn500)
@@ -483,14 +491,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 }
 
             }, 2500)
-            opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
-            opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
+            opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
+            opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
             webView_option1!!.loadUrl(opt2Path)
             webView_option2!!.loadUrl(opt1Path)
         }
         webView_question!!.setBackgroundColor(0)
         setWebViewBGDefault()
-        handler.postDelayed(object : Runnable{
+        handler.postDelayed(object : Runnable {
             override fun run() {
                 webView_question!!.visibility = View.VISIBLE
                 webView_question!!.startAnimation(animationFadeIn500)
@@ -499,7 +507,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_question!!.loadUrl(questionPath)
     }
 
-    private fun webViewGone(){
+    private fun webViewGone() {
         webView_question!!.visibility = View.GONE
         webView_option1!!.visibility = View.GONE
         webView_option2!!.visibility = View.GONE
@@ -507,7 +515,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option4!!.visibility = View.GONE
     }
 
-    private fun webViewAnimation(){
+    private fun webViewAnimation() {
         webView_option1!!.visibility = View.VISIBLE
         webView_option1!!.startAnimation(animationFadeIn500)
         webView_option2!!.visibility = View.VISIBLE
@@ -518,43 +526,43 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option4!!.startAnimation(animationFadeIn)
     }
 
-    private fun webViewPathAndLoad(path : String){
+    private fun webViewPathAndLoad(path: String) {
         Collections.shuffle(listOfOptions!!)
-        opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
-        opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
-        opt3Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(2)
-        opt4Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(3)
+        opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
+        opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
+        opt3Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(2)
+        opt4Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(3)
         webView_option1!!.loadUrl(opt1Path)
         webView_option2!!.loadUrl(opt2Path)
         webView_option3!!.loadUrl(opt3Path)
         webView_option4!!.loadUrl(opt4Path)
     }
 
-    private fun inflateView4100(){
+    private fun inflateView4100() {
         child = layoutInflater.inflate(R.layout.webview_4100_layout, null)
         ll_inflate.addView(child)
         initializeView(child!!)
     }
 
-    private fun inflateView2201(){
+    private fun inflateView2201() {
         child = layoutInflater.inflate(R.layout.webview_2201_layout, null)
         ll_inflate.addView(child)
         initializeView(child!!)
     }
 
-    private fun inflateView2100(){
+    private fun inflateView2100() {
         child = layoutInflater.inflate(R.layout.webview_2100_layout, null)
         ll_inflate.addView(child)
         initializeView(child!!)
     }
 
-    private fun inflateView2210(){
+    private fun inflateView2210() {
         child = layoutInflater.inflate(R.layout.webview_2210_layout, null)
         ll_inflate.addView(child)
         initializeView(child!!)
     }
 
-    private fun setWebViewBGDefault(){
+    private fun setWebViewBGDefault() {
         webView_option1!!.setBackgroundResource(R.drawable.option_curved_border)
         webView_option2!!.setBackgroundResource(R.drawable.option_curved_border)
         if (webView_option3 != null) {
@@ -570,16 +578,19 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option2!!.setBackgroundColor(0x00000000)
     }
 
-    private fun checkAnswer(optionClicked: Int, answer: String){
+    private fun checkAnswer(optionClicked: Int, answer: String) {
+        btn_hint!!.visibility = View.VISIBLE
         if (!isLifeZero) {
             if (!isAnswerCorrect) {
-                if (position == 0){
+                Log.d("2", "!" + isAnswerCorrect.toString())
+                if (position == 0) {
                     isFirstAnswerGiven = true
                 }
                 dbAttempts++
                 if (listOfOptions!!.size > 2) {
+                    Log.d("listOfOptions", "!" + listOfOptions!!.size.toString())
                     if (listOfOptions!!.get(optionClicked).contains("opt1")) {
-                        if (position+1 == totalQuestion){
+                        if (position + 1 == totalQuestion) {
                             isLevelCompleted = true
                         }
 
@@ -588,21 +599,23 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         checkWebView(optionClicked, isAnswerCorrect)
                         dbAnswer = "opt1"
                         btn_next!!.visibility = View.VISIBLE
+                        tv_try_again!!.visibility = View.GONE
                         Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                     } else {
-                        if (listOfOptions!!.get(optionClicked).contains("opt2")){
+                        if (listOfOptions!!.get(optionClicked).contains("opt2")) {
                             dbAnswer = "opt2"
                         }
-                        if (listOfOptions!!.get(optionClicked).contains("opt3")){
+                        if (listOfOptions!!.get(optionClicked).contains("opt3")) {
                             dbAnswer = "opt3"
                         }
-                        if (listOfOptions!!.get(optionClicked).contains("opt4")){
+                        if (listOfOptions!!.get(optionClicked).contains("opt4")) {
                             dbAnswer = "opt4"
                         }
                         isAnswerCorrect = false
                         checkWebView(optionClicked, isAnswerCorrect)
                         isDbCorrectAnswer = "false"
                         btn_hint!!.visibility = View.VISIBLE
+                        tv_try_again!!.visibility = View.VISIBLE
                         availableLife--
                         checkLife(availableLife)
                     }
@@ -611,12 +624,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
                             isAnswerCorrect = true
                             isDbCorrectAnswer = "true"
-                            if (position+1 == totalQuestion){
+                            if (position + 1 == totalQuestion) {
                                 isLevelCompleted = true
                             }
                             checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_next!!.visibility = View.VISIBLE
+                            tv_try_again!!.visibility = View.GONE
                             Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                         } else {
                             isAnswerCorrect = false
@@ -624,6 +638,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                             checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_hint!!.visibility = View.VISIBLE
+                            tv_try_again!!.visibility = View.VISIBLE
                             availableLife--
                             checkLife(availableLife)
                         }
@@ -631,12 +646,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         if (answer.equals(questionsItem!!.get(0).text, true)) {
                             isAnswerCorrect = true
                             isDbCorrectAnswer = "true"
-                            if (position+1 == totalQuestion){
+                            if (position + 1 == totalQuestion) {
                                 isLevelCompleted = true
                             }
                             checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_next!!.visibility = View.VISIBLE
+                            tv_try_again!!.visibility = View.GONE
                             Toast.makeText(this, "Right Answer", Toast.LENGTH_LONG).show()
                         } else {
                             isAnswerCorrect = false
@@ -644,6 +660,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                             checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
                             btn_hint!!.visibility = View.VISIBLE
+                            tv_try_again!!.visibility = View.VISIBLE
                             availableLife--
                             checkLife(availableLife)
                         }
@@ -652,12 +669,12 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 answerList!!.add(dbAnswer)
                 addTrackDataInDb("answer")
             }
-        }else{
+        } else {
             Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
         }
     }
 
-    private fun checkWebView(optionClicked: Int, isRightAnswer: Boolean){
+    private fun checkWebView(optionClicked: Int, isRightAnswer: Boolean) {
         val optionsWithAnswer = OptionsWithAnswer()
         if (isRightAnswer) {
             if (optionClicked == 0) {
@@ -684,7 +701,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 optionsWithAnswerList!!.add(optionsWithAnswer!!)
                 setCorrectBackground(webView_option4!!)
             }
-        }else{
+        } else {
             if (optionClicked == 0) {
                 isOption1Wrong = true
                 optionsWithAnswer!!.option = 0
@@ -716,8 +733,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun setCorrectBackground(webView: WebView){
-        handler.postDelayed(object : Runnable{
+    private fun setCorrectBackground(webView: WebView) {
+        handler.postDelayed(object : Runnable {
             override fun run() {
                 isHandlerExecuted = true
                 webView.setBackgroundResource(R.drawable.option_correct_curved_border)
@@ -728,24 +745,24 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    private fun setWrongBackground(webView: WebView){
+    private fun setWrongBackground(webView: WebView) {
         webView.setBackgroundResource(R.drawable.option_red_wrong_broder)
     }
 
-    private fun checkLife(life: Int){
-        if (totalLife == 3){
-            if (life == 2){
+    private fun checkLife(life: Int) {
+        if (totalLife == 3) {
+            if (life == 2) {
                 Glide.with(this)
                     .load(com.blobcity.R.drawable.inactive_heart)
                     .into(iv_life3)
             }
         }
-        if (life == 1){
+        if (life == 1) {
             Glide.with(this)
                 .load(com.blobcity.R.drawable.inactive_heart)
                 .into(iv_life2)
         }
-        if (life == 0){
+        if (life == 0) {
             isLifeZero = true
             btn_next.visibility = View.VISIBLE
             /*navigateToSummaryScreen(false)*/
@@ -756,9 +773,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun navigateToSummaryScreen(isLevelCompleted: Boolean){
+    private fun navigateToSummaryScreen(isLevelCompleted: Boolean) {
         quizTimer!!.cancel()
-        if (isLevelCompleted){
+        if (isLevelCompleted) {
             if (TextUtils.isEmpty(complete)) {
                 addDataInDb()
             }
@@ -775,9 +792,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         finish()
     }
 
-    private fun addAllDataInDb(isLevelCompleted : Boolean, quit: Boolean){
-        val pinfo : PackageInfo = getPackageManager().getPackageInfo(getPackageName(), 0)
-        val versionNumber : Int = pinfo.versionCode
+    private fun addAllDataInDb(isLevelCompleted: Boolean, quit: Boolean) {
+        val pinfo: PackageInfo = getPackageManager().getPackageInfo(getPackageName(), 0)
+        val versionNumber: Int = pinfo.versionCode
         val quiz = Quiz()
         quiz.osv = android.os.Build.VERSION.SDK_INT
         quiz.timeTaken = quizTimerCount
@@ -786,7 +803,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         quiz.topicName = topicName
         quiz.quit = quit
         quiz.uId = UniqueUUid.id(this)
-        quiz.timeStamp = System.currentTimeMillis()/1000
+        quiz.timeStamp = System.currentTimeMillis() / 1000
         quiz.result = isLevelCompleted
         quiz.os = "android"
         quiz.courseId = courseId
@@ -795,21 +812,23 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         quiz.appversion = versionNumber
         quiz.quizType = topicLevel
         val bankHashList: HashMap<String, Bank> = HashMap()
-        if (bankList.size > 0){
+        if (bankList.size > 0) {
             bankList.forEachIndexed { index, bank ->
-                bankHashList.put("b"+(index+1), bank)
+                bankHashList.put("b" + (index + 1), bank)
             }
         }
         quiz.quizSession = bankHashList
 
         firestore!!.collection("quiz")
             .add(quiz)
-            .addOnSuccessListener { object : OnSuccessListener<DocumentReference> {
-                override fun onSuccess(p0: DocumentReference?) {
-                    Toast.makeText(getApplicationContext(), "Note has been added!", Toast.LENGTH_SHORT).show()
-                }
+            .addOnSuccessListener {
+                object : OnSuccessListener<DocumentReference> {
+                    override fun onSuccess(p0: DocumentReference?) {
+                        Toast.makeText(getApplicationContext(), "Note has been added!", Toast.LENGTH_SHORT).show()
+                    }
 
-            } }
+                }
+            }
             .addOnFailureListener(object : OnFailureListener {
                 override fun onFailure(p0: Exception) {
                     Log.e("failure", p0.message)
@@ -824,12 +843,12 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             addAllDataInDb(true, false)
             addDataInDb()
             super.onBackPressed()
-        }else{
+        } else {
             backPressDialog()
         }
     }
 
-    private fun addDataInDb(){
+    private fun addDataInDb() {
         val topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         val uId: String = UniqueUUid.id(this)
         val topicStatusEntity = TopicStatusEntity()
@@ -852,8 +871,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         dbRStatus!!.child(uId).child(id!!).setValue(topicStatusModel)*/
     }
 
-    private fun backPressDialog(){
-        val dialogBuilder = AlertDialog.Builder(this)
+    private fun backPressDialog() {
+        val dialogBuilder = AlertDialog.Builder(this, R.style.mytheme)
         val inflater = this.layoutInflater
         val dialogView = inflater.inflate(R.layout.back_pressed_dialog_layout, null)
         dialogBuilder.setView(dialogView)
@@ -877,13 +896,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         alertDialog.show()
     }
 
-    private fun reviewData(){
+    private fun reviewData() {
         reviewModel!!.questionsItem = singleQuestionsItem
         reviewModel!!.optionsWithAnswerList = optionsWithAnswerList
         reviewModel!!.listOfOptions = listOfOptions
     }
 
-    private fun addTrackDataInDb(type: String){
+    private fun addTrackDataInDb(type: String) {
         /*val id: String? = dbTrackingStatus!!.push().key
         val uId: String = UniqueUUid.id(this)
         dbTimeStamp = System.currentTimeMillis()/1000

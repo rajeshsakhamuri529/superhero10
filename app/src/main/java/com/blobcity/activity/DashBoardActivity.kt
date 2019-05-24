@@ -3,8 +3,12 @@ package com.blobcity.activity
 import android.Manifest
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Environment
+import android.renderscript.ScriptGroup
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -21,6 +25,24 @@ import com.google.firebase.auth.FirebaseAuth
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import com.google.firebase.storage.FirebaseStorage
+import android.support.annotation.NonNull
+import android.support.v4.content.ContextCompat
+import com.blobcity.utils.MyEncrypter
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.firebase.storage.FileDownloadTask
+import com.google.android.gms.tasks.OnSuccessListener
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.Exception
+
 
 class DashBoardActivity : BaseActivity(), PermissionListener,
     View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener/*, ConnectivityReceiver.ConnectivityReceiverListener*/{
@@ -66,6 +88,16 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         return loadFragment(fragment!!)
     }
 
+    lateinit var myDir: File
+
+    companion object {
+        private val ENC = "enc"
+        private val DEC = "dec.png"
+
+        private val key = "PDY8o0tPHNYz1FG7"
+        private val specString = "yoe6Nd84MOZCzbb0"
+    }
+
     private fun signin(sharedPreferences: SharedPreferences) {
         val editor = sharedPreferences.edit()
         if (sharedPreferences.getBoolean("isLoggedIn", false)) {
@@ -76,6 +108,24 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
             Log.d(TAG,uid)
             Toast.makeText(baseContext, "UID "+uid, Toast.LENGTH_SHORT).show()
 
+            val storage = FirebaseStorage.getInstance()
+            val storageRef = storage.getReference().child("astra-quiz-v.1.0.zip");
+
+            val imageFile = File.createTempFile("test", "zip");
+
+            Log.d(TAG,"Temp file : " + imageFile.getAbsolutePath());
+
+            storageRef.getFile(imageFile)
+                .addOnSuccessListener(OnSuccessListener<FileDownloadTask.TaskSnapshot> {
+                    Toast.makeText(applicationContext, "file created", Toast.LENGTH_SHORT).show()
+                    Log.d("file","created :  "+it.toString()+"!"+it.totalByteCount);
+
+                    //startApp()
+                }).addOnFailureListener(OnFailureListener {
+                    Log.d("file","not created : "+it.toString());
+                    Toast.makeText(applicationContext, "An error accoured", Toast.LENGTH_SHORT).show()
+                })
+
             val user = auth.currentUser
             TedPermission.with(this)
                 .setPermissionListener(this)
@@ -83,6 +133,50 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                         + "\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .check()
+
+            //TODO: encryption
+           /* Dexter.withActivity(this)
+                .withPermissions(*arrayOf(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ))
+                .withListener(object : MultiplePermissionsListener{
+
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                        Log.d(TAG,"onPermmissionChecked");
+                        Toast.makeText(this@DashBoardActivity,"You should ",Toast.LENGTH_LONG).show()
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                        Log.d(TAG,"onPermissionRationaleShouldBeShown");
+                        Toast.makeText(this@DashBoardActivity,"You should accept permission",Toast.LENGTH_LONG).show()
+                    }
+
+                })
+                .check()
+
+            val root = Environment.getExternalStorageDirectory().toString()
+            myDir = File("$root/saved_images")
+            if(!myDir.exists()){
+                myDir.mkdirs()
+
+                val drawable = ContextCompat.getDrawable(this,R.drawable.rectangle_tab)
+                val bitmapDrawable = drawable as BitmapDrawable
+                val bitmap = bitmapDrawable.bitmap
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
+                val input = ByteArrayInputStream(stream.toByteArray())
+
+                val outputFileEnc = File(myDir, ENC)
+
+                try{
+                    MyEncrypter.encryptToFile(key, specString,input,FileOutputStream(outputFileEnc))
+                    Toast.makeText(this,"ENCRYPTED",Toast.LENGTH_LONG).show()
+                }catch (e:Exception)
+                {
+                    Log.d("EXCEPTION : ",e.toString()+"!")
+                }
+            }*/
 
         } else {
             val connectivityManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -100,6 +194,9 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                             editor.putBoolean("isLoggedIn", true)
                             editor.putString("uid", user!!.uid)
                             editor.apply()
+
+
+
 
                             TedPermission.with(this)
                                 .setPermissionListener(this)
@@ -225,3 +322,4 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     }
 }
+
