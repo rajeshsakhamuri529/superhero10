@@ -727,7 +727,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setWrongBackground(webView: WebView){
-        webView.setBackgroundResource(R.drawable.option_red_wrong_broder)
+        webView.setBackgroundResource(R.drawable.wrong_answer_overlay)
     }
 
     private fun checkLife(life: Int){

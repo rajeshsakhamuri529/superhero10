@@ -28,6 +28,7 @@ class CardReviewActivity : BaseActivity() {
     private var branchesItemList:List<BranchesItem>?=null
     var count : Int?= null
     var sharedCount : Int ?= null
+    var intentCount : Int?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_card_review
@@ -70,24 +71,21 @@ class CardReviewActivity : BaseActivity() {
                     val pagerAdapter = InfinitePagerAdapter(MyPagerAdapter(this@CardReviewActivity, listOfImages))
 
                     vp_card_review.adapter = pagerAdapter
-                    val intentCount = intent.getIntExtra("pos", 0)
-                    sharedCount = intentCount
-                    val posi = intentCount + 1
+                    intentCount = intent.getIntExtra("pos", 0)
+                    /*sharedCount = intentCount*/
+                    val posi = intentCount!! + 1
                     val total = branchesItemList!!.size
-                    vp_card_review.setCurrentItem(intentCount)
+                    vp_card_review.setCurrentItem(intentCount!!)
                     count = posi - 1
                     val tv_count = "$posi of $total"
                     tv_topic_count.text = tv_count
                     Log.e("intent", posi.toString())
 
                     vp_card_review.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
-                        override fun onPageScrollStateChanged(p0: Int) {
-
+                        override fun onPageScrollStateChanged(position: Int) {
                         }
 
                         override fun onPageScrolled(position: Int, p1: Float, p2: Int) {
-                            /*Log.e("scroll", position.toString())*/
-
                         }
 
                         override fun onPageSelected(position: Int) {
@@ -95,11 +93,11 @@ class CardReviewActivity : BaseActivity() {
                             count = vp_card_review.currentItem + 1
                             tv_topic_count.text = "$count of $total"
                             topicStatusEntityList!!.forEachIndexed { index, topicStatus ->
-                                if (topicStatusEntityList.get(index).topicPosition == sharedCount) {
+                                if (topicStatus.topicPosition == sharedCount) {
                                     ll_save_share.visibility = View.VISIBLE
                                     return
                                 }
-                                if (topicStatusEntityList.get(index).topicPosition != sharedCount) {
+                                if (topicStatus.topicPosition != sharedCount) {
                                     ll_save_share.visibility = View.INVISIBLE
                                 }
                             }
@@ -107,6 +105,12 @@ class CardReviewActivity : BaseActivity() {
                         }
 
                     })
+                    for(topicStatus in topicStatusEntityList!!) {
+                        if (topicStatus.topicPosition == intentCount) {
+                            ll_save_share.visibility = View.VISIBLE
+                            return
+                        }
+                    }
                 }
             })
         prepareSharedElementTransition()
@@ -114,7 +118,11 @@ class CardReviewActivity : BaseActivity() {
 
     override fun finishAfterTransition() {
         val data = Intent()
-        data.putExtra("currentPosition", sharedCount)
+        if (sharedCount != null) {
+            data.putExtra("currentPosition", sharedCount!!)
+        }else{
+            data.putExtra("currentPosition", intentCount)
+        }
         setResult(Activity.RESULT_OK, data)
         super.finishAfterTransition()
     }
@@ -126,7 +134,13 @@ class CardReviewActivity : BaseActivity() {
         setEnterSharedElementCallback(object : SharedElementCallback(){
             override fun onMapSharedElements(names: MutableList<String>?,
                                              sharedElements: MutableMap<String, View>?) {
-                val view = vp_card_review.findViewWithTag<LinearLayout>(sharedCount)
+                val view :View
+                if (sharedCount != null) {
+                    view = vp_card_review.findViewWithTag<LinearLayout>(sharedCount)
+                }
+                else {
+                    view = vp_card_review.findViewWithTag<LinearLayout>(intentCount)
+                }
                 if (view != null) {
                     sharedElements!!.put(names!!.get(0), view.findViewById(R.id.iv_card_review))
                 }

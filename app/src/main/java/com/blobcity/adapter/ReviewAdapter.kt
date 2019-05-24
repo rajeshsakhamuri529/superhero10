@@ -262,14 +262,14 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                 if (item.istrue!!) {
                     webView_option1.setBackgroundResource(R.drawable.option_correct_curved_border)
                 } else {
-                    webView_option1.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                    webView_option1.setBackgroundResource(R.drawable.wrong_answer_overlay)
                 }
             }
             if (1 == item.option) {
                 if (item.istrue!!){
                     webView_option2.setBackgroundResource(R.drawable.option_correct_curved_border)
                 }else{
-                    webView_option2.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                    webView_option2.setBackgroundResource(R.drawable.wrong_answer_overlay)
                 }
             }
 
@@ -277,14 +277,14 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                 if (item.istrue!!){
                     webView_option3.setBackgroundResource(R.drawable.option_correct_curved_border)
                 }else{
-                    webView_option3.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                    webView_option3.setBackgroundResource(R.drawable.wrong_answer_overlay)
                 }
             }
             if (3 == item.option) {
                 if (item.istrue!!){
                     webView_option4.setBackgroundResource(R.drawable.option_correct_curved_border)
                 }else{
-                    webView_option4.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                    webView_option4.setBackgroundResource(R.drawable.wrong_answer_overlay)
                 }
             }
         }
@@ -324,14 +324,14 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                         if (item.istrue!!){
                             webView_option1.setBackgroundResource(R.drawable.option_correct_curved_border)
                         }else{
-                            webView_option1.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                            webView_option1.setBackgroundResource(R.drawable.wrong_answer_overlay)
                         }
                     }
                     if (item.option == 1){
                         if (item.istrue!!){
                             webView_option2.setBackgroundResource(R.drawable.option_correct_curved_border)
                         }else{
-                            webView_option2.setBackgroundResource(R.drawable.option_red_wrong_broder)
+                            webView_option2.setBackgroundResource(R.drawable.wrong_answer_overlay)
                         }
                     }
                 }
