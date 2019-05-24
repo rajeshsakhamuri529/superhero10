@@ -96,31 +96,34 @@
                 android:layout_centerVertical="true"
                 android:textColor="@color/dark_purple"/>
 
-        <ImageView
-                android:id="@+id/iv_life1"
-                android:layout_width="@dimen/_17sdp"
-                android:layout_height="@dimen/_17sdp"
-                android:src="@drawable/active_heart_copy"
-                android:layout_toRightOf="@id/iv_life2"
-                android:layout_centerVertical="true"/>
-
-        <ImageView
-                android:id="@+id/iv_life2"
-                android:layout_width="@dimen/_17sdp"
-                android:layout_height="@dimen/_17sdp"
-                android:src="@drawable/active_heart_copy"
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_6sdp"
-                android:layout_marginRight="@dimen/_6sdp"/>
+                android:orientation="horizontal"
+                android:layout_centerVertical="true">
 
-        <ImageView
-                android:id="@+id/iv_life3"
-                android:layout_width="@dimen/_17sdp"
-                android:layout_height="@dimen/_17sdp"
-                android:src="@drawable/active_heart_copy"
-                android:layout_toLeftOf="@id/iv_life2"
-                android:layout_centerVertical="true"/>
+            <ImageView
+                    android:id="@+id/iv_life3"
+                    android:layout_width="@dimen/_17sdp"
+                    android:layout_height="@dimen/_17sdp"
+                    android:src="@drawable/active_heart_copy"/>
+
+            <ImageView
+                    android:id="@+id/iv_life2"
+                    android:layout_width="@dimen/_17sdp"
+                    android:layout_height="@dimen/_17sdp"
+                    android:src="@drawable/active_heart_copy"
+                    android:layout_marginLeft="@dimen/_6sdp"
+                    android:layout_marginRight="@dimen/_6sdp"/>
+
+            <ImageView
+                    android:id="@+id/iv_life1"
+                    android:layout_width="@dimen/_17sdp"
+                    android:layout_height="@dimen/_17sdp"
+                    android:src="@drawable/active_heart_copy"/>
+
+        </LinearLayout>
 
         <Button
                 android:layout_width="wrap_content"

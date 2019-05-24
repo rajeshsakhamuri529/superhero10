@@ -98,16 +98,18 @@ class QuizSummaryActivity : BaseActivity() {
                                     }
                                     if (level.contains("advance")) {
                                         isAdvancedCompleted = true
-                                        handler.postDelayed(object : Runnable{
-                                            override fun run() {
-                                                iv_card_front.startAnimation(zoomOutAnimation)
-                                                mSetRightOut!!.setTarget(iv_card_front)
-                                                mSetLeftIn!!.setTarget(iv_card_back)
-                                                iv_card_back.startAnimation(zoominAnimation)
-                                                mSetRightOut!!.start()
-                                                mSetLeftIn!!.start()
-                                            }
-                                        }, 1500)
+                                        if (topicLevel!!.contains("advanced")) {
+                                            handler.postDelayed(object : Runnable {
+                                                override fun run() {
+                                                    iv_card_front.startAnimation(zoomOutAnimation)
+                                                    mSetRightOut!!.setTarget(iv_card_front)
+                                                    mSetLeftIn!!.setTarget(iv_card_back)
+                                                    iv_card_back.startAnimation(zoominAnimation)
+                                                    mSetRightOut!!.start()
+                                                    mSetLeftIn!!.start()
+                                                }
+                                            }, 1500)
+                                        }
                                     }
                                 }
                             }

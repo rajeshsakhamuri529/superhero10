@@ -12,7 +12,7 @@
     <color name="purple_opt_bg">#6A0887</color>
     <color name="pink_hint_bg">#8231A7</color>
     <color name="pink_hint_button_bg">#C249CE</color>
-    <color name="green_right_answer">#AFF977</color>
+    <color name="green_right_answer">#aff977</color>
     <color name="red_wrong_answer">#940404</color>
     <color name="yellow">#FFDA5B</color>
     <color name="black_text">#333333</color>
@@ -21,4 +21,5 @@
     <color name="purple">#7A2ADB</color>
     <color name="pink_inactive">#9b45ba</color>
     <color name="orange_level_failed">#F15A24</color>
+    <color name="purple_save">#5F19CE</color>
 </resources>

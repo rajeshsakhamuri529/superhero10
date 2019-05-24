@@ -1,20 +1,28 @@
 package com.blobcity.activity
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.os.Build
+import android.os.Bundle
+import android.support.annotation.RequiresApi
 import android.os.Environment
 import android.renderscript.ScriptGroup
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.fragment.AstraCardFragment
@@ -52,9 +60,10 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     /*val sharedPref: SharedPreferences = this.getSharedPreferences(ANONYMOUS_USER, Context.MODE_PRIVATE)
     val editor = sharedPref.edit()*/
     private var mSnackBar: Snackbar? = null
+    var fragment : Fragment ?= null
 
     override fun setLayout(): Int {
-        return R.layout.activity_dashboard
+        return com.blobcity.R.layout.activity_dashboard
     }
 
     override fun initView() {
@@ -69,18 +78,16 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        var fragment : Fragment ?= null;
-
         when (item.getItemId()) {
             R.id.nav_chapter ->{
                 fragment = ChapterFragment()
             }
 
-            R.id.nav_astra_cards->{
+            com.blobcity.R.id.nav_astra_cards->{
                 fragment = AstraCardFragment()
             }
 
-            R.id.nav_settings->{
+            com.blobcity.R.id.nav_settings->{
                 fragment = SettingFragment()
             }
         }
@@ -211,7 +218,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                             Log.w(TAG, "signInAnonymously:failure", task.exception)
                             //.makeText(baseContext, "Authentication failed. Check Internet Connection", Toast.LENGTH_SHORT).show()
                             mSnackBar = Snackbar.make(
-                                findViewById(R.id.rl_dashboard),
+                                findViewById(com.blobcity.R.id.rl_dashboard),
                                 "Auth Failed :(",
                                 Snackbar.LENGTH_LONG
                             ) //Assume "rootLayout" as the root layout of every activity.
@@ -222,7 +229,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                     }
             }else{
                 mSnackBar = Snackbar.make(
-                    findViewById(R.id.rl_dashboard),
+                    findViewById(com.blobcity.R.id.rl_dashboard),
                     "No Internet Connection",
                     Snackbar.LENGTH_LONG
                 ) //Assume "rootLayout" as the root layout of every activity.
@@ -294,6 +301,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit()
+
             return true
         }
         return false
@@ -318,8 +326,21 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     override fun onStart() {
         super.onStart()
-        Log.d("onStart","Dashboard");
+        Log.d("onStart","Dashboard")
 
+    }
+
+    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+        super.onActivityReenter(resultCode, data)
+        postponeEnterTransition()
+        if (resultCode == Activity.RESULT_OK) {
+            (fragment as AstraCardFragment).activityReenter(data!!)
+        }
+        /*val myFragment = fragmentManager.findFragmentByTag("AstraCardFragment") as AstraCardFragment
+        if (myFragment != null && myFragment!!.isVisible()) {
+            // add your code here
+
+        }*/
     }
 }
 

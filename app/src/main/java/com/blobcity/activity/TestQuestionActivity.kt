@@ -16,6 +16,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
+import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.webkit.WebView
 import android.widget.Button
@@ -747,6 +748,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun setWrongBackground(webView: WebView) {
         webView.setBackgroundResource(R.drawable.option_red_wrong_broder)
+    private fun setWrongBackground(webView: WebView){
+        webView.setBackgroundResource(R.drawable.wrong_answer_overlay)
     }
 
     private fun checkLife(life: Int) {
@@ -755,21 +758,76 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 Glide.with(this)
                     .load(com.blobcity.R.drawable.inactive_heart)
                     .into(iv_life3)
+    private fun checkLife(life: Int){
+        val zoominAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
+        val zoomOutAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_out)
+        val bounceAnim = AnimationUtils.loadAnimation(this, R.anim.blink_anim)
+        val animationSet = AnimationSet(false)
+        animationSet.addAnimation(bounceAnim)
+        if (totalLife == 3){
+            if (life == 2){
+                iv_life3.startAnimation(animationSet)
+                animationSet.setAnimationListener(object : Animation.AnimationListener{
+                    override fun onAnimationRepeat(animation: Animation?) {
+
+                    }
+
+                    override fun onAnimationEnd(animation: Animation?) {
+                        Glide.with(this@TestQuestionActivity)
+                            .load(R.drawable.inactive_heart)
+                            .into(iv_life3)
+                    }
+
+                    override fun onAnimationStart(animation: Animation?) {
+
+                    }
+                })
             }
         }
         if (life == 1) {
             Glide.with(this)
                 .load(com.blobcity.R.drawable.inactive_heart)
                 .into(iv_life2)
+        if (life == 1){
+            iv_life2.startAnimation(animationSet)
+            animationSet.setAnimationListener(object : Animation.AnimationListener{
+                override fun onAnimationRepeat(animation: Animation?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    Glide.with(this@TestQuestionActivity)
+                        .load(com.blobcity.R.drawable.inactive_heart)
+                        .into(iv_life2)
+                }
+
+                override fun onAnimationStart(animation: Animation?) {
+
+                }
+            })
+
         }
-        if (life == 0) {
+
+        if (life == 0){
+            iv_life1.startAnimation(animationSet)
+            animationSet.setAnimationListener(object : Animation.AnimationListener{
+                override fun onAnimationRepeat(animation: Animation?) {
+
+                }
+
+                override fun onAnimationEnd(animation: Animation?) {
+                    Glide.with(this@TestQuestionActivity)
+                        .load(com.blobcity.R.drawable.inactive_heart)
+                        .into(iv_life1)
+                }
+
+                override fun onAnimationStart(animation: Animation?) {
+
+                }
+            })
             isLifeZero = true
             btn_next.visibility = View.VISIBLE
             /*navigateToSummaryScreen(false)*/
-            Glide.with(this)
-                .load(com.blobcity.R.drawable.inactive_heart)
-                .into(iv_life1)
-            Toast.makeText(this, "Game Over", Toast.LENGTH_SHORT).show()
         }
     }
 
