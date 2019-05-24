@@ -113,18 +113,10 @@ class CardReviewActivity : BaseActivity() {
     }
 
     override fun finishAfterTransition() {
-        /*window.setSharedElementEnterTransition(TransitionInflater.from(this)
-            .inflateTransition(R.transition.enter_transition))*/
         val data = Intent()
         data.putExtra("currentPosition", sharedCount)
         setResult(Activity.RESULT_OK, data)
         super.finishAfterTransition()
-
-    }
-
-    override fun onBackPressed() {
-
-        super.onBackPressed()
     }
 
     fun prepareSharedElementTransition(){
@@ -134,8 +126,6 @@ class CardReviewActivity : BaseActivity() {
         setEnterSharedElementCallback(object : SharedElementCallback(){
             override fun onMapSharedElements(names: MutableList<String>?,
                                              sharedElements: MutableMap<String, View>?) {
-                /*val fragment: Fragment = vp_card_review.adapter!!
-                    .instantiateItem(vp_card_review, count!!) as Fragment*/
                 val view = vp_card_review.findViewWithTag<LinearLayout>(sharedCount)
                 if (view != null) {
                     sharedElements!!.put(names!!.get(0), view.findViewById(R.id.iv_card_review))

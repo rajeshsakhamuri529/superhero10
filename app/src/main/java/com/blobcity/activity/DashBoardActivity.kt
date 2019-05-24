@@ -229,7 +229,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
 
     override fun onStart() {
         super.onStart()
-        Log.d("onStart","Dashboard");
+        Log.d("onStart","Dashboard")
 
     }
 
@@ -237,8 +237,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         super.onActivityReenter(resultCode, data)
         postponeEnterTransition()
         if (resultCode == Activity.RESULT_OK) {
-            val position = data!!.getIntExtra("currentPosition", 0)
-            (fragment as AstraCardFragment).activityReenter(data)
+            (fragment as AstraCardFragment).activityReenter(data!!)
         }
         /*val myFragment = fragmentManager.findFragmentByTag("AstraCardFragment") as AstraCardFragment
         if (myFragment != null && myFragment!!.isVisible()) {
