@@ -746,28 +746,22 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     }
 
+    /*private fun setWrongBackground(webView: WebView) {
+        webView.setBackgroundResource(R.drawable.option_red_wrong_broder)*/
     private fun setWrongBackground(webView: WebView) {
-        webView.setBackgroundResource(R.drawable.option_red_wrong_broder)
-    private fun setWrongBackground(webView: WebView){
         webView.setBackgroundResource(R.drawable.wrong_answer_overlay)
     }
 
     private fun checkLife(life: Int) {
-        if (totalLife == 3) {
-            if (life == 2) {
-                Glide.with(this)
-                    .load(com.blobcity.R.drawable.inactive_heart)
-                    .into(iv_life3)
-    private fun checkLife(life: Int){
         val zoominAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
         val zoomOutAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_out)
         val bounceAnim = AnimationUtils.loadAnimation(this, R.anim.blink_anim)
         val animationSet = AnimationSet(false)
         animationSet.addAnimation(bounceAnim)
-        if (totalLife == 3){
-            if (life == 2){
+        if (totalLife == 3) {
+            if (life == 2) {
                 iv_life3.startAnimation(animationSet)
-                animationSet.setAnimationListener(object : Animation.AnimationListener{
+                animationSet.setAnimationListener(object : Animation.AnimationListener {
                     override fun onAnimationRepeat(animation: Animation?) {
 
                     }
@@ -785,12 +779,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
         }
         if (life == 1) {
-            Glide.with(this)
-                .load(com.blobcity.R.drawable.inactive_heart)
-                .into(iv_life2)
-        if (life == 1){
             iv_life2.startAnimation(animationSet)
-            animationSet.setAnimationListener(object : Animation.AnimationListener{
+            animationSet.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {
 
                 }
@@ -808,9 +798,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         }
 
-        if (life == 0){
+        if (life == 0) {
             iv_life1.startAnimation(animationSet)
-            animationSet.setAnimationListener(object : Animation.AnimationListener{
+            animationSet.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationRepeat(animation: Animation?) {
 
                 }

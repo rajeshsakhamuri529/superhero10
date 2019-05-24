@@ -115,7 +115,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
             Log.d(TAG,uid)
             Toast.makeText(baseContext, "UID "+uid, Toast.LENGTH_SHORT).show()
 
-            val storage = FirebaseStorage.getInstance()
+            /*val storage = FirebaseStorage.getInstance()
             val storageRef = storage.getReference().child("astra-quiz-v.1.0.zip");
 
             val imageFile = File.createTempFile("test", "zip");
@@ -139,7 +139,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                 .setDeniedMessage("If you reject permission,you can not use this service\n"
                         + "\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check()
+                .check()*/
 
             //TODO: encryption
            /* Dexter.withActivity(this)
