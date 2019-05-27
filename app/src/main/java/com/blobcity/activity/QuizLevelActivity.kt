@@ -63,6 +63,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         jsonStringIntermediate = loadJSONFromAsset(this,"$folderPath/intermediate.json")
         jsonStringAdvanced = loadJSONFromAsset(this,"$folderPath/advanced.json")
 
+        ivBack.setOnClickListener(this)
         btn_quiz1.setOnClickListener(this)
         btn_quiz2.setOnClickListener(this)
         btn_quiz3.setOnClickListener(this)
@@ -180,6 +181,10 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         var complete = ""
         when(v?.id){
+            R.id.ivBack ->{
+                finish()
+            }
+
             R.id.btn_quiz1 ->{
                 if (isBasicCompleted){
                     complete = "basic_completed"

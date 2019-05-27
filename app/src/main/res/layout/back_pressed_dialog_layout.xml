@@ -2,72 +2,80 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
-        android:background="@drawable/white_curved_border">
+        android:layout_height="wrap_content">
 
-    <TextView
-            android:id="@+id/tv_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/quicksand_medium"
-            android:textColor="@color/black_text"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_15sdp"
-            android:textSize="@dimen/_13ssp"
-            android:text="Are you sure you want to quit the Quiz? Your progress in this Quiz will not be saved!"/>
 
-    <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            android:layout_below="@id/tv_message"
-            android:layout_marginTop="@dimen/_15sdp"/>
-
-    <LinearLayout
-            android:layout_below="@id/view"
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="2">
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:background="@drawable/white_curved_border">
 
         <TextView
-                android:id="@+id/tv_quit"
-                android:layout_width="0dp"
+                android:id="@+id/tv_message"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Quit"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:gravity="center_horizontal"
-                android:textAllCaps="false"
-                android:fontFamily="@font/quicksand_bold"
-                android:textColor="@color/red_wrong_answer"
-                android:textSize="@dimen/_12ssp"
-        />
+                android:fontFamily="@font/quicksand_medium"
+                android:textColor="@color/black_text"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:textSize="@dimen/_13ssp"
+                android:text="Are you sure you want to quit the Quiz? Your progress in this Quiz will not be saved!"/>
 
-        <View android:layout_width="0.5dp"
-              android:layout_height="match_parent"
-              android:background="@color/black"
-        />
+        <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_below="@id/tv_message"
+                android:layout_marginTop="@dimen/_15sdp"/>
 
-        <TextView
-                android:id="@+id/tv_return"
-                android:layout_width="0dp"
+        <LinearLayout
+                android:layout_below="@id/view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.9"
-                android:text="Return to Quiz"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:gravity="center_horizontal"
-                android:textAllCaps="false"
-                android:fontFamily="@font/quicksand_bold"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
-        />
+                android:weightSum="2">
 
-    </LinearLayout>
+            <TextView
+                    android:id="@+id/tv_quit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Quit"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:gravity="center_horizontal"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textColor="@color/red_wrong_answer"
+                    android:textSize="@dimen/_12ssp"
+            />
+
+            <View android:layout_width="0.5dp"
+                  android:layout_height="match_parent"
+                  android:background="@color/black"
+            />
+
+            <TextView
+                    android:id="@+id/tv_return"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:text="Return to Quiz"
+                    android:paddingTop="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:gravity="center_horizontal"
+                    android:textAllCaps="false"
+                    android:fontFamily="@font/quicksand_bold"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+            />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

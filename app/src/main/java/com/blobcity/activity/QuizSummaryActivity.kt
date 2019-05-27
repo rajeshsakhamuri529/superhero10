@@ -136,6 +136,11 @@ class QuizSummaryActivity : BaseActivity() {
                     }
                 }
             })
+
+        iv_cancel_quiz_summary.setOnClickListener(View.OnClickListener {
+            onBackPressed()
+        })
+
     }
 
     private fun changeCameraDistance() {

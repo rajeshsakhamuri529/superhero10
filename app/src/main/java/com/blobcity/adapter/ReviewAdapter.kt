@@ -1,16 +1,17 @@
 package com.blobcity.adapter
 
 import android.content.Context
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
+import android.widget.RelativeLayout
 import com.blobcity.R
 import com.blobcity.model.ReviewModel
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.Utils
-
 
 class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                     val context: Context) :
@@ -30,28 +31,28 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         when(type){
             type2100 ->{
                 view = LayoutInflater.from(context)
-                    .inflate(R.layout.review_2100_layout, p0, false)
+                    .inflate(com.blobcity.R.layout.review_2100_layout, p0, false)
                 viewHolder = Layout2100ViewHolder(view)
                 return viewHolder
             }
 
             type4100 ->{
                 view = LayoutInflater.from(context)
-                    .inflate(R.layout.review_4100_layout, p0, false)
+                    .inflate(com.blobcity.R.layout.review_4100_layout, p0, false)
                 viewHolder = Layout4100ViewHolder(view)
                 return viewHolder
             }
 
             type2210 ->{
                 view = LayoutInflater.from(context)
-                    .inflate(R.layout.review_2210_layout, p0, false)
+                    .inflate(com.blobcity.R.layout.review_2210_layout, p0, false)
                 viewHolder = Layout2210ViewHolder(view)
                 return viewHolder
             }
 
             type2201 ->{
                 view = LayoutInflater.from(context)
-                    .inflate(R.layout.review_2201_layout, p0, false)
+                    .inflate(com.blobcity.R.layout.review_2201_layout, p0, false)
                 viewHolder = Layout2201ViewHolder(view)
                 return viewHolder
             }
@@ -99,9 +100,33 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         var webView_option4: WebView ?= null
         var webView_question: WebView ?= null
 
+        val width: Int = context.resources.getDimension(R.dimen._250sdp).toInt()
+        val height: Int = context.resources.getDimension(R.dimen._360sdp).toInt()
+        val params = RelativeLayout.LayoutParams(width, height)
+        val top: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+        val bottom: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+
         when(reviewModelList.get(position).questionsItem!!.type){
+
             type2100 ->{
                 webView_option1 = (holder as Layout2100ViewHolder).webView_option1!!
+                if (reviewModelList.size > 1) {
+                    if (position == 0) {
+                        val left: Int = context.resources.getDimension(R.dimen._20sdp).toInt()
+                        val right: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+
+                        params.setMargins(left, top, right, bottom)
+                        holder.cardView!!.setLayoutParams(params)
+
+                    }
+                    if (position == reviewModelList.size - 1){
+                        val left: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+                        val right: Int = context.resources.getDimension(R.dimen._20sdp).toInt()
+
+                        params.setMargins(left, top, right, bottom)
+                        holder.cardView!!.setLayoutParams(params)
+                    }
+                }
                 webView_option2 = holder.webView_option2!!
                 webView_question = holder.webView_question!!
                 setWebViewBGDefault(webView_question, webView_option1, webView_option2, position)
@@ -110,6 +135,24 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
 
             type4100 ->{
                 webView_option1 = (holder as Layout4100ViewHolder).webView_option1!!
+                if (reviewModelList.size > 1) {
+
+                    if (position == 0) {
+                        val left: Int = context.resources.getDimension(R.dimen._20sdp).toInt()
+                        val right: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+
+                        params.setMargins(left, top, right, bottom)
+                        holder.cardView!!.setLayoutParams(params)
+
+                    }
+                    if (position == reviewModelList.size - 1){
+                        val left: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+                        val right: Int = context.resources.getDimension(R.dimen._20sdp).toInt()
+
+                        params.setMargins(left, top, right, bottom)
+                        holder.cardView!!.setLayoutParams(params)
+                    }
+                }
                 webView_option2 = holder.webView_option2!!
                 webView_question = holder.webView_question!!
                 webView_option3 = holder.webView_option3!!
@@ -122,6 +165,24 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
 
             type2210 ->{
                 webView_option1 = (holder as Layout2210ViewHolder).webView_option1!!
+                if (reviewModelList.size > 1) {
+
+                    if (position == 0) {
+                        val left: Int = context.resources.getDimension(R.dimen._20sdp).toInt()
+                        val right: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+
+                        params.setMargins(left, top, right, bottom)
+                        holder.cardView!!.setLayoutParams(params)
+
+                    }
+                    if (position == reviewModelList.size - 1){
+                        val left: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+                        val right: Int = context.resources.getDimension(R.dimen._20sdp).toInt()
+
+                        params.setMargins(left, top, right, bottom)
+                        holder.cardView!!.setLayoutParams(params)
+                    }
+                }
                 webView_option2 = holder.webView_option2!!
                 webView_question = holder.webView_question!!
                 webView_option3 = holder.webView_option3!!
@@ -134,6 +195,24 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
 
             type2201 ->{
                 webView_option1 = (holder as Layout2201ViewHolder).webView_option1!!
+                if (reviewModelList.size > 1) {
+
+                    if (position == 0) {
+                        val left: Int = context.resources.getDimension(R.dimen._20sdp).toInt()
+                        val right: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+
+                        params.setMargins(left, top, right, bottom)
+                        holder.cardView!!.setLayoutParams(params)
+
+                    }
+                    if (position == reviewModelList.size - 1){
+                        val left: Int = context.resources.getDimension(R.dimen._6sdp).toInt()
+                        val right: Int = context.resources.getDimension(R.dimen._20sdp).toInt()
+
+                        params.setMargins(left, top, right, bottom)
+                        holder.cardView!!.setLayoutParams(params)
+                    }
+                }
                 webView_option2 = holder.webView_option2!!
                 webView_question = holder.webView_question!!
                 webView_option3 = holder.webView_option3!!
@@ -180,13 +259,15 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         var webView_option2: WebView?=  null
         var webView_option3: WebView?=  null
         var webView_option4: WebView?=  null
+        var cardView: CardView?=  null
 
         init {
-            webView_question = itemView.findViewById(R.id.webView_question)
-            webView_option1 = itemView.findViewById(R.id.webView_option1)
-            webView_option2 = itemView.findViewById(R.id.webView_option2)
-            webView_option3 = itemView.findViewById(R.id.webView_option3)
-            webView_option4 = itemView.findViewById(R.id.webView_option4)
+            webView_question = itemView.findViewById(com.blobcity.R.id.webView_question)
+            webView_option1 = itemView.findViewById(com.blobcity.R.id.webView_option1)
+            webView_option2 = itemView.findViewById(com.blobcity.R.id.webView_option2)
+            webView_option3 = itemView.findViewById(com.blobcity.R.id.webView_option3)
+            webView_option4 = itemView.findViewById(com.blobcity.R.id.webView_option4)
+            cardView = itemView.findViewById(com.blobcity.R.id.cardView)
         }
 
     }
@@ -196,10 +277,12 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         var webView_question: WebView?=  null
         var webView_option1: WebView?=  null
         var webView_option2: WebView?=  null
+        var cardView: CardView?=  null
         init {
-            webView_question = itemView.findViewById(R.id.webView_question)
-            webView_option1 = itemView.findViewById(R.id.webView_option1)
-            webView_option2 = itemView.findViewById(R.id.webView_option2)
+            webView_question = itemView.findViewById(com.blobcity.R.id.webView_question)
+            webView_option1 = itemView.findViewById(com.blobcity.R.id.webView_option1)
+            webView_option2 = itemView.findViewById(com.blobcity.R.id.webView_option2)
+            cardView = itemView.findViewById(com.blobcity.R.id.cardView)
         }
     }
 
@@ -209,13 +292,15 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         var webView_option2: WebView?=  null
         var webView_option3: WebView?=  null
         var webView_option4: WebView?=  null
+        var cardView: CardView?=  null
 
         init {
-            webView_question = itemView.findViewById(R.id.webView_question)
-            webView_option1 = itemView.findViewById(R.id.webView_option1)
-            webView_option2 = itemView.findViewById(R.id.webView_option2)
-            webView_option3 = itemView.findViewById(R.id.webView_option3)
-            webView_option4 = itemView.findViewById(R.id.webView_option4)
+            webView_question = itemView.findViewById(com.blobcity.R.id.webView_question)
+            webView_option1 = itemView.findViewById(com.blobcity.R.id.webView_option1)
+            webView_option2 = itemView.findViewById(com.blobcity.R.id.webView_option2)
+            webView_option3 = itemView.findViewById(com.blobcity.R.id.webView_option3)
+            webView_option4 = itemView.findViewById(com.blobcity.R.id.webView_option4)
+            cardView = itemView.findViewById(com.blobcity.R.id.cardView)
         }
     }
 
@@ -225,13 +310,15 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         var webView_option2: WebView?=  null
         var webView_option3: WebView?=  null
         var webView_option4: WebView?=  null
+        var cardView: CardView?=  null
 
         init {
-            webView_question = itemView.findViewById(R.id.webView_question)
-            webView_option1 = itemView.findViewById(R.id.webView_option1)
-            webView_option2 = itemView.findViewById(R.id.webView_option2)
-            webView_option3 = itemView.findViewById(R.id.webView_option3)
-            webView_option4 = itemView.findViewById(R.id.webView_option4)
+            webView_question = itemView.findViewById(com.blobcity.R.id.webView_question)
+            webView_option1 = itemView.findViewById(com.blobcity.R.id.webView_option1)
+            webView_option2 = itemView.findViewById(com.blobcity.R.id.webView_option2)
+            webView_option3 = itemView.findViewById(com.blobcity.R.id.webView_option3)
+            webView_option4 = itemView.findViewById(com.blobcity.R.id.webView_option4)
+            cardView = itemView.findViewById(com.blobcity.R.id.cardView)
         }
     }
 
@@ -242,10 +329,10 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                                     webView_option4: WebView, position: Int){
         webView_question.setBackgroundColor(0)
 
-        webView_option1.setBackgroundResource(R.drawable.option_curved_border)
-        webView_option2.setBackgroundResource(R.drawable.option_curved_border)
-        webView_option3.setBackgroundResource(R.drawable.option_curved_border)
-        webView_option4.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option1.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
+        webView_option2.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
+        webView_option3.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
+        webView_option4.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
 
         webView_option1.setBackgroundColor(0x00000000)
         webView_option2.setBackgroundColor(0x00000000)
@@ -260,31 +347,31 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         for (item in reviewModelList.get(position).optionsWithAnswerList!!){
             if (0 == item.option) {
                 if (item.istrue!!) {
-                    webView_option1.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    webView_option1.setBackgroundResource(com.blobcity.R.drawable.option_correct_curved_border)
                 } else {
-                    webView_option1.setBackgroundResource(R.drawable.wrong_answer_overlay)
+                    webView_option1.setBackgroundResource(com.blobcity.R.drawable.wrong_answer_overlay)
                 }
             }
             if (1 == item.option) {
                 if (item.istrue!!){
-                    webView_option2.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    webView_option2.setBackgroundResource(com.blobcity.R.drawable.option_correct_curved_border)
                 }else{
-                    webView_option2.setBackgroundResource(R.drawable.wrong_answer_overlay)
+                    webView_option2.setBackgroundResource(com.blobcity.R.drawable.wrong_answer_overlay)
                 }
             }
 
             if (2 == item.option) {
                 if (item.istrue!!){
-                    webView_option3.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    webView_option3.setBackgroundResource(com.blobcity.R.drawable.option_correct_curved_border)
                 }else{
-                    webView_option3.setBackgroundResource(R.drawable.wrong_answer_overlay)
+                    webView_option3.setBackgroundResource(com.blobcity.R.drawable.wrong_answer_overlay)
                 }
             }
             if (3 == item.option) {
                 if (item.istrue!!){
-                    webView_option4.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    webView_option4.setBackgroundResource(com.blobcity.R.drawable.option_correct_curved_border)
                 }else{
-                    webView_option4.setBackgroundResource(R.drawable.wrong_answer_overlay)
+                    webView_option4.setBackgroundResource(com.blobcity.R.drawable.wrong_answer_overlay)
                 }
             }
         }
@@ -311,8 +398,8 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                             webView_option1: WebView,
                             webView_option2: WebView, position: Int){
         webView_question!!.setBackgroundColor(0)
-        webView_option1!!.setBackgroundResource(R.drawable.option_curved_border)
-        webView_option2!!.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option1!!.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
+        webView_option2!!.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
 
         webView_option1!!.setBackgroundColor(0x00000000)
         webView_option2!!.setBackgroundColor(0x00000000)
@@ -322,16 +409,16 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                 if (index == item.option){
                     if (item.option == 0){
                         if (item.istrue!!){
-                            webView_option1.setBackgroundResource(R.drawable.option_correct_curved_border)
+                            webView_option1.setBackgroundResource(com.blobcity.R.drawable.option_correct_curved_border)
                         }else{
-                            webView_option1.setBackgroundResource(R.drawable.wrong_answer_overlay)
+                            webView_option1.setBackgroundResource(com.blobcity.R.drawable.wrong_answer_overlay)
                         }
                     }
                     if (item.option == 1){
                         if (item.istrue!!){
-                            webView_option2.setBackgroundResource(R.drawable.option_correct_curved_border)
+                            webView_option2.setBackgroundResource(com.blobcity.R.drawable.option_correct_curved_border)
                         }else{
-                            webView_option2.setBackgroundResource(R.drawable.wrong_answer_overlay)
+                            webView_option2.setBackgroundResource(com.blobcity.R.drawable.wrong_answer_overlay)
                         }
                     }
                 }

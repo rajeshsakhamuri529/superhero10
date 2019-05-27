@@ -1,6 +1,7 @@
 package com.blobcity.activity
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import com.blobcity.R
 import com.blobcity.model.TopicOneBasicResponseModel
@@ -8,7 +9,8 @@ import com.blobcity.utils.ConstantPath
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_start_quiz.*
 
-class StartQuizActivity : BaseActivity() {
+class StartQuizActivity : BaseActivity(),View.OnClickListener {
+
 
     override fun setLayout(): Int {
         return R.layout.activity_start_quiz
@@ -49,6 +51,7 @@ class StartQuizActivity : BaseActivity() {
             iv_life3.visibility = View.GONE
         }
 
+
         btn_start.setOnClickListener {
             val intent = Intent(this, TestQuestionActivity::class.java)
             intent.putExtra(ConstantPath.DYNAMIC_PATH, path)
@@ -61,6 +64,18 @@ class StartQuizActivity : BaseActivity() {
             intent.putExtra(ConstantPath.TOPIC_POSITION, position)
             startActivity(intent)
             finish()
+        }
+        iv_cancel.setOnClickListener(this)
+
+    }
+
+    override fun onClick(v: View?) {
+
+        when(v?.id) {
+            R.id.iv_cancel -> {
+                Log.d("startQuiz","1")
+                finish()
+            }
         }
     }
 }

@@ -5,24 +5,21 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="@dimen/_250sdp"
         android:layout_height="@dimen/_360sdp"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/_6sdp"
         app:cardBackgroundColor="@color/dark_purple"
-
-        android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res-auto">
+        android:orientation="vertical"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/ll_quiz"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_below="@id/view"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        tools:context=".activity.TestQuestionActivity">
+        android:layout_marginBottom="@dimen/_20sdp">
 
     <WebView
             android:id="@+id/webView_question"
