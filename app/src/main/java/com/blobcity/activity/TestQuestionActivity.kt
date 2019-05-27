@@ -417,32 +417,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (type == 4100){
             inflateView4100()
             setWebViewBGDefault()
-            webView_question!!.visibility = View.GONE
-            webView_option1!!.visibility = View.GONE
-            webView_option2!!.visibility = View.GONE
-            webView_option3!!.visibility = View.GONE
-            webView_option4!!.visibility = View.GONE
+            webViewGone()
             handler.postDelayed(object : Runnable{
                 override fun run() {
-                    webView_option1!!.visibility = View.VISIBLE
-                    webView_option1!!.startAnimation(animationFadeIn500)
-                    webView_option2!!.visibility = View.VISIBLE
-                    webView_option2!!.startAnimation(animationFadeIn1000)
-                    webView_option3!!.visibility = View.VISIBLE
-                    webView_option3!!.startAnimation(animationFadeIn1500)
-                    webView_option4!!.visibility = View.VISIBLE
-                    webView_option4!!.startAnimation(animationFadeIn)
+                    webViewAnimation()
                 }
             }, 2500)
-            Collections.shuffle(listOfOptions!!)
-            opt1Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(0)
-            opt2Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(1)
-            opt3Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(2)
-            opt4Path = WEBVIEW_PATH+path+"/"+listOfOptions!!.get(3)
-            webView_option1!!.loadUrl(opt1Path)
-            webView_option2!!.loadUrl(opt2Path)
-            webView_option3!!.loadUrl(opt3Path)
-            webView_option4!!.loadUrl(opt4Path)
+            webViewPathAndLoad(path)
         }
 
         if (type == 2201){
