@@ -56,4 +56,12 @@
             android:layout_alignParentBottom="true"
             android:src="@drawable/black_transparent_bg"/>
 
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/light_purple"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+
 </RelativeLayout>

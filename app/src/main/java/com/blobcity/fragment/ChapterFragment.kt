@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.blobcity.R
+import com.blobcity.activity.DashBoardActivity
 import com.blobcity.activity.QuizLevelActivity
 import com.blobcity.adapter.ChaptersAdapter
 import com.blobcity.entity.TopicStatusEntity
@@ -18,7 +19,8 @@ import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.Topic
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath
-import com.blobcity.utils.Utils
+import com.blobcity.utils.ConstantPath.assetOutputPath
+import com.blobcity.utils.ConstantPath.assetTestCoursePath
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.firebase.database.DatabaseReference
 import com.google.gson.Gson
@@ -83,8 +85,8 @@ class ChapterFragment: Fragment(), TopicClickListener {
     }
 
     private fun readFileLocally() {
-        val courseJsonString = Utils.loadJSONFromAsset(context!!, ConstantPath.assetOutputPath + "Courses.json")
-        val jsonString = Utils.loadJSONFromAsset(context!!, ConstantPath.assetTestCoursePath + "topic.json")
+        val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetOutputPath + "Courses.json")
+        val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")
         /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
         val gsonFile = Gson()
         val topicResponseModel = gsonFile.fromJson(jsonString, TopicResponseModel::class.java)

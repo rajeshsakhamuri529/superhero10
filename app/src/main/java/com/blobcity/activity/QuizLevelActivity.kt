@@ -4,19 +4,15 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.Topic
-import com.blobcity.model.TopicStatusModel
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.UniqueUUid
-import com.blobcity.utils.Utils.*
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
 import kotlinx.android.synthetic.main.activity_quiz_level.*
 
 class QuizLevelActivity : BaseActivity(), View.OnClickListener {
@@ -59,9 +55,9 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         tv_title.text = title
         val folderPath = assetTestCoursePath+folderName
 
-        jsonStringBasic = loadJSONFromAsset(this,"$folderPath/basic.json")
-        jsonStringIntermediate = loadJSONFromAsset(this,"$folderPath/intermediate.json")
-        jsonStringAdvanced = loadJSONFromAsset(this,"$folderPath/advanced.json")
+        jsonStringBasic = loadJSONFromAsset("$folderPath/basic.json")
+        jsonStringIntermediate = loadJSONFromAsset("$folderPath/intermediate.json")
+        jsonStringAdvanced = loadJSONFromAsset("$folderPath/advanced.json")
 
         ivBack.setOnClickListener(this)
         btn_quiz1.setOnClickListener(this)

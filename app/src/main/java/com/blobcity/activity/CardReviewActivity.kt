@@ -17,8 +17,7 @@ import com.blobcity.model.BranchesItem
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.CarouselEffectTransformer
 import com.blobcity.utils.ConstantPath
-import com.blobcity.utils.InfinitePagerAdapter
-import com.blobcity.utils.Utils
+import com.blobcity.adapter.InfinitePagerAdapter
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_card_review.*
@@ -44,7 +43,7 @@ class CardReviewActivity : BaseActivity() {
         vp_card_review.offscreenPageLimit = 3
         vp_card_review.setPageTransformer(false,
             CarouselEffectTransformer(this))
-        val jsonString = Utils.loadJSONFromAsset(this,
+        val jsonString = loadJSONFromAsset(
             ConstantPath.assetTestCoursePath + "topic.json")
         /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
         val gsonFile = Gson()
@@ -68,7 +67,8 @@ class CardReviewActivity : BaseActivity() {
                         }
                     } }
 
-                    val pagerAdapter = InfinitePagerAdapter(MyPagerAdapter(this@CardReviewActivity, listOfImages))
+                    val pagerAdapter =
+                        InfinitePagerAdapter(MyPagerAdapter(this@CardReviewActivity, listOfImages))
 
                     vp_card_review.adapter = pagerAdapter
                     intentCount = intent.getIntExtra("pos", 0)

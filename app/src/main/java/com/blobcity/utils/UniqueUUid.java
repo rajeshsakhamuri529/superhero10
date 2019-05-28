@@ -1,7 +1,6 @@
 package com.blobcity.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
 import java.util.UUID;
 
@@ -12,14 +11,11 @@ public class UniqueUUid {
 
     public synchronized static String id(Context context) {
         if (uniqueID == null) {
-            SharedPreferences sharedPrefs = context.getSharedPreferences(
-                    PREF_UNIQUE_ID, Context.MODE_PRIVATE);
-            uniqueID = sharedPrefs.getString(PREF_UNIQUE_ID, null);
+            SharedPrefs sharedPrefs = new SharedPrefs();
+            uniqueID = sharedPrefs.getPrefVal(context, PREF_UNIQUE_ID);
             if (uniqueID == null) {
                 uniqueID = UUID.randomUUID().toString();
-                SharedPreferences.Editor editor = sharedPrefs.edit();
-                editor.putString(PREF_UNIQUE_ID, uniqueID);
-                editor.commit();
+                sharedPrefs.setPrefVal(context, PREF_UNIQUE_ID, uniqueID);
             }
         }
         return uniqueID;

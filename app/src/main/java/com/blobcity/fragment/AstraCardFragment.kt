@@ -19,13 +19,13 @@ import android.view.ViewTreeObserver
 import android.widget.ImageView
 import com.blobcity.R
 import com.blobcity.activity.CardReviewActivity
+import com.blobcity.activity.DashBoardActivity
 import com.blobcity.adapter.AstraCardAdapter
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.interfaces.AstraCardClickListener
 import com.blobcity.model.BranchesItem
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath
-import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.astra_card_layout.*
@@ -82,7 +82,7 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         setExtCallBack()
         gridLayoutManager = GridLayoutManager(context!!, 3)
         rcv_astra_card.layoutManager = gridLayoutManager
-        val jsonString = Utils.loadJSONFromAsset(context!!, ConstantPath.assetTestCoursePath + "topic.json")
+        val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( ConstantPath.assetTestCoursePath + "topic.json")
         /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
         val gsonFile = Gson()
         val topicResponseModel = gsonFile.fromJson(jsonString, TopicResponseModel::class.java)

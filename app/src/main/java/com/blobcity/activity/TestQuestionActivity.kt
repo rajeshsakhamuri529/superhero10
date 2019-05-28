@@ -27,7 +27,6 @@ import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
-import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnFailureListener
@@ -409,7 +408,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private fun loadDataInWebView(path: String) {
         listOfOptions = ArrayList()
         var questionPath = ""
-        for (filename in Utils.getListOfFilesFromAsset(path, this)) {
+        for (filename in getListOfFilesFromAsset(path)!!) {
             if (filename.contains("opt")) {
                 if (!filename.contains("opt5")) {
                     listOfOptions!!.add(filename)

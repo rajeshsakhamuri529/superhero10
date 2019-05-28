@@ -2,6 +2,7 @@ package com.blobcity.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.net.ConnectivityManager;
 import android.os.Environment;
 import android.util.Log;
 
@@ -28,7 +29,12 @@ public class Utils {
         }
     }
 
-    public static void copyFolder(String name, String outPath, Context context){
+    public static List<String> getListOfFilesFromFolder(String path){
+        File file = new File(path);
+        return Arrays.asList(file.list());
+    }
+
+    /*public static void copyFolder(String name, String outPath, Context context){
         AssetManager assetManager = context.getAssets();
         List<String> files = getListOfFilesFromAsset(name, context);
         if (files != null) {
@@ -49,9 +55,9 @@ public class Utils {
                 }
             }
         }
-    }
+    }*/
 
-    public static List<String> getListOfFilesFromAsset(String path, Context context){
+    /*public static List<String> getListOfFilesFromAsset(String path, Context context){
         AssetManager assetManager = context.getAssets();
         try {
             return Arrays.asList(assetManager.list(path));
@@ -59,12 +65,9 @@ public class Utils {
             e.printStackTrace();
             return null;
         }
-    }
+    }*/
 
-    public static List<String> getListOfFilesFromFolder(String path){
-        File file = new File(path);
-        return Arrays.asList(file.list());
-    }
+
 
     public static void copyAssetFile(String name, String path, String outPath, Context context){
         AssetManager assetManager = context.getAssets();
@@ -97,7 +100,7 @@ public class Utils {
         }
     }
 
-    public static String loadJSONFromAsset(Context context, String path) {
+    /*public static String loadJSONFromAsset(Context context, String path) {
         String json = null;
         try {
             InputStream is = context.getAssets().open(path);
@@ -111,7 +114,7 @@ public class Utils {
             return null;
         }
         return json;
-    }
+    }*/
 
     public static String readFromFile(String path){
         File yourFile = new File(path);
