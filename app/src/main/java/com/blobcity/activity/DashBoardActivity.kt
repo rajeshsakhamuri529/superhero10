@@ -27,8 +27,7 @@ import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.io.File
 
-
-class DashBoardActivity : BaseActivity(), PermissionListener,
+class DashBoardActivity : BaseActivity(),
     View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener/*, ConnectivityReceiver.ConnectivityReceiverListener*/{
 
     var TAG: String?= "Dashboard"
@@ -39,17 +38,26 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
     var fragment : Fragment ?= null
 
     override fun setLayout(): Int {
-        return com.blobcity.R.layout.activity_dashboard
+        return R.layout.activity_dashboard
     }
 
     override fun initView() {
+
+        loadFragment(ChapterFragment())
+        navigation.setOnNavigationItemSelectedListener(this)
+        /*TedPermission.with(this)
+            .setPermissionListener(this)
+            .setDeniedMessage("If you reject permission,you can not use this service\n"
+                    + "\nPlease turn on permissions at [Setting] > [Permission]")
+            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .check()*/
         /*databaseRefrence = FirebaseDatabase.getInstance()
             .getReference("topic_status/"+UniqueUUid.id(this))
         databaseRefrence!!.keepSynced(true)*/
         val sharedPrefs = SharedPrefs()
-        auth = FirebaseAuth.getInstance()
-
-        signin(sharedPrefs)
+//        auth = FirebaseAuth.getInstance()
+//
+//        signin(sharedPrefs)
 
     }
 
@@ -81,19 +89,14 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
         private val specString = "yoe6Nd84MOZCzbb0"
     }
 
-    private fun signin(sharedPrefs: SharedPrefs) {
+    /*private fun signin(sharedPrefs: SharedPrefs) {
         if (sharedPrefs.getBooleanPrefVal(this, IS_LOGGED_IN)) {
             Log.d(TAG, "signInAnonymously:Already Logged In")
             val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
             Log.d(TAG,uid)
             Toast.makeText(baseContext, "UID "+uid, Toast.LENGTH_SHORT).show()
-            TedPermission.with(this)
-                .setPermissionListener(this)
-                .setDeniedMessage("If you reject permission,you can not use this service\n"
-                        + "\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check()
-            /*val storage = FirebaseStorage.getInstance()
+
+            *//*val storage = FirebaseStorage.getInstance()
             val storageRef = storage.getReference().child("astra-quiz-v.1.0.zip");
 
             val imageFile = File.createTempFile("test", "zip");
@@ -117,10 +120,10 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                 .setDeniedMessage("If you reject permission,you can not use this service\n"
                         + "\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check()*/
+                .check()*//*
 
             //TODO: encryption
-           /* Dexter.withActivity(this)
+           *//* Dexter.withActivity(this)
                 .withPermissions(*arrayOf(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.READ_EXTERNAL_STORAGE
@@ -161,7 +164,7 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                 {
                     Log.d("EXCEPTION : ",e.toString()+"!")
                 }
-            }*/
+            }*//*
 
         } else {
             val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -212,13 +215,12 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                 mSnackBar?.show()
             }
         }
-    }
+    }*/
 
-    override fun onPermissionGranted() {
-        loadFragment(ChapterFragment())
-        navigation.setOnNavigationItemSelectedListener(this);
+    /*override fun onPermissionGranted() {
+        ;
 
-        /*databaseRefrence!!.addValueEventListener(object : ValueEventListener{
+        *//*databaseRefrence!!.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
 
             }
@@ -260,13 +262,13 @@ class DashBoardActivity : BaseActivity(), PermissionListener,
                     Log.e("topicStatusDb", topicStatusModel.topicLevel)
                 }
             }
-        })*/
+        })*//*
 
     }
 
     override fun onPermissionDenied(deniedPermissions: List<String>) {
 
-    }
+    }*/
 
      private fun loadFragment(fragment: Fragment): Boolean {
         //switching fragment

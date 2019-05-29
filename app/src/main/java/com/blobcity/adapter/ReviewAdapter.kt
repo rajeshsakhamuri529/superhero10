@@ -3,6 +3,7 @@ package com.blobcity.adapter
 import android.app.Activity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,6 +90,7 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         listOfOptions = reviewModelList.get(position).listOfOptions
         path = localBlobcityPath + reviewModelList.get(position).questionsItem!!.id
+        Log.e("path", path)
         for (filename in Utils.getListOfFilesFromFolder(path!!)!!){
             if (filename.contains("question")){
                 questionPath = WEBVIEW_PATH+path+"/"+filename

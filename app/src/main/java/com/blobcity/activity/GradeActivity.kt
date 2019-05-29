@@ -1,19 +1,28 @@
 package com.blobcity.activity
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Environment
+import android.support.design.widget.Snackbar
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import com.blobcity.R
 import com.blobcity.adapter.GradeAdapter
 import com.blobcity.interfaces.GradeClickListener
 import com.blobcity.model.GradeResponseModel
+import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.GRADE_LIST
 import com.blobcity.utils.ConstantPath.GRADE_VERSION
 import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -22,12 +31,15 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_grade.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GradeActivity : BaseActivity(), GradeClickListener {
+class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
+
 
     val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
@@ -38,43 +50,190 @@ class GradeActivity : BaseActivity(), GradeClickListener {
     var isBtnIconDownloaded: Boolean = false
     var isIconDownloaded: Boolean = false
     var listJson: String?= null
+    private lateinit var auth: FirebaseAuth
+    private var mSnackBar: Snackbar? = null
 
     override fun setLayout(): Int {
         return com.blobcity.R.layout.activity_grade
     }
 
     override fun initView() {
+
+        TedPermission.with(this)
+            .setPermissionListener(this)
+            .setDeniedMessage("If you reject permission,you can not use this service\n"
+                    + "\nPlease turn on permissions at [Setting] > [Permission]")
+            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .check()
+        auth = FirebaseAuth.getInstance()
+    }
+
+
+    override fun onPermissionGranted() {
+        signin(sharedPrefs)
+    }
+
+    override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+
+    }
+
+    override fun onResume() {
+        super.onResume()
         listJson = sharedPrefs.getPrefVal(this, GRADE_LIST)
         gradeVersion = sharedPrefs.getLongPrefVal(this, GRADE_VERSION)
-        val gson = Gson()
-        if (!TextUtils.isEmpty(listJson)){
-            if (isNetworkConnected()) {
-                remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void> {
-                    override fun onComplete(task: Task<Void>) {
-                        if (task.isSuccessful) {
-                            if (gradeVersion != remoteConfig.getLong("gradesVer")) {
-                                getdataFromFirestore()
-                            }else{
-                                val type = object : TypeToken<List<GradeResponseModel>>() {}.type
-                                gradeResponseModelList = gson.fromJson(listJson, type)
-                                rcv_grade.adapter = GradeAdapter(this@GradeActivity,
-                                    this@GradeActivity, gradeResponseModelList!!)
+    }
+
+    private fun signin(sharedPrefs: SharedPrefs) {
+        if (sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN)) {
+            val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
+            Toast.makeText(baseContext, "UID "+uid, Toast.LENGTH_SHORT).show()
+
+            val gson = Gson()
+            if (!TextUtils.isEmpty(listJson)){
+                if (isNetworkConnected()) {
+                    remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void> {
+                        override fun onComplete(task: Task<Void>) {
+                            if (task.isSuccessful) {
+                                if (gradeVersion != remoteConfig.getLong("gradesVer")) {
+                                    getdataFromFirestore()
+                                }else{
+                                    val type = object : TypeToken<List<GradeResponseModel>>() {}.type
+                                    gradeResponseModelList = gson.fromJson(listJson, type)
+                                    rcv_grade.adapter = GradeAdapter(this@GradeActivity,
+                                        this@GradeActivity, gradeResponseModelList!!)
+                                }
                             }
                         }
-                    }
-                })
-            }
-            else{
-                val type = object : TypeToken<List<GradeResponseModel>>() {}.type
-                gradeResponseModelList = gson.fromJson(listJson, type)
-                rcv_grade.adapter = GradeAdapter(this, this, gradeResponseModelList!!)
+                    })
+                }
+                else{
+                    val type = object : TypeToken<List<GradeResponseModel>>() {}.type
+                    gradeResponseModelList = gson.fromJson(listJson, type)
+                    rcv_grade.adapter = GradeAdapter(this, this, gradeResponseModelList!!)
 
+                }
+            }else{
+                if (isNetworkConnected()){
+                    val root = Environment.getExternalStorageDirectory().toString()
+                    Utils.makeDir("$root/blobcity/images")
+                    getdataFromFirestore()
+                }
             }
-        }else{
-            if (isNetworkConnected()){
-                val root = Environment.getExternalStorageDirectory().toString()
-                Utils.makeDir("$root/blobcity/images")
-                getdataFromFirestore()
+            /*val storage = FirebaseStorage.getInstance()
+            val storageRef = storage.getReference().child("astra-quiz-v.1.0.zip");
+
+            val imageFile = File.createTempFile("test", "zip");
+
+            Log.d(TAG,"Temp file : " + imageFile.getAbsolutePath());
+
+            storageRef.getFile(imageFile)
+                .addOnSuccessListener(OnSuccessListener<FileDownloadTask.TaskSnapshot> {
+                    Toast.makeText(applicationContext, "file created", Toast.LENGTH_SHORT).show()
+                    Log.d("file","created :  "+it.toString()+"!"+it.totalByteCount);
+
+                    //startApp()
+                }).addOnFailureListener(OnFailureListener {
+                    Log.d("file","not created : "+it.toString());
+                    Toast.makeText(applicationContext, "An error accoured", Toast.LENGTH_SHORT).show()
+                })
+
+            val user = auth.currentUser
+            TedPermission.with(this)
+                .setPermissionListener(this)
+                .setDeniedMessage("If you reject permission,you can not use this service\n"
+                        + "\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check()*/
+
+            //TODO: encryption
+            /* Dexter.withActivity(this)
+                 .withPermissions(*arrayOf(
+                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                     Manifest.permission.READ_EXTERNAL_STORAGE
+                 ))
+                 .withListener(object : MultiplePermissionsListener{
+
+                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+                         Log.d(TAG,"onPermmissionChecked");
+                         Toast.makeText(this@DashBoardActivity,"You should ",Toast.LENGTH_LONG).show()
+                     }
+
+                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
+                         Log.d(TAG,"onPermissionRationaleShouldBeShown");
+                         Toast.makeText(this@DashBoardActivity,"You should accept permission",Toast.LENGTH_LONG).show()
+                     }
+
+                 })
+                 .check()
+
+             val root = Environment.getExternalStorageDirectory().toString()
+             myDir = File("$root/saved_images")
+             if(!myDir.exists()){
+                 myDir.mkdirs()
+
+                 val drawable = ContextCompat.getDrawable(this,R.drawable.rectangle_tab)
+                 val bitmapDrawable = drawable as BitmapDrawable
+                 val bitmap = bitmapDrawable.bitmap
+                 val stream = ByteArrayOutputStream()
+                 bitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
+                 val input = ByteArrayInputStream(stream.toByteArray())
+
+                 val outputFileEnc = File(myDir, ENC)
+
+                 try{
+                     MyEncrypter.encryptToFile(key, specString,input,FileOutputStream(outputFileEnc))
+                     Toast.makeText(this,"ENCRYPTED",Toast.LENGTH_LONG).show()
+                 }catch (e:Exception)
+                 {
+                     Log.d("EXCEPTION : ",e.toString()+"!")
+                 }
+             }*/
+
+        } else {
+            val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
+            val isConnected: Boolean = activeNetwork?.isConnected == true
+            Log.d("isConnected",isConnected.toString()+"!")
+            if(isNetworkConnected()) {
+                auth.signInAnonymously()
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Toast.makeText(baseContext, "Logged In", Toast.LENGTH_SHORT).show()
+                            val user = auth.currentUser
+                            sharedPrefs.setBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN, true)
+                            sharedPrefs.setPrefVal(this, ConstantPath.UID, user!!.uid)
+
+                            TedPermission.with(this)
+                                .setPermissionListener(this)
+                                .setDeniedMessage(
+                                    "If you reject permission,you can not use this service\n"
+                                            + "\nPlease turn on permissions at [Setting] > [Permission]"
+                                )
+                                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                .check()
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            //.makeText(baseContext, "Authentication failed. Check Internet Connection", Toast.LENGTH_SHORT).show()
+                            mSnackBar = Snackbar.make(
+                                findViewById(com.blobcity.R.id.rl_dashboard),
+                                "Auth Failed :(",
+                                Snackbar.LENGTH_LONG
+                            ) //Assume "rootLayout" as the root layout of every activity.
+                            mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+                            mSnackBar?.setAction("Retry", { signin(sharedPrefs) })
+                            mSnackBar?.show()
+                        }
+                    }
+            }else{
+                mSnackBar = Snackbar.make(
+                    findViewById(R.id.rl_dashboard),
+                    "No Internet Connection",
+                    Snackbar.LENGTH_LONG
+                ) //Assume "rootLayout" as the root layout of every activity.
+                mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+                mSnackBar?.setAction("Retry", { signin(sharedPrefs) })
+                mSnackBar?.show()
             }
         }
     }
@@ -165,6 +324,7 @@ class GradeActivity : BaseActivity(), GradeClickListener {
                     else{
                         isBtnIconDownloaded = false
                         isIconDownloaded = false
+                        progress_bar.visibility = View.INVISIBLE
                         Log.e("data failure: ", task.exception.toString())
                     }
                 }

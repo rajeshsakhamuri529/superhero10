@@ -381,7 +381,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 dbQPaths = questionsItem!!.get(randomPosition).id
                 dbQuestionBank = questionsItem!!.get(randomPosition).bank
                 dbQLevel = questionsItem!!.get(randomPosition).level
-                paths = localBlobcityPath + dbQPaths+"/"
+                paths = localBlobcityPath + dbQPaths
                 type = questionsItem!!.get(randomPosition).type
                 loadDataInWebView(paths)
             } else {
@@ -389,7 +389,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 dbQPaths = questionsItem!!.get(0).id
                 dbQuestionBank = questionsItem!!.get(0).bank
                 dbQLevel = questionsItem!!.get(0).level
-                paths = localBlobcityPath + dbQPaths+"/"
+                paths = localBlobcityPath + dbQPaths
                 type = questionsItem!!.get(0).type
                 loadDataInWebView(paths)
             }
@@ -410,8 +410,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun loadDataInWebView(path: String) {
         listOfOptions = ArrayList()
+        Log.e("testPath", path)
         var questionPath = ""
-        for (filename in getListOfFilesFromFolder(path)!!) {
+        for (filename in getListOfFilesFromFolder(path+"/")!!) {
             if (filename.contains("opt")) {
                 if (!filename.contains("opt5")) {
                     listOfOptions!!.add(filename)
@@ -478,8 +479,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }, 2500)
             opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
             opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
-            webView_option1!!.loadUrl(opt2Path)
-            webView_option2!!.loadUrl(opt1Path)
+            webView_option1!!.loadUrl(opt1Path)
+            webView_option2!!.loadUrl(opt2Path)
         }
         webView_question!!.setBackgroundColor(0)
         setWebViewBGDefault()
