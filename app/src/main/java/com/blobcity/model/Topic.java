@@ -96,16 +96,16 @@ public class Topic implements Serializable {
 
 	@Override
  	public String toString(){
-		return 
-			"Topic{" + 
-			"updated_at = '" + updatedAt + '\'' + 
-			",__v = '" + V + '\'' + 
-			",index = '" + index + '\'' + 
-			",created_at = '" + createdAt + '\'' + 
-			",_id = '" + id + '\'' + 
-			",folderName = '" + folderName + '\'' + 
-			",category = '" + category + '\'' + 
-			",title = '" + title + '\'' + 
+		return
+			"Topic{" +
+			"updated_at = '" + updatedAt + '\'' +
+			",__v = '" + V + '\'' +
+			",index = '" + index + '\'' +
+			",created_at = '" + createdAt + '\'' +
+			",_id = '" + id + '\'' +
+			",folderName = '" + folderName + '\'' +
+			",category = '" + category + '\'' +
+			",title = '" + title + '\'' +
 			"}";
 		}
 }

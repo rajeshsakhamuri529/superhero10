@@ -10,6 +10,8 @@ import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.Topic
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.Utils
+import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
@@ -32,6 +34,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var isAdvancedCompleted: Boolean = false
     var context: Context ?= null
     var topicStatusVM: TopicStatusVM?= null
+    var paths: String?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_quiz_level
@@ -53,11 +56,13 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
         val title = "$index $topicName"
         tv_title.text = title
-        val folderPath = assetTestCoursePath+folderName
 
-        jsonStringBasic = loadJSONFromAsset("$folderPath/basic.json")
-        jsonStringIntermediate = loadJSONFromAsset("$folderPath/intermediate.json")
-        jsonStringAdvanced = loadJSONFromAsset("$folderPath/advanced.json")
+        paths = intent.getStringExtra(FOLDER_PATH)
+        val folderPath = paths+folderName
+
+        jsonStringBasic = readFromFile("$folderPath/basic.json")
+        jsonStringIntermediate = readFromFile("$folderPath/intermediate.json")
+        jsonStringAdvanced = readFromFile("$folderPath/advanced.json")
 
         ivBack.setOnClickListener(this)
         btn_quiz1.setOnClickListener(this)
@@ -222,6 +227,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(TOPIC_LEVEL, level)
         intent.putExtra(LEVEL_COMPLETED, complete)
         intent.putExtra(TOPIC_POSITION, position)
+        intent.putExtra(FOLDER_PATH, paths)
         startActivity(intent)
     }
 

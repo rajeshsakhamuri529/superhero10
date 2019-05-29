@@ -18,8 +18,11 @@ import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.CarouselEffectTransformer
 import com.blobcity.utils.ConstantPath
 import com.blobcity.adapter.InfinitePagerAdapter
+import com.blobcity.model.CoursesResponseModel
+import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_card_review.*
 
 class CardReviewActivity : BaseActivity() {
@@ -43,10 +46,16 @@ class CardReviewActivity : BaseActivity() {
         vp_card_review.offscreenPageLimit = 3
         vp_card_review.setPageTransformer(false,
             CarouselEffectTransformer(this))
-        val jsonString = loadJSONFromAsset(
-            ConstantPath.assetTestCoursePath + "topic.json")
-        /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
+
+        val courseJsonString = Utils.readFromFile("${ConstantPath.localBlobcityPath}/Courses.json")
+        /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
+        val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
+        val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
+            .fromJson(courseJsonString, courseType)
+        val courseName = courseResponseModel[0].syllabus.title
+        val jsonString = Utils.readFromFile("${ConstantPath.localBlobcityPath}/$courseName/topic.json")
+        /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
         val topicResponseModel = gsonFile
             .fromJson(jsonString, TopicResponseModel::class.java)
         branchesItemList = topicResponseModel.branches

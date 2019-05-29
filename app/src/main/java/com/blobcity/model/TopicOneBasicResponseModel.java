@@ -30,10 +30,10 @@ public class TopicOneBasicResponseModel{
 
 	@Override
  	public String toString(){
-		return 
-			"TopicOneBasicResponseModel{" + 
-			"questionCount = '" + questionCount + '\'' + 
-			",questions = '" + questions + '\'' + 
+		return
+			"TopicOneBasicResponseModel{" +
+			"questionCount = '" + questionCount + '\'' +
+			",questions = '" + questions + '\'' +
 			"}";
 		}
 }

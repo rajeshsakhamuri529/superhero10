@@ -19,9 +19,9 @@ public class TopicResponseModel{
 
 	@Override
  	public String toString(){
-		return 
-			"TopicResponseModel{" + 
-			"branches = '" + branches + '\'' + 
+		return
+			"TopicResponseModel{" +
+			"branches = '" + branches + '\'' +
 			"}";
 		}
 }

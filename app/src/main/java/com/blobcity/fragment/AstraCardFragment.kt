@@ -24,10 +24,14 @@ import com.blobcity.adapter.AstraCardAdapter
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.interfaces.AstraCardClickListener
 import com.blobcity.model.BranchesItem
+import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath
+import com.blobcity.utils.ConstantPath.localTestCoursePath
+import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.astra_card_layout.*
 
 class AstraCardFragment : Fragment(), AstraCardClickListener {
@@ -82,9 +86,18 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         setExtCallBack()
         gridLayoutManager = GridLayoutManager(context!!, 3)
         rcv_astra_card.layoutManager = gridLayoutManager
-        val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( ConstantPath.assetTestCoursePath + "topic.json")
-        /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
+
+        /*val jsonString = (activity!! as DashBoardActivity)
+            .loadJSONFromAsset( ConstantPath.assetTestCoursePath + "topic.json")*/
+        val courseJsonString = readFromFile("${ConstantPath.localBlobcityPath}/Courses.json")
+        /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
+        val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
+        val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
+            .fromJson(courseJsonString, courseType)
+        val courseName = courseResponseModel[0].syllabus.title
+        val jsonString = readFromFile("${ConstantPath.localBlobcityPath}/$courseName/topic.json")
+
         val topicResponseModel = gsonFile.fromJson(jsonString, TopicResponseModel::class.java)
         branchesItemList = topicResponseModel.branches
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)

@@ -12,6 +12,7 @@ import com.blobcity.R
 import com.blobcity.activity.ReviewActivity
 import com.blobcity.model.ReviewModel
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.Utils
 
 class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
                     val context: Activity) :
@@ -87,8 +88,8 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         listOfOptions = reviewModelList.get(position).listOfOptions
-        path = assetOutputPath + reviewModelList.get(position).questionsItem!!.id
-        for (filename in (context as ReviewActivity).getListOfFilesFromAsset(path!!)!!){
+        path = localBlobcityPath + reviewModelList.get(position).questionsItem!!.id
+        for (filename in Utils.getListOfFilesFromFolder(path!!)!!){
             if (filename.contains("question")){
                 questionPath = WEBVIEW_PATH+path+"/"+filename
             }

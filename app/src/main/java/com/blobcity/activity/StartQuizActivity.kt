@@ -25,8 +25,10 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         val topicName = intent.getStringExtra(ConstantPath.TOPIC_NAME)
         val complete = intent.getStringExtra(ConstantPath.LEVEL_COMPLETED)
         val position: Int = intent.getIntExtra(ConstantPath.TOPIC_POSITION, -1)
+        val paths: String = intent.getStringExtra(ConstantPath.FOLDER_PATH)
         var level = ""
 
+        Log.e("path", path)
         val gsonFile = Gson()
         val questionResponseModel = gsonFile.fromJson(path, TopicOneBasicResponseModel::class.java)
 
@@ -62,6 +64,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
             intent.putExtra(ConstantPath.TOPIC_LEVEL, topicLevel)
             intent.putExtra(ConstantPath.LEVEL_COMPLETED, complete)
             intent.putExtra(ConstantPath.TOPIC_POSITION, position)
+            intent.putExtra(ConstantPath.FOLDER_PATH, paths)
             startActivity(intent)
             finish()
         }

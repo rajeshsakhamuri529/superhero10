@@ -27,6 +27,7 @@ import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
+import com.blobcity.utils.Utils.getListOfFilesFromFolder
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnFailureListener
@@ -111,6 +112,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     val reviewModelList: ArrayList<ReviewModel> = ArrayList()
     var reviewModel: ReviewModel? = null
     var optionsWithAnswerList: ArrayList<OptionsWithAnswer>? = null
+    var oPath: String?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
@@ -126,6 +128,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         topicName = intent.getStringExtra(TOPIC_NAME)
         complete = intent.getStringExtra(LEVEL_COMPLETED)
         dbPosition = intent.getIntExtra(TOPIC_POSITION, -1)
+        oPath = intent.getStringExtra(FOLDER_PATH)
         quizTimer = Timer()
 
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
@@ -378,7 +381,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 dbQPaths = questionsItem!!.get(randomPosition).id
                 dbQuestionBank = questionsItem!!.get(randomPosition).bank
                 dbQLevel = questionsItem!!.get(randomPosition).level
-                paths = assetOutputPath + dbQPaths
+                paths = localBlobcityPath + dbQPaths+"/"
                 type = questionsItem!!.get(randomPosition).type
                 loadDataInWebView(paths)
             } else {
@@ -386,7 +389,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 dbQPaths = questionsItem!!.get(0).id
                 dbQuestionBank = questionsItem!!.get(0).bank
                 dbQLevel = questionsItem!!.get(0).level
-                paths = assetOutputPath + dbQPaths
+                paths = localBlobcityPath + dbQPaths+"/"
                 type = questionsItem!!.get(0).type
                 loadDataInWebView(paths)
             }
@@ -408,7 +411,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private fun loadDataInWebView(path: String) {
         listOfOptions = ArrayList()
         var questionPath = ""
-        for (filename in getListOfFilesFromAsset(path)!!) {
+        for (filename in getListOfFilesFromFolder(path)!!) {
             if (filename.contains("opt")) {
                 if (!filename.contains("opt5")) {
                     listOfOptions!!.add(filename)

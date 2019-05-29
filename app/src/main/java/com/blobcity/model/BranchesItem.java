@@ -91,13 +91,13 @@ public class BranchesItem{
 
 	@Override
  	public String toString(){
-		return 
-			"BranchesItem{" + 
-			"cd = '" + cd + '\'' + 
-			",__v = '" + V + '\'' + 
-			",topic = '" + topic + '\'' + 
-			",_id = '" + id + '\'' + 
-			",ud = '" + ud + '\'' + 
+		return
+			"BranchesItem{" +
+			"cd = '" + cd + '\'' +
+			",__v = '" + V + '\'' +
+			",topic = '" + topic + '\'' +
+			",_id = '" + id + '\'' +
+			",ud = '" + ud + '\'' +
 			"}";
 		}
 }

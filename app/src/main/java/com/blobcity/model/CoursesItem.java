@@ -61,13 +61,13 @@ public class CoursesItem{
 
 	@Override
  	public String toString(){
-		return 
-			"CoursesItem{" + 
-			"syllabus = '" + syllabus + '\'' + 
-			",cd = '" + cd + '\'' + 
-			",__v = '" + V + '\'' + 
-			",_id = '" + id + '\'' + 
-			",ud = '" + ud + '\'' + 
+		return
+			"CoursesItem{" +
+			"syllabus = '" + syllabus + '\'' +
+			",cd = '" + cd + '\'' +
+			",__v = '" + V + '\'' +
+			",_id = '" + id + '\'' +
+			",ud = '" + ud + '\'' +
 			"}";
 		}
 }

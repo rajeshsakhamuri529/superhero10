@@ -14,16 +14,14 @@ import com.blobcity.activity.QuizLevelActivity
 import com.blobcity.adapter.ChaptersAdapter
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.interfaces.TopicClickListener
-import com.blobcity.model.BranchesItem
-import com.blobcity.model.CoursesResponseModel
-import com.blobcity.model.Topic
-import com.blobcity.model.TopicResponseModel
+import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath
-import com.blobcity.utils.ConstantPath.assetOutputPath
-import com.blobcity.utils.ConstantPath.assetTestCoursePath
+import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.firebase.database.DatabaseReference
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.chapter_layout.*
 
 class ChapterFragment: Fragment(), TopicClickListener {
@@ -35,6 +33,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
     var topicStatusModelList: ArrayList<TopicStatusEntity>?=null
     var adapter: ChaptersAdapter?= null
     var topicStatusVM: TopicStatusVM?= null
+    var localPath: String?= null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chapter_layout, container, false)
@@ -85,15 +84,24 @@ class ChapterFragment: Fragment(), TopicClickListener {
     }
 
     private fun readFileLocally() {
-        val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetOutputPath + "Courses.json")
-        val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")
-        /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
+        /*val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetOutputPath + "Courses.json")*/
+        val courseJsonString = readFromFile("$localBlobcityPath/Courses.json")
+        /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
-        val topicResponseModel = gsonFile.fromJson(jsonString, TopicResponseModel::class.java)
-        val courseResponseModel = gsonFile.fromJson(courseJsonString, CoursesResponseModel::class.java)
-        courseId = courseResponseModel.courses[0].id
-        courseName = courseResponseModel.courses[0].syllabus.title
+        val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
+        val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
+            .fromJson(courseJsonString, courseType)
+        courseId = courseResponseModel[0].id
+        courseName = courseResponseModel[0].syllabus.title
+        localPath = "$localBlobcityPath$courseName/"
+        val jsonString = readFromFile(localPath +"topic.json")
+
+        val topicType = object : TypeToken<TopicResponseModel>() {}.type
+        val topicResponseModel: TopicResponseModel= gsonFile.fromJson(jsonString, topicType )
+
         branchesItemList = topicResponseModel.branches
+
+
 
         /*val branchesItemList2 = ArrayList<BranchesItem>()
         val index1 = branchesItemList!![0].topic.index.toString()
@@ -118,11 +126,12 @@ class ChapterFragment: Fragment(), TopicClickListener {
 
     private fun callIntent(topic: Topic, topicId: String, position: Int){
         val intent = Intent(context!!, QuizLevelActivity::class.java)
-        intent.putExtra(ConstantPath.TOPIC, topic)
-        intent.putExtra(ConstantPath.COURSE_ID, courseId)
-        intent.putExtra(ConstantPath.COURSE_NAME, courseName)
-        intent.putExtra(ConstantPath.TOPIC_ID, topicId)
-        intent.putExtra(ConstantPath.TOPIC_POSITION, position)
+        intent.putExtra(TOPIC, topic)
+        intent.putExtra(COURSE_ID, courseId)
+        intent.putExtra(COURSE_NAME, courseName)
+        intent.putExtra(TOPIC_ID, topicId)
+        intent.putExtra(TOPIC_POSITION, position)
+        intent.putExtra(FOLDER_PATH, localPath)
         startActivity(intent)
     }
 

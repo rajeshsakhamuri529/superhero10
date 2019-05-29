@@ -8,4 +8,6 @@ class GradeResponseModel {
     var link: String?= null
     var title: String?= null
     var version: Long?= null
+    var btnPath: String?= null
+    var iconPath: String?= null
 }

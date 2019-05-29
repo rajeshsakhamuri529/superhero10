@@ -74,14 +74,14 @@ public class TopicOneQuestionsItem implements Serializable {
 
 	@Override
  	public String toString(){
-		return 
+		return
 			"TopicOneQuestionsItem{" +
-			"bank = '" + bank + '\'' + 
-			",level = '" + level + '\'' + 
-			",_id = '" + id + '\'' + 
-			",text = '" + text + '\'' + 
-			",type = '" + type + '\'' + 
-			",funny = '" + funny + '\'' + 
+			"bank = '" + bank + '\'' +
+			",level = '" + level + '\'' +
+			",_id = '" + id + '\'' +
+			",text = '" + text + '\'' +
+			",type = '" + type + '\'' +
+			",funny = '" + funny + '\'' +
 			"}";
 		}
 }
