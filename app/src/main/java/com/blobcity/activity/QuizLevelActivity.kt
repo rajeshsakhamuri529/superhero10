@@ -35,6 +35,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var context: Context ?= null
     var topicStatusVM: TopicStatusVM?= null
     var paths: String?= null
+    var folderName: String?=null
 
     override fun setLayout(): Int {
         return R.layout.activity_quiz_level
@@ -43,7 +44,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     override fun initView() {
         context = this
         val topic: Topic = intent.getSerializableExtra(TOPIC) as Topic
-        val folderName = topic.folderName
+        folderName = topic.folderName
         courseId = intent.getStringExtra(COURSE_ID)
         topicId = intent.getStringExtra(TOPIC_ID)
         topicName = topic.title
@@ -119,64 +120,6 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
             })
-        /*databaseRefrence!!.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (context != null) {
-                    topicStatusModelList = ArrayList()
-                    Glide.with(this@QuizLevelActivity)
-                        .load(R.drawable.progress_icon_grey)
-                        .into(iv_level1)
-                    Glide.with(this@QuizLevelActivity)
-                        .load(R.drawable.progress_icon_grey)
-                        .into(iv_level2)
-                    Glide.with(this@QuizLevelActivity)
-                        .load(R.drawable.progress_icon_grey)
-                        .into(iv_level3)
-                    for (postSnapshot in dataSnapshot.children) {
-                        Log.e("snap", postSnapshot.value.toString())
-                        if (postSnapshot != null) {
-                            val topicStatusModel: TopicStatusModel =
-                                postSnapshot.getValue(TopicStatusModel::class.java)!!
-                            topicStatusModelList!!.add(topicStatusModel)
-                            if (topicStatusModelList != null) {
-                                if (topicStatusModelList!!.size > 0) {
-                                    val branchId = topicId
-                                    for (topicStatusModels in topicStatusModelList!!) {
-                                        val id = topicStatusModels.topicId
-                                        val level = topicStatusModels.topicLevel
-
-                                        if (id!!.contains(branchId!!)) {
-                                            if (level!!.contains("basic")) {
-                                                Glide.with(this@QuizLevelActivity)
-                                                    .load(R.drawable.green_tick)
-                                                    .into(iv_level1)
-                                                isBasicCompleted = true
-                                            }
-                                            if (level.contains("intermediate")) {
-                                                Glide.with(this@QuizLevelActivity)
-                                                    .load(R.drawable.green_tick)
-                                                    .into(iv_level2)
-                                                isIntermediateCompleted = true
-                                            }
-                                            if (level.contains("advance")) {
-                                                Glide.with(this@QuizLevelActivity)
-                                                    .load(R.drawable.green_tick)
-                                                    .into(iv_level3)
-                                                isAdvancedCompleted = true
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        })*/
     }
 
     override fun onClick(v: View?) {
@@ -228,6 +171,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(LEVEL_COMPLETED, complete)
         intent.putExtra(TOPIC_POSITION, position)
         intent.putExtra(FOLDER_PATH, paths)
+        intent.putExtra(FOLDER_NAME, folderName)
         startActivity(intent)
     }
 

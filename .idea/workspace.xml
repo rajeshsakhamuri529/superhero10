@@ -12,11 +12,15 @@
   <component name="ChangeListManager">
     <list default="true" id="7d40fee0-0fd3-4399-9e6a-e13cdd133dd9" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/DashBoardActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/DashBoardActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/StartQuizActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/StartQuizActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/AstraCardAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/AstraCardAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ReviewAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ReviewAdapter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/viewmodel/TopicStatusVM.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/viewmodel/TopicStatusVM.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -91,51 +95,52 @@
     <session id="1710804401">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="12" />
-          <entry key="project.open.time.17" value="4" />
-          <entry key="project.open.time.18" value="4" />
+          <entry key="project.closed" value="14" />
+          <entry key="project.open.time.17" value="5" />
+          <entry key="project.open.time.18" value="5" />
           <entry key="project.open.time.19" value="2" />
           <entry key="project.open.time.20" value="2" />
           <entry key="project.open.time.21" value="1" />
-          <entry key="project.opened" value="13" />
+          <entry key="project.open.time.25" value="1" />
+          <entry key="project.opened" value="16" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="gradle" value="1" />
-          <entry key="java" value="382" />
-          <entry key="kt" value="4811" />
-          <entry key="xml" value="278" />
+          <entry key="java" value="451" />
+          <entry key="kt" value="5810" />
+          <entry key="xml" value="292" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="Groovy" value="1" />
-          <entry key="JAVA" value="382" />
-          <entry key="Kotlin" value="4811" />
-          <entry key="XML" value="278" />
+          <entry key="JAVA" value="451" />
+          <entry key="Kotlin" value="5810" />
+          <entry key="XML" value="292" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="class" value="1" />
-          <entry key="gradle" value="2" />
+          <entry key="gradle" value="3" />
           <entry key="html" value="1" />
-          <entry key="java" value="18" />
+          <entry key="java" value="22" />
           <entry key="json" value="1" />
-          <entry key="kt" value="40" />
-          <entry key="xml" value="11" />
+          <entry key="kt" value="47" />
+          <entry key="xml" value="14" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CLASS" value="1" />
-          <entry key="Groovy" value="2" />
+          <entry key="Groovy" value="3" />
           <entry key="HTML" value="1" />
-          <entry key="JAVA" value="18" />
+          <entry key="JAVA" value="22" />
           <entry key="JSON" value="1" />
-          <entry key="Kotlin" value="40" />
-          <entry key="XML" value="11" />
+          <entry key="Kotlin" value="47" />
+          <entry key="XML" value="14" />
         </counts>
       </usages-collector>
     </session>
@@ -143,10 +148,28 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/Utils.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-171">
-              <caret line="35" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="101">
+              <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="309">
+              <caret line="808" column="42" selection-start-line="808" selection-start-column="34" selection-end-line="808" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="608">
+              <caret line="84" column="14" selection-start-line="84" selection-start-column="12" selection-end-line="94" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -154,83 +177,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="254">
-              <caret line="82" column="70" selection-start-line="82" selection-start-column="70" selection-end-line="82" selection-end-column="70" />
+            <state relative-caret-position="-49">
+              <caret line="372" column="13" selection-start-line="372" selection-start-column="13" selection-end-line="372" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/DashBoardActivity.kt">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/StartQuizActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-912">
-              <caret line="28" selection-start-line="28" selection-end-line="28" />
+            <state relative-caret-position="380">
+              <caret line="27" selection-start-line="27" selection-end-line="27" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="817">
-              <caret line="45" column="42" selection-start-line="45" selection-start-column="25" selection-end-line="45" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/ReviewActivity.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="89" column="41" selection-start-line="89" selection-start-column="41" selection-end-line="89" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/BaseActivity.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="817">
-              <caret line="51" column="22" selection-start-line="51" selection-start-column="22" selection-end-line="51" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ReviewAdapter.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="89" column="58" selection-start-line="89" selection-start-column="58" selection-end-line="89" selection-end-column="58" />
-              <folding>
-                <element signature="e#30#479#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="414" column="57" selection-start-line="414" selection-start-column="57" selection-end-line="414" selection-end-column="57" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="559">
-              <caret line="106" column="42" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/AstraCardAdapter.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="47" column="9" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="9" />
+            <state relative-caret-position="-977">
+              <caret line="64" selection-start-line="64" selection-end-line="64" />
             </state>
           </provider>
         </entry>
@@ -264,6 +230,14 @@
       <find>after_download</find>
       <find>GRADE_LIST</find>
       <find>readFromFile</find>
+      <find>addOnCompleteListener</find>
+      <find>OnCompleteListener</find>
+      <find>TOPIC_POSITION</find>
+      <find>TOPIC_LEVEL</find>
+      <find>storaged</find>
+      <find>FOLDER_PATH</find>
+      <find>DYNAMIC_PATH</find>
+      <find>FOLDER_NAME</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app</dir>
@@ -2699,7 +2673,6 @@
         <option value="$PROJECT_DIR$/app/src/main/assets/output/Test Course/topic-six/basic.json" />
         <option value="$PROJECT_DIR$/app/src/main/assets/output/Test Course/topic-six/advanced.json" />
         <option value="$PROJECT_DIR$/app/src/main/assets/output/Test Course/topic-six/intermediate.json" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/review_2100_layout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/review_2201_layout.xml" />
@@ -2721,18 +2694,22 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/model/Syllabus.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/StartQuizActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/ChapterFragment.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/ReviewActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/Utils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/DashBoardActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/DashBoardActivity.kt" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/AstraCardAdapter.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ReviewAdapter.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/viewmodel/TopicStatusVM.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/StartQuizActivity.kt" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt" />
       </list>
     </option>
   </component>
@@ -2750,8 +2727,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2775,6 +2752,27 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="blobcity" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="master" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="blobcity" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="master" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="blobcity" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="entity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="master" type="1abcf292:AndroidViewProjectNode" />
+              <item name="app" type="feadf853:AndroidModuleNode" />
+              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
+              <item name="blobcity" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="fragment" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -2782,7 +2780,7 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="blobcity" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
+              <item name="repository" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="master" type="1abcf292:AndroidViewProjectNode" />
@@ -2790,50 +2788,6 @@
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="blobcity" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="master" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
-            </path>
-            <path>
-              <item name="master" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="output" type="cbb59c9e:AndroidPsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="master" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="output" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="Test Course" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="master" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="output" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="Test Course" type="462c0819:PsiDirectoryNode" />
-              <item name="topic-two" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="master" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="assets" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="output" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="Test Course" type="462c0819:PsiDirectoryNode" />
-              <item name="topic-two" type="462c0819:PsiDirectoryNode" />
-              <item name="intermediate-412" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="master" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="res" type="d4f16f75:AndroidResFolderNode" />
-            </path>
-            <path>
-              <item name="master" type="1abcf292:AndroidViewProjectNode" />
-              <item name="Gradle Scripts" type="ae0cef3a:AndroidBuildScriptsGroupNode" />
             </path>
           </expand>
           <select />
@@ -2990,7 +2944,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1217" height="1036" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="1" weight="0.28828058" />
@@ -3000,16 +2953,16 @@
       <window_info id="Designer" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info id="Capture Tool" order="7" />
-      <window_info active="true" anchor="bottom" id="Logcat" order="0" visible="true" weight="0.4502857" />
+      <window_info anchor="bottom" id="Logcat" order="0" weight="0.376" />
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Android Profiler" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" weight="0.328" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.327252" />
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.32914287" />
       <window_info anchor="bottom" id="Build" order="6" weight="0.208" />
       <window_info anchor="bottom" id="Messages" order="7" weight="0.32907802" />
       <window_info anchor="bottom" id="Run" order="8" weight="0.32914287" />
-      <window_info anchor="bottom" id="Debug" order="9" weight="0.32914287" />
+      <window_info active="true" anchor="bottom" id="Debug" order="9" visible="true" weight="0.32914287" />
       <window_info anchor="bottom" id="Find" order="10" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Gradle" order="1" />
@@ -3030,24 +2983,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt</url>
-          <line>383</line>
-          <properties />
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt</url>
-          <line>391</line>
-          <properties />
-          <option name="timeStamp" value="11" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt</url>
-          <line>392</line>
-          <properties />
-          <option name="timeStamp" value="12" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt</url>
           <line>334</line>
@@ -3084,11 +3019,84 @@
           <properties />
           <option name="timeStamp" value="23" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt</url>
+          <line>64</line>
+          <properties />
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt</url>
+          <line>61</line>
+          <properties />
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/StartQuizActivity.kt</url>
+          <line>27</line>
+          <properties />
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt</url>
+          <line>46</line>
+          <properties />
+          <option name="timeStamp" value="66" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt</url>
+          <line>808</line>
+          <properties />
+          <option name="timeStamp" value="69" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt</url>
+          <line>807</line>
+          <properties />
+          <option name="timeStamp" value="70" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt</url>
+          <line>809</line>
+          <properties />
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt</url>
+          <line>190</line>
+          <properties />
+          <option name="timeStamp" value="72" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>paths+folderName</expression-string>
+        <language-id>kotlin</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>folderPath</expression-string>
+        <language-id>kotlin</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>path</expression-string>
+        <language-id>kotlin</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dPath</expression-string>
+        <language-id>kotlin</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>paths</expression-string>
+        <language-id>kotlin</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>file.getName()</expression-string>
         <language-id>JAVA</language-id>
@@ -3105,100 +3113,28 @@
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>paths</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
         <expression-string>intent.getStringExtra(FOLDER_PATH)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>gsonFile.fromJson(jsonString, TopicResponseModel::class.java)</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>listJson</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>btnFile.getAbsolutePath()</expression-string>
-        <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>gradeResponseModel.disPos</expression-string>
         <language-id>kotlin</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_card_review.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="70" column="58" selection-start-line="70" selection-start-column="58" selection-end-line="70" selection-end-column="58" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/dimens.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="12" lean-forward="true" selection-start-line="7" selection-start-column="12" selection-end-line="7" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_test_question.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="77" column="45" selection-start-line="77" selection-start-column="33" selection-end-line="77" selection-end-column="45" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/review_2100_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/review_2201_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="41" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/review_2210_layout.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="41" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer2" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_review.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="722">
           <caret line="38" column="51" selection-start-line="38" selection-start-column="51" selection-end-line="38" selection-end-column="51" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/review_4100_layout.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
           <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/model/Quiz.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -3223,12 +3159,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/CardReviewFragment.kt" />
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/back_pressed_dialog_layout.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="456">
           <caret line="24" column="55" selection-start-line="24" selection-start-column="55" selection-end-line="24" selection-end-column="55" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
       <provider selected="true" editor-type-id="text-editor">
@@ -3293,13 +3229,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="573">
-          <caret line="58" column="56" selection-start-line="58" selection-start-column="49" selection-end-line="58" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-tasks-16.0.1.aar/f89aa0a0807b473369ef2723d2cc34f5/jars/classes.jar!/com/google/android/gms/tasks/OnSuccessListener.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
@@ -3308,12 +3237,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_grade.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="569">
           <caret line="45" column="47" selection-start-line="45" selection-start-column="35" selection-end-line="45" selection-end-column="47" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/model/GradeResponseModel.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -3337,12 +3266,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/grade_single_layout.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="17" column="41" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/SharedPrefs.kt">
       <provider selected="true" editor-type-id="text-editor">
@@ -3373,6 +3302,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_level.xml">
+      <provider editor-type-id="android-designer2" />
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
           <caret line="54" column="41" lean-forward="true" selection-start-line="54" selection-start-column="41" selection-end-line="54" selection-end-column="41" />
@@ -3381,7 +3311,6 @@
           </folding>
         </state>
       </provider>
-      <provider editor-type-id="android-designer2" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/model/TopicResponseModel.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -3404,20 +3333,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
-          <caret line="60" selection-start-line="60" selection-end-line="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/StartQuizActivity.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="11" column="16" selection-start-line="11" selection-start-column="16" selection-end-line="11" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/model/CoursesResponseModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
@@ -3429,16 +3344,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="266">
           <caret line="14" column="22" selection-start-line="14" selection-start-column="22" selection-end-line="14" selection-end-column="22" />
-          <folding>
-            <element signature="e#1320#1365#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/DashBoardActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="817">
-          <caret line="45" column="42" selection-start-line="45" selection-start-column="25" selection-end-line="45" selection-end-column="42" />
+        <state relative-caret-position="57">
+          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/ReviewActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1368">
+          <caret line="89" column="41" selection-start-line="89" selection-start-column="41" selection-end-line="89" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -3449,31 +3368,61 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/DashBoardActivity.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ReviewAdapter.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-912">
-          <caret line="28" selection-start-line="28" selection-end-line="28" />
+        <state relative-caret-position="1444">
+          <caret line="89" column="58" selection-start-line="89" selection-start-column="58" selection-end-line="89" selection-end-column="58" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/Utils.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/repository/TopicStatusRepository.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-171">
-          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        <state relative-caret-position="76">
+          <caret line="9" column="27" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/dao/TopicStatusDao.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="82" column="70" selection-start-line="82" selection-start-column="70" selection-end-line="82" selection-end-column="70" />
+        <state relative-caret-position="190">
+          <caret line="16" column="3" selection-start-line="16" selection-start-column="3" selection-end-line="16" selection-end-column="58" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
+        <state relative-caret-position="1406">
           <caret line="106" column="42" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1102">
+          <caret line="58" column="56" selection-start-line="58" selection-start-column="49" selection-end-line="58" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml">
+      <provider editor-type-id="android-designer2" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2698">
+          <caret line="142" column="43" selection-start-line="142" selection-start-column="43" selection-end-line="142" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest" />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="114">
+          <caret line="6" column="78" selection-start-line="6" selection-start-column="78" selection-end-line="6" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/viewmodel/TopicStatusVM.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
         </state>
       </provider>
     </entry>
@@ -3484,27 +3433,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/ReviewActivity.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="89" column="41" selection-start-line="89" selection-start-column="41" selection-end-line="89" selection-end-column="41" />
+        <state relative-caret-position="-49">
+          <caret line="372" column="13" selection-start-line="372" selection-start-column="13" selection-end-line="372" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ReviewAdapter.kt">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/Utils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="89" column="58" selection-start-line="89" selection-start-column="58" selection-end-line="89" selection-end-column="58" />
-          <folding>
-            <element signature="e#30#479#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="171">
+          <caret line="29" column="28" lean-forward="true" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="101">
+          <caret line="8" column="33" selection-start-line="8" selection-start-column="33" selection-end-line="8" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="414" column="57" selection-start-line="414" selection-start-column="57" selection-end-line="414" selection-end-column="57" />
+        <state relative-caret-position="309">
+          <caret line="808" column="42" selection-start-line="808" selection-start-column="34" selection-end-line="808" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/StartQuizActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-977">
+          <caret line="64" selection-start-line="64" selection-end-line="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="608">
+          <caret line="84" column="14" selection-start-line="84" selection-start-column="12" selection-end-line="94" selection-end-column="15" />
         </state>
       </provider>
     </entry>

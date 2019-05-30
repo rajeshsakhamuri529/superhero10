@@ -50,7 +50,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
     var isBtnIconDownloaded: Boolean = false
     var isIconDownloaded: Boolean = false
     var listJson: String?= null
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth?= null
     private var mSnackBar: Snackbar? = null
 
     override fun setLayout(): Int {
@@ -195,12 +195,12 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
             val isConnected: Boolean = activeNetwork?.isConnected == true
             Log.d("isConnected",isConnected.toString()+"!")
             if(isNetworkConnected()) {
-                auth.signInAnonymously()
+                auth!!.signInAnonymously()
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
                             Toast.makeText(baseContext, "Logged In", Toast.LENGTH_SHORT).show()
-                            val user = auth.currentUser
+                            val user = auth!!.currentUser
                             sharedPrefs.setBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN, true)
                             sharedPrefs.setPrefVal(this, ConstantPath.UID, user!!.uid)
 
@@ -354,6 +354,23 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
 
     override fun click(link: String) {
         if (!TextUtils.isEmpty(listJson)) {
+
+            val connManager : ConnectivityManager= getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val mWifi : NetworkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
+            val network : NetworkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
+
+            if (mWifi.isConnected()) {
+                // Do whatever
+                Log.e("wifi", "connected")
+            }else{
+                Log.e("wifi", "not connected")
+            }
+            if (network.isConnected()) {
+                // Do whatever
+                Log.e("network", "connected")
+            }else{
+                Log.e("network", "not connected")
+            }
             if (isNetworkConnected()){
                 remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void> {
                     override fun onComplete(task: Task<Void>) {
@@ -385,6 +402,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
     }
 
     private fun downloadFolder(link: String){
+
         val folderStorageRef = storage
             .getReferenceFromUrl(link)
         val root = Environment.getExternalStorageDirectory().toString()
@@ -397,7 +415,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
             .addOnCompleteListener(object : OnCompleteListener<FileDownloadTask.TaskSnapshot> {
                 override fun onComplete(task: Task<FileDownloadTask.TaskSnapshot>) {
                     if (task.isSuccessful) {
-
                         Utils.unpackZip("$root/blobcity/", fileName)
                         progress_bar.visibility = View.INVISIBLE
                         val intent = Intent(
@@ -405,7 +422,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
                             DashBoardActivity::class.java
                         )
                         startActivity(intent)
-
                     }
                 }
             })

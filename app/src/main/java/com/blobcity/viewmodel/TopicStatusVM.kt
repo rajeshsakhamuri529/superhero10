@@ -27,7 +27,14 @@ class TopicStatusVM(application: Application) : AndroidViewModel(Application()) 
         return topicStatusRepository!!.getTopicsByLevel(topicLevel)
     }
 
-    fun insert(topicStatusEntity: TopicStatusEntity){
+    fun insert(courseId: String, uId: String, topicId: String, topicLevel: String, dbPosition: Int){
+        val topicStatusEntity = TopicStatusEntity()
+        topicStatusEntity.courseId = courseId
+        topicStatusEntity.topicId = topicId
+        topicStatusEntity.uid = uId
+        topicStatusEntity.topicLevel = topicLevel
+        topicStatusEntity.isLevelComplete = 1
+        topicStatusEntity.topicPosition = dbPosition
         topicStatusRepository!!.insert(topicStatusEntity)
     }
 }

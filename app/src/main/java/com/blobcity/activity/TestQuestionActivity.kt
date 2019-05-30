@@ -23,15 +23,14 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import com.blobcity.R
-import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
 import com.blobcity.utils.Utils.getListOfFilesFromFolder
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
-import com.google.android.gms.tasks.OnFailureListener
-import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -113,6 +112,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var reviewModel: ReviewModel? = null
     var optionsWithAnswerList: ArrayList<OptionsWithAnswer>? = null
     var oPath: String?= null
+    var topicStatusVM:TopicStatusVM?= null
+    var dynamicPath : String?= null
+    var folderName : String?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
@@ -120,7 +122,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun initView() {
-        val path = intent.getStringExtra(DYNAMIC_PATH)
+        topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+        dynamicPath = intent.getStringExtra(DYNAMIC_PATH)
         courseId = intent.getStringExtra(COURSE_ID)
         topicId = intent.getStringExtra(TOPIC_ID)
         courseName = intent.getStringExtra(COURSE_NAME)
@@ -129,6 +132,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         complete = intent.getStringExtra(LEVEL_COMPLETED)
         dbPosition = intent.getIntExtra(TOPIC_POSITION, -1)
         oPath = intent.getStringExtra(FOLDER_PATH)
+        folderName = intent.getStringExtra(FOLDER_NAME)
         quizTimer = Timer()
 
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
@@ -144,7 +148,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         dbTrackingHintStatus = FirebaseDatabase.getInstance().getReference("hint_tracking")
         dbRStatus!!.keepSynced(true)*/
 
-        createArrayMapList(path)
+        createArrayMapList(dynamicPath!!)
 
         btn_hint!!.visibility = View.INVISIBLE
         btn_next!!.visibility = View.INVISIBLE
@@ -231,7 +235,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (!isLifeZero) {
             // if (!isAnswerCorrect) {
             dbIsHintUsed = true
-            addTrackDataInDb("hint")
+            /*addTrackDataInDb("hint")*/
             val dialogBuilder = AlertDialog.Builder(this)
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
@@ -650,7 +654,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 answerList!!.add(dbAnswer)
-                addTrackDataInDb("answer")
+                /*addTrackDataInDb("answer")*/
             }
         } /*else {
             Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
@@ -728,8 +732,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    /*private fun setWrongBackground(webView: WebView) {
-        webView.setBackgroundResource(R.drawable.option_red_wrong_broder)*/
     private fun setWrongBackground(webView: WebView) {
         webView.setBackgroundResource(R.drawable.wrong_answer_overlay)
     }
@@ -816,6 +818,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(QUIZ_COUNT, totalQuestion)
         intent.putExtra(TOPIC_ID, topicId)
         intent.putExtra(TOPIC_POSITION, dbPosition)
+        intent.putExtra(IS_LEVEL_COMPLETE, isLevelCompleted)
+
+        intent.putExtra(DYNAMIC_PATH, dynamicPath)
+        intent.putExtra(COURSE_ID, courseId)
+        intent.putExtra(COURSE_NAME, courseName)
+        intent.putExtra(LEVEL_COMPLETED, complete)
+        intent.putExtra(FOLDER_PATH, oPath)
+        intent.putExtra(FOLDER_NAME, folderName)
         startActivity(intent)
         finish()
     }
@@ -849,20 +859,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         firestore!!.collection("quiz")
             .add(quiz)
-            .addOnSuccessListener {
-                object : OnSuccessListener<DocumentReference> {
-                    override fun onSuccess(p0: DocumentReference?) {
-                        Toast.makeText(getApplicationContext(), "Note has been added!", Toast.LENGTH_SHORT).show()
+            .addOnCompleteListener(object : OnCompleteListener<DocumentReference>{
+                override fun onComplete(task: Task<DocumentReference>) {
+                    if (task.isSuccessful){
+                        Log.e("quizAddStatus", "quiz added successfully")
+                    }else{
+                        Log.e("quizAddStatus", task.exception.toString())
                     }
-
                 }
-            }
-            .addOnFailureListener(object : OnFailureListener {
-                override fun onFailure(p0: Exception) {
-                    Log.e("failure", p0.message)
-                    Toast.makeText(getApplicationContext(), "Note could not be added!", Toast.LENGTH_SHORT).show()
-                }
-
             })
     }
 
@@ -877,26 +881,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun addDataInDb() {
-        val topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         val uId: String = UniqueUUid.id(this)
-        val topicStatusEntity = TopicStatusEntity()
-        topicStatusEntity.courseId = courseId
-        topicStatusEntity.topicId = topicId
-        topicStatusEntity.uid = uId
-        topicStatusEntity.topicLevel = topicLevel
-        topicStatusEntity.isLevelComplete = 1
-        topicStatusEntity.topicPosition = dbPosition!!
-        topicStatusVM.insert(topicStatusEntity)
-        /*val id: String? = dbRStatus!!.push().key
-        val uId: String = UniqueUUid.id(this)
-        val topicStatusModel = TopicStatusModel()
-        topicStatusModel.id = id
-        topicStatusModel.courseId = courseId
-        topicStatusModel.topicId = topicId
-        topicStatusModel.uId = uId
-        topicStatusModel.topicLevel = topicLevel
-        topicStatusModel.isLevelComplete = 1
-        dbRStatus!!.child(uId).child(id!!).setValue(topicStatusModel)*/
+        topicStatusVM!!.insert(courseId!!, uId,
+            topicId!!, topicLevel!!, dbPosition!!)
     }
 
     private fun backPressDialog() {
@@ -928,31 +915,5 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         reviewModel!!.questionsItem = singleQuestionsItem
         reviewModel!!.optionsWithAnswerList = optionsWithAnswerList
         reviewModel!!.listOfOptions = listOfOptions
-    }
-
-    private fun addTrackDataInDb(type: String) {
-        /*val id: String? = dbTrackingStatus!!.push().key
-        val uId: String = UniqueUUid.id(this)
-        dbTimeStamp = System.currentTimeMillis()/1000
-        val timeStamp: String = dbTimeStamp.toString()
-        val trackingModel = TrackingModel()
-        trackingModel.timeStamp = timeStamp
-        trackingModel.uid = uId
-        trackingModel.id = id!!
-        trackingModel.type = type
-        trackingModel.grade = courseName
-        trackingModel.topic = topicName
-        trackingModel.quizLevel = dbQLevel
-        trackingModel.qb = dbQuestionBank
-        trackingModel.questionPath = dbQPaths
-        trackingModel.attempt = dbAttempts
-        if (type.equals("answer")) {
-            trackingModel.answer = dbAnswer
-            trackingModel.answerStatus = isDbCorrectAnswer
-            dbTrackingStatus!!.child(dbQPaths).child(id).setValue(trackingModel)
-        }else{
-            dbTrackingHintStatus!!.child(dbQPaths).child(id).setValue(trackingModel)
-        }*/
-
     }
 }

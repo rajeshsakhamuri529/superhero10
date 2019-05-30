@@ -19,6 +19,7 @@ public class ConstantPath {
     public static String TOPIC_POSITION = "topic_position";
     public static String TOPIC = "topic";
     public static String TOPIC_NAME = "topic_name";
+    public static String IS_LEVEL_COMPLETE = "level_complete";
     public static String TOPIC_LEVEL = "topic_level";
     public static String QUIZ_COUNT = "quiz_count";
     public static String LEVEL_COMPLETED = "level_completed";
