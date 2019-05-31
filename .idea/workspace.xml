@@ -10,19 +10,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d40fee0-0fd3-4399-9e6a-e13cdd133dd9" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/model/ImageModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/GradeActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/AstraCardAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/AstraCardAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/MyPagerAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/MyPagerAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/AstraCardFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/interfaces/AstraCardClickListener.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/interfaces/AstraCardClickListener.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/ConstantPath.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" afterDir="false" />
-    </list>
+    <list default="true" id="7d40fee0-0fd3-4399-9e6a-e13cdd133dd9" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +98,7 @@
         <counts>
           <entry key="gradle" value="1" />
           <entry key="java" value="490" />
-          <entry key="kt" value="7150" />
+          <entry key="kt" value="7228" />
           <entry key="xml" value="292" />
         </counts>
       </usages-collector>
@@ -118,7 +106,7 @@
         <counts>
           <entry key="Groovy" value="1" />
           <entry key="JAVA" value="490" />
-          <entry key="Kotlin" value="7150" />
+          <entry key="Kotlin" value="7228" />
           <entry key="XML" value="292" />
         </counts>
       </usages-collector>
@@ -178,8 +166,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="63">
-              <caret line="87" selection-start-line="87" selection-end-line="87" />
+            <state relative-caret-position="340">
+              <caret line="173" column="37" selection-start-line="173" selection-start-column="37" selection-end-line="173" selection-end-column="37" />
               <folding>
                 <element signature="e#1546#1614#0" expanded="true" />
               </folding>
@@ -199,8 +187,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/MyPagerAdapter.kt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="76">
-              <caret line="12" column="80" selection-start-line="12" selection-start-column="80" selection-end-line="12" selection-end-column="80" />
+            <state relative-caret-position="323">
+              <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -264,7 +252,11 @@
       <find>ada</find>
       <find>R.drawable.golden_card</find>
       <find>&quot;pos</find>
+      <find>return</find>
     </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app</dir>
     </dirStrings>
@@ -2985,13 +2977,13 @@
       <window_info anchor="bottom" id="Logcat" order="0" weight="0.376" />
       <window_info anchor="bottom" id="TODO" order="1" />
       <window_info anchor="bottom" id="Android Profiler" order="2" />
-      <window_info anchor="bottom" id="Terminal" order="3" weight="0.32611173" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.3257143" />
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="5" weight="0.32914287" />
       <window_info anchor="bottom" id="Build" order="6" weight="0.208" />
       <window_info anchor="bottom" id="Messages" order="7" weight="0.32907802" />
       <window_info anchor="bottom" id="Run" order="8" weight="0.32914287" />
-      <window_info active="true" anchor="bottom" id="Debug" order="9" visible="true" weight="0.32914287" />
+      <window_info anchor="bottom" id="Debug" order="9" weight="0.32914287" />
       <window_info anchor="bottom" id="Find" order="10" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Gradle" order="1" />
@@ -3074,7 +3066,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt</url>
-          <line>188</line>
+          <line>180</line>
           <properties />
           <option name="timeStamp" value="73" />
         </line-breakpoint>
@@ -3086,7 +3078,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt</url>
-          <line>191</line>
+          <line>183</line>
           <properties />
           <option name="timeStamp" value="76" />
         </line-breakpoint>
@@ -3108,11 +3100,22 @@
           <properties />
           <option name="timeStamp" value="82" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt</url>
+          <line>226</line>
+          <properties />
+          <option name="timeStamp" value="115" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>item.topicPosition</expression-string>
+        <language-id>kotlin</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>listOfImages</expression-string>
         <language-id>kotlin</language-id>
@@ -3151,11 +3154,6 @@
       <expression>
         <expression-string>paths</expression-string>
         <language-id>kotlin</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>file.getName()</expression-string>
-        <language-id>JAVA</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
     </expressions>
@@ -3510,13 +3508,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/MyPagerAdapter.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="12" column="80" selection-start-line="12" selection-start-column="80" selection-end-line="12" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizSummaryActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="41">
@@ -3524,10 +3515,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/MyPagerAdapter.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="26" column="54" selection-start-line="26" selection-start-column="54" selection-end-line="26" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="87" selection-start-line="87" selection-end-line="87" />
+        <state relative-caret-position="340">
+          <caret line="173" column="37" selection-start-line="173" selection-start-column="37" selection-end-line="173" selection-end-column="37" />
           <folding>
             <element signature="e#1546#1614#0" expanded="true" />
           </folding>

@@ -40,6 +40,9 @@ class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
 
     override fun onBindViewHolder(holder: AstraCardViewHolder, position: Int) {
         loadImage(R.drawable.purple_card, holder.iv_astra_card)
+        holder.iv_astra_card.setOnClickListener {
+            astraCardClickListener.onClick(holder.iv_astra_card, position)
+        }
         val imagepath :String
         for (topicStatusEntity in topicStatusEntityList) {
 
@@ -108,9 +111,7 @@ class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
         if (position == (branchesItemList.size - 1)) {
             loadImage(R.drawable.pink_card, holder.iv_astra_card)
         }
-        holder.iv_astra_card.setOnClickListener {
-            astraCardClickListener.onClick(holder.iv_astra_card, position)
-        }
+
     }
 
     class AstraCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
