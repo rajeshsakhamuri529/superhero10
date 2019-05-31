@@ -45,6 +45,7 @@ public class ConstantPath {
     public static String assetOutputPath = "output/";
     public static String root = Environment.getExternalStorageDirectory().getAbsolutePath();
     public static String localBlobcityPath = root+"/blobcity/courses/";
+    public static String loaclAstraCardPath = localBlobcityPath+"AstraCards/";
     public static String assetTestCoursePath = assetOutputPath +"Test Course/";
 
     public static String assetTopicOnePath = assetTestCoursePath+"topic-one/";

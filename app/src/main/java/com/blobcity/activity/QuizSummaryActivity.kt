@@ -7,7 +7,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Handler
-import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -16,12 +16,13 @@ import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.ReviewModel
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.Utils
+import com.blobcity.utils.Utils.getListOfFilesFromFolder
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
 
-class QuizSummaryActivity : BaseActivity() {
+class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
     var reviewModelList: ArrayList<ReviewModel>?= null
     var topicLevel: String? = ""
@@ -83,30 +84,83 @@ class QuizSummaryActivity : BaseActivity() {
         val answer_status = "$size / $totalQuestion"
         tv_answer_status.text = answer_status
         if (level_status!!){
-            /*if (TextUtils.isEmpty(complete)) {
-                if (topicLevel!!.contains("basic")) {
-                    complete = "basic_completed"
-                }
-                if (topicLevel!!.contains("intermediate")) {
-                    complete = "Intermediate_completed"
-                }
-                if (topicLevel!!.contains("advanced")) {
-                    complete = "Advanced_completed"
-                }
-            }*/
             tv_completion_status.text = "Level Completed"
             tv_completion_status.setTextColor(resources.getColor(R.color.green_right_answer))
         }else{
             tv_completion_status.text = "Level Failed"
             tv_completion_status.setTextColor(resources.getColor(R.color.orange_level_failed))
         }
-        btn_review.setOnClickListener {
-            val intent = Intent(this, ReviewActivity::class.java)
-            intent.putExtra(ConstantPath.REVIEW_MODEL, reviewModelList)
-            startActivity(intent)
-        }
+
+        btn_review.setOnClickListener(this)
+        iv_cancel_quiz_summary.setOnClickListener(this)
+        btn_play_again.setOnClickListener (this)
+        btn_next_quiz.setOnClickListener(this)
 
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+        loadDataFromDb()
+
+    }
+
+    override fun onClick(v: View?) {
+        val intent: Intent
+        when (v!!.id){
+
+            R.id.iv_cancel_quiz_summary ->{
+                onBackPressed()
+            }
+
+            R.id.btn_review ->{
+                intent = Intent(this, ReviewActivity::class.java)
+                intent.putExtra(ConstantPath.REVIEW_MODEL, reviewModelList)
+                startActivity(intent)
+            }
+
+            R.id.btn_next_quiz ->{
+                topicLevel = btn_next_quiz.text.toString()
+                val folderPath = paths+folderName
+
+                if (level_status!!){
+                    complete = ""
+                }
+
+                if (topicLevel!!.equals("Quiz I")){
+                    topicLevel = "basic"
+                    dPath = readFromFile("$folderPath/basic.json")
+                }
+                if (topicLevel!!.equals("Quiz II")){
+                    topicLevel = "intermediate"
+                    dPath = readFromFile("$folderPath/intermediate.json")
+                }
+                if (topicLevel!!.equals("Astra Quiz")){
+                    topicLevel = "advanced"
+                    dPath = readFromFile("$folderPath/advanced.json")
+                }
+                navigateToStartQuiz()
+            }
+
+            R.id.btn_play_again ->{
+                navigateToStartQuiz()
+            }
+        }
+    }
+
+    private fun navigateToStartQuiz(){
+        val intent = Intent(this, StartQuizActivity::class.java)
+        intent.putExtra(DYNAMIC_PATH, dPath)
+        intent.putExtra(COURSE_ID, courseId)
+        intent.putExtra(TOPIC_ID, topicId)
+        intent.putExtra(COURSE_NAME, courseName)
+        intent.putExtra(TOPIC_NAME, topicName)
+        intent.putExtra(TOPIC_LEVEL, topicLevel)
+        intent.putExtra(LEVEL_COMPLETED, complete)
+        intent.putExtra(TOPIC_POSITION, position!!)
+        intent.putExtra(FOLDER_PATH, paths)
+        intent.putExtra(FOLDER_NAME, folderName)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun loadDataFromDb(){
         topicStatusVM!!.getSingleTopicStatus(topicId!!).observe(this,
             object : Observer<List<TopicStatusEntity>> {
                 override fun onChanged(t: List<TopicStatusEntity>?) {
@@ -128,6 +182,65 @@ class QuizSummaryActivity : BaseActivity() {
                                     }
                                     if (level.contains("advance")) {
                                         isAdvancedCompleted = true
+                                        val pathStringList: ArrayList<String> = ArrayList()
+                                        for (imagePath in getListOfFilesFromFolder(loaclAstraCardPath)){
+                                            if (imagePath.contains("png")){
+                                                pathStringList.add(imagePath)
+                                            }
+                                        }
+                                        /*Collections.sort(pathStringList)*/
+                                        var imagepath = ""
+                                        for (path in pathStringList){
+                                            if (position!! == 0) {
+                                                if (path.equals("1.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 1) {
+                                                if (path.equals("2.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 2) {
+                                                if (path.equals("3.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 4) {
+                                                if (path.equals("5.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 5) {
+                                                if (path.equals("6.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 6) {
+                                                if (path.equals("7.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 7) {
+                                                if (path.equals("8.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 8) {
+                                                if (path.equals("9.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 9) {
+                                                if (path.equals("10.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                        }
+                                        Glide.with(this@QuizSummaryActivity)
+                                            .load(imagepath)
+                                            .into(iv_card_back)
+                                        Log.e("position: ", position.toString())
                                         if (topicLevel!!.contains("advanced")) {
                                             handler.postDelayed(object : Runnable {
                                                 override fun run() {
@@ -176,65 +289,6 @@ class QuizSummaryActivity : BaseActivity() {
                     }
                 }
             })
-
-        iv_cancel_quiz_summary.setOnClickListener {
-            onBackPressed()
-        }
-
-        btn_play_again.setOnClickListener {
-            val intent = Intent(this, StartQuizActivity::class.java)
-            intent.putExtra(DYNAMIC_PATH, dPath)
-            intent.putExtra(COURSE_ID, courseId)
-            intent.putExtra(TOPIC_ID, topicId)
-            intent.putExtra(COURSE_NAME, courseName)
-            intent.putExtra(TOPIC_NAME, topicName)
-            intent.putExtra(TOPIC_LEVEL, topicLevel)
-            intent.putExtra(LEVEL_COMPLETED, complete)
-            intent.putExtra(TOPIC_POSITION, position!!)
-            intent.putExtra(FOLDER_PATH, paths)
-            intent.putExtra(FOLDER_NAME, folderName)
-            startActivity(intent)
-            finish()
-        }
-
-        btn_next_quiz.setOnClickListener {
-            topicLevel = btn_next_quiz.text.toString()
-
-            val folderPath = paths+folderName
-
-            if (level_status!!){
-                complete = ""
-            }
-
-            if (topicLevel!!.equals("Quiz I")){
-                topicLevel = "basic"
-                dPath = readFromFile("$folderPath/basic.json")
-            }
-
-            if (topicLevel!!.equals("Quiz II")){
-                topicLevel = "intermediate"
-                dPath = readFromFile("$folderPath/intermediate.json")
-            }
-
-            if (topicLevel!!.equals("Astra Quiz")){
-                topicLevel = "advanced"
-                dPath = readFromFile("$folderPath/advanced.json")
-            }
-            val intent = Intent(this, StartQuizActivity::class.java)
-            intent.putExtra(DYNAMIC_PATH, dPath)
-            intent.putExtra(COURSE_ID, courseId)
-            intent.putExtra(TOPIC_ID, topicId)
-            intent.putExtra(COURSE_NAME, courseName)
-            intent.putExtra(TOPIC_NAME, topicName)
-            intent.putExtra(TOPIC_LEVEL, topicLevel)
-            intent.putExtra(LEVEL_COMPLETED, complete)
-            intent.putExtra(TOPIC_POSITION, position!!)
-            intent.putExtra(FOLDER_NAME, folderName)
-            intent.putExtra(FOLDER_PATH, paths)
-            startActivity(intent)
-            finish()
-        }
-
     }
 
     private fun changeCameraDistance() {

@@ -28,6 +28,7 @@ import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.localTestCoursePath
+import com.blobcity.utils.Utils
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
@@ -104,8 +105,14 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         topicStatusVM!!.getTopicsByLevel("advanced").observe(this,
             object : Observer<List<TopicStatusEntity>>{
             override fun onChanged(topicStatusEntityList: List<TopicStatusEntity>?) {
+                val pathStringList: ArrayList<String> = ArrayList()
+                for (imagePath in Utils.getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
+                    if (imagePath.contains("png")){
+                        pathStringList.add(imagePath)
+                    }
+                }
                 val adapter = AstraCardAdapter(topicStatusEntityList!!, branchesItemList!!,
-                    activity!!, this@AstraCardFragment)
+                    activity!!, pathStringList, this@AstraCardFragment)
                 rcv_astra_card.adapter = adapter
                 val size = topicStatusEntityList.size
                 val total = branchesItemList!!.size
@@ -114,7 +121,7 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         })
     }
 
-    override fun onClick(imageView: ImageView, image: Int, position: Int) {
+    override fun onClick(imageView: ImageView, position: Int) {
         exitTransition = TransitionInflater.from(context)
             .inflateTransition(R.transition.exit_transition)
         val intent = Intent(context, CardReviewActivity::class.java)

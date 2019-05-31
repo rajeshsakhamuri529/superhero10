@@ -54,7 +54,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
     private var mSnackBar: Snackbar? = null
 
     override fun setLayout(): Int {
-        return com.blobcity.R.layout.activity_grade
+        return R.layout.activity_grade
     }
 
     override fun initView() {
@@ -97,20 +97,14 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
                                 if (gradeVersion != remoteConfig.getLong("gradesVer")) {
                                     getdataFromFirestore()
                                 }else{
-                                    val type = object : TypeToken<List<GradeResponseModel>>() {}.type
-                                    gradeResponseModelList = gson.fromJson(listJson, type)
-                                    rcv_grade.adapter = GradeAdapter(this@GradeActivity,
-                                        this@GradeActivity, gradeResponseModelList!!)
+                                    setLocalData(gson)
                                 }
                             }
                         }
                     })
                 }
                 else{
-                    val type = object : TypeToken<List<GradeResponseModel>>() {}.type
-                    gradeResponseModelList = gson.fromJson(listJson, type)
-                    rcv_grade.adapter = GradeAdapter(this, this, gradeResponseModelList!!)
-
+                    setLocalData(gson)
                 }
             }else{
                 if (isNetworkConnected()){
@@ -238,6 +232,24 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
         }
     }
 
+    private fun setLocalData(gson: Gson){
+        /*val pathStringList: ArrayList<String> = ArrayList()
+        for (imagePath in Utils.getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
+            if (imagePath.contains("png")){
+                pathStringList.add(imagePath)
+            }
+        }
+        *//*Collections.sort(pathStringList)*//*
+        reverseListString(pathStringList)
+        pathStringList.forEachIndexed { index, s ->
+            Log.e("imagename: ", s)
+        }*/
+        val type = object : TypeToken<List<GradeResponseModel>>() {}.type
+        gradeResponseModelList = gson.fromJson(listJson, type)
+        rcv_grade.adapter = GradeAdapter(this,
+            this, gradeResponseModelList!!)
+    }
+
     private fun getdataFromFirestore(){
         remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void>{
             override fun onComplete(task: Task<Void>) {
@@ -340,6 +352,15 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
             sharedPrefs.setPrefVal(this, GRADE_LIST, listJson)
             rcv_grade.adapter = GradeAdapter(this, this, gradeResponseModelList!!)
         }
+    }
+
+    private fun reverseListString(pathStrings: List<String>): List<String> {
+        Collections.sort(pathStrings) { pathStringList, t1 ->
+            val nextPos = t1
+            val currentPos = pathStringList
+            currentPos!!.compareTo(nextPos!!)
+        }
+        return pathStrings
     }
 
     private fun reverseList(gradeResponseModelList: List<GradeResponseModel>)

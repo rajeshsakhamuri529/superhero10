@@ -17,12 +17,14 @@ import com.blobcity.activity.CardReviewActivity
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.interfaces.AstraCardClickListener
 import com.blobcity.model.BranchesItem
+import com.blobcity.utils.ConstantPath
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.astra_card_single_layout.view.*
 
 class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
                        var branchesItemList:List<BranchesItem>,
                        var context: Activity,
+                       var pathImageList: ArrayList<String>,
                        var astraCardClickListener: AstraCardClickListener)
     : RecyclerView.Adapter<AstraCardAdapter.AstraCardViewHolder>(){
 
@@ -36,34 +38,89 @@ class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
         return branchesItemList.size
     }
 
-    fun getItem(position: Int) : BranchesItem{
-        return branchesItemList[position]
-    }
-
     override fun onBindViewHolder(holder: AstraCardViewHolder, position: Int) {
-        /*val topicStatusEntity = topicStatusEntityList.get(position)*/
         loadImage(R.drawable.purple_card, holder.iv_astra_card)
+        val imagepath :String
+        for (topicStatusEntity in topicStatusEntityList) {
+
+            if (position == topicStatusEntity.topicPosition) {
+
+                for (path in pathImageList){
+                    if (path.equals("1.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                    if (path.equals("2.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                    if (path.equals("3.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                    if (path.equals("4.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                    if (path.equals("5.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                    if (path.equals("6.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                    if (path.equals("7.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                    if (path.equals("8.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                    if (path.equals("9.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+
+                }
+            }
+            if (position == (branchesItemList.size - 1)
+                && position == topicStatusEntity.topicPosition) {
+                for (path in pathImageList){
+                    if (path.equals("10.png")) {
+                        imagepath = ConstantPath.loaclAstraCardPath +path
+                        loadImage(imagepath, holder.iv_astra_card)
+                        return
+                    }
+                }
+            }
+        }
         if (position == (branchesItemList.size - 1)) {
             loadImage(R.drawable.pink_card, holder.iv_astra_card)
         }
-        for (topicStatusEntity in topicStatusEntityList) {
-            if (position == topicStatusEntity.topicPosition) {
-                loadImage(R.drawable.golden_card, holder.iv_astra_card)
-            }
-            if (position == (branchesItemList.size - 1) && position == topicStatusEntity.topicPosition) {
-                loadImage(R.drawable.golden_card, holder.iv_astra_card)
-            }
-            if (position == (branchesItemList.size - 1)) {
-                loadImage(R.drawable.pink_card, holder.iv_astra_card)
-            }
+        holder.iv_astra_card.setOnClickListener {
+            astraCardClickListener.onClick(holder.iv_astra_card, position)
         }
-        holder.iv_astra_card.setOnClickListener({
-            astraCardClickListener.onClick(holder.iv_astra_card, R.drawable.purple_card, position)
-        })
     }
 
     class AstraCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val iv_astra_card = itemView.iv_astra_card
+    }
+
+    fun loadImage(imagePath: String, imageView: ImageView){
+        Glide.with(context)
+            .load(imagePath)
+            .into(imageView)
     }
 
     fun loadImage(imageDrawable: Int, imageView: ImageView){

@@ -19,6 +19,8 @@ import com.blobcity.utils.CarouselEffectTransformer
 import com.blobcity.utils.ConstantPath
 import com.blobcity.adapter.InfinitePagerAdapter
 import com.blobcity.model.CoursesResponseModel
+import com.blobcity.model.ImageModel
+import com.blobcity.utils.ConstantPath.loaclAstraCardPath
 import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
@@ -58,26 +60,126 @@ class CardReviewActivity : BaseActivity() {
         /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
         val topicResponseModel = gsonFile
             .fromJson(jsonString, TopicResponseModel::class.java)
+
         branchesItemList = topicResponseModel.branches
-        val listOfImages: ArrayList<Int> = ArrayList()
-        for(i in 0..(branchesItemList!!.size -2)){
-            listOfImages.add(R.drawable.purple_card)
+
+        val pathStringList: ArrayList<String> = ArrayList()
+        for (imagePath in Utils.getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
+            if (imagePath.contains("png")){
+                pathStringList.add(imagePath)
+            }
         }
-        listOfImages.add((branchesItemList!!.size -1), R.drawable.pink_card)
+        val listOfImages: ArrayList<ImageModel> = ArrayList()
+        for (path in pathStringList) {
+
+            /*listOfImages.add(loaclAstraCardPath+path)*/
+        }
+        for(i in 0..(branchesItemList!!.size -2)){
+            val imageModel = ImageModel()
+            imageModel.imageDrawable = R.drawable.purple_card
+            imageModel.imagePath = ""
+            listOfImages.add(imageModel)
+        }
+        val imageModel = ImageModel()
+        imageModel.imageDrawable = R.drawable.pink_card
+        imageModel.imagePath = ""
+        listOfImages.add((branchesItemList!!.size -1), imageModel)
+
         val topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         topicStatusVM.getTopicsByLevel("advanced").observe(this,
             object : Observer<List<TopicStatusEntity>> {
                 override fun onChanged(topicStatusEntityList: List<TopicStatusEntity>?) {
-
+                    /*val pathStringList: ArrayList<String> = ArrayList()
+                    for (imagePath in Utils.getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
+                        if (imagePath.contains("png")){
+                            pathStringList.add(imagePath)
+                        }
+                    }*/
                     branchesItemList!!.forEachIndexed { index, i ->
                         for (item in topicStatusEntityList!!){
-                        if (item.topicPosition == index){
-                            listOfImages.set(index, R.drawable.golden_card)
-                        }
+                            if (item.topicPosition == index){
+                                var imagepath :String
+                                for (path in pathStringList){
+                                    when(path){
+                                        "1.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "2.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "3.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "4.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "5.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "6.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "7.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "8.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "9.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                        "10.png"->{
+                                            imagepath = loaclAstraCardPath +path
+                                            val imageModel1 = ImageModel()
+                                            imageModel1.imageDrawable = 0
+                                            imageModel1.imagePath = imagepath
+                                            listOfImages.set(index, imageModel1)
+                                        }
+                                    }
+
+                                }
+                                /*listOfImages.set(index, imagepath)*/
+                            }
                     } }
 
-                    val pagerAdapter =
-                        InfinitePagerAdapter(MyPagerAdapter(this@CardReviewActivity, listOfImages))
+                    val pagerAdapter = InfinitePagerAdapter(MyPagerAdapter(
+                        this@CardReviewActivity, listOfImages))
 
                     vp_card_review.adapter = pagerAdapter
                     intentCount = intent.getIntExtra("pos", 0)

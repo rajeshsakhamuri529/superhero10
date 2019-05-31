@@ -50,7 +50,6 @@
                 android:id="@+id/iv_card_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/golden_card"
                 android:visibility="invisible"/>
     </FrameLayout>
 
