@@ -7,19 +7,18 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v4.view.ViewPager
 import android.transition.TransitionInflater
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import com.blobcity.R
+import com.blobcity.adapter.InfinitePagerAdapter
 import com.blobcity.adapter.MyPagerAdapter
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.BranchesItem
+import com.blobcity.model.CoursesResponseModel
+import com.blobcity.model.ImageModel
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.CarouselEffectTransformer
 import com.blobcity.utils.ConstantPath
-import com.blobcity.adapter.InfinitePagerAdapter
-import com.blobcity.model.CoursesResponseModel
-import com.blobcity.model.ImageModel
 import com.blobcity.utils.ConstantPath.loaclAstraCardPath
 import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
@@ -33,6 +32,7 @@ class CardReviewActivity : BaseActivity() {
     var count : Int?= null
     var sharedCount : Int ?= null
     var intentCount : Int?= null
+    var topicStatusVM: TopicStatusVM?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_card_review
@@ -42,6 +42,8 @@ class CardReviewActivity : BaseActivity() {
         iv_dismiss.setOnClickListener({
             onBackPressed()
         })
+        topicStatusVM = ViewModelProviders.of(this)
+            .get(TopicStatusVM::class.java)
         vp_card_review.clipChildren = false
         vp_card_review.pageMargin = resources
             .getDimensionPixelOffset(R.dimen.pager_margin)
@@ -49,7 +51,8 @@ class CardReviewActivity : BaseActivity() {
         vp_card_review.setPageTransformer(false,
             CarouselEffectTransformer(this))
 
-        val courseJsonString = Utils.readFromFile("${ConstantPath.localBlobcityPath}/Courses.json")
+        val courseJsonString = Utils.readFromFile(
+            "${ConstantPath.localBlobcityPath}/Courses.json")
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
@@ -62,18 +65,19 @@ class CardReviewActivity : BaseActivity() {
             .fromJson(jsonString, TopicResponseModel::class.java)
 
         branchesItemList = topicResponseModel.branches
+        loadDataFromViewModel()
+        prepareSharedElementTransition()
+    }
 
+    private fun loadDataFromViewModel(){
         val pathStringList: ArrayList<String> = ArrayList()
-        for (imagePath in Utils.getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
+        for (imagePath in Utils
+            .getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
             if (imagePath.contains("png")){
                 pathStringList.add(imagePath)
             }
         }
         val listOfImages: ArrayList<ImageModel> = ArrayList()
-        for (path in pathStringList) {
-
-            /*listOfImages.add(loaclAstraCardPath+path)*/
-        }
         for(i in 0..(branchesItemList!!.size -2)){
             val imageModel = ImageModel()
             imageModel.imageDrawable = R.drawable.purple_card
@@ -84,17 +88,9 @@ class CardReviewActivity : BaseActivity() {
         imageModel.imageDrawable = R.drawable.pink_card
         imageModel.imagePath = ""
         listOfImages.add((branchesItemList!!.size -1), imageModel)
-
-        val topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
-        topicStatusVM.getTopicsByLevel("advanced").observe(this,
+        topicStatusVM!!.getTopicsByLevel("advanced").observe(this,
             object : Observer<List<TopicStatusEntity>> {
                 override fun onChanged(topicStatusEntityList: List<TopicStatusEntity>?) {
-                    /*val pathStringList: ArrayList<String> = ArrayList()
-                    for (imagePath in Utils.getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
-                        if (imagePath.contains("png")){
-                            pathStringList.add(imagePath)
-                        }
-                    }*/
                     branchesItemList!!.forEachIndexed { index, i ->
                         for (item in topicStatusEntityList!!){
                             if (item.topicPosition == index){
@@ -172,11 +168,9 @@ class CardReviewActivity : BaseActivity() {
                                             listOfImages.set(index, imageModel1)
                                         }
                                     }
-
                                 }
-                                /*listOfImages.set(index, imagepath)*/
                             }
-                    } }
+                        } }
 
                     val pagerAdapter = InfinitePagerAdapter(MyPagerAdapter(
                         this@CardReviewActivity, listOfImages))
@@ -190,7 +184,6 @@ class CardReviewActivity : BaseActivity() {
                     count = posi - 1
                     val tv_count = "$posi of $total"
                     tv_topic_count.text = tv_count
-                    Log.e("intent", posi.toString())
 
                     vp_card_review.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
                         override fun onPageScrollStateChanged(position: Int) {
@@ -212,9 +205,7 @@ class CardReviewActivity : BaseActivity() {
                                     ll_save_share.visibility = View.INVISIBLE
                                 }
                             }
-
                         }
-
                     })
                     for(topicStatus in topicStatusEntityList!!) {
                         if (topicStatus.topicPosition == intentCount) {
@@ -224,7 +215,6 @@ class CardReviewActivity : BaseActivity() {
                     }
                 }
             })
-        prepareSharedElementTransition()
     }
 
     override fun finishAfterTransition() {

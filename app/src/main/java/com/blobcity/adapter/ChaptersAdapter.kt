@@ -2,6 +2,7 @@ package com.blobcity.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ class ChaptersAdapter(val context: Context,
                       val topicClickListener: TopicClickListener) :
     RecyclerView.Adapter<ChaptersAdapter.ChaptersViewHolder>() {
 
+    var isLastTopicAvailable = false
+
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ChaptersViewHolder {
         return ChaptersViewHolder(
             LayoutInflater.from(context)
@@ -28,17 +31,38 @@ class ChaptersAdapter(val context: Context,
     }
 
     override fun onBindViewHolder(holder: ChaptersViewHolder, position: Int) {
+
         holder.tv_topic_number.text = branchesItemList[position].topic.index.toString()
         holder.tv_topic_name.text = branchesItemList[position].topic.title
-        if (branchesItemList.size-1 == position){
-            holder.singleTopic.setBackgroundResource(R.drawable.dashboard_bottom_corner)
-        }
         if (position == 0){
             holder.singleTopic.setBackgroundResource(R.drawable.dashboard_top_corner)
         }
+        branchesItemList.forEachIndexed { index, branchesItem ->
+            if (position < branchesItemList.size-1){
+                if (branchesItemList[position].advance == 1){
+                    isLastTopicAvailable = true
+                }else{
+                    isLastTopicAvailable = false
+                    return@forEachIndexed
+                }
+            }
+        }
+
         holder.singleTopic.setOnClickListener {
-            topicClickListener.onClick(branchesItemList[position].topic,
-                branchesItemList[position].id, position)
+
+            if (position == branchesItemList.size-1) {
+                if (isLastTopicAvailable) {
+                    topicClickListener.onClick(
+                        branchesItemList[position].topic,
+                        branchesItemList[position].id, position
+                    )
+                }
+            }else{
+                topicClickListener.onClick(
+                    branchesItemList[position].topic,
+                    branchesItemList[position].id, position
+                )
+            }
         }
 
         if (branchesItemList[position].basic == 1){
@@ -72,6 +96,17 @@ class ChaptersAdapter(val context: Context,
             Glide.with(context)
                 .load(R.drawable.progress_icon_grey)
                 .into(holder.iv_progress3)
+        }
+    }
+
+    fun lastItem(holder: ChaptersViewHolder){
+        holder.singleTopic.setBackgroundResource(R.drawable.dashboard_bottom_corner)
+        if (isLastTopicAvailable) {
+
+        }else{
+            holder.singleTopic.alpha = 0.8f
+            holder.tv_topic_name.textColors.withAlpha(100)
+            holder.tv_topic_number.textColors.withAlpha(100)
         }
     }
 

@@ -5,17 +5,20 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.blobcity.R
-import com.blobcity.activity.DashBoardActivity
 import com.blobcity.activity.QuizLevelActivity
 import com.blobcity.adapter.ChaptersAdapter
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.interfaces.TopicClickListener
-import com.blobcity.model.*
-import com.blobcity.utils.ConstantPath
+import com.blobcity.model.BranchesItem
+import com.blobcity.model.CoursesResponseModel
+import com.blobcity.model.Topic
+import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
@@ -41,6 +44,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        readFileLocally()
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         topicStatusVM!!.getAllTopicStatus().observe(this,
             object : Observer<List<TopicStatusEntity>> {
@@ -75,12 +79,26 @@ class ChapterFragment: Fragment(), TopicClickListener {
                                 }
                             }
                         }
-                        adapter!!.notifyDataSetChanged()
                     }
+                    adapter = ChaptersAdapter(context!!, branchesItemList!!, this@ChapterFragment)
+
+                    rcv_chapter.adapter = adapter
                 }
 
             })
-        readFileLocally()
+        rcv_chapter.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
+                val totalItemCount = layoutManager.itemCount
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+                adapter!!.lastItem(
+                    (rcv_chapter
+                        .findViewHolderForAdapterPosition(lastVisible)
+                            as ChaptersAdapter.ChaptersViewHolder)
+                )
+            }
+        })
+
     }
 
     private fun readFileLocally() {
@@ -117,9 +135,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
             }
         }*/
 
-        adapter = ChaptersAdapter(context!!, branchesItemList!!, this)
 
-        rcv_chapter.adapter = adapter
         /*rl_chapter_one.setOnClickListener(this)
         rl_chapter_two.setOnClickListener(this)*/
     }

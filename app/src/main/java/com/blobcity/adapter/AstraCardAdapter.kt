@@ -49,52 +49,35 @@ class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
             if (position == topicStatusEntity.topicPosition) {
 
                 for (path in pathImageList){
-                    if (path.equals("1.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
+                    when(path){
+                        "1.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
+                        "2.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
+                        "3.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
+                        "4.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
+                        "5.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
+                        "6.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
+                        "7.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
+                        "8.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
+                        "9.png" ->{
+                            loadAstraCradImage(path, holder.iv_astra_card)
+                        }
                     }
-                    if (path.equals("2.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
-                    }
-                    if (path.equals("3.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
-                    }
-                    if (path.equals("4.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
-                    }
-                    if (path.equals("5.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
-                    }
-                    if (path.equals("6.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
-                    }
-                    if (path.equals("7.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
-                    }
-                    if (path.equals("8.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
-                    }
-                    if (path.equals("9.png")) {
-                        imagepath = ConstantPath.loaclAstraCardPath +path
-                        loadImage(imagepath, holder.iv_astra_card)
-                        return
-                    }
-
                 }
             }
             if (position == (branchesItemList.size - 1)
@@ -112,6 +95,11 @@ class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
             loadImage(R.drawable.pink_card, holder.iv_astra_card)
         }
 
+    }
+
+    private fun loadAstraCradImage(path: String, imageView: ImageView){
+        val imagepath = ConstantPath.loaclAstraCardPath +path
+        loadImage(imagepath, imageView)
     }
 
     class AstraCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
