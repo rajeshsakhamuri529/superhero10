@@ -37,33 +37,6 @@ class ChaptersAdapter(val context: Context,
         if (position == 0){
             holder.singleTopic.setBackgroundResource(R.drawable.dashboard_top_corner)
         }
-        branchesItemList.forEachIndexed { index, branchesItem ->
-            if (position < branchesItemList.size-1){
-                if (branchesItemList[position].advance == 1){
-                    isLastTopicAvailable = true
-                }else{
-                    isLastTopicAvailable = false
-                    return@forEachIndexed
-                }
-            }
-        }
-
-        holder.singleTopic.setOnClickListener {
-
-            if (position == branchesItemList.size-1) {
-                if (isLastTopicAvailable) {
-                    topicClickListener.onClick(
-                        branchesItemList[position].topic,
-                        branchesItemList[position].id, position
-                    )
-                }
-            }else{
-                topicClickListener.onClick(
-                    branchesItemList[position].topic,
-                    branchesItemList[position].id, position
-                )
-            }
-        }
 
         if (branchesItemList[position].basic == 1){
             Glide.with(context)
@@ -96,6 +69,33 @@ class ChaptersAdapter(val context: Context,
             Glide.with(context)
                 .load(R.drawable.progress_icon_grey)
                 .into(holder.iv_progress3)
+        }
+
+        holder.singleTopic.setOnClickListener {
+            if (position == branchesItemList.size-1) {
+                if (isLastTopicAvailable) {
+                    topicClickListener.onClick(
+                        branchesItemList[position].topic,
+                        branchesItemList[position].id, position
+                    )
+                }
+            }else{
+                topicClickListener.onClick(
+                    branchesItemList[position].topic,
+                    branchesItemList[position].id, position
+                )
+            }
+        }
+
+        if (position < branchesItemList.size - 1) {
+            branchesItemList.forEachIndexed { index, branchesItem ->
+                if (branchesItem.advance == 1) {
+                    isLastTopicAvailable = true
+                } else {
+                    isLastTopicAvailable = false
+                    return
+                }
+            }
         }
     }
 
