@@ -1,82 +1,75 @@
 package com.blobcity.activity
 
-import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
+import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.fragment.AstraCardFragment
 import com.blobcity.fragment.ChapterFragment
 import com.blobcity.fragment.SettingFragment
-import com.blobcity.utils.ConstantPath
-import com.blobcity.utils.ConstantPath.IS_LOGGED_IN
-import com.blobcity.utils.ConstantPath.UID
-import com.blobcity.utils.SharedPrefs
-import com.google.firebase.auth.FirebaseAuth
-import com.gun0912.tedpermission.PermissionListener
-import com.gun0912.tedpermission.TedPermission
+import com.blobcity.utils.ConstantPath.TITLE_TOPIC
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.io.File
 
 class DashBoardActivity : BaseActivity(),
-    View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener/*, ConnectivityReceiver.ConnectivityReceiverListener*/{
+    BottomNavigationView.OnNavigationItemSelectedListener {
 
-    var TAG: String?= "Dashboard"
-    private lateinit var auth: FirebaseAuth
-    /*val sharedPref: SharedPreferences = this.getSharedPreferences(ANONYMOUS_USER, Context.MODE_PRIVATE)
-    val editor = sharedPref.edit()*/
-    private var mSnackBar: Snackbar? = null
-    var fragment : Fragment ?= null
+    private var fragment: Fragment? = null
+    lateinit var gradeTitle: String
 
     override fun setLayout(): Int {
         return R.layout.activity_dashboard
     }
 
     override fun initView() {
-
+        gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         loadFragment(ChapterFragment())
         navigation.setOnNavigationItemSelectedListener(this)
-        /*TedPermission.with(this)
-            .setPermissionListener(this)
-            .setDeniedMessage("If you reject permission,you can not use this service\n"
-                    + "\nPlease turn on permissions at [Setting] > [Permission]")
-            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .check()*/
-        /*databaseRefrence = FirebaseDatabase.getInstance()
-            .getReference("topic_status/"+UniqueUUid.id(this))
-        databaseRefrence!!.keepSynced(true)*/
-        val sharedPrefs = SharedPrefs()
-//        auth = FirebaseAuth.getInstance()
-//
-//        signin(sharedPrefs)
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
-            R.id.nav_chapter ->{
+            R.id.nav_chapter -> {
                 fragment = ChapterFragment()
             }
 
-            com.blobcity.R.id.nav_astra_cards->{
+            com.blobcity.R.id.nav_astra_cards -> {
                 fragment = AstraCardFragment()
             }
 
-            com.blobcity.R.id.nav_settings->{
+            com.blobcity.R.id.nav_settings -> {
                 fragment = SettingFragment()
             }
         }
 
         return loadFragment(fragment!!)
+    }
+
+    private fun loadFragment(fragment: Fragment): Boolean {
+        //switching fragment
+        if (fragment != null) {
+            val bundle = Bundle()
+            bundle.putString(TITLE_TOPIC, gradeTitle)
+            fragment.arguments = bundle
+            getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+
+            return true
+        }
+        return false
+    }
+
+    override fun onActivityReenter(resultCode: Int, data: Intent?) {
+        super.onActivityReenter(resultCode, data)
+        postponeEnterTransition()
+        if (resultCode == Activity.RESULT_OK) {
+            (fragment as AstraCardFragment).activityReenter(data!!)
+        }
     }
 
     lateinit var myDir: File
@@ -269,54 +262,4 @@ class DashBoardActivity : BaseActivity(),
     override fun onPermissionDenied(deniedPermissions: List<String>) {
 
     }*/
-
-     private fun loadFragment(fragment: Fragment): Boolean {
-        //switching fragment
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit()
-
-            return true
-        }
-        return false
-    }
-
-
-
-
-    override fun onClick(v: View?) {
-        /*when(v?.id){
-            R.id.rl_chapter_one ->{
-                callIntent(branchesItemList!!.get(0).topic.folderName, branchesItemList!!.get(0).id)
-            }
-
-            R.id.rl_chapter_two ->{
-                callIntent(branchesItemList!!.get(1).topic.folderName, branchesItemList!!.get(1).id)
-            }
-        }*/
-    }
-
-
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("onStart","Dashboard")
-
-    }
-
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
-        super.onActivityReenter(resultCode, data)
-        postponeEnterTransition()
-        if (resultCode == Activity.RESULT_OK) {
-            (fragment as AstraCardFragment).activityReenter(data!!)
-        }
-        /*val myFragment = fragmentManager.findFragmentByTag("AstraCardFragment") as AstraCardFragment
-        if (myFragment != null && myFragment!!.isVisible()) {
-            // add your code here
-
-        }*/
-    }
 }
-

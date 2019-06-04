@@ -47,6 +47,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     var courseName: String?= null
     var folderName : String?= null
     var level_status: Boolean?= null
+    var gradeTitle: String?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_quiz_summary
@@ -65,6 +66,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         courseId = intent.getStringExtra(COURSE_ID)
         courseName = intent.getStringExtra(COURSE_NAME)
         folderName = intent.getStringExtra(FOLDER_NAME)
+        gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         level_status = intent.getBooleanExtra(IS_LEVEL_COMPLETE, false)
         tv_chapter_title.text = topicName
         changeCameraDistance()
@@ -156,12 +158,13 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(TOPIC_POSITION, position!!)
         intent.putExtra(FOLDER_PATH, paths)
         intent.putExtra(FOLDER_NAME, folderName)
+        intent.putExtra(TITLE_TOPIC, gradeTitle!!)
         startActivity(intent)
         finish()
     }
 
     private fun loadDataFromDb(){
-        topicStatusVM!!.getSingleTopicStatus(topicId!!).observe(this,
+        topicStatusVM!!.getSingleTopicStatus(topicId!!, gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>> {
                 override fun onChanged(t: List<TopicStatusEntity>?) {
                     topicStatusModelList = ArrayList()
@@ -203,6 +206,11 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                             }
                                             if (position!! == 2) {
                                                 if (path.equals("3.png")) {
+                                                    imagepath = loaclAstraCardPath+path
+                                                }
+                                            }
+                                            if (position!! == 3) {
+                                                if (path.equals("4.png")) {
                                                     imagepath = loaclAstraCardPath+path
                                                 }
                                             }

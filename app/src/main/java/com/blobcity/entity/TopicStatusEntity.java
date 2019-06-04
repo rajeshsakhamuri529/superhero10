@@ -28,6 +28,17 @@ public class TopicStatusEntity {
     @ColumnInfo(name = "topic_position")
     private int topicPosition = -1;
 
+    @ColumnInfo(name = "grade_title")
+    private String gradeTitle;
+
+    public String getGradeTitle() {
+        return gradeTitle;
+    }
+
+    public void setGradeTitle(String gradeTitle) {
+        this.gradeTitle = gradeTitle;
+    }
+
     public int getTopicPosition() {
         return topicPosition;
     }

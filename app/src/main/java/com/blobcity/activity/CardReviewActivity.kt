@@ -18,8 +18,7 @@ import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.ImageModel
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.CarouselEffectTransformer
-import com.blobcity.utils.ConstantPath
-import com.blobcity.utils.ConstantPath.loaclAstraCardPath
+import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
@@ -33,6 +32,7 @@ class CardReviewActivity : BaseActivity() {
     var sharedCount : Int ?= null
     var intentCount : Int?= null
     var topicStatusVM: TopicStatusVM?= null
+    var gradeTitle: String?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_card_review
@@ -44,6 +44,8 @@ class CardReviewActivity : BaseActivity() {
         })
         topicStatusVM = ViewModelProviders.of(this)
             .get(TopicStatusVM::class.java)
+
+        gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         vp_card_review.clipChildren = false
         vp_card_review.pageMargin = resources
             .getDimensionPixelOffset(R.dimen.pager_margin)
@@ -52,14 +54,14 @@ class CardReviewActivity : BaseActivity() {
             CarouselEffectTransformer(this))
 
         val courseJsonString = Utils.readFromFile(
-            "${ConstantPath.localBlobcityPath}/Courses.json")
+            "${localBlobcityPath}/Courses.json")
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
         val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
             .fromJson(courseJsonString, courseType)
         val courseName = courseResponseModel[0].syllabus.title
-        val jsonString = Utils.readFromFile("${ConstantPath.localBlobcityPath}/$courseName/topic.json")
+        val jsonString = Utils.readFromFile("${localBlobcityPath}/$courseName/topic.json")
         /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
         val topicResponseModel = gsonFile
             .fromJson(jsonString, TopicResponseModel::class.java)
@@ -72,7 +74,7 @@ class CardReviewActivity : BaseActivity() {
     private fun loadDataFromViewModel(){
         val pathStringList: ArrayList<String> = ArrayList()
         for (imagePath in Utils
-            .getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
+            .getListOfFilesFromFolder(loaclAstraCardPath)){
             if (imagePath.contains("png")){
                 pathStringList.add(imagePath)
             }
@@ -88,7 +90,7 @@ class CardReviewActivity : BaseActivity() {
         imageModel.imageDrawable = R.drawable.pink_card
         imageModel.imagePath = ""
         listOfImages.add((branchesItemList!!.size -1), imageModel)
-        topicStatusVM!!.getTopicsByLevel("advanced").observe(this,
+        topicStatusVM!!.getTopicsByLevel("advanced", gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>> {
                 override fun onChanged(topicStatusEntityList: List<TopicStatusEntity>?) {
                     branchesItemList!!.forEachIndexed { index, i ->

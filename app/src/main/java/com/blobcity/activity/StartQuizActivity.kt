@@ -26,6 +26,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         val position: Int = intent.getIntExtra(TOPIC_POSITION, -1)
         val paths: String = intent.getStringExtra(FOLDER_PATH)
         val folderName: String = intent.getStringExtra(FOLDER_NAME)
+        val gradeTitle: String = intent.getStringExtra(TITLE_TOPIC)
         var level = ""
 
         Log.e("path", path)
@@ -65,6 +66,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
             intent.putExtra(TOPIC_POSITION, position)
             intent.putExtra(FOLDER_PATH, paths)
             intent.putExtra(FOLDER_NAME, folderName)
+            intent.putExtra(TITLE_TOPIC, gradeTitle)
             startActivity(intent)
             finish()
         }

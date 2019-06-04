@@ -27,6 +27,7 @@ import com.blobcity.model.BranchesItem
 import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath
+import com.blobcity.utils.ConstantPath.TITLE_TOPIC
 import com.blobcity.utils.ConstantPath.localTestCoursePath
 import com.blobcity.utils.Utils
 import com.blobcity.utils.Utils.readFromFile
@@ -41,6 +42,7 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
     private var branchesItemList:List<BranchesItem>?=null
     var gridLayoutManager: GridLayoutManager ?= null
     private var mTmpReenterState: Bundle? = null
+    var gradeTitle: String?= null
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     private val mCallback = object : android.app.SharedElementCallback() {
@@ -87,6 +89,7 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         setExtCallBack()
         gridLayoutManager = GridLayoutManager(context!!, 3)
         rcv_astra_card.layoutManager = gridLayoutManager
+        gradeTitle = arguments!!.getString(TITLE_TOPIC)!!
 
         /*val jsonString = (activity!! as DashBoardActivity)
             .loadJSONFromAsset( ConstantPath.assetTestCoursePath + "topic.json")*/
@@ -102,7 +105,7 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         val topicResponseModel = gsonFile.fromJson(jsonString, TopicResponseModel::class.java)
         branchesItemList = topicResponseModel.branches
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
-        topicStatusVM!!.getTopicsByLevel("advanced").observe(this,
+        topicStatusVM!!.getTopicsByLevel("advanced", gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>>{
             override fun onChanged(topicStatusEntityList: List<TopicStatusEntity>?) {
                 val pathStringList: ArrayList<String> = ArrayList()
@@ -129,6 +132,7 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         val options = ActivityOptionsCompat
             .makeSceneTransitionAnimation(activity!!, imageViewPair)
         intent.putExtra("pos", position)
+        intent.putExtra(TITLE_TOPIC, gradeTitle)
         startActivity(intent,options.toBundle())
     }
 

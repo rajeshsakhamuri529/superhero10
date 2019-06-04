@@ -38,7 +38,8 @@ class GradeAdapter(var context: Activity,
             holder.rl_grade.setPadding(0, 60, 0, 0)
         }
         holder.iv_grade.setOnClickListener {
-            clickListener.click(gradeResponseModelList[position].link!!)
+            clickListener.click(gradeResponseModelList[position].link!!,
+                gradeResponseModelList[position].title!!)
         }
     }
 

@@ -9,24 +9,22 @@ import com.blobcity.entity.TopicStatusEntity
 
 class TopicStatusRepository(application: Application) {
     private var topicStatusDao: TopicStatusDao ?= null
-    private var mAllTopicStatusEntity: LiveData<List<TopicStatusEntity>> ?= null
 
     init {
         val db : QuizDatabase = QuizDatabase.getDatabase(application)
         topicStatusDao = db.topicStatusDao
-        mAllTopicStatusEntity = topicStatusDao!!.getAllTopicStatus()
     }
 
-    fun getAllTopicStatus() : LiveData<List<TopicStatusEntity>>{
-        return mAllTopicStatusEntity!!
+    fun getAllTopicStatus(gradeTitle: String) : LiveData<List<TopicStatusEntity>>{
+        return topicStatusDao!!.getAllTopicStatus(gradeTitle)
     }
 
-    fun getSingleTopicStatus(topicID: String) : LiveData<List<TopicStatusEntity>>{
-        return topicStatusDao!!.getSingleTopicStatus(topicID)
+    fun getSingleTopicStatus(topicID: String, gradeTitle: String) : LiveData<List<TopicStatusEntity>>{
+        return topicStatusDao!!.getSingleTopicStatus(topicID, gradeTitle)
     }
 
-    fun getTopicsByLevel(topicLevel: String) : LiveData<List<TopicStatusEntity>>{
-        return topicStatusDao!!.getTopicByLevel(topicLevel)
+    fun getTopicsByLevel(topicLevel: String, gradeTitle: String) : LiveData<List<TopicStatusEntity>>{
+        return topicStatusDao!!.getTopicByLevel(topicLevel, gradeTitle)
     }
 
     fun insert(topicStatusEntity: TopicStatusEntity){

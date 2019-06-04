@@ -38,6 +38,8 @@ public class ConstantPath {
     public static String UID = "uid";
     public static final String ANONYMOUS_USER = "ANONYMOUS_USER";
     public static final String SETTINGS = "SETTINGS";
+    public static final String GRADE_SHARED_PREFS = "grade_shared_prefs";
+    public static final String TITLE_TOPIC = "title_topic";
 
 
     /*assetPath*/

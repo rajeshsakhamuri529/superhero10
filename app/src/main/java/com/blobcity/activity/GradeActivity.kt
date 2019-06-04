@@ -16,8 +16,7 @@ import com.blobcity.adapter.GradeAdapter
 import com.blobcity.interfaces.GradeClickListener
 import com.blobcity.model.GradeResponseModel
 import com.blobcity.utils.ConstantPath
-import com.blobcity.utils.ConstantPath.GRADE_LIST
-import com.blobcity.utils.ConstantPath.GRADE_VERSION
+import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
 import com.google.android.gms.tasks.OnCompleteListener
@@ -40,16 +39,15 @@ import kotlin.collections.ArrayList
 
 class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
 
-
-    val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
     val storage = FirebaseStorage.getInstance()
     var gradeResponseModelList: ArrayList<GradeResponseModel>?= null
     var gradeVersion: Long?= null
-    val sharedPrefs = SharedPrefs()
+    private val sharedPrefs = SharedPrefs()
     var isBtnIconDownloaded: Boolean = false
     var isIconDownloaded: Boolean = false
-    var listJson: String?= null
+    private var listJson: String?= null
     private var auth: FirebaseAuth?= null
     private var mSnackBar: Snackbar? = null
 
@@ -373,10 +371,31 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
         return gradeResponseModelList
     }
 
-    override fun click(link: String) {
-        if (!TextUtils.isEmpty(listJson)) {
+    override fun click(link: String, title: String) {
+        val gradeSharedPrefs = sharedPrefs.getPrefVal(this, title)
+        if (!TextUtils.isEmpty(gradeSharedPrefs)) {
+            if (isNetworkConnected()){
+                remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void> {
+                    override fun onComplete(task: Task<Void>) {
+                        if (task.isSuccessful) {
+                            if (gradeVersion != remoteConfig.getLong("gradesVer")) {
+                                downloadFolder(link, title)
+                            }else{
+                                navigateToDashboard(title)
+                            }
+                        }
+                    }
+                })
+            }else{
+                navigateToDashboard(title)
+            }
+        }else{
+            if (isNetworkConnected()) {
+                downloadFolder(link, title)
+            }
+        }
 
-            val connManager : ConnectivityManager= getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        /*val connManager : ConnectivityManager= getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val mWifi : NetworkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI)
             val network : NetworkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE)
 
@@ -391,38 +410,10 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
                 Log.e("network", "connected")
             }else{
                 Log.e("network", "not connected")
-            }
-            if (isNetworkConnected()){
-                remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void> {
-                    override fun onComplete(task: Task<Void>) {
-                        if (task.isSuccessful) {
-                            if (gradeVersion != remoteConfig.getLong("gradesVer")) {
-                                downloadFolder(link)
-                            }else{
-                                val intent = Intent(
-                                    this@GradeActivity,
-                                    DashBoardActivity::class.java
-                                )
-                                startActivity(intent)
-                            }
-                        }
-                    }
-                })
-            }else{
-                val intent = Intent(
-                    this@GradeActivity,
-                    DashBoardActivity::class.java
-                )
-                startActivity(intent)
-            }
-        }else{
-            if (isNetworkConnected()) {
-                downloadFolder(link)
-            }
-        }
+            }*/
     }
 
-    private fun downloadFolder(link: String){
+    private fun downloadFolder(link: String, title: String){
 
         val folderStorageRef = storage
             .getReferenceFromUrl(link)
@@ -438,13 +429,19 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
                     if (task.isSuccessful) {
                         Utils.unpackZip("$root/blobcity/", fileName)
                         progress_bar.visibility = View.INVISIBLE
-                        val intent = Intent(
-                            this@GradeActivity,
-                            DashBoardActivity::class.java
-                        )
-                        startActivity(intent)
+                        sharedPrefs.setPrefVal(this@GradeActivity, title, title)
+                        navigateToDashboard(title)
                     }
                 }
             })
+    }
+
+    fun navigateToDashboard(title: String){
+        val intent = Intent(
+            this@GradeActivity,
+            DashBoardActivity::class.java
+        )
+        intent.putExtra(TITLE_TOPIC, title)
+        startActivity(intent)
     }
 }

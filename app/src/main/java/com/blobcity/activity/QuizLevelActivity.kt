@@ -10,7 +10,6 @@ import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.Topic
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.Utils
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
@@ -36,6 +35,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var topicStatusVM: TopicStatusVM?= null
     var paths: String?= null
     var folderName: String?=null
+    var gradeTitle: String?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_quiz_level
@@ -51,6 +51,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         position = intent.getIntExtra(TOPIC_POSITION, -1)
         val index = topic.index
         courseName = intent.getStringExtra(COURSE_NAME)
+        gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         /*databaseRefrence = FirebaseDatabase.getInstance()
             .getReference("topic_status/"+UniqueUUid.id(this))
         databaseRefrence!!.keepSynced(true)*/
@@ -70,7 +71,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         btn_quiz2.setOnClickListener(this)
         btn_quiz3.setOnClickListener(this)
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
-        topicStatusVM!!.getSingleTopicStatus(topicId!!).observe(this,
+        topicStatusVM!!.getSingleTopicStatus(topicId!!, gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>>{
                 override fun onChanged(t: List<TopicStatusEntity>?) {
                     topicStatusModelList = ArrayList()
@@ -172,6 +173,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(TOPIC_POSITION, position)
         intent.putExtra(FOLDER_PATH, paths)
         intent.putExtra(FOLDER_NAME, folderName)
+        intent.putExtra(TITLE_TOPIC, gradeTitle!!)
         startActivity(intent)
     }
 

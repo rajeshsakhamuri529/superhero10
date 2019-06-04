@@ -22,7 +22,6 @@ import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
-import com.google.firebase.database.DatabaseReference
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.chapter_layout.*
@@ -32,11 +31,11 @@ class ChapterFragment: Fragment(), TopicClickListener {
     private var branchesItemList:List<BranchesItem>?=null
     var courseId: String?=""
     var courseName: String?=""
-    var databaseRefrence: DatabaseReference?= null
     var topicStatusModelList: ArrayList<TopicStatusEntity>?=null
     var adapter: ChaptersAdapter?= null
     var topicStatusVM: TopicStatusVM?= null
     var localPath: String?= null
+    var gradeTitle: String?= null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chapter_layout, container, false)
@@ -44,9 +43,11 @@ class ChapterFragment: Fragment(), TopicClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        readFileLocally()
+        gradeTitle = arguments!!.getString(TITLE_TOPIC)!!
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
-        topicStatusVM!!.getAllTopicStatus().observe(this,
+        readFileLocally()
+
+        topicStatusVM!!.getAllTopicStatus(gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>> {
                 override fun onChanged(t: List<TopicStatusEntity>?) {
                     topicStatusModelList = ArrayList()
@@ -119,8 +120,6 @@ class ChapterFragment: Fragment(), TopicClickListener {
 
         branchesItemList = topicResponseModel.branches
 
-
-
         /*val branchesItemList2 = ArrayList<BranchesItem>()
         val index1 = branchesItemList!![0].topic.index.toString()
         tv_topic_number1.text = index1
@@ -148,6 +147,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
         intent.putExtra(TOPIC_ID, topicId)
         intent.putExtra(TOPIC_POSITION, position)
         intent.putExtra(FOLDER_PATH, localPath)
+        intent.putExtra(TITLE_TOPIC, gradeTitle!!)
         startActivity(intent)
     }
 

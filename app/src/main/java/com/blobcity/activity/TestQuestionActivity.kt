@@ -115,6 +115,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var topicStatusVM:TopicStatusVM?= null
     var dynamicPath : String?= null
     var folderName : String?= null
+    var gradeTitle: String?= null
 
     override fun setLayout(): Int {
         return R.layout.activity_test_question
@@ -133,6 +134,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         dbPosition = intent.getIntExtra(TOPIC_POSITION, -1)
         oPath = intent.getStringExtra(FOLDER_PATH)
         folderName = intent.getStringExtra(FOLDER_NAME)
+        gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         quizTimer = Timer()
 
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
@@ -826,6 +828,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(LEVEL_COMPLETED, complete)
         intent.putExtra(FOLDER_PATH, oPath)
         intent.putExtra(FOLDER_NAME, folderName)
+        intent.putExtra(TITLE_TOPIC, gradeTitle!!)
         startActivity(intent)
         finish()
     }
@@ -883,7 +886,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private fun addDataInDb() {
         val uId: String = UniqueUUid.id(this)
         topicStatusVM!!.insert(courseId!!, uId,
-            topicId!!, topicLevel!!, dbPosition!!)
+            topicId!!, topicLevel!!, dbPosition!!, gradeTitle!!)
     }
 
     private fun backPressDialog() {
