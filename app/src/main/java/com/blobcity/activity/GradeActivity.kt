@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.adapter.GradeAdapter
 import com.blobcity.interfaces.GradeClickListener
@@ -51,9 +50,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
     private var auth: FirebaseAuth?= null
     private var mSnackBar: Snackbar? = null
 
-    override fun setLayout(): Int {
-        return R.layout.activity_grade
-    }
+    override var layoutID: Int = R.layout.activity_grade
 
     override fun initView() {
 
@@ -84,7 +81,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
     private fun signin(sharedPrefs: SharedPrefs) {
         if (sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN)) {
             val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
-            Toast.makeText(baseContext, "UID "+uid, Toast.LENGTH_SHORT).show()
 
             val gson = Gson()
             if (!TextUtils.isEmpty(listJson)){
@@ -191,7 +187,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(baseContext, "Logged In", Toast.LENGTH_SHORT).show()
                             val user = auth!!.currentUser
                             sharedPrefs.setBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN, true)
                             sharedPrefs.setPrefVal(this, ConstantPath.UID, user!!.uid)

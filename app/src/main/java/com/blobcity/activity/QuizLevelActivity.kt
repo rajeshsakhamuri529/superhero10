@@ -4,16 +4,21 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
+import com.blobcity.model.BranchesItem
+import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.Topic
+import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
-import com.google.firebase.database.DatabaseReference
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_quiz_level.*
 
 class QuizLevelActivity : BaseActivity(), View.OnClickListener {
@@ -26,7 +31,6 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var topicId: String? =""
     var topicName: String?=""
     var position: Int ?= null
-    var databaseRefrence: DatabaseReference?= null
     var topicStatusModelList: ArrayList<TopicStatusEntity>?=null
     var isBasicCompleted: Boolean = false
     var isIntermediateCompleted: Boolean = false
@@ -36,13 +40,13 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var paths: String?= null
     var folderName: String?=null
     var gradeTitle: String?= null
+    private var branchesItemList:List<BranchesItem>?=null
 
-    override fun setLayout(): Int {
-        return R.layout.activity_quiz_level
-    }
+    override var layoutID: Int = R.layout.activity_quiz_level
 
     override fun initView() {
-        context = this
+        topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+
         val topic: Topic = intent.getSerializableExtra(TOPIC) as Topic
         folderName = topic.folderName
         courseId = intent.getStringExtra(COURSE_ID)
@@ -52,9 +56,6 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         val index = topic.index
         courseName = intent.getStringExtra(COURSE_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
-        /*databaseRefrence = FirebaseDatabase.getInstance()
-            .getReference("topic_status/"+UniqueUUid.id(this))
-        databaseRefrence!!.keepSynced(true)*/
 
         val title = "$index $topicName"
         tv_title.text = title
@@ -66,11 +67,15 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         jsonStringIntermediate = readFromFile("$folderPath/intermediate.json")
         jsonStringAdvanced = readFromFile("$folderPath/advanced.json")
 
+        loadDataFromDb()
+
         ivBack.setOnClickListener(this)
         btn_quiz1.setOnClickListener(this)
         btn_quiz2.setOnClickListener(this)
         btn_quiz3.setOnClickListener(this)
-        topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+    }
+
+    private fun loadDataFromDb() {
         topicStatusVM!!.getSingleTopicStatus(topicId!!, gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>>{
                 override fun onChanged(t: List<TopicStatusEntity>?) {
@@ -85,42 +90,91 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                         .load(R.drawable.inactive_button)
                         .into(iv_level3)
                     topicStatusModelList!!.addAll(t!!)
-                    if (topicStatusModelList != null) {
-                        if (topicStatusModelList!!.size > 0) {
-                            val branchId = topicId
-                            for (topicStatusModels in topicStatusModelList!!) {
-                                val id = topicStatusModels.topicId
-                                val level = topicStatusModels.topicLevel
+                    if (topicStatusModelList!!.size > 0) {
+                        val branchId = topicId
+                        for (topicStatusModels in topicStatusModelList!!) {
+                            val id = topicStatusModels.topicId
+                            val level = topicStatusModels.topicLevel
 
-                                if (id!!.contains(branchId!!)) {
-                                    if (level!!.contains("basic")) {
-                                        Glide.with(this@QuizLevelActivity)
-                                            .load(R.drawable.green_tick)
-                                            .into(iv_level1)
-                                        isBasicCompleted = true
-                                    }
-                                    if (level.contains("intermediate")) {
-                                        Glide.with(this@QuizLevelActivity)
-                                            .load(R.drawable.green_tick)
-                                            .into(iv_level2)
-                                        isIntermediateCompleted = true
-                                    }
-                                    if (level.contains("advance")) {
-                                        Glide.with(this@QuizLevelActivity)
-                                            .load(R.drawable.green_tick)
-                                            .into(iv_level3)
-                                        isAdvancedCompleted = true
-                                    }
+                            if (id!!.contains(branchId!!)) {
+                                if (level!!.contains("basic")) {
+                                    Glide.with(this@QuizLevelActivity)
+                                        .load(R.drawable.green_tick)
+                                        .into(iv_level1)
+                                    isBasicCompleted = true
+                                }
+                                if (level.contains("intermediate")) {
+                                    Glide.with(this@QuizLevelActivity)
+                                        .load(R.drawable.green_tick)
+                                        .into(iv_level2)
+                                    isIntermediateCompleted = true
+                                }
+                                if (level.contains("advance")) {
+                                    Glide.with(this@QuizLevelActivity)
+                                        .load(R.drawable.green_tick)
+                                        .into(iv_level3)
+                                    isAdvancedCompleted = true
                                 }
                             }
-                            if (isBasicCompleted && isIntermediateCompleted){
-                                btn_quiz3.setBackgroundResource(R.drawable.button_bg)
-                                btn_quiz3.setTextColor(resources.getColor(R.color.white))
-                            }
+                        }
+                        if (isBasicCompleted && isIntermediateCompleted){
+                            btn_quiz3.setBackgroundResource(R.drawable.button_bg)
+                            btn_quiz3.setTextColor(resources.getColor(R.color.white))
+                        }
+                    }else {
+                        isBasicCompleted = false
+                        isIntermediateCompleted = false
+                        isAdvancedCompleted = false
+                        if (!isBasicCompleted && !isIntermediateCompleted) {
+                            btn_quiz3.setBackgroundResource(R.drawable.quiz_button_inactive)
+                            btn_quiz3.setTextColor(resources.getColor(R.color.pink_inactive))
                         }
                     }
                 }
             })
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        /*super.onNewIntent(intent)*/
+        Log.e("asf", "onNewIntent")
+
+        position = intent!!.getIntExtra(TOPIC_POSITION, -1)
+        courseId = intent.getStringExtra(COURSE_ID)
+        courseName = intent.getStringExtra(COURSE_NAME)
+        gradeTitle = intent.getStringExtra(TITLE_TOPIC)
+
+        val courseJsonString = readFromFile("$localBlobcityPath/Courses.json")
+        /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
+        val gsonFile = Gson()
+        val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
+        val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
+            .fromJson(courseJsonString, courseType)
+        courseId = courseResponseModel[0].id
+        courseName = courseResponseModel[0].syllabus.title
+        localPath = "$localBlobcityPath$courseName/"
+        val jsonString = readFromFile(localPath +"topic.json")
+
+        val topicType = object : TypeToken<TopicResponseModel>() {}.type
+        val topicResponseModel: TopicResponseModel = gsonFile.fromJson(jsonString, topicType )
+
+        branchesItemList = topicResponseModel.branches
+
+        val topic: Topic = branchesItemList!!.get(position!!).topic
+        folderName = topic.folderName
+        topicId=branchesItemList!!.get(position!!).id
+        topicName = topic.title
+        val index = topic.index
+        val title = "$index $topicName"
+        tv_title.text = title
+
+        paths = intent.getStringExtra(FOLDER_PATH)
+        val folderPath = paths+folderName
+
+        jsonStringBasic = readFromFile("$folderPath/basic.json")
+        jsonStringIntermediate = readFromFile("$folderPath/intermediate.json")
+        jsonStringAdvanced = readFromFile("$folderPath/advanced.json")
+
+        loadDataFromDb()
     }
 
     override fun onClick(v: View?) {
@@ -145,9 +199,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.btn_quiz3 ->{
-                if (isAdvancedCompleted){
-                    complete = "Advanced_completed"
-                }
+
                 if (!isBasicCompleted){
                     Toast.makeText(this, "Please Complete Quiz1.", Toast.LENGTH_SHORT).show()
                     return
@@ -155,6 +207,9 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                 if (!isIntermediateCompleted){
                     Toast.makeText(this, "Please Complete Quiz2.", Toast.LENGTH_SHORT).show()
                     return
+                }
+                if (isAdvancedCompleted){
+                    complete = "Advanced_completed"
                 }
                 callIntent(jsonStringAdvanced!!, "advanced", complete)
             }

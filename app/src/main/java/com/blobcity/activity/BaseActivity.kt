@@ -12,15 +12,15 @@ import java.util.*
 
 abstract class BaseActivity : AppCompatActivity() {
 
+    abstract var layoutID: Int
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        setContentView(setLayout())
+        setContentView(layoutID)
         initView()
     }
-
-    abstract fun setLayout(): Int
 
     abstract fun initView()
 

@@ -117,9 +117,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var folderName : String?= null
     var gradeTitle: String?= null
 
-    override fun setLayout(): Int {
-        return R.layout.activity_test_question
-    }
+    override var layoutID: Int = R.layout.activity_test_question
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun initView() {

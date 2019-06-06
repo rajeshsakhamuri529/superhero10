@@ -23,6 +23,7 @@ public class ConstantPath {
     public static String TOPIC_LEVEL = "topic_level";
     public static String QUIZ_COUNT = "quiz_count";
     public static String LEVEL_COMPLETED = "level_completed";
+    public static String BRANCH_LIST = "branch_list";
     public static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
     public static String SOUNDS = "sounds";
     public static String REVIEW_MODEL = "review_model";

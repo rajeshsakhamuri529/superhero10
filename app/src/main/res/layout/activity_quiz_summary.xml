@@ -146,6 +146,19 @@
                 android:fontFamily="@font/quicksand_bold"
                 android:background="@drawable/hint_button_bg"/>
 
+        <Button
+                android:id="@+id/btn_next_level"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.1"
+                android:textSize="@dimen/_12ssp"
+                android:text="Next"
+                android:paddingRight="@dimen/_10sdp"
+                android:paddingLeft="@dimen/_10sdp"
+                android:visibility="gone"
+                android:fontFamily="@font/quicksand_bold"
+                android:background="@drawable/hint_button_bg"/>
+
     </LinearLayout>
 
 </RelativeLayout>

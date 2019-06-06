@@ -3,6 +3,7 @@ package com.blobcity.activity
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -49,9 +50,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     var level_status: Boolean?= null
     var gradeTitle: String?= null
 
-    override fun setLayout(): Int {
-        return R.layout.activity_quiz_summary
-    }
+    override var layoutID: Int = R.layout.activity_quiz_summary
 
     override fun initView() {
         reviewModelList = intent.getSerializableExtra(REVIEW_MODEL) as ArrayList<ReviewModel>?
@@ -97,6 +96,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         iv_cancel_quiz_summary.setOnClickListener(this)
         btn_play_again.setOnClickListener (this)
         btn_next_quiz.setOnClickListener(this)
+        btn_next_level.setOnClickListener(this)
 
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         loadDataFromDb()
@@ -107,8 +107,21 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         val intent: Intent
         when (v!!.id){
 
+            R.id.btn_next_level->{
+                intent = Intent(this, QuizLevelActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                intent.putExtra(TOPIC_POSITION, (position!!+1))
+                intent.putExtra(COURSE_ID, courseId)
+                intent.putExtra(COURSE_NAME, courseName)
+                intent.putExtra(FOLDER_PATH, paths)
+                intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+                finish()
+                startActivity(intent)
+            }
+
             R.id.iv_cancel_quiz_summary ->{
-                onBackPressed()
+                finish()
             }
 
             R.id.btn_review ->{
@@ -281,7 +294,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                             }
 
                             if (isBasicCompleted && isIntermediateCompleted && isAdvancedCompleted){
-                                btn_next_quiz.visibility = View.INVISIBLE
+                                btn_next_quiz.visibility = View.GONE
+                                btn_next_level.visibility = View.VISIBLE
                             }
                         }
                         if (!isBasicCompleted && !isIntermediateCompleted){

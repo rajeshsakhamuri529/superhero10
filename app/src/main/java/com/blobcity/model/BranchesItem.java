@@ -2,7 +2,9 @@ package com.blobcity.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class BranchesItem{
+import java.io.Serializable;
+
+public class BranchesItem implements Serializable {
 
 	@SerializedName("cd")
 	private String cd;

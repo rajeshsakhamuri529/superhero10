@@ -2,7 +2,6 @@ package com.blobcity.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.net.ConnectivityManager;
 import android.os.Environment;
 import android.util.Log;
 
@@ -34,6 +33,33 @@ public class Utils {
     public static List<String> getListOfFilesFromFolder(String path){
         File file = new File(path);
         return Arrays.asList(file.list());
+    }
+
+    public static String readFromFile(String path){
+        File yourFile = new File(path);
+        FileInputStream stream = null;
+        String jsonStr = null;
+        try {
+            stream = new FileInputStream(yourFile);
+            FileChannel fc = stream.getChannel();
+            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+
+            jsonStr = Charset.defaultCharset().decode(bb).toString();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (stream != null){
+                    stream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return jsonStr;
     }
 
     public static boolean unpackZip(String path, String zipname)
@@ -165,32 +191,7 @@ public class Utils {
         return json;
     }*/
 
-    public static String readFromFile(String path){
-        File yourFile = new File(path);
-        FileInputStream stream = null;
-        String jsonStr = null;
-        try {
-            stream = new FileInputStream(yourFile);
-            FileChannel fc = stream.getChannel();
-            MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 
-            jsonStr = Charset.defaultCharset().decode(bb).toString();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        finally {
-            try {
-                if (stream != null){
-                    stream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return jsonStr;
-    }
 
     void encrypt(String fileName, String path, String ePath)
             throws IOException, NoSuchAlgorithmException,

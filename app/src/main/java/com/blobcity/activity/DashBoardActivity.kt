@@ -20,9 +20,7 @@ class DashBoardActivity : BaseActivity(),
     private var fragment: Fragment? = null
     lateinit var gradeTitle: String
 
-    override fun setLayout(): Int {
-        return R.layout.activity_dashboard
-    }
+    override var layoutID: Int = R.layout.activity_dashboard
 
     override fun initView() {
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)

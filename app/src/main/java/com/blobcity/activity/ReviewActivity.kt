@@ -29,9 +29,7 @@ class ReviewActivity : BaseActivity() {
     var hintPath = ""
     var context: Context ? = null
 
-    override fun setLayout(): Int {
-        return com.blobcity.R.layout.activity_review
-    }
+    override var layoutID: Int = R.layout.activity_review
 
     override fun initView() {
         context = this

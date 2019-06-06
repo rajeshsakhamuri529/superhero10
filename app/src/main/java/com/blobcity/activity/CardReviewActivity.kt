@@ -34,9 +34,7 @@ class CardReviewActivity : BaseActivity() {
     var topicStatusVM: TopicStatusVM?= null
     var gradeTitle: String?= null
 
-    override fun setLayout(): Int {
-        return R.layout.activity_card_review
-    }
+    override var layoutID: Int  = R.layout.activity_card_review
 
     override fun initView() {
         iv_dismiss.setOnClickListener({

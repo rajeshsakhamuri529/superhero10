@@ -11,9 +11,7 @@ import kotlinx.android.synthetic.main.activity_start_quiz.*
 
 class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
-    override fun setLayout(): Int {
-        return R.layout.activity_start_quiz
-    }
+    override var layoutID: Int = R.layout.activity_start_quiz
 
     override fun initView() {
         val path = intent.getStringExtra(DYNAMIC_PATH)
