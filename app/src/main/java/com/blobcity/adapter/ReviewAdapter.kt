@@ -91,7 +91,7 @@ class ReviewAdapter(val reviewModelList: ArrayList<ReviewModel>,
         listOfOptions = reviewModelList.get(position).listOfOptions
         path = localBlobcityPath + reviewModelList.get(position).questionsItem!!.id
         Log.e("path", path)
-        for (filename in Utils.getListOfFilesFromFolder(path!!)!!){
+        for (filename in Utils.listAssetFiles(path!!,context)!!){
             if (filename.contains("question")){
                 questionPath = WEBVIEW_PATH+path+"/"+filename
             }

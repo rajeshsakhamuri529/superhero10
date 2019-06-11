@@ -17,6 +17,7 @@ import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.RecyclerViewPositionHelper
 import com.blobcity.utils.Utils.getListOfFilesFromFolder
+import com.blobcity.utils.Utils.listAssetFiles
 import kotlinx.android.synthetic.main.activity_review.*
 
 
@@ -72,8 +73,8 @@ class ReviewActivity : BaseActivity() {
                     item = mRecyclerViewHelper!!.findLastCompletelyVisibleItemPosition() + 1
                     res = item.toString() + " of " + totalItemCount
                     if (item != 0) {
-                        for (filename in getListOfFilesFromFolder(localBlobcityPath +
-                                reviewModelList!!.get(item!! - 1).questionsItem!!.id)!!) {
+                        for (filename in listAssetFiles(localBlobcityPath +
+                                reviewModelList!!.get(item!! - 1).questionsItem!!.id,applicationContext)!!) {
                             if (filename.contains("hint")) {
                                 hintPath = ConstantPath.WEBVIEW_PATH + assetOutputPath +
                                         reviewModelList!!.get(item!! - 1).questionsItem!!.id + "/" + filename
@@ -84,9 +85,9 @@ class ReviewActivity : BaseActivity() {
                 } else {
                     item = firstVisibleItem
                     res = item.toString() + " of " + totalItemCount
-                    for (filename in getListOfFilesFromFolder(
+                    for (filename in listAssetFiles(
                         localBlobcityPath +
-                                reviewModelList!!.get(item!! - 1).questionsItem!!.id)!!) {
+                                reviewModelList!!.get(item!! - 1).questionsItem!!.id,applicationContext)!!) {
                         if (filename.contains("hint")) {
                             hintPath = ConstantPath.WEBVIEW_PATH + assetOutputPath +
                                     reviewModelList!!.get(item!! - 1).questionsItem!!.id + "/" + filename

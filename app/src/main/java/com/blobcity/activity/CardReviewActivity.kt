@@ -51,7 +51,7 @@ class CardReviewActivity : BaseActivity() {
         vp_card_review.setPageTransformer(false,
             CarouselEffectTransformer(this))
 
-        val courseJsonString = Utils.readFromFile(
+        val courseJsonString = loadJSONFromAsset(
             "${localBlobcityPath}/Courses.json")
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
@@ -59,7 +59,7 @@ class CardReviewActivity : BaseActivity() {
         val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
             .fromJson(courseJsonString, courseType)
         val courseName = courseResponseModel[0].syllabus.title
-        val jsonString = Utils.readFromFile("${localBlobcityPath}/$courseName/topic.json")
+        val jsonString = loadJSONFromAsset("${localBlobcityPath}/$courseName/topic.json")
         /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
         val topicResponseModel = gsonFile
             .fromJson(jsonString, TopicResponseModel::class.java)
@@ -72,7 +72,7 @@ class CardReviewActivity : BaseActivity() {
     private fun loadDataFromViewModel(){
         val pathStringList: ArrayList<String> = ArrayList()
         for (imagePath in Utils
-            .getListOfFilesFromFolder(loaclAstraCardPath)){
+            .listAssetFiles(loaclAstraCardPath,applicationContext)){
             if (imagePath.contains("png")){
                 pathStringList.add(imagePath)
             }

@@ -26,7 +26,9 @@ import com.blobcity.R
 import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.UniqueUUid
+import com.blobcity.utils.Utils
 import com.blobcity.utils.Utils.getListOfFilesFromFolder
+import com.blobcity.utils.Utils.listAssetFiles
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
@@ -416,7 +418,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         listOfOptions = ArrayList()
         Log.e("testPath", path)
         var questionPath = ""
-        for (filename in getListOfFilesFromFolder(path+"/")!!) {
+        Log.d("list","!"+ listAssetFiles(path,applicationContext))
+        for (filename in listAssetFiles(path,applicationContext)!!) {
             if (filename.contains("opt")) {
                 if (!filename.contains("opt5")) {
                     listOfOptions!!.add(filename)

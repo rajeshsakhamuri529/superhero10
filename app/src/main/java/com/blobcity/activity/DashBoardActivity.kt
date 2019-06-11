@@ -23,7 +23,8 @@ class DashBoardActivity : BaseActivity(),
     override var layoutID: Int = R.layout.activity_dashboard
 
     override fun initView() {
-        gradeTitle = intent.getStringExtra(TITLE_TOPIC)
+        gradeTitle = "GRADE 6"
+        /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
         loadFragment(ChapterFragment())
         navigation.setOnNavigationItemSelectedListener(this)
     }

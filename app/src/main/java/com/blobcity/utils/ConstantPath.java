@@ -9,8 +9,8 @@ public class ConstantPath {
     public static String FOLDER_NAME = "folder_name";
     public static String FOLDER_PATH = "folder_path";
     public static String DYNAMIC_PATH = "dynamic_path";
-    /*public static String WEBVIEW_PATH = "file:///android_asset/";*/
-    public static String WEBVIEW_PATH = "file:///";
+    public static String WEBVIEW_PATH = "file:///android_asset/";
+    //public static String WEBVIEW_PATH = "file:///";
     public static String UNIQUE_KEY_LIST= "key_list";
     public static String ARRAY_MAP_LIST = "map_list";
     public static String COURSE_ID = "course_id";
@@ -45,11 +45,14 @@ public class ConstantPath {
 
     /*assetPath*/
 
+    public static String localBlobcityPath = "courses/";
+    public static String assetTestCoursePath = localBlobcityPath +"Test Course/";
+
     public static String assetOutputPath = "output/";
     public static String root = Environment.getExternalStorageDirectory().getAbsolutePath();
-    public static String localBlobcityPath = root+"/blobcity/courses/";
+    //public static String localBlobcityPath = root+"/blobcity/courses/";
     public static String loaclAstraCardPath = localBlobcityPath+"AstraCards/";
-    public static String assetTestCoursePath = assetOutputPath +"Test Course/";
+    //public static String assetTestCoursePath = assetOutputPath +"Test Course/";
 
     public static String assetTopicOnePath = assetTestCoursePath+"topic-one/";
     public static String assetBasic394Path = assetTopicOnePath +"basic-394";

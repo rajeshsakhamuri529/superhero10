@@ -7,10 +7,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.blobcity.R
+import com.blobcity.activity.DashBoardActivity
 import com.blobcity.activity.QuizLevelActivity
 import com.blobcity.adapter.ChaptersAdapter
 import com.blobcity.entity.TopicStatusEntity
@@ -103,8 +105,9 @@ class ChapterFragment: Fragment(), TopicClickListener {
     }
 
     private fun readFileLocally() {
-        /*val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetOutputPath + "Courses.json")*/
-        val courseJsonString = readFromFile("$localBlobcityPath/Courses.json")
+        val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( localBlobcityPath + "Courses.json")
+        //val courseJsonString = readFromFile("$localBlobcityPath/Courses.json")
+        Log.d("courseJsonString",courseJsonString+"!");
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
@@ -113,8 +116,9 @@ class ChapterFragment: Fragment(), TopicClickListener {
         courseId = courseResponseModel[0].id
         courseName = courseResponseModel[0].syllabus.title
         localPath = "$localBlobcityPath$courseName/"
-        val jsonString = readFromFile(localPath +"topic.json")
-
+       // val jsonString = readFromFile(localPath +"topic.json")
+        val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( localPath + "topic.json")
+        Log.d("jsonString",jsonString);
         val topicType = object : TypeToken<TopicResponseModel>() {}.type
         val topicResponseModel: TopicResponseModel= gsonFile.fromJson(jsonString, topicType )
 

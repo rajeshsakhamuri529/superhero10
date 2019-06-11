@@ -93,14 +93,14 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
 
         /*val jsonString = (activity!! as DashBoardActivity)
             .loadJSONFromAsset( ConstantPath.assetTestCoursePath + "topic.json")*/
-        val courseJsonString = readFromFile("${ConstantPath.localBlobcityPath}/Courses.json")
+        val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset("${ConstantPath.localBlobcityPath}/Courses.json")
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
         val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
             .fromJson(courseJsonString, courseType)
         val courseName = courseResponseModel[0].syllabus.title
-        val jsonString = readFromFile("${ConstantPath.localBlobcityPath}/$courseName/topic.json")
+        val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset("${ConstantPath.localBlobcityPath}/$courseName/topic.json")
 
         val topicResponseModel = gsonFile.fromJson(jsonString, TopicResponseModel::class.java)
         branchesItemList = topicResponseModel.branches
@@ -109,7 +109,7 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
             object : Observer<List<TopicStatusEntity>>{
             override fun onChanged(topicStatusEntityList: List<TopicStatusEntity>?) {
                 val pathStringList: ArrayList<String> = ArrayList()
-                for (imagePath in Utils.getListOfFilesFromFolder(ConstantPath.loaclAstraCardPath)){
+                for (imagePath in Utils.listAssetFiles(ConstantPath.loaclAstraCardPath,context)){
                     if (imagePath.contains("png")){
                         pathStringList.add(imagePath)
                     }

@@ -50,7 +50,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
     private var auth: FirebaseAuth?= null
     private var mSnackBar: Snackbar? = null
 
-    override var layoutID: Int = R.layout.activity_grade
+    override var layoutID: Int = R.layout.activity_grade2
 
     override fun initView() {
 
@@ -82,7 +82,10 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
         if (sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN)) {
             val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
 
-            val gson = Gson()
+
+            navigateToDashboard("GRADE 6")
+            // GRADE SCREEN
+           /* val gson = Gson()
             if (!TextUtils.isEmpty(listJson)){
                 if (isNetworkConnected()) {
                     remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void> {
@@ -106,7 +109,9 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
                     Utils.makeDir("$root/blobcity/images")
                     getdataFromFirestore()
                 }
-            }
+            }*/
+
+
             /*val storage = FirebaseStorage.getInstance()
             val storageRef = storage.getReference().child("astra-quiz-v.1.0.zip");
 
@@ -244,11 +249,14 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
     }
 
     private fun getdataFromFirestore(){
+        Log.d("getDataFromFirestore","YES");
         remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void>{
             override fun onComplete(task: Task<Void>) {
                 if (task.isSuccessful){
                     remoteConfig.activateFetched()
                     gradeVersion = remoteConfig.getValue("gradesVer").asLong()
+                    Log.d("getDataFromFirestore",gradeVersion.toString()+"!");
+
                 }
             }
 

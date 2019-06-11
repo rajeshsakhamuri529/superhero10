@@ -63,9 +63,12 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         paths = intent.getStringExtra(FOLDER_PATH)
         val folderPath = paths+folderName
 
-        jsonStringBasic = readFromFile("$folderPath/basic.json")
-        jsonStringIntermediate = readFromFile("$folderPath/intermediate.json")
-        jsonStringAdvanced = readFromFile("$folderPath/advanced.json")
+        jsonStringBasic = loadJSONFromAsset("$folderPath/basic.json")
+        Log.d("jsonStringBasic",jsonStringBasic);
+        jsonStringIntermediate = loadJSONFromAsset("$folderPath/intermediate.json")
+        Log.d("jsonStringIntermediate",jsonStringIntermediate);
+        jsonStringAdvanced = loadJSONFromAsset("$folderPath/advanced.json")
+        Log.d("jsonStringIntermediate",jsonStringIntermediate);
 
         loadDataFromDb()
 
@@ -143,7 +146,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         courseName = intent.getStringExtra(COURSE_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
 
-        val courseJsonString = readFromFile("$localBlobcityPath/Courses.json")
+        val courseJsonString = loadJSONFromAsset("$localBlobcityPath/Courses.json")
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
@@ -152,7 +155,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         courseId = courseResponseModel[0].id
         courseName = courseResponseModel[0].syllabus.title
         localPath = "$localBlobcityPath$courseName/"
-        val jsonString = readFromFile(localPath +"topic.json")
+        val jsonString = loadJSONFromAsset(localPath +"topic.json")
 
         val topicType = object : TypeToken<TopicResponseModel>() {}.type
         val topicResponseModel: TopicResponseModel = gsonFile.fromJson(jsonString, topicType )
@@ -170,9 +173,9 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         paths = intent.getStringExtra(FOLDER_PATH)
         val folderPath = paths+folderName
 
-        jsonStringBasic = readFromFile("$folderPath/basic.json")
-        jsonStringIntermediate = readFromFile("$folderPath/intermediate.json")
-        jsonStringAdvanced = readFromFile("$folderPath/advanced.json")
+        jsonStringBasic = loadJSONFromAsset("$folderPath/basic.json")
+        jsonStringIntermediate = loadJSONFromAsset("$folderPath/intermediate.json")
+        jsonStringAdvanced = loadJSONFromAsset("$folderPath/advanced.json")
 
         loadDataFromDb()
     }

@@ -16,6 +16,7 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -28,6 +29,34 @@ public class Utils {
         if (!folder.exists()){
             folder.mkdirs();
         }
+    }
+
+    public static ArrayList<String> listAssetFiles(String path, Context context) {
+
+        String [] list;
+        ArrayList<String> l = new ArrayList<>();
+        try {
+            list = context.getAssets().list(path);
+            if (list.length > 0) {
+                Log.d("list length",list.length+"!");
+                // This is a folder
+                for (String file : list) {
+                    /*if (!listAssetFiles(path + "/" + file,context))
+                        return false;
+                    else {*/
+                        l.add(file);
+                        // This is a file
+                        // TODO: add file name to an array list
+                    //}
+                }
+            }else{
+                Log.d("list length",list.length+"!");
+            }
+        } catch (IOException e) {
+            return new ArrayList<String>();
+        }
+        Log.d("listAssetFiles",l+"!");
+        return l;
     }
 
     public static List<String> getListOfFilesFromFolder(String path){

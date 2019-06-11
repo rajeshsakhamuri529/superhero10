@@ -7,7 +7,7 @@ import android.content.Context;
 import com.blobcity.dao.TopicStatusDao;
 import com.blobcity.entity.TopicStatusEntity;
 
-@Database(entities = {TopicStatusEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {TopicStatusEntity.class}, version = 2, exportSchema = false)
 public abstract class QuizDatabase extends RoomDatabase {
 
     private static QuizDatabase database;
@@ -22,6 +22,7 @@ public abstract class QuizDatabase extends RoomDatabase {
                             .databaseBuilder(context,
                             QuizDatabase.class,
                             "quiz_database")
+                            .fallbackToDestructiveMigration()
                             .build();
                 }
             }

@@ -17,8 +17,7 @@ import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.ReviewModel
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.Utils.getListOfFilesFromFolder
-import com.blobcity.utils.Utils.readFromFile
+import com.blobcity.utils.Utils.*
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
@@ -140,15 +139,15 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
                 if (topicLevel!!.equals("Quiz I")){
                     topicLevel = "basic"
-                    dPath = readFromFile("$folderPath/basic.json")
+                    dPath = loadJSONFromAsset("$folderPath/basic.json")
                 }
                 if (topicLevel!!.equals("Quiz II")){
                     topicLevel = "intermediate"
-                    dPath = readFromFile("$folderPath/intermediate.json")
+                    dPath = loadJSONFromAsset("$folderPath/intermediate.json")
                 }
                 if (topicLevel!!.equals("Astra Quiz")){
                     topicLevel = "advanced"
-                    dPath = readFromFile("$folderPath/advanced.json")
+                    dPath = loadJSONFromAsset("$folderPath/advanced.json")
                 }
                 navigateToStartQuiz()
             }
@@ -199,7 +198,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                     if (level.contains("advance")) {
                                         isAdvancedCompleted = true
                                         val pathStringList: ArrayList<String> = ArrayList()
-                                        for (imagePath in getListOfFilesFromFolder(loaclAstraCardPath)){
+                                        for (imagePath in listAssetFiles(loaclAstraCardPath,applicationContext)){
                                             if (imagePath.contains("png")){
                                                 pathStringList.add(imagePath)
                                             }
