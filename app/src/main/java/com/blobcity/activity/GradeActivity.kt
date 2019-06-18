@@ -58,7 +58,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
             .setPermissionListener(this)
             .setDeniedMessage("If you reject permission,you can not use this service\n"
                     + "\nPlease turn on permissions at [Setting] > [Permission]")
-            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .setPermissions(Manifest.permission.INTERNET)
             .check()
         auth = FirebaseAuth.getInstance()
     }
@@ -82,7 +82,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
         if (sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN)) {
             val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
 
-
+            Log.d("signin","true")
             navigateToDashboard("GRADE 6")
             // GRADE SCREEN
            /* val gson = Gson()
@@ -195,14 +195,14 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
                             val user = auth!!.currentUser
                             sharedPrefs.setBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN, true)
                             sharedPrefs.setPrefVal(this, ConstantPath.UID, user!!.uid)
-
+                            Log.d("anonymous auth done","true")
                             TedPermission.with(this)
                                 .setPermissionListener(this)
                                 .setDeniedMessage(
                                     "If you reject permission,you can not use this service\n"
                                             + "\nPlease turn on permissions at [Setting] > [Permission]"
                                 )
-                                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                .setPermissions(Manifest.permission.INTERNET)
                                 .check()
                         } else {
                             // If sign in fails, display a message to the user.

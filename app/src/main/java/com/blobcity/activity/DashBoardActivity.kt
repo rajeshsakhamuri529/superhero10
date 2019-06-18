@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.MenuItem
 import com.blobcity.R
 import com.blobcity.fragment.AstraCardFragment
@@ -47,6 +48,10 @@ class DashBoardActivity : BaseActivity(),
         return loadFragment(fragment!!)
     }
 
+    override fun onBackPressed() {
+        //super.onBackPressed()
+    }
+
     private fun loadFragment(fragment: Fragment): Boolean {
         //switching fragment
         if (fragment != null) {
@@ -69,6 +74,7 @@ class DashBoardActivity : BaseActivity(),
         if (resultCode == Activity.RESULT_OK) {
             (fragment as AstraCardFragment).activityReenter(data!!)
         }
+        Log.d("Activity reenter",resultCode.toString()+"!"+data.toString())
     }
 
     lateinit var myDir: File

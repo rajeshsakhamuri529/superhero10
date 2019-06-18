@@ -12,6 +12,7 @@ import android.support.v4.util.Pair
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearSmoothScroller
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -93,15 +94,17 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
 
         /*val jsonString = (activity!! as DashBoardActivity)
             .loadJSONFromAsset( ConstantPath.assetTestCoursePath + "topic.json")*/
-        val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset("${ConstantPath.localBlobcityPath}/Courses.json")
+        /*val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset("${ConstantPath.localBlobcityPath}/Courses.json")*/
+        val courseJsonString = (activity!! as DashBoardActivity).loadJSONFromAsset(ConstantPath.localBlobcityPath+"Courses.json")
+        Log.d("AstraCards",courseJsonString+"!")
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
         val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
             .fromJson(courseJsonString, courseType)
         val courseName = courseResponseModel[0].syllabus.title
-        val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset("${ConstantPath.localBlobcityPath}/$courseName/topic.json")
-
+        val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset("${ConstantPath.localBlobcityPath}$courseName/topic.json")
+        Log.d("AstraCards jsonString",jsonString+"!")
         val topicResponseModel = gsonFile.fromJson(jsonString, TopicResponseModel::class.java)
         branchesItemList = topicResponseModel.branches
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)

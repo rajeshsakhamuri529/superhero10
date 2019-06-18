@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v4.view.ViewPager
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import com.blobcity.R
@@ -52,20 +53,20 @@ class CardReviewActivity : BaseActivity() {
             CarouselEffectTransformer(this))
 
         val courseJsonString = loadJSONFromAsset(
-            "${localBlobcityPath}/Courses.json")
+            "${localBlobcityPath}Courses.json")
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
         val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
             .fromJson(courseJsonString, courseType)
         val courseName = courseResponseModel[0].syllabus.title
-        val jsonString = loadJSONFromAsset("${localBlobcityPath}/$courseName/topic.json")
+        val jsonString = loadJSONFromAsset("${localBlobcityPath}$courseName/topic.json")
         /*val jsonString = readFromFile("$localTestCoursePath/topic.json")*/
         val topicResponseModel = gsonFile
             .fromJson(jsonString, TopicResponseModel::class.java)
 
         branchesItemList = topicResponseModel.branches
-        loadDataFromViewModel()
+       loadDataFromViewModel()
         prepareSharedElementTransition()
     }
 
@@ -247,5 +248,10 @@ class CardReviewActivity : BaseActivity() {
                 }
             }
         })
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        Log.d("CardReview","onBackPressed")
     }
 }

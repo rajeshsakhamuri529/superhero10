@@ -15,32 +15,47 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.GradeActivity">
+        <activity android:name=".activity.GradeActivity"
+        android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CardReviewActivity">
+        <activity android:name=".activity.CardReviewActivity"
+                  android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".activity.BottomNavigationActivity"
-                android:label="@string/title_activity_bottom_navigation">
+                android:label="@string/title_activity_bottom_navigation"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.ReviewActivity">
+        <activity android:name=".activity.ReviewActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.QuizSummaryActivity">
+        <activity android:name=".activity.QuizSummaryActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.StartQuizActivity">
+        <activity android:name=".activity.StartQuizActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.TestQuestionActivity">
+        <activity android:name=".activity.TestQuestionActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.QuizLevelActivity">
+        <activity android:name=".activity.QuizLevelActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.DashBoardActivity">
+        <activity android:name=".activity.DashBoardActivity"
+                  android:screenOrientation="portrait">
 
         </activity>
+
+        <service android:name=".utils.NotificationHelper">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
