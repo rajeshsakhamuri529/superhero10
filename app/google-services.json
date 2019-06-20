@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "443492773909-hmhfqn0pp3kqcfgefrvpvjr0ruejsh5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blobcity",
+            "certificate_hash": "0b55ebde84e2c7c53f525396bca8ca4fefec15cb"
+          }
+        },
+        {
           "client_id": "443492773909-4t7es6176g98idet8gs253fqupifu818.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,6 +46,13 @@
             {
               "client_id": "443492773909-uso9864f2ouacr2suqbj9tad2ioj9ph0.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "443492773909-h7daakbhc7miht1ni6un7p72r268u6m5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.astramath.10"
+              }
             }
           ]
         }

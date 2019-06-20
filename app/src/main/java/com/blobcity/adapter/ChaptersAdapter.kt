@@ -32,7 +32,16 @@ class ChaptersAdapter(val context: Context,
 
     override fun onBindViewHolder(holder: ChaptersViewHolder, position: Int) {
 
-        holder.tv_topic_number.text = branchesItemList[position].topic.index.toString()
+
+
+        var index = branchesItemList[position].topic.index.toString()
+        Log.d("chapter adapter",index);
+        if(index.length == 1)
+        {
+            index = "0"+index
+        }
+        Log.d("chapter adapter",index);
+        holder.tv_topic_number.text = index
         holder.tv_topic_name.text = branchesItemList[position].topic.title
         if (position == 0){
             holder.singleTopic.setBackgroundResource(R.drawable.dashboard_top_corner)

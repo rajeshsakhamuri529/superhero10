@@ -1,13 +1,20 @@
 package com.blobcity.activity
 
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import com.blobcity.R
 import com.blobcity.model.TopicOneBasicResponseModel
+import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.Utils
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_quiz_summary.*
 import kotlinx.android.synthetic.main.activity_start_quiz.*
+import kotlinx.android.synthetic.main.activity_start_quiz.tv_chapter_title
+import kotlinx.android.synthetic.main.activity_start_quiz.tv_quiz_level
 
 class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
@@ -42,6 +49,75 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         if (topicLevel.equals("advanced")){
             iv_lock_card.visibility = View.VISIBLE
             level = "Astra Quiz"
+            if(complete.equals("Advanced_completed")){
+                Log.d("Astra Quiz","completed"+position)
+
+                val pathStringList: ArrayList<String> = ArrayList()
+                for (imagePath in Utils.listAssetFiles(loaclAstraCardPath, applicationContext)){
+                    if (imagePath.contains("png")){
+                        pathStringList.add(imagePath)
+                    }
+                }
+                var imagepath = ""
+                for (path in pathStringList){
+                    if (position!! == 0) {
+                        if (path.equals("1.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 1) {
+                        if (path.equals("2.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 2) {
+                        if (path.equals("3.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 3) {
+                        if (path.equals("4.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 4) {
+                        if (path.equals("5.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 5) {
+                        if (path.equals("6.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 6) {
+                        if (path.equals("7.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 7) {
+                        if (path.equals("8.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 8) {
+                        if (path.equals("9.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                    if (position!! == 9) {
+                        if (path.equals("10.png")) {
+                            imagepath = loaclAstraCardPath+path
+                        }
+                    }
+                }
+                Glide.with(this@StartQuizActivity)
+                    .load(Uri.parse(ConstantPath.WEBVIEW_PATH+imagepath))
+                    .into(iv_lock_card)
+                Log.e("position: ", position.toString())
+            }else{
+                Log.d("Astra Quiz","not completed"+position)
+            }
         }
 
         tv_quiz_count.text = questionResponseModel.questionCount.toString()

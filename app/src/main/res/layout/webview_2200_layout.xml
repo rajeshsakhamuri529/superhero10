@@ -38,9 +38,10 @@
                 android:layout_height="@dimen/_70sdp"
                 android:layout_weight="1"
                 android:clickable="true"
+                android:textAlignment="center"
                 android:scrollbars="none"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center"/>
 
         <WebView
                 android:id="@+id/webView_option2"
@@ -48,10 +49,11 @@
                 android:layout_height="@dimen/_70sdp"
                 android:layout_weight="1"
                 android:clickable="true"
+                android:textAlignment="center"
                 android:scrollbars="none"
                 android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_gravity="center_horizontal"/>
+                android:layout_gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
@@ -67,6 +69,7 @@
             android:layout_height="@dimen/_70sdp"
             android:layout_weight="1"
             android:scrollbars="none"
+            android:textAlignment="center"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_gravity="center_horizontal"/>
@@ -77,6 +80,7 @@
             android:layout_height="@dimen/_70sdp"
             android:layout_weight="1"
             android:clickable="true"
+            android:textAlignment="center"
             android:scrollbars="none"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_10sdp"

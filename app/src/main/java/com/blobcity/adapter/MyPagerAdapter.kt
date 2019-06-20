@@ -1,6 +1,7 @@
 package com.blobcity.adapter
 
 import android.content.Context
+import android.net.Uri
 import android.support.v4.view.PagerAdapter
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.blobcity.R
 import com.blobcity.model.ImageModel
+import com.blobcity.utils.ConstantPath
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.card_review_single_layout.view.*
 
@@ -23,8 +25,11 @@ class MyPagerAdapter(var context: Context,var listOfImages: ArrayList<ImageModel
                 .load(listOfImages[position].imageDrawable)
                 .into(iv_card_review)
         }else{
-            Glide.with(context)
+            /*Glide.with(context)
                 .load(listOfImages[position].imagePath)
+                .into(iv_card_review)*//*Uri.parse("file:///android_asset/<assetName>")*/
+            Glide.with(context)
+                .load(Uri.parse(ConstantPath.WEBVIEW_PATH+listOfImages[position].imagePath))
                 .into(iv_card_review)
         }
         container.addView(view)

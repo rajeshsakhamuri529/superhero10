@@ -33,10 +33,17 @@ public class Utils {
 
     public static ArrayList<String> listAssetFiles(String path, Context context) {
 
-        String [] list;
+        String [] list;String dummyPath = path;
+        Log.d("listAssetFiles",path);
+        if(path.endsWith("/")){
+            dummyPath = path.toString();
+            dummyPath = dummyPath.substring(0,dummyPath.length()-1);
+            Log.d("dummyPath",dummyPath);
+            Log.d("path",path);
+        }
         ArrayList<String> l = new ArrayList<>();
         try {
-            list = context.getAssets().list(path);
+            list = context.getAssets().list(dummyPath);
             if (list.length > 0) {
                 Log.d("list length",list.length+"!");
                 // This is a folder

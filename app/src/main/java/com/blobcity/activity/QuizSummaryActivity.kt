@@ -7,6 +7,7 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import android.view.View
@@ -258,7 +259,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                             }
                                         }
                                         Glide.with(this@QuizSummaryActivity)
-                                            .load(imagepath)
+                                            .load(Uri.parse(ConstantPath.WEBVIEW_PATH+imagepath))
                                             .into(iv_card_back)
                                         Log.e("position: ", position.toString())
                                         if (topicLevel!!.contains("advanced")) {

@@ -111,10 +111,13 @@ class AstraCardFragment : Fragment(), AstraCardClickListener {
         topicStatusVM!!.getTopicsByLevel("advanced", gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>>{
             override fun onChanged(topicStatusEntityList: List<TopicStatusEntity>?) {
+                Log.d("onChanged","true")
                 val pathStringList: ArrayList<String> = ArrayList()
                 for (imagePath in Utils.listAssetFiles(ConstantPath.loaclAstraCardPath,context)){
+                    Log.d("AstraCards Frag",imagePath+"!")
                     if (imagePath.contains("png")){
                         pathStringList.add(imagePath)
+                        Log.d("imagePath astra frag",imagePath)
                     }
                 }
                 val adapter = AstraCardAdapter(topicStatusEntityList!!, branchesItemList!!,

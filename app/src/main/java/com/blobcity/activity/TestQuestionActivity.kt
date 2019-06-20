@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageInfo
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Handler
@@ -18,6 +20,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.widget.Button
 import android.widget.TextView
@@ -113,11 +116,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     val reviewModelList: ArrayList<ReviewModel> = ArrayList()
     var reviewModel: ReviewModel? = null
     var optionsWithAnswerList: ArrayList<OptionsWithAnswer>? = null
-    var oPath: String?= null
-    var topicStatusVM:TopicStatusVM?= null
-    var dynamicPath : String?= null
-    var folderName : String?= null
-    var gradeTitle: String?= null
+    var oPath: String? = null
+    var topicStatusVM: TopicStatusVM? = null
+    var dynamicPath: String? = null
+    var folderName: String? = null
+    var gradeTitle: String? = null
 
     override var layoutID: Int = R.layout.activity_test_question
 
@@ -165,6 +168,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option3 = view.findViewById(R.id.webView_option3)
         webView_option4 = view.findViewById(R.id.webView_option4)
 
+        /*webView_option2?.setInitialScale(1);
+        webView_option2?.getSettings()?.setLoadWithOverviewMode(true)
+        webView_option2?.getSettings()?.setUseWideViewPort(true)*/
+        //webView_option2?.getSettings()?.setDefaultZoom(WebSettings.ZoomDensity.FAR);
+
         btn_next!!.setOnClickListener(this)
         btn_hint!!.setOnClickListener(this)
         iv_cancel_test_question!!.setOnClickListener(this)
@@ -202,9 +210,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun clickOptions(
-        event: MotionEvent,
-        position: Int,
-        stringAns: String
+            event: MotionEvent,
+            position: Int,
+            stringAns: String
     ) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             startClickTime = Calendar.getInstance().getTimeInMillis()
@@ -418,8 +426,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         listOfOptions = ArrayList()
         Log.e("testPath", path)
         var questionPath = ""
-        Log.d("list","!"+ listAssetFiles(path,applicationContext))
-        for (filename in listAssetFiles(path,applicationContext)!!) {
+        Log.d("list", "!" + listAssetFiles(path, applicationContext))
+        for (filename in listAssetFiles(path, applicationContext)!!) {
             if (filename.contains("opt")) {
                 if (!filename.contains("opt5")) {
                     listOfOptions!!.add(filename)
@@ -434,10 +442,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
 
         if (type == 4100) {
+            Log.d("type", "4100")
             inflateView4100()
             setWebViewBGDefault()
             webViewGone()
-            handler.postDelayed(object : Runnable{
+            handler.postDelayed(object : Runnable {
                 override fun run() {
                     webViewAnimation()
                 }
@@ -446,6 +455,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
 
         if (type == 2201) {
+            Log.d("type", "2201")
             inflateView2201()
             setWebViewBGDefault()
             webViewGone()
@@ -458,6 +468,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
 
         if (type == 2210) {
+            Log.d("type", "2210")
             inflateView2210()
             setWebViewBGDefault()
             webViewGone()
@@ -470,6 +481,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
 
         if (type == 2100) {
+            Log.d("type", "2100")
             inflateView2100()
             setWebViewBGDefault()
             webView_question!!.visibility = View.GONE
@@ -525,6 +537,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
         opt3Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(2)
         opt4Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(3)
+        Log.d("webViewPathAndLoad", opt1Path + " ! " + opt2Path)
         webView_option1!!.loadUrl(opt1Path)
         webView_option2!!.loadUrl(opt2Path)
         webView_option3!!.loadUrl(opt3Path)
@@ -753,8 +766,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
                     override fun onAnimationEnd(animation: Animation?) {
                         Glide.with(this@TestQuestionActivity)
-                            .load(R.drawable.inactive_heart)
-                            .into(iv_life3)
+                                .load(R.drawable.inactive_heart)
+                                .into(iv_life3)
                     }
 
                     override fun onAnimationStart(animation: Animation?) {
@@ -772,8 +785,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
                 override fun onAnimationEnd(animation: Animation?) {
                     Glide.with(this@TestQuestionActivity)
-                        .load(com.blobcity.R.drawable.inactive_heart)
-                        .into(iv_life2)
+                            .load(com.blobcity.R.drawable.inactive_heart)
+                            .into(iv_life2)
                 }
 
                 override fun onAnimationStart(animation: Animation?) {
@@ -792,8 +805,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
                 override fun onAnimationEnd(animation: Animation?) {
                     Glide.with(this@TestQuestionActivity)
-                        .load(com.blobcity.R.drawable.inactive_heart)
-                        .into(iv_life1)
+                            .load(com.blobcity.R.drawable.inactive_heart)
+                            .into(iv_life1)
                 }
 
                 override fun onAnimationStart(animation: Animation?) {
@@ -862,16 +875,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         quiz.quizSession = bankHashList
 
         firestore!!.collection("quiz")
-            .add(quiz)
-            .addOnCompleteListener(object : OnCompleteListener<DocumentReference>{
-                override fun onComplete(task: Task<DocumentReference>) {
-                    if (task.isSuccessful){
-                        Log.e("quizAddStatus", "quiz added successfully")
-                    }else{
-                        Log.e("quizAddStatus", task.exception.toString())
+                .add(quiz)
+                .addOnCompleteListener(object : OnCompleteListener<DocumentReference> {
+                    override fun onComplete(task: Task<DocumentReference>) {
+                        if (task.isSuccessful) {
+                            Log.e("quizAddStatus", "quiz added successfully")
+                        } else {
+                            Log.e("quizAddStatus", task.exception.toString())
+                        }
                     }
-                }
-            })
+                })
     }
 
     override fun onBackPressed() {
@@ -887,7 +900,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private fun addDataInDb() {
         val uId: String = UniqueUUid.id(this)
         topicStatusVM!!.insert(courseId!!, uId,
-            topicId!!, topicLevel!!, dbPosition!!, gradeTitle!!)
+                topicId!!, topicLevel!!, dbPosition!!, gradeTitle!!)
     }
 
     private fun backPressDialog() {
@@ -907,11 +920,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             finish()
         }
         val alertDialog = dialogBuilder.create()
+
+        val map = takeScreenShot(this);
+
+        val fast = fastblur(map, 10);
+        val draw = BitmapDrawable (getResources(), fast);
         tv_return.setOnClickListener {
             alertDialog.dismiss()
         }
-
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.getWindow().setBackgroundDrawable(draw);
+        //alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
 

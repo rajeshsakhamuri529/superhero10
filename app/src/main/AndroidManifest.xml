@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -15,47 +15,87 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".activity.GradeActivity"
-        android:screenOrientation="portrait">
+
+        <activity android:name=".activity.SplashActivity"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.CardReviewActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name=".activity.GradeActivity"
+                android:screenOrientation="portrait">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
+        <activity
+                android:name=".activity.CardReviewActivity"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".activity.BottomNavigationActivity"
                 android:label="@string/title_activity_bottom_navigation"
                 android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.ReviewActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name=".activity.ReviewActivity"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.QuizSummaryActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name=".activity.QuizSummaryActivity"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.StartQuizActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name=".activity.StartQuizActivity"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.TestQuestionActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name=".activity.TestQuestionActivity"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.QuizLevelActivity"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name=".activity.QuizLevelActivity"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.DashBoardActivity"
-                  android:screenOrientation="portrait">
-
+        <activity
+                android:name=".activity.DashBoardActivity"
+                android:screenOrientation="portrait">
         </activity>
 
         <service android:name=".utils.NotificationHelper">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <!--<service
+                android:name=".utils.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>-->
+
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more. -->
+       <!-- <meta-data
+                android:name="com.google.firebase.messaging.default_notification_icon"
+                android:resource="@drawable/ic_launcher_background" />
+        &lt;!&ndash; Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. &ndash;&gt;
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_color"
+                android:resource="@color/colorAccent" />
+
+        <meta-data
+                android:name="com.google.firebase.messaging.default_notification_channel_id"
+                android:value="com.blobcity.utils"/>-->
+
     </application>
+
 
 </manifest>

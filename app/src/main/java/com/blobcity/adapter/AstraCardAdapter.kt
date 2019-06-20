@@ -3,11 +3,13 @@ package com.blobcity.adapter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.util.Pair
 import android.support.v7.widget.RecyclerView
 import android.transition.Transition
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -98,8 +100,11 @@ class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
     }
 
     private fun loadAstraCradImage(path: String, imageView: ImageView){
+
         val imagepath = ConstantPath.loaclAstraCardPath +path
-        loadImage(imagepath, imageView)
+        val webpath = ConstantPath.WEBVIEW_PATH+imagepath
+        Log.d("loadAstraCradImage",imagepath+"!"+path+"!"+webpath)
+        loadImage(webpath, imageView)
     }
 
     class AstraCardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -108,7 +113,7 @@ class AstraCardAdapter(var topicStatusEntityList: List<TopicStatusEntity>,
 
     fun loadImage(imagePath: String, imageView: ImageView){
         Glide.with(context)
-            .load(imagePath)
+            .load(Uri.parse(imagePath))
             .into(imageView)
     }
 
