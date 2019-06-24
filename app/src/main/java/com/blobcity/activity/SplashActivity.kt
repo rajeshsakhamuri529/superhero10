@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import com.blobcity.R
 import com.blobcity.fragment.ChapterFragment
 import com.google.firebase.FirebaseApp
@@ -26,6 +27,7 @@ class SplashActivity : BaseActivity() {
     override var layoutID: Int = R.layout.activity_splash
 
     override fun initView() {
+        Log.d("onCreate","Splash")
         //Initialize the Handler
         mDelayHandler = Handler()
 

@@ -2,11 +2,14 @@ package com.blobcity.activity
 
 import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import android.os.Environment
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -16,6 +19,7 @@ import com.blobcity.interfaces.GradeClickListener
 import com.blobcity.model.GradeResponseModel
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.ForceUpdateChecker
 import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
 import com.google.android.gms.tasks.OnCompleteListener
@@ -36,7 +40,29 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
+class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener , ForceUpdateChecker.OnUpdateNeededListener {
+
+    override fun onUpdateNeeded(updateUrl: String) {
+        val dialog = AlertDialog.Builder(this)
+                .setTitle("New version available")
+                .setMessage("Please, update app to new version to continue reposting.")
+            .setPositiveButton("Update",DialogInterface.OnClickListener { dialog, which ->
+                redirectStore(updateUrl);
+
+            })
+            .setNegativeButton("No ",DialogInterface.OnClickListener { dialog, which ->
+                finish();
+            }).create()
+
+        dialog.show();
+    }
+
+    fun redirectStore(updateUrl : String) {
+        var intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent)
+        finish()
+    }
 
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
@@ -53,6 +79,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
     override var layoutID: Int = R.layout.activity_grade2
 
     override fun initView() {
+
 
         TedPermission.with(this)
             .setPermissionListener(this)
@@ -83,6 +110,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener {
             val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
 
             Log.d("signin","true")
+            ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
             navigateToDashboard("GRADE 6")
             // GRADE SCREEN
            /* val gson = Gson()
