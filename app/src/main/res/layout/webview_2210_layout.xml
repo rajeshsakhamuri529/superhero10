@@ -18,12 +18,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_20sdp"
             android:scrollbars="none"
+            android:layout_alignParentTop="true"
+            android:layout_above="@id/wv_2210_ll"
             android:layout_gravity="center_horizontal"/>
 
     <LinearLayout
+            android:id="@+id/wv_2210_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_marginTop="@dimen/_40sdp"
             android:layout_alignParentBottom="true">
 
         <LinearLayout
@@ -51,7 +55,6 @@
                     android:scrollbars="none"
                     android:textAlignment="center"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 

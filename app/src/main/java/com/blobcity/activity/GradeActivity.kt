@@ -40,9 +40,9 @@ import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener , ForceUpdateChecker.OnUpdateNeededListener {
+class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
-    override fun onUpdateNeeded(updateUrl: String) {
+   /* override fun onUpdateNeeded(updateUrl: String) {
         val dialog = AlertDialog.Builder(this)
                 .setTitle("New version available")
                 .setMessage("Please, update app to new version to continue reposting.")
@@ -55,7 +55,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener , F
             }).create()
 
         dialog.show();
-    }
+    }*/
 
     fun redirectStore(updateUrl : String) {
         var intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
@@ -110,7 +110,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener , F
             val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
 
             Log.d("signin","true")
-            ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
             navigateToDashboard("GRADE 6")
             // GRADE SCREEN
            /* val gson = Gson()

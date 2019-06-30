@@ -22,6 +22,7 @@ import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -44,6 +45,10 @@ import kotlinx.android.synthetic.main.activity_test_question.*
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
+import android.util.Base64
+import android.webkit.WebResourceRequest
+import java.lang.Exception
+
 
 class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
@@ -210,9 +215,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun clickOptions(
-            event: MotionEvent,
-            position: Int,
-            stringAns: String
+        event: MotionEvent,
+        position: Int,
+        stringAns: String
     ) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             startClickTime = Calendar.getInstance().getTimeInMillis()
@@ -451,7 +456,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     webViewAnimation()
                 }
             }, 2500)
-            webViewPathAndLoad(path)
+            webViewPathAndLoad(path, type)
         }
 
         if (type == 2201) {
@@ -464,7 +469,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     webViewAnimation()
                 }
             }, 2500)
-            webViewPathAndLoad(path)
+            webViewPathAndLoad(path, type)
         }
 
         if (type == 2210) {
@@ -477,7 +482,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     webViewAnimation()
                 }
             }, 2500)
-            webViewPathAndLoad(path)
+            webViewPathAndLoad(path, type)
         }
 
         if (type == 2100) {
@@ -498,18 +503,57 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }, 2500)
             opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
             opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
+
+            webView_option1!!.settings.javaScriptEnabled = true
+            webView_option2!!.settings.javaScriptEnabled = true
+            val webviewClient = object : WebViewClient() {
+
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    Log.d("onPageFinished", url + "!")
+                    injectCSS(view, "AnswerQA")
+                    // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+                }
+
+            }
+            webView_option1!!.webViewClient = webviewClient
+            webView_option2!!.webViewClient = webviewClient
             webView_option1!!.loadUrl(opt1Path)
             webView_option2!!.loadUrl(opt2Path)
         }
         webView_question!!.setBackgroundColor(0)
         setWebViewBGDefault()
+
+        val qa = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                Log.d("onPageFinished", url + "!")
+                injectCSS(view, "QA")
+                // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+            }
+
+            /*  override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                  Log.d("loadurl@question",questionPath+"!"+url)
+                  //view?.loadUrl(questionPath)
+                  view!!.loadUrl(url)
+                  return false
+              }*/
+
+        }
         handler.postDelayed(object : Runnable {
             override fun run() {
                 webView_question!!.visibility = View.VISIBLE
                 webView_question!!.startAnimation(animationFadeIn500)
             }
         }, 500)
+
+
+        if (type != 2210) {
+            webView_question!!.settings.javaScriptEnabled = true
+            webView_question!!.webViewClient = qa
+        }
+
         webView_question!!.loadUrl(questionPath)
+
     }
 
     private fun webViewGone() {
@@ -531,17 +575,87 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option4!!.startAnimation(animationFadeIn)
     }
 
-    private fun webViewPathAndLoad(path: String) {
+    private fun webViewPathAndLoad(path: String, type: Int) {
         Collections.shuffle(listOfOptions!!)
         opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
         opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
         opt3Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(2)
         opt4Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(3)
         Log.d("webViewPathAndLoad", opt1Path + " ! " + opt2Path)
+
+
+        webView_option1!!.settings.javaScriptEnabled = true
+        webView_option2!!.settings.javaScriptEnabled = true
+        webView_option3!!.settings.javaScriptEnabled = true
+        webView_option4!!.settings.javaScriptEnabled = true
+
+        val webview = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                Log.d("onPageFinished", url + "!")
+                injectCSS(view, "AnswerQA")
+                //view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+            }
+        }
+        if (type != 2201) {
+            webView_option2!!.webViewClient = webview
+            webView_option3!!.webViewClient = webview
+            webView_option4!!.webViewClient = webview
+            webView_option1!!.webViewClient = webview
+        }
+        /*webView_option1!!.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                //super.onPageFinished(view, url)
+                Log.d("onPageFinished",url+"!")
+                injectCSS(view)
+                webView_option1!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+
+            }
+
+           *//* override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                Log.d("loadurl",opt1Path+"!"+url)
+                //view?.loadUrl(opt1Path)
+                webView_option1!!.loadUrl(url)
+                return false
+            }*//*
+        }*/
+
         webView_option1!!.loadUrl(opt1Path)
         webView_option2!!.loadUrl(opt2Path)
         webView_option3!!.loadUrl(opt3Path)
         webView_option4!!.loadUrl(opt4Path)
+
+
+    }
+
+    private fun injectCSS(webview: WebView?, type: String) {
+        try {
+            var cssType: String? = ""
+            if (type.equals("AnswerQA")) {
+                cssType = "iPhone/AnswerQA.css"
+            } else {
+                cssType = "iPhone/QA.css"
+            }
+            Log.d("cssType", cssType + "!")
+            //cssType = "iPhone/AnswerQA.css"
+            var inputStream = getAssets().open(cssType);
+            val buffer = ByteArray(inputStream.available())
+            inputStream.read(buffer)
+            inputStream.close()
+            val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
+            webview!!.loadUrl(
+                "javascript:(function() {" +
+                        "var parent = document.getElementsByTagName('head').item(0);" +
+                        "var style = document.createElement('style');" +
+                        "style.type = 'text/css';" +
+                        // Tell the browser to BASE64-decode the string into your script !!!
+                        "style.innerHTML = window.atob('" + encoded + "');" +
+                        "parent.appendChild(style)" +
+                        "})()"
+            );
+        } catch (e: Exception) {
+            e.printStackTrace();
+        }
     }
 
     private fun inflateView4100() {
@@ -766,8 +880,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
                     override fun onAnimationEnd(animation: Animation?) {
                         Glide.with(this@TestQuestionActivity)
-                                .load(R.drawable.inactive_heart)
-                                .into(iv_life3)
+                            .load(R.drawable.inactive_heart)
+                            .into(iv_life3)
                     }
 
                     override fun onAnimationStart(animation: Animation?) {
@@ -785,8 +899,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
                 override fun onAnimationEnd(animation: Animation?) {
                     Glide.with(this@TestQuestionActivity)
-                            .load(com.blobcity.R.drawable.inactive_heart)
-                            .into(iv_life2)
+                        .load(com.blobcity.R.drawable.inactive_heart)
+                        .into(iv_life2)
                 }
 
                 override fun onAnimationStart(animation: Animation?) {
@@ -805,8 +919,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
                 override fun onAnimationEnd(animation: Animation?) {
                     Glide.with(this@TestQuestionActivity)
-                            .load(com.blobcity.R.drawable.inactive_heart)
-                            .into(iv_life1)
+                        .load(com.blobcity.R.drawable.inactive_heart)
+                        .into(iv_life1)
                 }
 
                 override fun onAnimationStart(animation: Animation?) {
@@ -875,16 +989,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         quiz.quizSession = bankHashList
 
         firestore!!.collection("quiz")
-                .add(quiz)
-                .addOnCompleteListener(object : OnCompleteListener<DocumentReference> {
-                    override fun onComplete(task: Task<DocumentReference>) {
-                        if (task.isSuccessful) {
-                            Log.e("quizAddStatus", "quiz added successfully")
-                        } else {
-                            Log.e("quizAddStatus", task.exception.toString())
-                        }
+            .add(quiz)
+            .addOnCompleteListener(object : OnCompleteListener<DocumentReference> {
+                override fun onComplete(task: Task<DocumentReference>) {
+                    if (task.isSuccessful) {
+                        Log.e("quizAddStatus", "quiz added successfully")
+                    } else {
+                        Log.e("quizAddStatus", task.exception.toString())
                     }
-                })
+                }
+            })
     }
 
     override fun onBackPressed() {
@@ -899,8 +1013,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun addDataInDb() {
         val uId: String = UniqueUUid.id(this)
-        topicStatusVM!!.insert(courseId!!, uId,
-                topicId!!, topicLevel!!, dbPosition!!, gradeTitle!!)
+        topicStatusVM!!.insert(
+            courseId!!, uId,
+            topicId!!, topicLevel!!, dbPosition!!, gradeTitle!!
+        )
     }
 
     private fun backPressDialog() {
@@ -924,7 +1040,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val map = takeScreenShot(this);
 
         val fast = fastblur(map, 10);
-        val draw = BitmapDrawable (getResources(), fast);
+        val draw = BitmapDrawable(getResources(), fast);
         tv_return.setOnClickListener {
             alertDialog.dismiss()
         }

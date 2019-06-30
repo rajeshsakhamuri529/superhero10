@@ -32,8 +32,8 @@
 
     <ImageView
             android:id="@+id/iv_progress_icon1"
-            android:layout_width="@dimen/_14sdp"
-            android:layout_height="@dimen/_14sdp"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
             android:layout_alignParentRight="true"
             android:src="@drawable/progress_icon_grey"
             android:layout_marginTop="@dimen/_10sdp"
@@ -41,8 +41,8 @@
 
     <ImageView
             android:id="@+id/iv_progress_icon2"
-            android:layout_width="@dimen/_14sdp"
-            android:layout_height="@dimen/_14sdp"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
             android:layout_alignParentRight="true"
             android:src="@drawable/progress_icon_grey"
             android:layout_marginTop="@dimen/_4sdp"
@@ -51,8 +51,8 @@
 
     <ImageView
             android:id="@+id/iv_progress_icon3"
-            android:layout_width="@dimen/_14sdp"
-            android:layout_height="@dimen/_14sdp"
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
             android:layout_alignParentRight="true"
             android:src="@drawable/progress_icon_grey"
             android:layout_below="@id/iv_progress_icon2"

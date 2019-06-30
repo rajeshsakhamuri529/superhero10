@@ -25,11 +25,10 @@ class App : Application() {
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
 
         // set in-app defaults
-        var remoteConfigDefaults = HashMap<String,Any>()
+        /*var remoteConfigDefaults = HashMap<String,Any>()
         remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_REQUIRED, false)
         remoteConfigDefaults.put(ForceUpdateChecker.KEY_CURRENT_VERSION, "1.0.0")
-        remoteConfigDefaults.put(
-            ForceUpdateChecker.KEY_UPDATE_URL,
+        remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_URL,
             "https://play.google.com/store/apps/details?id=com.sembozdemir.renstagram"
         )
 
@@ -40,7 +39,15 @@ class App : Application() {
                     Log.d(TAG, "remote config is fetched.")
                     firebaseRemoteConfig.activateFetched()
                 }
-            }
+            }*/
 
+        firebaseRemoteConfig.fetch(5) // fetch 5 seconds
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d(TAG, "remote config is fetched.")
+                    //firebaseRemoteConfig.activate();
+                    firebaseRemoteConfig.activateFetched()
+                }
+            }
     }
 }
