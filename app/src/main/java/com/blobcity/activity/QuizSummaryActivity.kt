@@ -85,9 +85,11 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         val answer_status = "$size / $totalQuestion"
         tv_answer_status.text = answer_status
         if (level_status!!){
+            iv_animation_summary.setAnimation("winAnimation.json")
             tv_completion_status.text = "Level Completed"
             tv_completion_status.setTextColor(resources.getColor(R.color.green_right_answer))
         }else{
+            iv_animation_summary.setAnimation("loseAnimation.json")
             tv_completion_status.text = "Level Failed"
             tv_completion_status.setTextColor(resources.getColor(R.color.orange_level_failed))
         }

@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@drawable/bg"
         android:paddingBottom="@dimen/_20sdp"
         tools:context=".activity.QuizSummaryActivity">
@@ -26,6 +26,13 @@
             android:text="Topic one"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_15sdp"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/iv_animation_summary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_loop="false"
+            app:lottie_autoPlay="true"/>
 
     <TextView
             android:id="@+id/tv_quiz_level"
