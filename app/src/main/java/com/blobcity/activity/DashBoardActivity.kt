@@ -36,11 +36,11 @@ class DashBoardActivity : BaseActivity(),
                 fragment = ChapterFragment()
             }
 
-            com.blobcity.R.id.nav_astra_cards -> {
+            R.id.nav_astra_cards -> {
                 fragment = AstraCardFragment()
             }
 
-            com.blobcity.R.id.nav_settings -> {
+            R.id.nav_settings -> {
                 fragment = SettingFragment()
             }
         }

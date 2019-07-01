@@ -47,6 +47,7 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 import android.util.Base64
 import android.webkit.WebResourceRequest
+import java.io.File
 import java.lang.Exception
 
 
@@ -501,8 +502,18 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 }
 
             }, 2500)
-            opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
-            opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
+
+            opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
+            opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
+
+            /*var input = File(opt1Path)
+            var doc = null;
+            try {
+                doc = Jsoup.parse(input, "UTF-8");
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }*/
 
             webView_option1!!.settings.javaScriptEnabled = true
             webView_option2!!.settings.javaScriptEnabled = true

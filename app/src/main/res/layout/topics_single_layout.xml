@@ -16,7 +16,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/_10sdp"
             android:fontFamily="@font/quicksand_bold"
-            android:textSize="@dimen/_14ssp"/>
+            android:textSize="@dimen/_16ssp"/>
 
     <TextView
             android:id="@+id/tv_topic_name"
@@ -28,21 +28,21 @@
             android:layout_marginLeft="@dimen/_30sdp"
             android:layout_toRightOf="@id/tv_topic_number"
             android:fontFamily="@font/quicksand_medium"
-            android:textSize="@dimen/_14ssp"/>
+            android:textSize="@dimen/_16ssp"/>
 
     <ImageView
             android:id="@+id/iv_progress_icon1"
-            android:layout_width="@dimen/_10sdp"
-            android:layout_height="@dimen/_10sdp"
+            android:layout_width="@dimen/_11sdp"
+            android:layout_height="@dimen/_11sdp"
             android:layout_alignParentRight="true"
             android:src="@drawable/progress_icon_grey"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_7sdp"
             android:layout_marginRight="@dimen/_10sdp"/>
 
     <ImageView
             android:id="@+id/iv_progress_icon2"
-            android:layout_width="@dimen/_10sdp"
-            android:layout_height="@dimen/_10sdp"
+            android:layout_width="@dimen/_11sdp"
+            android:layout_height="@dimen/_11sdp"
             android:layout_alignParentRight="true"
             android:src="@drawable/progress_icon_grey"
             android:layout_marginTop="@dimen/_4sdp"
@@ -51,13 +51,13 @@
 
     <ImageView
             android:id="@+id/iv_progress_icon3"
-            android:layout_width="@dimen/_10sdp"
-            android:layout_height="@dimen/_10sdp"
+            android:layout_width="@dimen/_11sdp"
+            android:layout_height="@dimen/_11sdp"
             android:layout_alignParentRight="true"
             android:src="@drawable/progress_icon_grey"
             android:layout_below="@id/iv_progress_icon2"
             android:layout_marginTop="@dimen/_4sdp"
             android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"/>
+            android:layout_marginBottom="@dimen/_7sdp"/>
 
 </RelativeLayout>

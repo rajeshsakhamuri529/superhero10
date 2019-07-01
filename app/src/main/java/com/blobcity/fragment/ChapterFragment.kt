@@ -27,6 +27,10 @@ import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.chapter_layout.*
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.DividerItemDecoration
+
+
 
 class ChapterFragment: Fragment(), TopicClickListener {
 
@@ -48,6 +52,8 @@ class ChapterFragment: Fragment(), TopicClickListener {
         gradeTitle = arguments!!.getString(TITLE_TOPIC)!!
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         readFileLocally()
+        val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
+        itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, com.blobcity.R.drawable.rv_divider)!!)
 
         topicStatusVM!!.getAllTopicStatus(gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>> {
@@ -85,6 +91,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
                     }
                     adapter = ChaptersAdapter(context!!, branchesItemList!!, this@ChapterFragment)
 
+                    rcv_chapter.addItemDecoration(itemDecorator)
                     rcv_chapter.adapter = adapter
                 }
 

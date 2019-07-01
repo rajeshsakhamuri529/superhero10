@@ -76,6 +76,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         btn_quiz1.setOnClickListener(this)
         btn_quiz2.setOnClickListener(this)
         btn_quiz3.setOnClickListener(this)
+        tvBack.setOnClickListener(this)
     }
 
     private fun loadDataFromDb() {
@@ -184,6 +185,10 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         var complete = ""
         when(v?.id){
             R.id.ivBack ->{
+                finish()
+            }
+
+            R.id.tvBack ->{
                 finish()
             }
 
