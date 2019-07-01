@@ -47,6 +47,7 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 import android.util.Base64
 import android.webkit.WebResourceRequest
+import org.jsoup.Jsoup
 import java.io.File
 import java.lang.Exception
 
@@ -506,14 +507,6 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
             opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
 
-            /*var input = File(opt1Path)
-            var doc = null;
-            try {
-                doc = Jsoup.parse(input, "UTF-8");
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }*/
 
             webView_option1!!.settings.javaScriptEnabled = true
             webView_option2!!.settings.javaScriptEnabled = true
@@ -528,8 +521,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
             webView_option1!!.webViewClient = webviewClient
             webView_option2!!.webViewClient = webviewClient
-            webView_option1!!.loadUrl(opt1Path)
-            webView_option2!!.loadUrl(opt2Path)
+
+            if(Utils.jsoupWrapper(path + "/" + listOfOptions!!.get(1),this))
+            {
+                webView_option1!!.loadUrl(opt1Path)
+                webView_option2!!.loadUrl(opt2Path)
+            }else{
+                webView_option1!!.loadUrl(opt2Path)
+                webView_option2!!.loadUrl(opt1Path)
+            }
+
         }
         webView_question!!.setBackgroundColor(0)
         setWebViewBGDefault()

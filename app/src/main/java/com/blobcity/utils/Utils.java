@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Environment;
 import android.util.Log;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -70,6 +73,30 @@ public class Utils {
     public static List<String> getListOfFilesFromFolder(String path){
         File file = new File(path);
         return Arrays.asList(file.list());
+    }
+
+    public static Boolean jsoupWrapper(String path,Context context){
+        //String fileName = "path/to/file.html";
+        InputStream is=null;
+        Document doc = null;
+        Log.d("jsoupWrapper",path+"!");
+        try {
+            //doc = Jsoup.parse(new File(path), "utf-8","http://google.com/");
+            //is= context.getAssets().open(path);
+//            is= context.getAssets().open("courses/Test Course/topic-one/basic-396/opt1.html");
+            is= context.getAssets().open(path);
+            doc = Jsoup.parse(is, "UTF-8", "http://example.com/");
+            Element divTag = doc.getElementById("wrapper");
+            System.out.println(divTag.text());
+            if(divTag.text().equals("True"))
+            {
+                return true;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static String readFromFile(String path){
