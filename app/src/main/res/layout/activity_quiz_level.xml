@@ -9,6 +9,7 @@
         tools:context=".activity.QuizLevelActivity">
 
     <LinearLayout
+            android:id="@+id/llBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15sdp"
@@ -26,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvBack"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_13ssp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/montserrat_bold"
                 android:text="Back"
@@ -38,21 +39,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="@dimen/_60sdp"
-            android:layout_marginRight="@dimen/_60sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_100sdp">
 
         <View
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/light_purple"/>
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/line_colour"/>
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_title"
                 android:textAlignment="center"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
                 android:textColor="@color/white"
@@ -63,100 +64,113 @@
 
         <View
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@color/light_purple"/>
+                android:layout_height="0.8dp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/line_colour"/>
 
     </LinearLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
             android:id="@+id/ll_quiz_1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_40sdp"
             android:layout_below="@id/ll_title">
 
         <Button
                 android:id="@+id/btn_quiz1"
-                android:layout_width="@dimen/_85sdp"
+                android:layout_width="@dimen/_110sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/button_bg"
                 android:textColor="@color/white"
                 android:text="@string/str_Quiz_1"
                 android:fontFamily="@font/quicksand_medium"
                 android:textAllCaps="false"
-                android:textSize="@dimen/_12ssp"/>
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
                 android:id="@+id/iv_level1"
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
+                android:layout_width="@dimen/_11sdp"
+                android:layout_height="@dimen/_11sdp"
                 android:src="@drawable/inactive_button"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/_12sdp"/>
+                app:layout_constraintStart_toEndOf="@id/btn_quiz1"
+                android:layout_marginStart="@dimen/_12sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
             android:id="@+id/ll_quiz_2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_30sdp"
             android:layout_below="@id/ll_quiz_1">
 
         <Button
                 android:id="@+id/btn_quiz2"
-                android:layout_width="@dimen/_85sdp"
+                android:layout_width="@dimen/_110sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/button_bg"
                 android:textColor="@color/white"
                 android:text="@string/str_Quiz_2"
                 android:fontFamily="@font/quicksand_medium"
                 android:textAllCaps="false"
-                android:textSize="@dimen/_12ssp"/>
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
                 android:id="@+id/iv_level2"
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
+                android:layout_width="@dimen/_11sdp"
+                android:layout_height="@dimen/_11sdp"
                 android:src="@drawable/inactive_button"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/_12sdp"/>
+                app:layout_constraintStart_toEndOf="@id/btn_quiz2"
+                android:layout_marginStart="@dimen/_12sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
             android:id="@+id/ll_astra_quiz"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_30sdp"
             android:layout_below="@id/ll_quiz_2">
 
         <Button
                 android:id="@+id/btn_quiz3"
-                android:layout_width="@dimen/_85sdp"
+                android:layout_width="@dimen/_110sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:background="@drawable/quiz_button_inactive"
                 android:textColor="@color/pink_inactive"
                 android:text="@string/str_astra_quiz"
                 android:fontFamily="@font/quicksand_medium"
                 android:textAllCaps="false"
-                android:textSize="@dimen/_12ssp"/>
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
                 android:id="@+id/iv_level3"
-                android:layout_width="@dimen/_10sdp"
-                android:layout_height="@dimen/_10sdp"
+                android:layout_width="@dimen/_11sdp"
+                android:layout_height="@dimen/_11sdp"
                 android:src="@drawable/inactive_button"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/_12sdp"/>
+                app:layout_constraintStart_toEndOf="@id/btn_quiz3"
+                android:layout_marginStart="@dimen/_12sdp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </RelativeLayout>

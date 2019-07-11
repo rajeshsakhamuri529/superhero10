@@ -11,7 +11,7 @@
             android:id="@+id/iv_cancel"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:src="@drawable/button_dismiss"
+            android:src="@drawable/dismiss"
             android:layout_marginLeft="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_15sdp"/>
 
@@ -39,9 +39,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quiz"
+            android:layout_marginTop="@dimen/_12sdp"
             android:layout_below="@id/tv_chapter_title"
             android:layout_centerHorizontal="true"
-            android:textSize="@dimen/_18ssp"
+            android:textSize="@dimen/_16ssp"
             android:textAllCaps="true"
             android:textColor="@color/pink_quiz_text"
             android:fontFamily="@font/quicksand_bold"/>
@@ -75,7 +76,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_17sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:textSize="@dimen/_12ssp"
             android:text="questions"
             android:textAllCaps="true"
@@ -90,7 +91,7 @@
             android:orientation="horizontal"
             android:layout_above="@id/tv_lives"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:weightSum="3">
 
         <ImageView
@@ -131,14 +132,14 @@
     <Button
             android:id="@+id/btn_start"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_30sdp"
             android:text="start"
             android:textColor="@color/black_text"
             android:background="@drawable/btn_yellow_curved_border"
-            android:layout_marginLeft="@dimen/_20sdp"
-            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/_45sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:fontFamily="@font/quicksand_bold"
             android:textSize="@dimen/_13ssp"/>
 

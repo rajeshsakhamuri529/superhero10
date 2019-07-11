@@ -9,6 +9,7 @@ import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.Button
 import com.blobcity.R
 import com.blobcity.adapter.ReviewAdapter
@@ -29,6 +30,7 @@ class ReviewActivity : BaseActivity() {
     var mRecyclerViewHelper: RecyclerViewPositionHelper?= null
     var hintPath = ""
     var context: Context ? = null
+    var adapter : ReviewAdapter? = null
 
     override var layoutID: Int = R.layout.activity_review
 
@@ -38,14 +40,17 @@ class ReviewActivity : BaseActivity() {
         val mLayoutManager = LinearLayoutManager(applicationContext,
             LinearLayoutManager.HORIZONTAL, false)
         rcv_review.setLayoutManager(mLayoutManager)
-        val adapter = ReviewAdapter(reviewModelList!!, this)
+        adapter = ReviewAdapter(reviewModelList!!, this)
         rcv_review.adapter = adapter
         val startSnapHelper = PagerSnapHelper()
         startSnapHelper.attachToRecyclerView(rcv_review)
         val listSize = reviewModelList!!.size
-        res = "$item of $listSize"
+        /*res = "$item of $listSize"
         //  res = String.valueOf(firstVisibleItem);
-        tv_count.text = res
+        tv_count.text = res*/
+        review_tv_count1.text = "$item"
+        review_tv_count2.text = "$listSize"
+
         btn_hint.setOnClickListener { hintAlertDialog() }
         btn_close_review.setOnClickListener { onBackPressed() }
         rcv_review.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -80,7 +85,10 @@ class ReviewActivity : BaseActivity() {
                                         reviewModelList!!.get(item!! - 1).questionsItem!!.id + "/" + filename
                             }
                         }
-                        tv_count.setText(res)
+                        /*tv_count.setText(res)*/
+                        review_tv_count1.text = item.toString()
+                        review_tv_count2.text = totalItemCount.toString()
+
                     }
                 } else {
                     item = firstVisibleItem
@@ -93,7 +101,9 @@ class ReviewActivity : BaseActivity() {
                                     reviewModelList!!.get(item!! - 1).questionsItem!!.id + "/" + filename
                         }
                     }
-                    tv_count.setText(res)
+                    /*tv_count.setText(res)*/
+                    review_tv_count1.text = item.toString()
+                    review_tv_count2.text = totalItemCount.toString()
                 }
                 Log.d("TAGA", firstVisibleItem.toString())
             }
@@ -106,10 +116,23 @@ class ReviewActivity : BaseActivity() {
         val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
         dialogBuilder.setView(dialogView)
 
-        val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
-        val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
+        val webview = dialogView.findViewById(R.id.webview_hint) as WebView
+        val btn_gotIt = dialogView.findViewById(R.id.btn_gotIt) as Button
+
+        webview.settings.javaScriptEnabled = true
+        val hint = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                Log.d("onPageFinished", url + "!")
+                adapter!!.injectCSS(view, "Hint")
+                // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+            }
+        }
+        webview.webViewClient = hint
         webview.loadUrl(hintPath)
         webview.setBackgroundColor(0)
+
+
         val alertDialog = dialogBuilder.create()
         btn_gotIt.setOnClickListener {
             alertDialog.dismiss()

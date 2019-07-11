@@ -70,6 +70,12 @@ class CardReviewActivity : BaseActivity() {
         prepareSharedElementTransition()
     }
 
+    override fun onResume() {
+        super.onResume()
+        Log.d("CardReview","onResume")
+
+
+    }
     private fun loadDataFromViewModel(){
         val pathStringList: ArrayList<String> = ArrayList()
         for (imagePath in Utils
@@ -236,12 +242,24 @@ class CardReviewActivity : BaseActivity() {
         setEnterSharedElementCallback(object : SharedElementCallback(){
             override fun onMapSharedElements(names: MutableList<String>?,
                                              sharedElements: MutableMap<String, View>?) {
-                val view :View
+                var view :View? = null
                 if (sharedCount != null) {
-                    view = vp_card_review.findViewWithTag<LinearLayout>(sharedCount)
+                    try {
+                        view = vp_card_review.findViewWithTag<LinearLayout>(sharedCount)
+                    }
+                    catch (e: IllegalStateException) {
+                        Log.d("ifTransException",e.toString())
+                    }
                 }
                 else {
-                    view = vp_card_review.findViewWithTag<LinearLayout>(intentCount)
+
+                    try {
+                        view = vp_card_review.findViewWithTag<LinearLayout>(intentCount)
+                    }
+                    catch (e: IllegalStateException) {
+                        Log.d("elseTransException",e.toString())
+                    }
+
                 }
                 if (view != null) {
                     sharedElements!!.put(names!!.get(0), view.findViewById(R.id.iv_card_review))

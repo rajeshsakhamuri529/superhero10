@@ -29,7 +29,8 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.chapter_layout.*
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
-
+import com.blobcity.utils.DividerItem
+import com.blobcity.utils.DividerItemDecorations
 
 
 class ChapterFragment: Fragment(), TopicClickListener {
@@ -52,8 +53,14 @@ class ChapterFragment: Fragment(), TopicClickListener {
         gradeTitle = arguments!!.getString(TITLE_TOPIC)!!
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         readFileLocally()
-        val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
-        itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, com.blobcity.R.drawable.rv_divider)!!)
+        /*val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
+        itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, R.drawable.rv_divider)!!)*/
+
+        //val itemDecorator = DividerItemDecorations(context!!.getDrawable(R.drawable.rv_divider), false,false)
+        //itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, R.drawable.rv_divider)!!)
+
+       val itemDecorator = DividerItem(ContextCompat.getDrawable(context!!, R.drawable.rv_divider))
+        //itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, R.drawable.rv_divider)!!)
 
         topicStatusVM!!.getAllTopicStatus(gradeTitle!!).observe(this,
             object : Observer<List<TopicStatusEntity>> {
@@ -92,6 +99,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
                     adapter = ChaptersAdapter(context!!, branchesItemList!!, this@ChapterFragment)
 
                     rcv_chapter.addItemDecoration(itemDecorator)
+                    //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
                     rcv_chapter.adapter = adapter
                 }
 
@@ -101,6 +109,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
                 val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
                 val totalItemCount = layoutManager.itemCount
                 val lastVisible = layoutManager.findLastVisibleItemPosition()
+                Log.d("lastVisible",lastVisible.toString()+"!")
                 adapter!!.lastItem(
                     (rcv_chapter
                         .findViewHolderForAdapterPosition(lastVisible)

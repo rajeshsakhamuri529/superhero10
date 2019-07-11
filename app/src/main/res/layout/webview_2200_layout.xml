@@ -52,7 +52,6 @@
                 android:textAlignment="center"
                 android:scrollbars="none"
                 android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_gravity="center"/>
     </LinearLayout>
 

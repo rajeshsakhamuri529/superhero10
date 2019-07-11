@@ -54,11 +54,19 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         topicName = topic.title
         position = intent.getIntExtra(TOPIC_POSITION, -1)
         val index = topic.index
+
         courseName = intent.getStringExtra(COURSE_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
 
-        val title = "$index $topicName"
-        tv_title.text = title
+        if(index<10)
+        {
+            val title = "0$index $topicName"
+            tv_title.text = title
+        }else{
+            val title = "$index $topicName"
+            tv_title.text = title
+        }
+
 
         paths = intent.getStringExtra(FOLDER_PATH)
         val folderPath = paths+folderName
@@ -72,11 +80,12 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
         loadDataFromDb()
 
-        ivBack.setOnClickListener(this)
+        //ivBack.setOnClickListener(this)
         btn_quiz1.setOnClickListener(this)
         btn_quiz2.setOnClickListener(this)
         btn_quiz3.setOnClickListener(this)
-        tvBack.setOnClickListener(this)
+        //tvBack.setOnClickListener(this)
+        llBack.setOnClickListener(this)
     }
 
     private fun loadDataFromDb() {
@@ -147,16 +156,17 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         courseName = intent.getStringExtra(COURSE_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
 
-        val courseJsonString = loadJSONFromAsset("$localBlobcityPath/Courses.json")
+        val courseJsonString = loadJSONFromAsset("${localBlobcityPath}Courses.json")
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
+        Log.d("newIntent",courseJsonString+"!")
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
         val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
             .fromJson(courseJsonString, courseType)
         courseId = courseResponseModel[0].id
         courseName = courseResponseModel[0].syllabus.title
-        localPath = "$localBlobcityPath$courseName/"
-        val jsonString = loadJSONFromAsset(localPath +"topic.json")
+        //localPath = "$localBlobcityPath$courseName/"
+        val jsonString = loadJSONFromAsset("${localBlobcityPath}$courseName/topic.json")
 
         val topicType = object : TypeToken<TopicResponseModel>() {}.type
         val topicResponseModel: TopicResponseModel = gsonFile.fromJson(jsonString, topicType )
@@ -184,11 +194,15 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         var complete = ""
         when(v?.id){
-            R.id.ivBack ->{
+           /* R.id.ivBack ->{
                 finish()
             }
 
             R.id.tvBack ->{
+                finish()
+            }*/
+
+            R.id.llBack ->{
                 finish()
             }
 

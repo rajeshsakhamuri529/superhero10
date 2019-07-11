@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_below="@id/view"
-        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_20sdp"
         android:layout_marginRight="@dimen/_20sdp"
         tools:context=".activity.TestQuestionActivity">
@@ -16,7 +16,7 @@
             android:id="@+id/webView_question"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:layout_alignParentTop="true"
             android:layout_above="@id/wv_4100_ll"
             android:scrollbars="none"
@@ -32,38 +32,38 @@
     <WebView
             android:id="@+id/webView_option1"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
+            android:layout_height="@dimen/_52sdp"
             android:clickable="true"
             android:scrollbars="none"
-            android:layout_marginTop="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:layout_gravity="center"/>
 
     <WebView
             android:id="@+id/webView_option2"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
+            android:layout_height="@dimen/_52sdp"
             android:clickable="true"
             android:textAlignment="center"
             android:scrollbars="none"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_gravity="center"/>
 
     <WebView
             android:id="@+id/webView_option3"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
+            android:layout_height="@dimen/_52sdp"
             android:clickable="true"
             android:scrollbars="none"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_gravity="center_horizontal"/>
 
     <WebView
             android:id="@+id/webView_option4"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_45sdp"
+            android:layout_height="@dimen/_52sdp"
             android:clickable="true"
             android:scrollbars="none"
-            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_2sdp"
             android:layout_gravity="center_horizontal"/>
     </LinearLayout>
 

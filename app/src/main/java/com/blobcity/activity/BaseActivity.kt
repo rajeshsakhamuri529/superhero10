@@ -15,7 +15,9 @@ import android.opengl.ETC1.getWidth
 import android.R.attr.top
 import android.app.Activity
 import android.graphics.Rect
+import android.util.AttributeSet
 import android.util.Log
+import android.view.View
 
 
 abstract class BaseActivity : AppCompatActivity() {

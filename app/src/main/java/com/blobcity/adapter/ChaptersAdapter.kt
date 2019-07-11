@@ -1,11 +1,16 @@
 package com.blobcity.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import com.blobcity.R
 import com.blobcity.interfaces.TopicClickListener
 import com.blobcity.model.BranchesItem
@@ -36,10 +41,15 @@ class ChaptersAdapter(val context: Context,
 
         var index = branchesItemList[position].topic.index.toString()
         Log.d("chapter adapter",index);
-        if(index.length == 1)
-        {
-            index = "0"+index
-        }
+       /* if(position != itemCount){*/
+            if(index.length == 1)
+            {
+                index = "0"+index
+            }
+        /*}else{
+
+        }*/
+
         Log.d("chapter adapter",index);
         holder.tv_topic_number.text = index
         holder.tv_topic_name.text = branchesItemList[position].topic.title
@@ -87,6 +97,8 @@ class ChaptersAdapter(val context: Context,
                         branchesItemList[position].topic,
                         branchesItemList[position].id, position
                     )
+                }else{
+                    lastTopicDialog()
                 }
             }else{
                 topicClickListener.onClick(
@@ -111,11 +123,19 @@ class ChaptersAdapter(val context: Context,
     fun lastItem(holder: ChaptersViewHolder){
         holder.singleTopic.setBackgroundResource(R.drawable.dashboard_bottom_corner)
         if (isLastTopicAvailable) {
-
+            Log.d("lastItem",isLastTopicAvailable.toString()+"!")
+            holder.tv_topic_number.alpha = 1.0f
+            holder.iv_progress1.visibility = View.VISIBLE
+            holder.iv_progress2.visibility = View.VISIBLE
+            holder.iv_progress3.visibility = View.VISIBLE
         }else{
-            holder.singleTopic.alpha = 0.8f
-            holder.tv_topic_name.textColors.withAlpha(100)
-            holder.tv_topic_number.textColors.withAlpha(100)
+            Log.d("lastItem",isLastTopicAvailable.toString()+"!")
+            //holder.singleTopic.alpha = 0.8f
+            //holder.tv_topic_name.textColors.withAlpha(100)
+            holder.tv_topic_number.alpha = 0.0f
+            holder.iv_progress1.visibility = View.INVISIBLE
+            holder.iv_progress2.visibility = View.INVISIBLE
+            holder.iv_progress3.visibility = View.INVISIBLE
         }
     }
 
@@ -126,5 +146,24 @@ class ChaptersAdapter(val context: Context,
         val iv_progress1 = itemView.iv_progress_icon1
         val iv_progress2 = itemView.iv_progress_icon2
         val iv_progress3 = itemView.iv_progress_icon3
+    }
+
+    private fun lastTopicDialog() {
+        val dialogBuilder = AlertDialog.Builder(context, R.style.mytheme)
+        val inflater = LayoutInflater.from(context)
+        val dialogView = inflater.inflate(R.layout.last_topic_dialog_layout, null)
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.setCancelable(false)
+        val tv_ok = dialogView.findViewById(R.id._last_topic_btn_ok) as Button
+        val alertDialog = dialogBuilder.create()
+        //val tv_return = dialogView.findViewById(R.id.tv_return) as TextView
+        tv_ok.setOnClickListener {
+
+            alertDialog.dismiss()
+        }
+
+        //alertDialog.getWindow().setBackgroundDrawable(draw);
+        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show()
     }
 }

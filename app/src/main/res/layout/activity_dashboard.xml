@@ -21,8 +21,7 @@
     <android.support.design.widget.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            app:itemIconSize="@dimen/_16ssp"
+            android:layout_height="?android:attr/actionBarSize"
             app:itemIconTint="@drawable/bottom_nav_bar_selector"
             app:itemTextColor="@drawable/bottom_nav_bar_selector"
             android:background="?android:attr/windowBackground"

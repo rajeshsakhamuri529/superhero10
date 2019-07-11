@@ -1,12 +1,23 @@
 package com.blobcity.utils;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Environment;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
+import android.webkit.WebView;
+import android.widget.TextView;
+import com.blobcity.R;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.w3c.dom.Text;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherInputStream;
@@ -27,6 +38,52 @@ import java.util.zip.ZipInputStream;
 
 public class Utils {
 
+    public static void transition(Context context, final WebView webView, Boolean isColourGreen){
+        int colorFrom = context.getResources().getColor(R.color.purple_opt_bg);
+        int colorTo = context.getResources().getColor(R.color.red_wrong_answer);
+        if(isColourGreen)
+        {
+            colorTo = context.getResources().getColor(R.color.green_right_answer);
+        }
+
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        final GradientDrawable background = (GradientDrawable) webView.getBackground();
+
+        colorAnimation.setDuration(1000); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                //webView.setBackgroundColor((int) animator.getAnimatedValue());
+               // Log.d("onAnimationUpdate",background.getColors()+"!")
+                background.setColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+    }
+
+    public static void transitionBack(Context context, final WebView webView){
+        int colorFrom = context.getResources().getColor(R.color.purple_opt_bg);
+        int colorTo = context.getResources().getColor(R.color.purple_opt_bg);
+
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        final GradientDrawable background = (GradientDrawable) webView.getBackground();
+        //final GradientDrawable background = (GradientDrawable) context.getResources().getDrawable(R.drawable.option_curved_border);
+        colorAnimation.setDuration(1); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                //webView.setBackgroundColor((int) animator.getAnimatedValue());
+                // Log.d("onAnimationUpdate",background.getColors()+"!")
+                background.setColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+    }
+
     public static void makeDir(String path){
         File folder = new File(path);
         if (!folder.exists()){
@@ -34,6 +91,15 @@ public class Utils {
         }
     }
 
+    public static String ofSize(String text, Integer start){
+        Log.d("ofSize","!"+text+"!"+start);
+        SpannableString ss1=  new SpannableString(text);
+        ss1.setSpan(new RelativeSizeSpan(2f), start,start+4, 0); // set size
+        //ss1.setSpan(new ForegroundColorSpan(Color.RED), 0, 5, 0);// set color
+        /*TextView tv= (TextView) findViewById(R.id.textview);
+        tv.setText(ss1);*/
+        return ss1.toString();
+    }
 
     public static ArrayList<String> listAssetFiles(String path, Context context) {
 

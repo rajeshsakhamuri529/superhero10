@@ -4,9 +4,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@drawable/review_bg"
         tools:context=".activity.ReviewActivity"
-        android:paddingBottom="@dimen/_20sdp">
+        android:paddingBottom="@dimen/_10sdp">
 
     <TextView
             android:id="@+id/tv_quiz_review_text"
@@ -19,7 +20,54 @@
             android:layout_marginTop="@dimen/_20sdp"
             android:text="Quiz 1 Review"/>
 
-    <TextView
+    <android.support.constraint.ConstraintLayout
+            android:id="@+id/qr_cl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_below="@id/tv_quiz_review_text"
+            android:layout_centerHorizontal="true">
+
+        <TextView
+                android:id="@+id/review_tv_count1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/review_tv_count"
+                android:text="3"
+                android:textSize="@dimen/_14sdp"/>
+
+        <TextView
+                android:id="@+id/review_tv_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/quicksand_medium"
+                android:text="  of  "
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:textSize="@dimen/_10sdp"/>
+
+        <TextView
+                android:id="@+id/review_tv_count2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:fontFamily="@font/quicksand_bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/review_tv_count"
+                android:text="8"
+                android:textSize="@dimen/_14sdp"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+  <!--  <TextView
             android:id="@+id/tv_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,18 +77,18 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_below="@id/tv_quiz_review_text"
-            android:text="1 of 8"/>
+            android:text="1 of 8"/>-->
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rcv_review"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_count"
+            android:layout_below="@id/qr_cl"
             android:layout_centerHorizontal="true"
             android:layout_above="@id/rl_hint_next"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/_20sdp"/>
+            android:layout_marginTop="@dimen/_10sdp"/>
 
     <RelativeLayout
             android:id="@+id/rl_hint_next"
