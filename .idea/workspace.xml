@@ -6,45 +6,7 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c547ed54-15d3-4946-97d8-a1bbca4d7cfd" name="Default Changelist" comment="UI fixes, Review UI pending, applying css to 2201 pending">
-      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/BaseActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/BaseActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/CardReviewActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/QuizLevelActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/ReviewActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/ReviewActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/activity/TestQuestionActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ChaptersAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ChaptersAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ReviewAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/adapter/ReviewAdapter.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/ChapterFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/fragment/ChapterFragment.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/model/OptionsWithAnswer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/model/OptionsWithAnswer.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/blobcity/utils/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/btn_yellow_curved_border.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/btn_yellow_curved_border.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/button_white_corner_border.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/button_white_corner_border.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/hint_button_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/hint_button_bg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/hint_curve_border.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/hint_curve_border.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/option_correct_curved_border.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/option_correct_curved_border.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/review_button_bg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/review_button_bg.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/rv_divider.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/rv_divider.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_dashboard.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_dashboard.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_level.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_level.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_quiz_summary.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_review.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_review.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_start_quiz.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_start_quiz.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_test_question.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_test_question.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/chapter_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/chapter_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/review_2100_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/review_2100_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/review_4100_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/review_4100_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/topics_single_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/topics_single_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/webview_2100_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/webview_2100_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/webview_2200_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/webview_2200_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/webview_2201_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/webview_2201_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/webview_2210_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/webview_2210_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/webview_4100_layout.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/webview_4100_layout.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/local.properties" beforeDir="false" afterPath="$PROJECT_DIR$/local.properties" afterDir="false" />
-    </list>
+    <list default="true" id="c547ed54-15d3-4946-97d8-a1bbca4d7cfd" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -2848,6 +2810,14 @@
       <option name="presentableId" value="Default" />
       <updated>1562829818419</updated>
     </task>
+    <task id="LOCAL-00001" summary="UI fixes, Review UI pending, applying css to 2201 pending">
+      <created>1562832776573</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1562832776573</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2864,7 +2834,7 @@
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Run" weight="0.2539007" />
       <window_info anchor="bottom" id="Logcat" />
-      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Version Control" weight="0.32907802" />
       <window_info anchor="bottom" id="TODO" />
       <window_info anchor="bottom" id="Debug" />
       <window_info anchor="bottom" id="Terminal" />
@@ -2882,6 +2852,32 @@
       <window_info anchor="right" id="Flutter Outline" />
       <window_info anchor="right" id="Palette&#9;" />
     </layout>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />

@@ -1,0 +1,10 @@
+html,
+body {
+    height: 100%;
+/*    overflow: hidden;*/
+}
+body {
+    font-size: 126%;
+    line-height: 22px;
+    text-align: top;
+}
