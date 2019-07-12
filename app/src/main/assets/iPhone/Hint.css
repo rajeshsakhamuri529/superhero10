@@ -5,6 +5,12 @@ body {
 }
 body {
     font-size: 126%;
+    font-family: 'MathJaxMainRegular'
     line-height: 22px;
     text-align: top;
+}
+
+@font-face {
+   font-family: 'MathJaxMainRegular';
+   src: url('file:///android_asset/fonts/MathJax_Main-Regular.otf');
 }

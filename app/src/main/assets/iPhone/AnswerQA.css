@@ -6,6 +6,7 @@ body {
 body {
     background-color: transparent;
     font-size: 140%;
+    font-family: 'MathJaxMainRegular'
     display: flex;
     display: -webkit-flex;
     display: flex;
@@ -34,4 +35,9 @@ body {
 @keyframes fadeOut {
     from { opacity: 1;}
     to { opacity: 0;}
+}
+
+@font-face {
+   font-family: 'MathJaxMainRegular';
+   src: url('file:///android_asset/fonts/MathJax_Main-Regular.otf');
 }
