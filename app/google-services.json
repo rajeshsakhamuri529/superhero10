@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "443492773909-j96vsq2ctird3iu8p2b7tuijkbn20col.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.blobcity",
+            "certificate_hash": "b9e76612da38caa9767e1d1e28ed5efaa9e21a0e"
+          }
+        },
+        {
           "client_id": "443492773909-hmhfqn0pp3kqcfgefrvpvjr0ruejsh5m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

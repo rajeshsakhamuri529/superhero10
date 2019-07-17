@@ -30,10 +30,11 @@ class SettingFragment : Fragment(), View.OnClickListener {
         sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
         cb_sounds_settings.isChecked = notification
         cb_sounds_settings.setOnClickListener {
-            sound = !notification
-            sharedPrefs?.setBooleanPrefVal(context!!, SOUNDS, notification)
-            cb_sounds_settings.isChecked = notification
+            sound = !sound
+            sharedPrefs?.setBooleanPrefVal(context!!, SOUNDS, sound)
+            cb_sounds_settings.isChecked = sound
         }
+
         cl_terms_and_conditions.setOnClickListener(this)
         cl_write_to_us.setOnClickListener(this)
     }
