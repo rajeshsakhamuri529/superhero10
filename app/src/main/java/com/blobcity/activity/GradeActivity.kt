@@ -76,7 +76,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
     private var auth: FirebaseAuth?= null
     private var mSnackBar: Snackbar? = null
 
-    override var layoutID: Int = R.layout.activity_grade2
+    override var layoutID: Int = R.layout.activity_splash
 
     override fun initView() {
 
@@ -235,7 +235,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                             // If sign in fails, display a message to the user.
                             //.makeText(baseContext, "Authentication failed. Check Internet Connection", Toast.LENGTH_SHORT).show()
                             mSnackBar = Snackbar.make(
-                                findViewById(com.blobcity.R.id.rl_dashboard),
+                                findViewById(R.id.splash_cl),
                                 "Auth Failed :(",
                                 Snackbar.LENGTH_LONG
                             ) //Assume "rootLayout" as the root layout of every activity.
@@ -246,7 +246,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                     }
             }else{
                 mSnackBar = Snackbar.make(
-                    findViewById(R.id.rl_dashboard),
+                    findViewById(R.id.splash_cl),
                     "No Internet Connection",
                     Snackbar.LENGTH_LONG
                 ) //Assume "rootLayout" as the root layout of every activity.

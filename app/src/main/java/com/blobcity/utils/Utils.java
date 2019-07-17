@@ -106,7 +106,7 @@ public class Utils {
         String [] list;String dummyPath = path;
         Log.d("listAssetFiles",path);
         if(path.endsWith("/")){
-            dummyPath = path.toString();
+            dummyPath = path;
             dummyPath = dummyPath.substring(0,dummyPath.length()-1);
             Log.d("dummyPath",dummyPath);
             Log.d("path",path);
@@ -145,7 +145,8 @@ public class Utils {
         //String fileName = "path/to/file.html";
         InputStream is=null;
         Document doc = null;
-        Log.d("jsoupWrapper",path+"!");
+        /*String path = pathWrong.substring(21);
+        Log.d("jsoupWrapper",path+"!"+pathWrong);*/
         try {
             //doc = Jsoup.parse(new File(path), "utf-8","http://google.com/");
             //is= context.getAssets().open(path);
@@ -163,6 +164,36 @@ public class Utils {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static String jsoup2210(String pathWrong,Context context){
+        //String fileName = "path/to/file.html";
+        InputStream is=null;
+        Document doc = null;
+        Log.d("jsoup2210",pathWrong+"!");
+        String path = pathWrong.substring(22);
+        Log.d("jsoupWrapper",path+"!"+pathWrong);
+        try {
+            //doc = Jsoup.parse(new File(path), "utf-8","http://google.com/");
+            //is= context.getAssets().open(path);
+//            is= context.getAssets().open("courses/Test Course/topic-one/basic-396/opt1.html");
+            is= context.getAssets().open(path);
+            doc = Jsoup.parse(is, "UTF-8", "http://example.com/");
+            Element divTag = doc.getElementById("wrapper");
+            divTag.attr("rel", "stylesheet").attr("type", "text/css").attr("href", "AnswerQA.css");
+            doc.getElementById("wrapper").attr("rel", "stylesheet").attr("type", "text/css").attr("href", "AnswerQA.css");
+            System.out.println(divTag.text());
+           /* if(divTag.text().equals("True"))
+            {
+                return true;
+            }*/
+            String htmldata = doc.html();
+            Log.d("html",htmldata+"!");
+            return htmldata;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String readFromFile(String path){

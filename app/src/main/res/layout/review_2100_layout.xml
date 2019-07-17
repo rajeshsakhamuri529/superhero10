@@ -3,8 +3,8 @@
         android:id="@+id/cardView"
         android:layout_gravity="center"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="@dimen/_250sdp"
-        android:layout_height="@dimen/_360sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/_6sdp"
         app:cardBackgroundColor="@color/dark_purple"
         xmlns:app="http://schemas.android.com/apk/res-auto">
