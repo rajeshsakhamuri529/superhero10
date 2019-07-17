@@ -246,42 +246,40 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun hintAlertDialog() {
-        if (!isLifeZero) {
-            // if (!isAnswerCorrect) {
-            dbIsHintUsed = true
-            /*addTrackDataInDb("hint")*/
-            val dialogBuilder = AlertDialog.Builder(this)
-            val inflater = this.layoutInflater
-            val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
-            dialogBuilder.setView(dialogView)
+        //if (!isLifeZero) {
+        // if (!isAnswerCorrect) {
+        dbIsHintUsed = true
+        /*addTrackDataInDb("hint")*/
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = this.layoutInflater
+        val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
+        dialogBuilder.setView(dialogView)
 
-            val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
-            val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
+        val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
+        val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
 
-            webview.settings.javaScriptEnabled = true
-            val hint = object : WebViewClient() {
+        webview.settings.javaScriptEnabled = true
+        val hint = object : WebViewClient() {
 
-                override fun onPageFinished(view: WebView?, url: String?) {
-                    Log.d("onPageFinished", url + "!")
-                    injectCSS(view, "Hint")
-                    // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
-                }
+            override fun onPageFinished(view: WebView?, url: String?) {
+                Log.d("onPageFinished", url + "!")
+                injectCSS(view, "Hint")
+                // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
             }
-            webview.webViewClient = hint
-            webview.loadUrl(hintPath)
-            webview.setBackgroundColor(0)
+        }
+        webview.webViewClient = hint
+        webview.loadUrl(hintPath)
+        webview.setBackgroundColor(0)
 
-            val alertDialog = dialogBuilder.create()
-            btn_gotIt.setOnClickListener {
-                alertDialog.dismiss()
-            }
+        val alertDialog = dialogBuilder.create()
+        btn_gotIt.setOnClickListener {
+            alertDialog.dismiss()
+        }
 
-            alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            alertDialog.show()
-            // }
-        } /*else {
-            Toast.makeText(this, "Game Over", Toast.LENGTH_LONG).show()
-        }*/
+        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show()
+        // }
+        ///}
     }
 
     private fun wrongAnswerAlertDialog() {
@@ -300,51 +298,89 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val tv_text = dialogView.findViewById(R.id.tv_msg2) as TextView
         val alertDialog = dialogBuilder.create()
 
-        Log.d("dialog",availableLife.toString()+"!")
-        if(totalLife == 3)
-        {
+        Log.d("dialog", availableLife.toString() + "!")
+        if (totalLife == 3) {
             iv_heart_3.visibility = View.VISIBLE
-        }else{
+        } else {
             iv_heart_3.visibility = View.INVISIBLE
         }
 
-        if(availableLife == 2)
-        {
-            if(totalLife == 3){
-                heartType(this,false,iv_heart_3)
+        if (availableLife == 2) {
+            if (totalLife == 3) {
+                heartType(this, false, iv_heart_3)
             }
-            heartType(this,true,iv_heart_2)
-            heartType(this,true,iv_heart_1)
+            heartType(this, true, iv_heart_2)
+            heartType(this, true, iv_heart_1)
 
-        }else if(availableLife == 1)
-        {
-            if(totalLife == 3){
-                heartType(this,false,iv_heart_3)
+        } else if (availableLife == 1) {
+            if (totalLife == 3) {
+                heartType(this, false, iv_heart_3)
             }
-           heartType(this,false,iv_heart_2)
-            heartType(this,true,iv_heart_1)
+            heartType(this, false, iv_heart_2)
+            heartType(this, true, iv_heart_1)
 
-        }else if(availableLife == 0)
-        {
+        } else if (availableLife == 0) {
             tv_text.text = "GAME OVER"
-            if(totalLife == 3){
-                heartType(this,false,iv_heart_3)
+            if (totalLife == 3) {
+                heartType(this, false, iv_heart_3)
             }
-            heartType(this,false,iv_heart_2)
-            heartType(this,false,iv_heart_1)
+            heartType(this, false, iv_heart_2)
+            heartType(this, false, iv_heart_1)
 
-        }else{
-            Log.d("available Life",availableLife.toString()+"dialog")
+
+        } else {
+            Log.d("available Life", availableLife.toString() + "dialog")
         }
 
         dialogBuilder.setOnDismissListener {
             Log.d("dialog", "dismiss")
             btn_hint.visibility = View.VISIBLE
 
-            if (availableLife == 0) {
+            /*if (availableLife == 0) {
                 btn_next.text = "DONE"
                 btn_next.visibility = View.VISIBLE
-            }
+                if (webView_option1 != null) {
+                    Log.d("web1","true")
+                    if (webView_option1!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option1!!)
+                        //webView_option1!!.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    } else {
+                        setWrongBackground(webView_option1!!,"")
+                        //webView_option1!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    }
+                }
+
+                if (webView_option2 != null) {
+                    Log.d("web2","true")
+                    if (webView_option2!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option2!!)
+                        //webView_option2!!.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    } else {
+                        setWrongBackground(webView_option2!!,"")
+                        //webView_option2!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    }
+                }
+
+                if (webView_option3 != null) {
+                    if (webView_option3!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option3!!)
+                        //webView_option3!!.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    } else {
+                        setWrongBackground(webView_option3!!,"")
+                        //webView_option3!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    }
+                }
+
+                if (webView_option4 != null) {
+                    if (webView_option4!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option4!!)
+                        //webView_option4!!.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    } else {
+                        setWrongBackground(webView_option4!!,"")
+                        //webView_option4!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    }
+                }
+            }*/
         }
 
         btn_ok.setOnClickListener {
@@ -353,6 +389,46 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             if (availableLife == 0) {
                 btn_next.text = "DONE"
                 btn_next.visibility = View.VISIBLE
+                setInactiveBackground2()
+                /*if (webView_option1 != null) {
+                    Log.d("web1", "true")
+                    if (webView_option1!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option1!!)
+                    } else {
+                        setWrongBackground(webView_option1!!, "")
+                    }
+                }
+
+                if (webView_option2 != null) {
+                    Log.d("web2", "true")
+                    if (webView_option2!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option2!!)
+                        //webView_option2!!.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    } else {
+                        setWrongBackground(webView_option2!!, "")
+                        //webView_option2!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    }
+                }
+
+                if (webView_option3 != null) {
+                    if (webView_option3!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option3!!)
+                        //webView_option3!!.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    } else {
+                        setWrongBackground(webView_option3!!, "")
+                        //webView_option3!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    }
+                }
+
+                if (webView_option4 != null) {
+                    if (webView_option4!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option4!!)
+                        //webView_option4!!.setBackgroundResource(R.drawable.option_correct_curved_border)
+                    } else {
+                        setWrongBackground(webView_option4!!, "")
+                        //webView_option4!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    }
+                }*/
             }
             alertDialog.dismiss()
         }
@@ -437,13 +513,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun createPath() {
         unAnsweredList = ArrayList<Int>()
-        Log.d("createPath",unAnsweredList!!.size.toString()+"!")
+        Log.d("createPath", unAnsweredList!!.size.toString() + "!")
         unAnsweredList!!.clear()
         unAnsweredList!!.add(3)
         unAnsweredList!!.add(2)
         unAnsweredList!!.add(1)
         unAnsweredList!!.add(0)
-        Log.d("createPath",unAnsweredList!!.size.toString()+"!")
+        Log.d("createPath", unAnsweredList!!.size.toString() + "!")
         position++
         btn_hint!!.visibility = View.INVISIBLE
         quizTimer!!.scheduleAtFixedRate(object : TimerTask() {
@@ -536,7 +612,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         listOfOptions = ArrayList()
         Log.e("testPath", path)
         var questionPath = ""
-        Log.d("list", "!" + listAssetFiles(path, applicationContext))
+        //Log.d("list", "!" + listAssetFiles(path, applicationContext))
         for (filename in listAssetFiles(path, applicationContext)!!) {
             if (filename.contains("opt")) {
                 if (!filename.contains("opt5")) {
@@ -668,9 +744,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (type != 2210) {
             webView_question!!.settings.javaScriptEnabled = true
             webView_question!!.webViewClient = qa
-        }
 
+        } /*else {
+            var html = Utils.jsoup2210(questionPath, applicationContext)
+            //webView_question!!.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
+            //webView_question!!.loadData(html, "text/html", "UTF-8");
+        }*/
         webView_question!!.loadUrl(questionPath)
+
 
     }
 
@@ -746,6 +827,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option2!!.loadUrl(opt2Path)
         webView_option3!!.loadUrl(opt3Path)
         webView_option4!!.loadUrl(opt4Path)
+        // Log.d("url1",webView_option1!!.url+"!")
 
 
     }
@@ -755,9 +837,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             var cssType: String? = ""
             if (type.equals("AnswerQA")) {
                 cssType = "iPhone/AnswerQA.css"
-            } else if (type.equals("QA")){
+            } else if (type.equals("QA")) {
                 cssType = "iPhone/QA.css"
-            } else{
+            } else {
                 cssType = "iPhone/Hint.css"
             }
             Log.d("cssType", cssType + "!")
@@ -1003,27 +1085,63 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun setInactiveBackground(){
-        for(i in unAnsweredList!!)
-        {
-            if(i == 0)
-            {
+    private fun setInactiveBackground() {
+        for (i in unAnsweredList!!) {
+            if (i == 0) {
                 webView_option1!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
-            }else if(i == 1)
-            {
+            } else if (i == 1) {
                 webView_option2!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
-            }else if(i == 2)
-            {
-                if(webView_option3 != null)
-                {
+            } else if (i == 2) {
+                if (webView_option3 != null) {
                     webView_option3!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
                 }
 
-            }else if(i == 3)
-            {
-                if(webView_option4 != null)
-                {
+            } else if (i == 3) {
+                if (webView_option4 != null) {
                     webView_option4!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                }
+            }
+        }
+    }
+
+    private fun setInactiveBackground2() {
+        for (i in unAnsweredList!!) {
+            if (i == 0) {
+
+                Log.d("web1inactive", "true")
+                if (webView_option1!!.url.contains("opt1", false)) {
+                    setCorrectBackground(webView_option1!!)
+                } else {
+                    setWrongBackground(webView_option1!!, "")
+                }
+
+            } else if (i == 1) {
+                Log.d("web2inactive", "true")
+                if (webView_option2!!.url.contains("opt1", false)) {
+                    setCorrectBackground(webView_option2!!)
+                } else {
+                    setWrongBackground(webView_option2!!, "")
+                }
+            } else if (i == 2) {
+                Log.d("web3inactive", "true")
+                if (webView_option3 != null) {
+                    Log.d("web3", "true")
+                    if (webView_option3!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option3!!)
+                    } else {
+                        setWrongBackground(webView_option3!!, "")
+                    }
+                }
+
+            } else if (i == 3) {
+                Log.d("web4inactive", "true")
+                if (webView_option4 != null) {
+                    Log.d("web4", "true")
+                    if (webView_option4!!.url.contains("opt1", false)) {
+                        setCorrectBackground(webView_option4!!)
+                    } else {
+                        setWrongBackground(webView_option4!!, "")
+                    }
                 }
             }
         }
@@ -1051,7 +1169,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             override fun run() {
                 isHandlerExecuted = true
                 webView.setBackgroundResource(R.drawable.inactive_answer_overlay)
-                wrongAnswerAlertDialog()
+                if (path!!.length != 0) {
+                    wrongAnswerAlertDialog()
+                }
+
             }
 
         }, 1500)
