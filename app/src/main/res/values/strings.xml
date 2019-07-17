@@ -29,4 +29,6 @@
     <string name="terms_amp_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="notifications_admin_channel_name">adminChannelName</string>
     <string name="notifications_admin_channel_description">adminChannelDescription</string>
+    <string name="t_amp_c_privacy"><![CDATA[T&C / Privacy]]></string>
+    <string name="write_to_us">Write to us</string>
 </resources>
