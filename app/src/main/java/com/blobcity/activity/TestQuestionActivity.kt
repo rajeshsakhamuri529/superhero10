@@ -44,8 +44,10 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 import android.util.Base64
+import android.webkit.WebResourceRequest
 import android.widget.ImageView
 import java.lang.Exception
+import java.net.URLDecoder
 
 
 class TestQuestionActivity : BaseActivity(), View.OnClickListener {
@@ -753,14 +755,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 Log.d("onPageFinished", url + "!")
                 injectCSS(view, "QA")
                 //view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+                //Log.d("question",view.)
             }
 
-            /*  override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                  Log.d("loadurl@question",questionPath+"!"+url)
+             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                  val html = URLDecoder.decode(url, "UTF-8").toString()
+                  Log.d("loadurl@question","!"+url+"!"+html+"!")
                   //view?.loadUrl(questionPath)
-                  view!!.loadUrl(url)
+                  //view!!.loadUrl(url)
                   return false
-              }*/
+              }
 
         }
         handler.postDelayed(object : Runnable {
@@ -771,18 +775,20 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }, 500)
 
 
-        if (type != 2210) {
+       if (type != 2210) {
             webView_question!!.settings.javaScriptEnabled = true
             webView_question!!.webViewClient = qa
-
-        } /*else {
-            var html = Utils.jsoup2210(questionPath, applicationContext)
+        }
+        /*else {
+            var html = Utils.jsoup(questionPath, applicationContext)
+            Log.d("html",html+"!")
+            //webView_question!!.loadDataWithBaseURL("file:///android_asset/courses/Test Course/topic-one/intermediate-400/", html, "text/html", "utf-8", null)
+            webView_question!!.loadDataWithBaseURL("file:///android_asset/", html, "text/html", "utf-8", questionPath)
             //webView_question!!.loadDataWithBaseURL(null, html, "text/html", "UTF-8", null);
             //webView_question!!.loadData(html, "text/html", "UTF-8");
         }*/
+
         webView_question!!.loadUrl(questionPath)
-
-
     }
 
     private fun webViewGone() {
@@ -904,9 +910,12 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             //cssType = "iPhone/AnswerQA.css"
             var inputStream = getAssets().open(cssType);
             val buffer = ByteArray(inputStream.available())
+            Log.d("inputStream",inputStream.toString())
+            Log.d("buffer",buffer.toString())
             inputStream.read(buffer)
             inputStream.close()
             val encoded = Base64.encodeToString(buffer, Base64.NO_WRAP);
+            Log.d("encoded",encoded+"!")
             webview!!.loadUrl(
                 "javascript:(function() {" +
                         "var parent = document.getElementsByTagName('head').item(0);" +
@@ -914,7 +923,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         "style.type = 'text/css';" +
                         // Tell the browser to BASE64-decode the string into your script !!!
                         "style.innerHTML = window.atob('" + encoded + "');" +
-                        "parent.appendChild(style)" +
+                        "parent.appendChild(style);" +
+                        "console.log(style.innerHTML);"+
                         "})()"
             );
         } catch (e: Exception) {

@@ -4,8 +4,14 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.support.v7.app.AlertDialog
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
@@ -86,6 +92,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         btn_quiz3.setOnClickListener(this)
         //tvBack.setOnClickListener(this)
         llBack.setOnClickListener(this)
+        Log.d("position",position.toString()+"!")
     }
 
     private fun loadDataFromDb() {
@@ -223,11 +230,13 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_quiz3 ->{
 
                 if (!isBasicCompleted){
-                    Toast.makeText(this, "Please Complete Quiz1.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "Please Complete Quiz1.", Toast.LENGTH_SHORT).show()
+                    lastTopicDialog()
                     return
                 }
                 if (!isIntermediateCompleted){
-                    Toast.makeText(this, "Please Complete Quiz2.", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(this, "Please Complete Quiz2.", Toast.LENGTH_SHORT).show()
+                    lastTopicDialog()
                     return
                 }
                 if (isAdvancedCompleted){
@@ -236,6 +245,30 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                 callIntent(jsonStringAdvanced!!, "advanced", complete)
             }
         }
+    }
+
+    private fun lastTopicDialog() {
+        val dialogBuilder = AlertDialog.Builder(this, R.style.mytheme)
+        val inflater = LayoutInflater.from(this)
+        val dialogView = inflater.inflate(R.layout.last_topic_dialog_layout, null)
+        dialogBuilder.setView(dialogView)
+        dialogBuilder.setCancelable(false)
+        val tv_ok = dialogView.findViewById(R.id._last_topic_btn_ok) as Button
+        val tv_msg1 = dialogView.findViewById(R.id._last_topic_tv_msg1) as TextView
+        val tv_msg2 = dialogView.findViewById(R.id._last_topic_tv_msg2) as TextView
+
+        tv_msg1.text = "Complete Quiz I and Quiz II"
+        tv_msg2.text = "successfully to unlock Astra Quiz"
+        val alertDialog = dialogBuilder.create()
+        //val tv_return = dialogView.findViewById(R.id.tv_return) as TextView
+        tv_ok.setOnClickListener {
+
+            alertDialog.dismiss()
+        }
+
+        //alertDialog.getWindow().setBackgroundDrawable(draw);
+        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show()
     }
 
     private fun callIntent(path: String, level: String, complete: String){

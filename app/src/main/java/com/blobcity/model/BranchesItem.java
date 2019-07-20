@@ -92,14 +92,16 @@ public class BranchesItem implements Serializable {
 	}
 
 	@Override
- 	public String toString(){
-		return
-			"BranchesItem{" +
-			"cd = '" + cd + '\'' +
-			",__v = '" + V + '\'' +
-			",topic = '" + topic + '\'' +
-			",_id = '" + id + '\'' +
-			",ud = '" + ud + '\'' +
-			"}";
-		}
+	public String toString() {
+		return "BranchesItem{" +
+				"cd='" + cd + '\'' +
+				", V=" + V +
+				", topic=" + topic +
+				", id='" + id + '\'' +
+				", ud='" + ud + '\'' +
+				", basic=" + basic +
+				", intermediate=" + intermediate +
+				", advance=" + advance +
+				'}';
+	}
 }

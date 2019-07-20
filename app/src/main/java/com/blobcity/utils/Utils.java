@@ -17,6 +17,7 @@ import com.blobcity.R;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.w3c.dom.Text;
 
 import javax.crypto.Cipher;
@@ -182,6 +183,48 @@ public class Utils {
             Element divTag = doc.getElementById("wrapper");
             divTag.attr("rel", "stylesheet").attr("type", "text/css").attr("href", "AnswerQA.css");
             doc.getElementById("wrapper").attr("rel", "stylesheet").attr("type", "text/css").attr("href", "AnswerQA.css");
+            System.out.println(divTag.text());
+           /* if(divTag.text().equals("True"))
+            {
+                return true;
+            }*/
+            String htmldata = doc.html();
+            Log.d("html",htmldata+"!");
+            return htmldata;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    public static String jsoup(String pathWrong,Context context){
+        InputStream is=null;
+        Document doc = null;
+        Log.d("jsoup",pathWrong+"!");
+        String path = pathWrong.substring(22);
+        Log.d("jsoup2",path+"!"+pathWrong);
+        try {
+            //doc = Jsoup.parse(new File(path), "utf-8","http://google.com/");
+            //is= context.getAssets().open(path);
+//            is= context.getAssets().open("courses/Test Course/topic-one/basic-396/opt1.html");
+            is= context.getAssets().open(path);
+            doc = Jsoup.parse(is, "UTF-8", "http://example.com/");
+            Element divTag = doc.getElementById("wrapper");
+
+            Elements tables = doc.getElementsByTag("head"); //important part
+            Log.d("tables",tables.toString()+"!");
+            /*StringBuilder sb = new StringBuilder();
+            sb.append("<HTML><HEAD><LINK href=\"styles.css\" type=\"text/css\" rel=\"stylesheet\"/></HEAD><body>");
+            sb.append(tables.toString());
+            sb.append("</body></HTML>");
+            Log.d("sb",sb.toString()+"!");*/
+
+            divTag.attr("rel", "stylesheet").attr("type", "text/css").attr("href", "AnswerQA.css");
+            //doc.getElementById("wrapper").attr("rel", "stylesheet").attr("type", "text/css").attr("href", "AnswerQA.css");
+
+            doc.head().append("<link rel=\"stylesheet\" href=\"../../../../AnswerQA.css\" type=\"text/css\" media=\"all\" />");
+            String head = doc.getElementsByTag("head").toString();
+            Log.d("head",head+"!");
             System.out.println(divTag.text());
            /* if(divTag.text().equals("True"))
             {

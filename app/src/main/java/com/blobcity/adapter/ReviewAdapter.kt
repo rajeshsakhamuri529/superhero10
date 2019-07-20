@@ -38,7 +38,7 @@ class ReviewAdapter(
         when (type) {
             type2100 -> {
                 view = LayoutInflater.from(context)
-                    .inflate(com.blobcity.R.layout.review_2100_layout, p0, false)
+                    .inflate(R.layout.review_2100_layout, p0, false)
                 viewHolder = Layout2100ViewHolder(view)
                 return viewHolder
             }
@@ -59,7 +59,7 @@ class ReviewAdapter(
 
             type2201 -> {
                 view = LayoutInflater.from(context)
-                    .inflate(com.blobcity.R.layout.review_2201_layout, p0, false)
+                    .inflate(R.layout.review_2201_layout, p0, false)
                 viewHolder = Layout2201ViewHolder(view)
                 return viewHolder
             }
@@ -171,7 +171,7 @@ class ReviewAdapter(
                 )
                 loadDataWebview(
                     webView_question, webView_option1,
-                    webView_option2, webView_option3, webView_option4, 4100
+                    webView_option2, webView_option3, webView_option4, 4100, position
                 )
             }
 
@@ -205,7 +205,7 @@ class ReviewAdapter(
                 )
                 loadDataWebview(
                     webView_question, webView_option1,
-                    webView_option2, webView_option3, webView_option4, 2210
+                    webView_option2, webView_option3, webView_option4, 2210, position
                 )
             }
 
@@ -239,7 +239,7 @@ class ReviewAdapter(
                 )
                 loadDataWebview(
                     webView_question, webView_option1,
-                    webView_option2, webView_option3, webView_option4, 2201
+                    webView_option2, webView_option3, webView_option4, 2201, position
                 )
             }
         }
@@ -251,7 +251,8 @@ class ReviewAdapter(
         webView_option2: WebView,
         webView_option3: WebView,
         webView_option4: WebView,
-        type: Long
+        type: Long,
+        position: Int
     ) {
 
 
@@ -273,11 +274,42 @@ class ReviewAdapter(
                 //view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
             }
         }
+        val webviewopacity = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                Log.d("onPageFinished", url + "!")
+                injectCSS(view, "OpacityAnswerReview")
+                //view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#000000}</style>';")
+            }
+        }
         if (type != 2201L) {
-            webView_option2!!.webViewClient = webview
-            webView_option3!!.webViewClient = webview
-            webView_option4!!.webViewClient = webview
-            webView_option1!!.webViewClient = webview
+
+
+            for (item in reviewModelList.get(position).optionsWithAnswerList!!) {
+                Log.d("item4options", item.toString() + "!")
+                if (0 == item.option) {
+                    webView_option1!!.webViewClient = webview
+                    webView_option2!!.webViewClient = webviewopacity
+                    webView_option3!!.webViewClient = webviewopacity
+                    webView_option4!!.webViewClient = webviewopacity
+                } else if (1 == item.option) {
+                    webView_option2!!.webViewClient = webview
+                    webView_option1!!.webViewClient = webviewopacity
+                    webView_option3!!.webViewClient = webviewopacity
+                    webView_option4!!.webViewClient = webviewopacity
+
+                } else if (2 == item.option) {
+                    webView_option3!!.webViewClient = webview
+                    webView_option2!!.webViewClient = webviewopacity
+                    webView_option1!!.webViewClient = webviewopacity
+                    webView_option4!!.webViewClient = webviewopacity
+                } else if (3 == item.option) {
+                    webView_option4!!.webViewClient = webview
+                    webView_option2!!.webViewClient = webviewopacity
+                    webView_option3!!.webViewClient = webviewopacity
+                    webView_option1!!.webViewClient = webviewopacity
+                }
+            }
         }
 
         val qa = object : WebViewClient() {
@@ -318,7 +350,12 @@ class ReviewAdapter(
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 Log.d("onPageFinished", url + "!")
-                injectCSS(view, "AnswerReview")
+                if(url!!.contains("opt1",false))
+                {
+                    injectCSS(view, "AnswerReview")
+                }else{
+                    injectCSS(view, "OpacityAnswerReview")
+                }
                 //view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
             }
         }
@@ -351,12 +388,12 @@ class ReviewAdapter(
         var cardView: CardView? = null
 
         init {
-            webView_question = itemView.findViewById(com.blobcity.R.id.webView_question)
-            webView_option1 = itemView.findViewById(com.blobcity.R.id.webView_option1)
-            webView_option2 = itemView.findViewById(com.blobcity.R.id.webView_option2)
-            webView_option3 = itemView.findViewById(com.blobcity.R.id.webView_option3)
-            webView_option4 = itemView.findViewById(com.blobcity.R.id.webView_option4)
-            cardView = itemView.findViewById(com.blobcity.R.id.cardView)
+            webView_question = itemView.findViewById(R.id.webView_question)
+            webView_option1 = itemView.findViewById(R.id.webView_option1)
+            webView_option2 = itemView.findViewById(R.id.webView_option2)
+            webView_option3 = itemView.findViewById(R.id.webView_option3)
+            webView_option4 = itemView.findViewById(R.id.webView_option4)
+            cardView = itemView.findViewById(R.id.cardView)
         }
 
     }
@@ -386,12 +423,12 @@ class ReviewAdapter(
         var cardView: CardView? = null
 
         init {
-            webView_question = itemView.findViewById(com.blobcity.R.id.webView_question)
-            webView_option1 = itemView.findViewById(com.blobcity.R.id.webView_option1)
-            webView_option2 = itemView.findViewById(com.blobcity.R.id.webView_option2)
-            webView_option3 = itemView.findViewById(com.blobcity.R.id.webView_option3)
-            webView_option4 = itemView.findViewById(com.blobcity.R.id.webView_option4)
-            cardView = itemView.findViewById(com.blobcity.R.id.cardView)
+            webView_question = itemView.findViewById(R.id.webView_question)
+            webView_option1 = itemView.findViewById(R.id.webView_option1)
+            webView_option2 = itemView.findViewById(R.id.webView_option2)
+            webView_option3 = itemView.findViewById(R.id.webView_option3)
+            webView_option4 = itemView.findViewById(R.id.webView_option4)
+            cardView = itemView.findViewById(R.id.cardView)
         }
     }
 
@@ -404,12 +441,12 @@ class ReviewAdapter(
         var cardView: CardView? = null
 
         init {
-            webView_question = itemView.findViewById(com.blobcity.R.id.webView_question)
-            webView_option1 = itemView.findViewById(com.blobcity.R.id.webView_option1)
-            webView_option2 = itemView.findViewById(com.blobcity.R.id.webView_option2)
-            webView_option3 = itemView.findViewById(com.blobcity.R.id.webView_option3)
-            webView_option4 = itemView.findViewById(com.blobcity.R.id.webView_option4)
-            cardView = itemView.findViewById(com.blobcity.R.id.cardView)
+            webView_question = itemView.findViewById(R.id.webView_question)
+            webView_option1 = itemView.findViewById(R.id.webView_option1)
+            webView_option2 = itemView.findViewById(R.id.webView_option2)
+            webView_option3 = itemView.findViewById(R.id.webView_option3)
+            webView_option4 = itemView.findViewById(R.id.webView_option4)
+            cardView = itemView.findViewById(R.id.cardView)
         }
     }
 
@@ -422,10 +459,10 @@ class ReviewAdapter(
 
         webView_question.setBackgroundColor(0)
 
-        webView_option1.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
-        webView_option2.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
-        webView_option3.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
-        webView_option4.setBackgroundResource(com.blobcity.R.drawable.option_curved_border)
+        webView_option1.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option2.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option3.setBackgroundResource(R.drawable.option_curved_border)
+        webView_option4.setBackgroundResource(R.drawable.option_curved_border)
 
         webView_option1.setBackgroundColor(0x00000000)
         webView_option2.setBackgroundColor(0x00000000)
@@ -601,6 +638,8 @@ class ReviewAdapter(
                 cssType = "iPhone/AnswerReview.css"
             } else if(type.equals("QAReview")){
                 cssType = "iPhone/QAReview.css"
+            } else if(type.equals("OpacityAnswerReview")){
+                cssType = "iPhone/OpacityAnswerReview.css"
             } else {
                 cssType = "iPhone/Hint.css"
             }

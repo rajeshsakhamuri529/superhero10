@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_gravity="center"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="@dimen/_250sdp"
-        android:layout_height="@dimen/_360sdp"
-        android:layout_margin="@dimen/_6sdp"
-        app:cardBackgroundColor="@color/dark_purple"
-        android:orientation="vertical"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+android:id="@+id/cardView"
+android:layout_gravity="center"
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="@dimen/_250sdp"
+android:layout_height="@dimen/_360sdp"
+android:layout_margin="@dimen/_6sdp"
+app:cardBackgroundColor="@color/dark_purple"
+android:orientation="vertical"
+xmlns:app="http://schemas.android.com/apk/res-auto">
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -17,17 +17,17 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_below="@id/view"
-        android:layout_marginTop="@dimen/_20sdp"
-        android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginRight="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
         android:layout_gravity="center_horizontal"
         tools:context=".activity.TestQuestionActivity">
 
     <WebView
             android:id="@+id/webView_question"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:scrollbars="none"
             android:layout_alignParentTop="true"
             android:layout_above="@id/ll_options"
@@ -49,22 +49,20 @@
             <WebView
                     android:id="@+id/webView_option1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_120sdp"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:scrollbars="none"
-                    android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_gravity="center_horizontal"/>
 
             <WebView
                     android:id="@+id/webView_option2"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_120sdp"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:scrollbars="none"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_gravity="center_horizontal"/>
         </LinearLayout>
 
@@ -78,22 +76,19 @@
             <WebView
                     android:id="@+id/webView_option3"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_120sdp"
                     android:layout_weight="1"
                     android:scrollbars="none"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_gravity="center_horizontal"/>
 
             <WebView
                     android:id="@+id/webView_option4"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/_120sdp"
                     android:layout_weight="1"
                     android:clickable="true"
                     android:scrollbars="none"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_gravity="center_horizontal"/>
         </LinearLayout>
     </LinearLayout>

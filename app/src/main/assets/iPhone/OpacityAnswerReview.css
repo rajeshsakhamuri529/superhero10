@@ -3,14 +3,11 @@ body {
     height: 100%;
     overflow: hidden;
 }
-@font-face {
-   font-family: 'MathJaxMainRegular';
-   src: url('file:///android_asset/fonts/MathJax_Main-Regular.otf');
-}
 body {
     background-color: transparent;
-    font-size: 140%;
+    font-size: 112%;
     font-family: 'MathJaxMainRegular';
+    opacity: 0.4;
     display: flex;
     display: -webkit-flex;
     display: flex;
@@ -20,7 +17,7 @@ body {
     justify-content: center;
     margin: 0px;
     text-align: center;
-    line-height: 28px;
+    line-height: 22px;
 }
 @keyframes colorChange {
     0% {color: black;}
@@ -41,4 +38,7 @@ body {
     to { opacity: 0;}
 }
 
-
+@font-face {
+   font-family: 'MathJaxMainRegular';
+   src: url('file:///android_asset/fonts/MathJax_Main-Regular.otf');
+}
