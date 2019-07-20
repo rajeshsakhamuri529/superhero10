@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@drawable/bg"
+        tools:context=".activity.StartQuizActivity">
+
+    <ImageView
+            android:id="@+id/iv_cancel"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/dismiss"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/quicksand_medium"
+            android:textColor="@color/white"
+            android:id="@+id/tv_chapter_title"
+            android:textSize="@dimen/_17ssp"
+            android:text="Topic one"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_15sdp"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/iv_animation_ready"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:lottie_fileName="readyAnimation.json"
+            app:lottie_loop="false"
+            app:lottie_autoPlay="true"/>
+
+    <TextView
+            android:id="@+id/tv_quiz_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Quiz"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_below="@id/tv_chapter_title"
+            android:layout_centerHorizontal="true"
+            android:textSize="@dimen/_16ssp"
+            android:textAllCaps="true"
+            android:textColor="@color/pink_quiz_text"
+            android:fontFamily="@font/quicksand_bold"/>
+
+    <ImageView
+            android:id="@+id/iv_lock_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/purple_card"
+            android:layout_below="@id/tv_quiz_level"
+            android:layout_above="@id/tv_quiz_count"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible"/>
+
+    <TextView
+            android:id="@+id/tv_quiz_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_questions"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:textSize="@dimen/_17ssp"
+            android:text="8"
+            android:textColor="@color/white"
+            android:fontFamily="@font/quicksand_bold"/>
+
+    <TextView
+            android:id="@+id/tv_questions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:textSize="@dimen/_12ssp"
+            android:text="questions"
+            android:textAllCaps="true"
+            android:textColor="@color/white_80"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_above="@id/ll_lives"/>
+
+    <LinearLayout
+            android:id="@+id/ll_lives"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_above="@id/tv_lives"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:weightSum="3">
+
+        <ImageView
+                android:id="@+id/iv_life1"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:src="@drawable/active_heart_copy"/>
+
+        <ImageView
+                android:id="@+id/iv_life2"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:src="@drawable/active_heart_copy"
+                android:layout_marginLeft="@dimen/_10sdp"/>
+
+        <ImageView
+                android:id="@+id/iv_life3"
+                android:layout_width="@dimen/_16sdp"
+                android:layout_height="@dimen/_16sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:src="@drawable/active_heart_copy"/>
+
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/tv_lives"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lives"
+            android:textAllCaps="true"
+            android:textColor="@color/white_80"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_above="@id/btn_start"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:textSize="@dimen/_14ssp"/>
+
+    <Button
+            android:id="@+id/btn_start"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:text="start"
+            android:textColor="@color/black_text"
+            android:background="@drawable/btn_yellow_curved_border"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="@dimen/_13ssp"/>
+
+</RelativeLayout>

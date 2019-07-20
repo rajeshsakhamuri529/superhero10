@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/nav_chapter"
+            android:icon="@drawable/chapter_icon"
+            android:title="Chapters" />
+
+    <item
+            android:id="@+id/nav_astra_cards"
+            android:icon="@drawable/astra_card_icon"
+            android:title="Astra Cards" />
+
+    <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/settings_icon"
+            android:title="Settings" />
+
+</menu>

@@ -3,4 +3,26 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="light_purple">#C980DD</color>
+    <color name="line_colour">#A47DAF</color>
+    <color name="white">#ffffff</color>
+    <color name="dark_purple">#330D51</color>
+    <color name="grey">#999999</color>
+    <color name="black">#000000</color>
+    <color name="purple_hint_btn_bg">#C249CE</color>
+    <color name="purple_opt_bg">#6A0887</color>
+    <color name="pink_hint_bg">#8231A7</color>
+    <color name="pink_hint_button_bg">#C249CE</color>
+    <color name="green_right_answer">#7BC73C</color>
+    <color name="red_wrong_answer">#EE220C</color>
+    <color name="yellow">#FFDA5B</color>
+    <color name="black_text">#333333</color>
+    <color name="pink_quiz_text">#ff71e7</color>
+    <color name="white_80">#80ffffff</color>
+    <color name="purple">#7A2ADB</color>
+    <color name="pink_inactive">#9b45ba</color>
+    <color name="orange_level_failed">#F15A24</color>
+    <color name="purple_save">#5F19CE</color>
+    <color name="inactive_answer_overlay">#4C0062</color>
+    <color name="quiz_background">#3A0052</color>
 </resources>

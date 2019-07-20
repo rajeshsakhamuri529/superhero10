@@ -1,0 +1,16 @@
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
+body {
+    background-color: transparent;
+    font-size: 112%;
+    font-family: 'MathJaxMainRegular';
+    line-height: 22px;
+}
+
+@font-face {
+   font-family: 'MathJaxMainRegular';
+   src: url('file:///android_asset/fonts/MathJax_Main-Regular.otf');
+}
