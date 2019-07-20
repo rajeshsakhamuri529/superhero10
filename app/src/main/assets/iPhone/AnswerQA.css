@@ -21,6 +21,8 @@ body {
     margin: 0px;
     text-align: center;
     line-height: 28px;
+    color: #424242;
+
 }
 @keyframes colorChange {
     0% {color: black;}

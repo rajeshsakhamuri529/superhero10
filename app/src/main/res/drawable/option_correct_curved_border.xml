@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/quiz_background"/>
+    <solid android:color="@color/white"/>
     <corners android:radius="@dimen/_3sdp"/>
-    <stroke android:color="@color/green_right_answer"
+    <stroke android:color="@color/answer_bg_correct_border"
             android:width="3dp"/>
 </shape>
