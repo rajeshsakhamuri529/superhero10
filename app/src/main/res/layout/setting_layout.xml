@@ -40,40 +40,11 @@
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"/>
 
-            <TextView
-                    android:id="@+id/tv_class"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/welcome_guest"
-                    android:textSize="@dimen/_18ssp"
-                    android:textColor="@color/white"
-                    android:textStyle="normal"
-                    android:layout_below="@id/view"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="20dp"
-                    android:fontFamily="@font/montserrat_regular"/>
-
-            <Button
-                    android:id="@+id/tv_class_board"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAllCaps="false"
-                    android:text="@string/login_register_settings"
-                    android:textSize="@dimen/_14ssp"
-                    android:textStyle="normal"
-                    android:layout_below="@id/tv_class"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="20dp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:textColor="@color/white"
-                    android:background="@color/purple_hint_btn_bg"
-                    android:fontFamily="@font/montserrat_regular"/>
-
             <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_class_board"
-                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/view"
+                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp">
 
