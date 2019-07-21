@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.view.View
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
@@ -19,6 +20,7 @@ import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.RecyclerViewPositionHelper
 import com.blobcity.utils.Utils.getListOfFilesFromFolder
 import com.blobcity.utils.Utils.listAssetFiles
+import kotlinx.android.synthetic.main.activity_quiz_summary.*
 import kotlinx.android.synthetic.main.activity_review.*
 
 
@@ -31,6 +33,7 @@ class ReviewActivity : BaseActivity() {
     var hintPath = ""
     var context: Context ? = null
     var adapter : ReviewAdapter? = null
+    var topicLevel: String? = ""
 
     override var layoutID: Int = R.layout.activity_review
 
@@ -48,6 +51,16 @@ class ReviewActivity : BaseActivity() {
         /*res = "$item of $listSize"
         //  res = String.valueOf(firstVisibleItem);
         tv_count.text = res*/
+        topicLevel = intent.getStringExtra(TOPIC_LEVEL)
+        if (topicLevel!!.contains("basic")) {
+            tv_quiz_review_text.text = "Quiz I"
+        }
+        if (topicLevel!!.contains("intermediate")) {
+            tv_quiz_review_text.text = "Quiz II"
+        }
+        if (topicLevel!!.contains("advanced")) {
+            tv_quiz_review_text.text = "Super Quiz"
+        }
         review_tv_count1.text = "$item"
         review_tv_count2.text = "$listSize"
 

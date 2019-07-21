@@ -45,14 +45,14 @@ class ReviewAdapter(
 
             type4100 -> {
                 view = LayoutInflater.from(context)
-                    .inflate(com.blobcity.R.layout.review_4100_layout, p0, false)
+                    .inflate(R.layout.review_4100_layout, p0, false)
                 viewHolder = Layout4100ViewHolder(view)
                 return viewHolder
             }
 
             type2210 -> {
                 view = LayoutInflater.from(context)
-                    .inflate(com.blobcity.R.layout.review_2210_layout, p0, false)
+                    .inflate(R.layout.review_2210_layout, p0, false)
                 viewHolder = Layout2210ViewHolder(view)
                 return viewHolder
             }

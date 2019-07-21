@@ -1326,7 +1326,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                  }
              })*/
             Glide.with(this@TestQuestionActivity)
-                .load(com.blobcity.R.drawable.inactive_heart)
+                .load(R.drawable.inactive_heart)
                 .into(iv_life2)
 
         }
@@ -1349,7 +1349,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 }
             })*/
             Glide.with(this@TestQuestionActivity)
-                .load(com.blobcity.R.drawable.inactive_heart)
+                .load(R.drawable.inactive_heart)
                 .into(iv_life1)
             isLifeZero = true
             /*btn_next.text = "DONE"
@@ -1487,7 +1487,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 .into(view)
         }else{
             Glide.with(context)
-                .load(R.drawable.inactive_heart)
+                .load(R.drawable.inactive_heart
+                )
                 .into(view)
         }
 

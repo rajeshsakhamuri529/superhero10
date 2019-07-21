@@ -51,10 +51,12 @@
     <color name="pagination_text">#919191</color>
     <color name="hint_background">#DBD6FF</color>
     <color name="hint_text">#9437FF</color>
+    <color name="hint_title_text">#A9A9A9</color>
     <color name="answer_bg">#DBD6FF</color>
     <color name="answer_text_inactive">#A9A9A9</color>
     <color name="answer_bg_inactive">#EBEBEB</color>
     <color name="answer_bg_incorrect_transition">#EA554B</color>
     <color name="answer_bg_correct_transition">#D4FB79</color>
     <color name="answer_bg_correct_border">#8EFA00</color>
+    <color name="super_quiz_inactive">#DBD6FF</color>
 </resources>

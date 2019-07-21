@@ -95,19 +95,24 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         if (topicLevel!!.contains("advanced")) {
             iv_card_back.visibility = View.VISIBLE
             iv_card_front.visibility = View.VISIBLE
-            tv_quiz_level.text = "Astra Quiz"
+            tv_quiz_level.text = "Super Quiz"
         }
         val size = reviewModelList!!.size
-        val answer_status = "$size / $totalQuestion"
-        tv_answer_status.text = answer_status
+        //val answer_status = "$size / $totalQuestion"
+        tv_answer_status1.text = "$size"
+
+        tv_answer_status2.text = "$totalQuestion"
+
         if (level_status!!) {
+            tv_answer_status1.setTextColor(resources.getColor(R.color.level_completed))
             iv_animation_summary.setAnimation("winAnimation.json")
             tv_completion_status.text = "Level Completed"
-            tv_completion_status.setTextColor(resources.getColor(R.color.green_right_answer))
+            tv_completion_status.setTextColor(resources.getColor(R.color.level_completed))
         } else {
+            tv_answer_status1.setTextColor(resources.getColor(R.color.level_failed))
             iv_animation_summary.setAnimation("loseAnimation.json")
             tv_completion_status.text = "Level Failed"
-            tv_completion_status.setTextColor(resources.getColor(R.color.orange_level_failed))
+            tv_completion_status.setTextColor(resources.getColor(R.color.level_failed))
         }
 
         btn_review.setOnClickListener(this)
@@ -148,6 +153,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     intent.putExtra(COURSE_NAME, courseName)
                     intent.putExtra(FOLDER_PATH, paths)
                     intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+                    //intent.putExtra(TOPIC_LEVEL,topicLevel)
                     finish()
                     startActivity(intent)
                 }
@@ -161,6 +167,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_review -> {
                 intent = Intent(this, ReviewActivity::class.java)
                 intent.putExtra(ConstantPath.REVIEW_MODEL, reviewModelList)
+                intent.putExtra(TOPIC_LEVEL,topicLevel)
                 startActivity(intent)
             }
 
@@ -180,7 +187,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     topicLevel = "intermediate"
                     dPath = loadJSONFromAsset("$folderPath/intermediate.json")
                 }
-                if (topicLevel!!.equals("Astra Quiz")) {
+                if (topicLevel!!.equals("Super Quiz")) {
                     topicLevel = "advanced"
                     dPath = loadJSONFromAsset("$folderPath/advanced.json")
                 }
@@ -362,7 +369,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                             }
 
                             if (isBasicCompleted && isIntermediateCompleted && !isAdvancedCompleted) {
-                                btn_next_quiz.text = "Astra Quiz"
+                                btn_next_quiz.text = "Super Quiz"
                                 return
                             }
 

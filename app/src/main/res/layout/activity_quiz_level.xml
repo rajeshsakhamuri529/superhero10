@@ -15,8 +15,7 @@
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginLeft="@dimen/_15sdp"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:background="@color/back_button_background">
+            android:orientation="horizontal">
 
         <ImageView
                 android:layout_width="@dimen/_20sdp"
@@ -30,7 +29,7 @@
                 android:id="@+id/tvBack"
                 android:textSize="@dimen/_13ssp"
                 android:textColor="@color/back_button_text"
-                android:fontFamily="@font/montserrat_bold"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="Back"
                 android:layout_marginLeft="@dimen/_10sdp"/>
     </LinearLayout>
@@ -98,7 +97,7 @@
                 android:id="@+id/iv_level1"
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                android:src="@drawable/inactive_button"
+                android:src="@drawable/progress_icon_grey"
                 app:layout_constraintStart_toEndOf="@id/btn_quiz1"
                 android:layout_marginStart="@dimen/_12sdp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -132,7 +131,7 @@
                 android:id="@+id/iv_level2"
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                android:src="@drawable/inactive_button"
+                android:src="@drawable/progress_icon_grey"
                 app:layout_constraintStart_toEndOf="@id/btn_quiz2"
                 android:layout_marginStart="@dimen/_12sdp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -151,7 +150,7 @@
                 android:id="@+id/btn_quiz3"
                 android:layout_width="@dimen/_110sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/quiz_level_bg"
+                android:background="@drawable/super_quiz_inactive"
                 android:textColor="@color/white"
                 android:text="@string/str_astra_quiz"
                 android:fontFamily="@font/quicksand_medium"
@@ -166,7 +165,7 @@
                 android:id="@+id/iv_level3"
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                android:src="@drawable/inactive_button"
+                android:src="@drawable/progress_icon_grey"
                 app:layout_constraintStart_toEndOf="@id/btn_quiz3"
                 android:layout_marginStart="@dimen/_12sdp"
                 app:layout_constraintTop_toTopOf="parent"

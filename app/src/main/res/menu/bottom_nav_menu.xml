@@ -6,10 +6,10 @@
             android:icon="@drawable/chapter_icon"
             android:title="Chapters" />
 
-    <item
+    <!--<item
             android:id="@+id/nav_astra_cards"
             android:icon="@drawable/astra_card_icon"
-            android:title="Astra Cards" />
+            android:title="Astra Cards" />-->
 
     <item
             android:id="@+id/nav_settings"
