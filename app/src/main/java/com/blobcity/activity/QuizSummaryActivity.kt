@@ -148,7 +148,12 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     intent = Intent(this, QuizLevelActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    intent.putExtra(TOPIC_POSITION, (position!! + 1))
+                    if(position==9)
+                    {
+                        intent.putExtra(TOPIC_POSITION, 0)
+                    }else{
+                        intent.putExtra(TOPIC_POSITION, (position!! + 1))
+                    }
                     intent.putExtra(COURSE_ID, courseId)
                     intent.putExtra(COURSE_NAME, courseName)
                     intent.putExtra(FOLDER_PATH, paths)
@@ -438,7 +443,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                 })
 
             branchesItemList!!.forEachIndexed { index, branchesItem ->
-                if (branchesItem.advance == 1) {
+
+                if (branchesItem.advance == 1 || index ==9) {
                     isLastTopicAvailable = true
                 } else {
                     isLastTopicAvailable = false
@@ -446,6 +452,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     //btn_next_level.isEnabled = false
                     return
                 }
+
             }
         }
     }
