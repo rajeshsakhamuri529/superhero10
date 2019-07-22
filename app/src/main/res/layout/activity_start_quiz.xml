@@ -27,14 +27,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_15sdp"/>
 
-    <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/iv_animation_ready"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:lottie_fileName="readyAnimation.json"
-            app:lottie_loop="false"
-            app:lottie_autoPlay="true"/>
-
     <TextView
             android:id="@+id/tv_quiz_level"
             android:layout_width="wrap_content"

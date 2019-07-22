@@ -105,12 +105,10 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
         if (level_status!!) {
             tv_answer_status1.setTextColor(resources.getColor(R.color.level_completed))
-            iv_animation_summary.setAnimation("winAnimation.json")
             tv_completion_status.text = "Level Completed"
             tv_completion_status.setTextColor(resources.getColor(R.color.level_completed))
         } else {
             tv_answer_status1.setTextColor(resources.getColor(R.color.level_failed))
-            iv_animation_summary.setAnimation("loseAnimation.json")
             tv_completion_status.text = "Level Failed"
             tv_completion_status.setTextColor(resources.getColor(R.color.level_failed))
         }
