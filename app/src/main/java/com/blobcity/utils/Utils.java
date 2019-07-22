@@ -40,7 +40,7 @@ import java.util.zip.ZipInputStream;
 public class Utils {
 
     public static void transition(Context context, final WebView webView, Boolean isColourGreen){
-        int colorFrom = context.getResources().getColor(R.color.purple_opt_bg);
+        int colorFrom = context.getResources().getColor(R.color.answer_bg);
         int colorTo = context.getResources().getColor(R.color.red_wrong_answer);
         if(isColourGreen)
         {
@@ -65,8 +65,8 @@ public class Utils {
     }
 
     public static void transitionBack(Context context, final WebView webView){
-        int colorFrom = context.getResources().getColor(R.color.purple_opt_bg);
-        int colorTo = context.getResources().getColor(R.color.purple_opt_bg);
+        int colorFrom = context.getResources().getColor(R.color.answer_bg);
+        int colorTo = context.getResources().getColor(R.color.answer_bg);
 
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
         final GradientDrawable background = (GradientDrawable) webView.getBackground();

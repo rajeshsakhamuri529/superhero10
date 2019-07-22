@@ -68,6 +68,8 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         {
             val title = "0$index $topicName"
             tv_title.text = title
+            Log.d("quizLevel",title+"!")
+
         }else{
             val title = "$index $topicName"
             tv_title.text = title
@@ -101,13 +103,13 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                 override fun onChanged(t: List<TopicStatusEntity>?) {
                     topicStatusModelList = ArrayList()
                     Glide.with(this@QuizLevelActivity)
-                        .load(R.drawable.inactive_button)
+                        .load(R.drawable.progress_icon_grey)
                         .into(iv_level1)
                     Glide.with(this@QuizLevelActivity)
-                        .load(R.drawable.inactive_button)
+                        .load(R.drawable.progress_icon_grey)
                         .into(iv_level2)
                     Glide.with(this@QuizLevelActivity)
-                        .load(R.drawable.inactive_button)
+                        .load(R.drawable.progress_icon_grey)
                         .into(iv_level3)
                     topicStatusModelList!!.addAll(t!!)
                     if (topicStatusModelList!!.size > 0) {
@@ -138,7 +140,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                             }
                         }
                         if (isBasicCompleted && isIntermediateCompleted){
-                            btn_quiz3.setBackgroundResource(R.drawable.button_bg)
+                            btn_quiz3.setBackgroundResource(R.drawable.quiz_level_bg)
                             btn_quiz3.setTextColor(resources.getColor(R.color.white))
                         }
                     }else {
@@ -146,8 +148,8 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                         isIntermediateCompleted = false
                         isAdvancedCompleted = false
                         if (!isBasicCompleted && !isIntermediateCompleted) {
-                            btn_quiz3.setBackgroundResource(R.drawable.quiz_button_inactive)
-                            btn_quiz3.setTextColor(resources.getColor(R.color.pink_inactive))
+                            btn_quiz3.setBackgroundResource(R.drawable.super_quiz_inactive)
+                            btn_quiz3.setTextColor(resources.getColor(R.color.white))
                         }
                     }
                 }
@@ -258,7 +260,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         val tv_msg2 = dialogView.findViewById(R.id._last_topic_tv_msg2) as TextView
 
         tv_msg1.text = "Complete Quiz I and Quiz II"
-        tv_msg2.text = "successfully to unlock Astra Quiz"
+        tv_msg2.text = "successfully to unlock Super Quiz"
         val alertDialog = dialogBuilder.create()
         //val tv_return = dialogView.findViewById(R.id.tv_return) as TextView
         tv_ok.setOnClickListener {

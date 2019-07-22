@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg"
+        android:background="@color/white"
         tools:context=".activity.QuizLevelActivity">
 
     <LinearLayout
@@ -21,15 +21,15 @@
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:id="@+id/ivBack"
-                android:src="@drawable/back_button"/>
+                android:src="@drawable/back_button_arrow"/>
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvBack"
                 android:textSize="@dimen/_13ssp"
-                android:textColor="@color/white"
-                android:fontFamily="@font/montserrat_bold"
+                android:textColor="@color/back_button_text"
+                android:fontFamily="@font/quicksand_bold"
                 android:text="Back"
                 android:layout_marginLeft="@dimen/_10sdp"/>
     </LinearLayout>
@@ -46,7 +46,7 @@
         <View
                 android:layout_width="match_parent"
                 android:layout_height="0.8dp"
-                android:background="@color/line_colour"/>
+                android:background="@color/topic_lines"/>
 
         <TextView
                 android:layout_width="wrap_content"
@@ -56,7 +56,7 @@
                 android:layout_marginTop="@dimen/_15sdp"
                 android:layout_marginLeft="@dimen/_15sdp"
                 android:layout_marginRight="@dimen/_15sdp"
-                android:textColor="@color/white"
+                android:textColor="@color/topic_text"
                 android:text="Topic one"
                 android:textSize="@dimen/_14sdp"
                 android:layout_gravity="center_horizontal"
@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.8dp"
                 android:layout_marginTop="@dimen/_15sdp"
-                android:background="@color/line_colour"/>
+                android:background="@color/topic_lines"/>
 
     </LinearLayout>
 
@@ -82,7 +82,7 @@
                 android:id="@+id/btn_quiz1"
                 android:layout_width="@dimen/_110sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/quiz_level_bg"
                 android:textColor="@color/white"
                 android:text="@string/str_Quiz_1"
                 android:fontFamily="@font/quicksand_medium"
@@ -97,7 +97,7 @@
                 android:id="@+id/iv_level1"
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                android:src="@drawable/inactive_button"
+                android:src="@drawable/progress_icon_grey"
                 app:layout_constraintStart_toEndOf="@id/btn_quiz1"
                 android:layout_marginStart="@dimen/_12sdp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -116,7 +116,7 @@
                 android:id="@+id/btn_quiz2"
                 android:layout_width="@dimen/_110sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/quiz_level_bg"
                 android:textColor="@color/white"
                 android:text="@string/str_Quiz_2"
                 android:fontFamily="@font/quicksand_medium"
@@ -131,7 +131,7 @@
                 android:id="@+id/iv_level2"
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                android:src="@drawable/inactive_button"
+                android:src="@drawable/progress_icon_grey"
                 app:layout_constraintStart_toEndOf="@id/btn_quiz2"
                 android:layout_marginStart="@dimen/_12sdp"
                 app:layout_constraintTop_toTopOf="parent"
@@ -150,8 +150,8 @@
                 android:id="@+id/btn_quiz3"
                 android:layout_width="@dimen/_110sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:background="@drawable/quiz_button_inactive"
-                android:textColor="@color/pink_inactive"
+                android:background="@drawable/super_quiz_inactive"
+                android:textColor="@color/white"
                 android:text="@string/str_astra_quiz"
                 android:fontFamily="@font/quicksand_medium"
                 android:textAllCaps="false"
@@ -165,7 +165,7 @@
                 android:id="@+id/iv_level3"
                 android:layout_width="@dimen/_11sdp"
                 android:layout_height="@dimen/_11sdp"
-                android:src="@drawable/inactive_button"
+                android:src="@drawable/progress_icon_grey"
                 app:layout_constraintStart_toEndOf="@id/btn_quiz3"
                 android:layout_marginStart="@dimen/_12sdp"
                 app:layout_constraintTop_toTopOf="parent"

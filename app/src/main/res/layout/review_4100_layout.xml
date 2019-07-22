@@ -6,7 +6,7 @@
         android:layout_width="@dimen/_250sdp"
         android:layout_height="@dimen/_360sdp"
         android:layout_margin="@dimen/_6sdp"
-        app:cardBackgroundColor="@color/dark_purple"
+        app:cardBackgroundColor="@color/white"
         android:orientation="vertical"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
@@ -41,7 +41,7 @@
             <WebView
                     android:id="@+id/webView_option1"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
+                    android:layout_height="@dimen/_42sdp"
                     android:clickable="true"
                     android:scrollbars="none"
                     android:layout_gravity="center"/>
@@ -49,7 +49,7 @@
             <WebView
                     android:id="@+id/webView_option2"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
+                    android:layout_height="@dimen/_42sdp"
                     android:clickable="true"
                     android:scrollbars="none"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -59,7 +59,7 @@
             <WebView
                     android:id="@+id/webView_option3"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
+                    android:layout_height="@dimen/_42sdp"
                     android:clickable="true"
                     android:scrollbars="none"
                     android:layout_marginTop="@dimen/_5sdp"
@@ -68,7 +68,7 @@
             <WebView
                     android:id="@+id/webView_option4"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_45sdp"
+                    android:layout_height="@dimen/_42sdp"
                     android:clickable="true"
                     android:scrollbars="none"
                     android:layout_marginTop="@dimen/_5sdp"

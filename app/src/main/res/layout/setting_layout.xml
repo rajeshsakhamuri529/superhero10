@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg">
+        android:background="#E8E5FF">
 
     <android.support.v4.widget.NestedScrollView
             android:id="@+id/nsv"
@@ -22,7 +22,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/str_settings"
                     android:textSize="@dimen/_14ssp"
-                    android:textColor="@color/white"
+                    android:textColor="#424242"
                     android:textStyle="bold"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
@@ -36,7 +36,7 @@
                     android:id="@+id/view"
                     android:layout_below="@id/tv_chapter"
                     android:layout_marginTop="@dimen/_13sdp"
-                    android:background="@color/light_purple"
+                    android:background="#9437FF"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"/>
 
@@ -52,7 +52,7 @@
                         android:id="@+id/cl_sounds"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/dark_purple"
+                        android:background="@color/white"
                         android:padding="4dp">
 
                     <TextView
@@ -60,6 +60,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/sounds"
                             android:textStyle="bold"
+                            android:textColor="#9437FF"
                             android:layout_marginTop="8dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +90,7 @@
                         android:id="@+id/cl_notification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/dark_purple"
+                        android:background="@color/white"
                         android:layout_below="@id/cl_sounds"
                         android:padding="4dp">
 
@@ -98,6 +99,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/notifications"
                             android:textStyle="bold"
+                            android:textColor="#9437FF"
                             android:layout_marginTop="8dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +129,7 @@
                         android:id="@+id/cl_write_to_us"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/dark_purple"
+                        android:background="@color/white"
                         android:layout_below="@id/cl_notification"
                         android:layout_marginTop="20dp"
                         android:padding="4dp">
@@ -137,6 +139,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/write_to_us"
                             android:textStyle="bold"
+                            android:textColor="#9437FF"
                             android:layout_marginTop="8dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -162,7 +165,7 @@
                         android:id="@+id/cl_terms_and_conditions"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/dark_purple"
+                        android:background="@color/white"
                         android:layout_below="@id/cl_write_to_us"
                         android:layout_marginTop="20dp"
                         android:padding="4dp">
@@ -172,6 +175,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/t_amp_c_privacy"
                             android:textStyle="bold"
+                            android:textColor="#9437FF"
                             android:layout_marginTop="8dp"
                             app:layout_constraintTop_toTopOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

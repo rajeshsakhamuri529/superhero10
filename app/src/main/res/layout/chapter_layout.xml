@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:text="@string/str_chapter"
             android:textSize="@dimen/_15ssp"
-            android:textColor="@color/white"
+            android:textColor="@color/chapters_text"
             android:textStyle="bold"
             android:fontFamily="@font/montserrat_bold"
             android:layout_centerHorizontal="true"
@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0.8dp"
                     android:id="@+id/view"
-                    android:background="@color/grey"
+                    android:background="@color/header_line"
                     android:layout_marginLeft="@dimen/_20sdp"
                     android:layout_marginRight="@dimen/_20sdp"/>
 
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/str_classXcbse"
                     android:textSize="@dimen/_23ssp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/course_text"
                     android:layout_below="@id/view"
                     android:fontFamily="@font/montserrat_light"
                     android:layout_centerHorizontal="true"
@@ -57,7 +57,7 @@
                     android:layout_below="@id/tv_class"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/_4sdp"
-                    android:textColor="@color/light_purple"
+                    android:textColor="@color/syllabus_text"
                     android:fontFamily="@font/montserrat_light"/>
 
             <!--<RelativeLayout

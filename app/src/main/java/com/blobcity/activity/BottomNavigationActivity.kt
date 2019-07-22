@@ -14,10 +14,10 @@ class BottomNavigationActivity : AppCompatActivity() {
                 message.setText(R.string.title_home)
                 return@OnNavigationItemSelectedListener true
             }
-            R.id.nav_astra_cards -> {
+            /*R.id.nav_astra_cards -> {
                 message.setText(R.string.title_dashboard)
                 return@OnNavigationItemSelectedListener true
-            }
+            }*/
             R.id.nav_settings -> {
                 message.setText(R.string.title_notifications)
                 return@OnNavigationItemSelectedListener true

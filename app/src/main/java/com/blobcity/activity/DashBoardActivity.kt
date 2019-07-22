@@ -36,9 +36,9 @@ class DashBoardActivity : BaseActivity(),
                 fragment = ChapterFragment()
             }
 
-            R.id.nav_astra_cards -> {
+           /* R.id.nav_astra_cards -> {
                 fragment = AstraCardFragment()
-            }
+            }*/
 
             R.id.nav_settings -> {
                 fragment = SettingFragment()

@@ -6,7 +6,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="@dimen/_250sdp"
 android:layout_height="@dimen/_360sdp"
 android:layout_margin="@dimen/_6sdp"
-app:cardBackgroundColor="@color/dark_purple"
+app:cardBackgroundColor="@color/white"
 xmlns:app="http://schemas.android.com/apk/res-auto">
 
 <RelativeLayout

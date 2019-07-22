@@ -110,10 +110,15 @@ class ChaptersAdapter(val context: Context,
 
         if (position < branchesItemList.size - 1) {
             branchesItemList.forEachIndexed { index, branchesItem ->
-                if (branchesItem.advance == 1) {
-                    isLastTopicAvailable = true
-                } else {
-                    isLastTopicAvailable = false
+
+                if(index != 9) {
+                    if (branchesItem.advance == 1) {
+                        isLastTopicAvailable = true
+                    } else {
+                        isLastTopicAvailable = false
+                        return
+                    }
+                }else {
                     return
                 }
             }

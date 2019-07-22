@@ -95,19 +95,22 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         if (topicLevel!!.contains("advanced")) {
             iv_card_back.visibility = View.VISIBLE
             iv_card_front.visibility = View.VISIBLE
-            tv_quiz_level.text = "Astra Quiz"
+            tv_quiz_level.text = "Super Quiz"
         }
         val size = reviewModelList!!.size
-        val answer_status = "$size / $totalQuestion"
-        tv_answer_status.text = answer_status
+        //val answer_status = "$size / $totalQuestion"
+        tv_answer_status1.text = "$size"
+
+        tv_answer_status2.text = "$totalQuestion"
+
         if (level_status!!) {
-            iv_animation_summary.setAnimation("winAnimation.json")
+            tv_answer_status1.setTextColor(resources.getColor(R.color.level_completed))
             tv_completion_status.text = "Level Completed"
-            tv_completion_status.setTextColor(resources.getColor(R.color.green_right_answer))
+            tv_completion_status.setTextColor(resources.getColor(R.color.level_completed))
         } else {
-            iv_animation_summary.setAnimation("loseAnimation.json")
+            tv_answer_status1.setTextColor(resources.getColor(R.color.level_failed))
             tv_completion_status.text = "Level Failed"
-            tv_completion_status.setTextColor(resources.getColor(R.color.orange_level_failed))
+            tv_completion_status.setTextColor(resources.getColor(R.color.level_failed))
         }
 
         btn_review.setOnClickListener(this)
@@ -120,9 +123,15 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         readFileLocally()
 
         loadDataFromDb()
-        Log.d("summary1",position.toString()+"!"+isAdvancedCompleted.toString()+"!"+isLastTopicAvailable.toString())
+        Log.d(
+            "summary1",
+            position.toString() + "!" + isAdvancedCompleted.toString() + "!" + isLastTopicAvailable.toString()
+        )
         if (position == 8 && isAdvancedCompleted) {
-            Log.d("summary",position.toString()+"!"+isAdvancedCompleted.toString()+"!"+isLastTopicAvailable.toString())
+            Log.d(
+                "summary",
+                position.toString() + "!" + isAdvancedCompleted.toString() + "!" + isLastTopicAvailable.toString()
+            )
             if (!isLastTopicAvailable) {
                 btn_next_level.setBackgroundResource(R.drawable.quiz_button_inactive)
                 btn_next_level.isEnabled = false
@@ -137,17 +146,22 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         when (v!!.id) {
 
             R.id.btn_next_level -> {
-                if(position == 8 && !isLastTopicAvailable){
+                if (position == 8 && !isLastTopicAvailable) {
                     lastTopicDialog()
-                }else{
+                } else {
                     intent = Intent(this, QuizLevelActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    intent.putExtra(TOPIC_POSITION, (position!! + 1))
+                    if (position == 9) {
+                        intent.putExtra(TOPIC_POSITION, 0)
+                    } else {
+                        intent.putExtra(TOPIC_POSITION, (position!! + 1))
+                    }
                     intent.putExtra(COURSE_ID, courseId)
                     intent.putExtra(COURSE_NAME, courseName)
                     intent.putExtra(FOLDER_PATH, paths)
                     intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+                    //intent.putExtra(TOPIC_LEVEL,topicLevel)
                     finish()
                     startActivity(intent)
                 }
@@ -161,6 +175,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_review -> {
                 intent = Intent(this, ReviewActivity::class.java)
                 intent.putExtra(ConstantPath.REVIEW_MODEL, reviewModelList)
+                intent.putExtra(TOPIC_LEVEL, topicLevel)
                 startActivity(intent)
             }
 
@@ -180,7 +195,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     topicLevel = "intermediate"
                     dPath = loadJSONFromAsset("$folderPath/intermediate.json")
                 }
-                if (topicLevel!!.equals("Astra Quiz")) {
+                if (topicLevel!!.equals("Super Quiz")) {
                     topicLevel = "advanced"
                     dPath = loadJSONFromAsset("$folderPath/advanced.json")
                 }
@@ -261,7 +276,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                             for (topicStatusModels in topicStatusModelList!!) {
                                 val id = topicStatusModels.topicId
                                 val level = topicStatusModels.topicLevel
-
+                                Log.d("topicStatus", topicStatusModels.toString())
+                                Log.d("topicID", topicId + "!")
                                 if (id!!.contains(branchId!!)) {
                                     if (level!!.contains("basic")) {
                                         isBasicCompleted = true
@@ -269,7 +285,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                     if (level.contains("intermediate")) {
                                         isIntermediateCompleted = true
                                     }
-                                    if (level.contains("advance")) {
+                                    if (level.contains("advanced")) {
+                                        Log.d("true", "true")
                                         isAdvancedCompleted = true
                                         val pathStringList: ArrayList<String> = ArrayList()
                                         for (imagePath in listAssetFiles(loaclAstraCardPath, applicationContext)) {
@@ -362,7 +379,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                             }
 
                             if (isBasicCompleted && isIntermediateCompleted && !isAdvancedCompleted) {
-                                btn_next_quiz.text = "Astra Quiz"
+                                btn_next_quiz.text = "Super Quiz"
                                 return
                             }
 
@@ -390,7 +407,10 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun loadDatafromDb2() {
-        Log.d("loadDatafromDb2",position.toString()+"!"+isAdvancedCompleted.toString()+"!"+isLastTopicAvailable.toString())
+        Log.d(
+            "loadDatafromDb2",
+            position.toString() + "!" + isAdvancedCompleted.toString() + "!" + isLastTopicAvailable.toString()
+        )
         if (position == 8 && isAdvancedCompleted) {
             topicStatusVM!!.getAllTopicStatus(gradeTitle!!).observe(this,
                 object : Observer<List<TopicStatusEntity>> {
@@ -400,46 +420,69 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                         for (item in topicStatusModelList2!!) {
                             if (topicStatusModelList2 != null) {
                                 if (topicStatusModelList2!!.size > 0) {
+                                    Log.d("item", item.toString())
                                     for (branchItem in branchesItemList!!) {
+                                        Log.d("branch", branchItem.toString())
                                         val branchId = branchItem.id
-                                        branchItem.basic = 0
+                                        /*branchItem.basic = 0
                                         branchItem.intermediate = 0
-                                        branchItem.advance = 0
-                                        for (topicStatusModels in topicStatusModelList2!!) {
-                                            val id = topicStatusModels.topicId
-                                            val level = topicStatusModels.topicLevel
-
-                                            if (id!!.contains(branchId)) {
-                                                if (level!!.contains("basic")) {
-                                                    branchItem.basic = 1
-                                                }
-                                                if (level.contains("intermediate")) {
-                                                    branchItem.intermediate = 1
-                                                }
-                                                if (level.contains("advance")) {
-                                                    branchItem.advance = 1
-                                                }
+                                        branchItem.advance = 0*/
+                                        val id = item.topicId //26
+                                        val level = item.topicLevel //basic
+                                        if (id!!.contains(branchId)) {
+                                            if (level!!.contains("basic")) {
+                                                branchItem.basic = 1
                                             }
-
+                                            if (level.contains("intermediate")) {
+                                                branchItem.intermediate = 1
+                                            }
+                                            if (level.contains("advance")) {
+                                                branchItem.advance = 1
+                                            }
+                                            //Log.d("caught",branchItem.toString())
+                                            break
                                         }
+                                        /* for (topicStatusModels in topicStatusModelList2!!) {
+                                             val id = topicStatusModels.topicId
+                                             val level = topicStatusModels.topicLevel
+
+                                             if (id!!.contains(branchId)) {
+                                                 if (level!!.contains("basic")) {
+                                                     branchItem.basic = 1
+                                                 }
+                                                 if (level.contains("intermediate")) {
+                                                     branchItem.intermediate = 1
+                                                 }
+                                                 if (level.contains("advance")) {
+                                                     branchItem.advance = 1
+                                                 }
+                                             }
+
+                                         }*/
                                     }
                                 }
                             }
                         }
+
+                        branchesItemList!!.forEachIndexed { index, branchesItem ->
+
+                            Log.d("branchItems", index.toString() + " ! " + branchesItem.toString())
+                            if (branchesItem.advance == 1 || index == 9) {
+                                isLastTopicAvailable = true
+                            } else {
+                                isLastTopicAvailable = false
+                                btn_next_level.setBackgroundResource(R.drawable.quiz_button_inactive)
+                                //btn_next_level.isEnabled = false
+                                return
+                            }
+
+                        }
+
                     }
 
                 })
 
-            branchesItemList!!.forEachIndexed { index, branchesItem ->
-                if (branchesItem.advance == 1) {
-                    isLastTopicAvailable = true
-                } else {
-                    isLastTopicAvailable = false
-                    btn_next_level.setBackgroundResource(R.drawable.quiz_button_inactive)
-                    //btn_next_level.isEnabled = false
-                    return
-                }
-            }
+
         }
     }
 

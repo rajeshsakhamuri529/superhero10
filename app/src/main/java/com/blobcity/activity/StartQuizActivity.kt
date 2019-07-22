@@ -48,9 +48,9 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
         if (topicLevel.equals("advanced")){
             iv_lock_card.visibility = View.VISIBLE
-            level = "Astra Quiz"
+            level = "Super Quiz"
             if(complete.equals("Advanced_completed")){
-                Log.d("Astra Quiz","completed"+position)
+                Log.d("Super Quiz","completed"+position)
 
                 val pathStringList: ArrayList<String> = ArrayList()
                 for (imagePath in Utils.listAssetFiles(loaclAstraCardPath, applicationContext)){
@@ -116,7 +116,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
                     .into(iv_lock_card)
                 Log.e("position: ", position.toString())
             }else{
-                Log.d("Astra Quiz","not completed"+position)
+                Log.d("Super Quiz","not completed"+position)
             }
         }
 
