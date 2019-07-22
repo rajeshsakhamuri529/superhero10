@@ -94,4 +94,18 @@ public class TopicStatusEntity {
     public void setIsLevelComplete(int isLevelComplete) {
         this.isLevelComplete = isLevelComplete;
     }
+
+    @Override
+    public String toString() {
+        return "TopicStatusEntity{" +
+                "id=" + id +
+                ", uid='" + uid + '\'' +
+                ", courseId='" + courseId + '\'' +
+                ", topicId='" + topicId + '\'' +
+                ", topicLevel='" + topicLevel + '\'' +
+                ", isLevelComplete=" + isLevelComplete +
+                ", topicPosition=" + topicPosition +
+                ", gradeTitle='" + gradeTitle + '\'' +
+                '}';
+    }
 }

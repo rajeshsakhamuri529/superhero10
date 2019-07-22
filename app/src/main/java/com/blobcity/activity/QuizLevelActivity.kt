@@ -68,6 +68,8 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         {
             val title = "0$index $topicName"
             tv_title.text = title
+            Log.d("quizLevel",title+"!")
+
         }else{
             val title = "$index $topicName"
             tv_title.text = title
