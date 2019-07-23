@@ -26,13 +26,44 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         sharedPrefs = SharedPrefs()
         sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
-        cb_sounds_settings.isChecked = notification
+        cb_sounds_settings.isChecked = sound
+        if(sound){
+            sound_state_tv.text = "Sound On"
+        }
+        else{
+            sound_state_tv.text = "Sound Off"
+        }
         cb_sounds_settings.setOnClickListener {
             sound = !sound
             sharedPrefs?.setBooleanPrefVal(context!!, SOUNDS, sound)
             cb_sounds_settings.isChecked = sound
+            if(sound){
+                sound_state_tv.text = "Sound On"
+            }
+            else{
+                sound_state_tv.text = "Sound Off"
+            }
+        }
+
+        cb_notifications_settings.isChecked=notification
+        if(notification){
+            notification_state_tv.text = "Notifications On"
+        }
+        else{
+            notification_state_tv.text = "Notifications Off"
+        }
+        cb_notifications_settings.setOnClickListener{
+            notification=!notification
+            cb_notifications_settings.isChecked=notification
+            if(notification){
+                notification_state_tv.text = "Notifications On"
+            }
+            else{
+                notification_state_tv.text = "Notifications Off"
+            }
         }
 
         cl_terms_and_conditions.setOnClickListener(this)
