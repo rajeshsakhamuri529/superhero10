@@ -123,6 +123,7 @@
       <excludeFolder url="file://$MODULE_DIR$/../../app/build/intermediates/bundle_manifest" />
       <excludeFolder url="file://$MODULE_DIR$/../../app/build/intermediates/check_manifest_result" />
       <excludeFolder url="file://$MODULE_DIR$/../../app/build/intermediates/compatible_screen_manifest" />
+      <excludeFolder url="file://$MODULE_DIR$/../../app/build/intermediates/dex" />
       <excludeFolder url="file://$MODULE_DIR$/../../app/build/intermediates/duplicate_classes_check" />
       <excludeFolder url="file://$MODULE_DIR$/../../app/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/../../app/build/intermediates/incremental-runtime-classes" />

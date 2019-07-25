@@ -114,7 +114,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     .load(
                         Uri.parse(
                             WEBVIEW_PATH + localQuizSuccessCardsPath + "success-" + (rndImageNumber.nextInt(
-                                3
+                                4
                             ) + 1) + ".png"
                         )
                     )
@@ -139,7 +139,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     .load(
                         Uri.parse(
                             WEBVIEW_PATH + localQuizFailCardsPath + "fail-" + (rndImageNumber.nextInt(
-                                3
+                                4
                             ) + 1) + ".png"
                         )
                     )
