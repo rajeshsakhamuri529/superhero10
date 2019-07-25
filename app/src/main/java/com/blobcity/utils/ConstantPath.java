@@ -52,6 +52,12 @@ public class ConstantPath {
     public static String root = Environment.getExternalStorageDirectory().getAbsolutePath();
     //public static String localBlobcityPath = root+"/blobcity/courses/";
     public static String loaclAstraCardPath = localBlobcityPath+"AstraCards/";
+    public static String localQuizReadyCardsPath = "cards/quiz/ready/";
+    public static String localQuizFailCardsPath = "cards/quiz/fail/";
+    public static String localQuizSuccessCardsPath = "cards/quiz/success/";
+    public static String localSuperQuizReadyCardsPath = "cards/superquiz/ready/";
+    public static String localSuperQuizFailCardsPath = "cards/superquiz/fail/";
+    public static String localSuperQuizSuccessCardsPath = "cards/superquiz/success/";
     //public static String assetTestCoursePath = assetOutputPath +"Test Course/";
 
     public static String assetTopicOnePath = assetTestCoursePath+"topic-one/";

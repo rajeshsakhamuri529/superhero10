@@ -45,21 +45,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_quiz_level"
-            android:layout_above="@id/tv_answer_status"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp">
-
-        <ImageView
-                android:id="@+id/iv_card_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"/>
-    </FrameLayout>
-
-    <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_quiz_level"
             android:layout_above="@id/qs_cl"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp">
@@ -67,8 +52,7 @@
                 android:id="@+id/iv_card_front"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/purple_card"
-                android:visibility="invisible"/>
+                android:src="@drawable/purple_card"/>
     </FrameLayout>
 
     <android.support.constraint.ConstraintLayout

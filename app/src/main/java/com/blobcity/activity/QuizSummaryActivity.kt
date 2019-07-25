@@ -9,6 +9,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
 import android.support.v7.app.AlertDialog
@@ -33,6 +34,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_quiz_level.*
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
+import kotlinx.android.synthetic.main.activity_quiz_summary.tv_chapter_title
+import kotlinx.android.synthetic.main.activity_quiz_summary.tv_quiz_level
+import kotlinx.android.synthetic.main.activity_start_quiz.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
@@ -64,6 +70,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     var gradeTitle: String? = null
     private var branchesItemList: List<BranchesItem>? = null
     var isLastTopicAvailable = false
+    val rndImageNumber = Random()
 
 
     override var layoutID: Int = R.layout.activity_quiz_summary
@@ -93,8 +100,6 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
             tv_quiz_level.text = "Quiz II"
         }
         if (topicLevel!!.contains("advanced")) {
-            iv_card_back.visibility = View.VISIBLE
-            iv_card_front.visibility = View.VISIBLE
             tv_quiz_level.text = "Super Quiz"
         }
         val size = reviewModelList!!.size
@@ -104,10 +109,52 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         tv_answer_status2.text = "$totalQuestion"
 
         if (level_status!!) {
+            if (topicLevel!!.contains("basic") || topicLevel!!.contains("intermediate")) {
+                Glide.with(this@QuizSummaryActivity)
+                    .load(
+                        Uri.parse(
+                            WEBVIEW_PATH + localQuizSuccessCardsPath + "success-" + (rndImageNumber.nextInt(
+                                3
+                            ) + 1) + ".png"
+                        )
+                    )
+                    .into(iv_card_front)
+            } else {
+                Glide.with(this@QuizSummaryActivity)
+                    .load(
+                        Uri.parse(
+                            WEBVIEW_PATH + localSuperQuizSuccessCardsPath + "success-" + (rndImageNumber.nextInt(
+                                15
+                            ) + 1) + ".png"
+                        )
+                    )
+                    .into(iv_card_front)
+            }
             tv_answer_status1.setTextColor(resources.getColor(R.color.level_completed))
             tv_completion_status.text = "Level Completed"
             tv_completion_status.setTextColor(resources.getColor(R.color.level_completed))
         } else {
+            if (topicLevel!!.contains("basic") || topicLevel!!.contains("intermediate")) {
+                Glide.with(this@QuizSummaryActivity)
+                    .load(
+                        Uri.parse(
+                            WEBVIEW_PATH + localQuizFailCardsPath + "fail-" + (rndImageNumber.nextInt(
+                                3
+                            ) + 1) + ".png"
+                        )
+                    )
+                    .into(iv_card_front)
+            } else {
+                Glide.with(this@QuizSummaryActivity)
+                    .load(
+                        Uri.parse(
+                            WEBVIEW_PATH + localSuperQuizFailCardsPath + "fail-" + (rndImageNumber.nextInt(
+                                3
+                            ) + 1) + ".png"
+                        )
+                    )
+                    .into(iv_card_front)
+            }
             tv_answer_status1.setTextColor(resources.getColor(R.color.level_failed))
             tv_completion_status.text = "Level Failed"
             tv_completion_status.setTextColor(resources.getColor(R.color.level_failed))
@@ -288,13 +335,13 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                     if (level.contains("advanced")) {
                                         Log.d("true", "true")
                                         isAdvancedCompleted = true
-                                        val pathStringList: ArrayList<String> = ArrayList()
+                                        /*val pathStringList: ArrayList<String> = ArrayList()
                                         for (imagePath in listAssetFiles(loaclAstraCardPath, applicationContext)) {
                                             if (imagePath.contains("png")) {
                                                 pathStringList.add(imagePath)
                                             }
                                         }
-                                        /*Collections.sort(pathStringList)*/
+                                        *//*Collections.sort(pathStringList)*//*
                                         var imagepath = ""
                                         for (path in pathStringList) {
                                             if (position!! == 0) {
@@ -347,11 +394,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                                     imagepath = loaclAstraCardPath + path
                                                 }
                                             }
-                                        }
-                                        Glide.with(this@QuizSummaryActivity)
-                                            .load(Uri.parse(ConstantPath.WEBVIEW_PATH + imagepath))
-                                            .into(iv_card_back)
-                                        Log.e("position: ", position.toString())
+                                        }*/
+                                        /*Log.e("position: ", position.toString())
                                         if (topicLevel!!.contains("advanced")) {
                                             handler.postDelayed(object : Runnable {
                                                 override fun run() {
@@ -363,7 +407,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                                     mSetLeftIn!!.start()
                                                 }
                                             }, 1500)
-                                        }
+                                        }*/
                                     }
                                 }
                             }
@@ -490,7 +534,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         val distance = 7000
         val scale = resources.displayMetrics.density * distance
         iv_card_front!!.setCameraDistance(scale)
-        iv_card_back!!.setCameraDistance(scale)
+        //iv_card_back!!.setCameraDistance(scale)
     }
 
     @SuppressLint("ResourceType")

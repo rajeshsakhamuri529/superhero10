@@ -1,6 +1,7 @@
 package com.blobcity.activity
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -15,10 +16,13 @@ import kotlinx.android.synthetic.main.activity_quiz_summary.*
 import kotlinx.android.synthetic.main.activity_start_quiz.*
 import kotlinx.android.synthetic.main.activity_start_quiz.tv_chapter_title
 import kotlinx.android.synthetic.main.activity_start_quiz.tv_quiz_level
+import java.util.*
+import kotlin.collections.ArrayList
 
 class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
     override var layoutID: Int = R.layout.activity_start_quiz
+    var quizCard: String? = null
 
     override fun initView() {
         val path = intent.getStringExtra(DYNAMIC_PATH)
@@ -33,6 +37,8 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         val folderName: String = intent.getStringExtra(FOLDER_NAME)
         val gradeTitle: String = intent.getStringExtra(TITLE_TOPIC)
         var level = ""
+        val rndImageNumber = Random()
+
 
         Log.e("path", path)
         val gsonFile = Gson()
@@ -40,15 +46,24 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
         if (topicLevel.equals("basic")){
             level = "Quiz I"
+            Glide.with(this@StartQuizActivity)
+                .load(Uri.parse(ConstantPath.WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .into(iv_lock_card)
         }
 
         if (topicLevel.equals("intermediate")){
             level = "Quiz II"
+            Glide.with(this@StartQuizActivity)
+                .load(Uri.parse(ConstantPath.WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .into(iv_lock_card)
         }
 
         if (topicLevel.equals("advanced")){
-            iv_lock_card.visibility = View.VISIBLE
             level = "Super Quiz"
+            Glide.with(this@StartQuizActivity)
+                .load(Uri.parse(ConstantPath.WEBVIEW_PATH+ localSuperQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .into(iv_lock_card)
+            /*Log.e("position: ", position.toString())
             if(complete.equals("Advanced_completed")){
                 Log.d("Super Quiz","completed"+position)
 
@@ -111,14 +126,16 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
                         }
                     }
                 }
-                Glide.with(this@StartQuizActivity)
-                    .load(Uri.parse(ConstantPath.WEBVIEW_PATH+imagepath))
-                    .into(iv_lock_card)
-                Log.e("position: ", position.toString())
+
             }else{
                 Log.d("Super Quiz","not completed"+position)
-            }
+            }*/
         }
+
+        /*val readyCardIs=assets.open(quizCard!!)
+        val readyCardDrawable=Drawable.createFromStream(readyCardIs, null)
+        iv_lock_card.setImageDrawable(readyCardDrawable)
+        readyCardIs.close()*/
 
         tv_quiz_count.text = questionResponseModel.questionCount.toString()
         tv_chapter_title.text = topicName
