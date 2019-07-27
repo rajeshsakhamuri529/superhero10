@@ -41,6 +41,7 @@ public class ConstantPath {
     public static final String SETTINGS = "SETTINGS";
     public static final String GRADE_SHARED_PREFS = "grade_shared_prefs";
     public static final String TITLE_TOPIC = "title_topic";
+    public static final String CARD_NO = "card_number";
 
 
     /*assetPath*/
@@ -48,7 +49,7 @@ public class ConstantPath {
     public static String localBlobcityPath = "courses/";
     public static String assetTestCoursePath = localBlobcityPath +"Test Course/";
 
-    public static String assetOutputPath = "output/";
+    public static String assetOutputPath = "courses/";
     public static String root = Environment.getExternalStorageDirectory().getAbsolutePath();
     //public static String localBlobcityPath = root+"/blobcity/courses/";
     public static String loaclAstraCardPath = localBlobcityPath+"AstraCards/";

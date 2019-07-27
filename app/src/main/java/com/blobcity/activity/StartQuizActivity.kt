@@ -36,6 +36,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         val folderName: String = intent.getStringExtra(FOLDER_NAME)
         val gradeTitle: String = intent.getStringExtra(TITLE_TOPIC)
         var level = ""
+        var readyCardNumber = 0
         val rndImageNumber = Random()
 
 
@@ -45,22 +46,25 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
         if (topicLevel.equals("basic")){
             level = "Quiz I"
+            readyCardNumber=(rndImageNumber.nextInt(3)+1)
             Glide.with(this@StartQuizActivity)
-                .load(Uri.parse(WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .load(Uri.parse(WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+readyCardNumber+".png"))
                 .into(iv_lock_card)
         }
 
         if (topicLevel.equals("intermediate")){
             level = "Quiz II"
+            readyCardNumber=(rndImageNumber.nextInt(3)+1)
             Glide.with(this@StartQuizActivity)
-                .load(Uri.parse(WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .load(Uri.parse(WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+readyCardNumber+".png"))
                 .into(iv_lock_card)
         }
 
         if (topicLevel.equals("advanced")){
             level = "Super Quiz"
+            readyCardNumber=(rndImageNumber.nextInt(3)+1)
             Glide.with(this@StartQuizActivity)
-                .load(Uri.parse(WEBVIEW_PATH+ localSuperQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .load(Uri.parse(WEBVIEW_PATH+ localSuperQuizReadyCardsPath+"ready-"+readyCardNumber+".png"))
                 .into(iv_lock_card)
         }
 
@@ -85,6 +89,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
             intent.putExtra(FOLDER_PATH, paths)
             intent.putExtra(FOLDER_NAME, folderName)
             intent.putExtra(TITLE_TOPIC, gradeTitle)
+            intent.putExtra(CARD_NO, readyCardNumber)
             startActivity(intent)
             finish()
         }

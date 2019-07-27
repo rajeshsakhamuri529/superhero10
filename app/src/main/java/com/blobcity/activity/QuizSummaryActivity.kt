@@ -71,6 +71,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     private var branchesItemList: List<BranchesItem>? = null
     var isLastTopicAvailable = false
     val rndImageNumber = Random()
+    var readyCardNumber = 0
 
 
     override var layoutID: Int = R.layout.activity_quiz_summary
@@ -90,17 +91,28 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         folderName = intent.getStringExtra(FOLDER_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         level_status = intent.getBooleanExtra(IS_LEVEL_COMPLETE, false)
+        readyCardNumber = intent.getIntExtra(CARD_NO, -1)
         tv_chapter_title.text = topicName
         changeCameraDistance()
         loadAnimations()
+
         if (topicLevel!!.contains("basic")) {
             tv_quiz_level.text = "Quiz I"
+            Glide.with(this@QuizSummaryActivity)
+                .load(Uri.parse(WEBVIEW_PATH + localQuizReadyCardsPath + "ready-" + readyCardNumber + ".png"))
+                .into(iv_card_front)
         }
         if (topicLevel!!.contains("intermediate")) {
             tv_quiz_level.text = "Quiz II"
+            Glide.with(this@QuizSummaryActivity)
+                .load(Uri.parse(WEBVIEW_PATH + localQuizReadyCardsPath + "ready-" + readyCardNumber + ".png"))
+                .into(iv_card_front)
         }
         if (topicLevel!!.contains("advanced")) {
             tv_quiz_level.text = "Super Quiz"
+            Glide.with(this@QuizSummaryActivity)
+                .load(Uri.parse(WEBVIEW_PATH + localSuperQuizReadyCardsPath + "ready-" + readyCardNumber + ".png"))
+                .into(iv_card_front)
         }
         val size = reviewModelList!!.size
         //val answer_status = "$size / $totalQuestion"
@@ -118,7 +130,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                             ) + 1) + ".png"
                         )
                     )
-                    .into(iv_card_front)
+                    .into(iv_card_back)
+                flipAnimation()
             } else {
                 Glide.with(this@QuizSummaryActivity)
                     .load(
@@ -128,7 +141,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                             ) + 1) + ".png"
                         )
                     )
-                    .into(iv_card_front)
+                    .into(iv_card_back)
+                flipAnimation()
             }
             tv_answer_status1.setTextColor(resources.getColor(R.color.level_completed))
             tv_completion_status.text = "Level Completed"
@@ -143,7 +157,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                             ) + 1) + ".png"
                         )
                     )
-                    .into(iv_card_front)
+                    .into(iv_card_back)
+                flipAnimation()
             } else {
                 Glide.with(this@QuizSummaryActivity)
                     .load(
@@ -153,7 +168,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                             ) + 1) + ".png"
                         )
                     )
-                    .into(iv_card_front)
+                    .into(iv_card_back)
+                flipAnimation()
             }
             tv_answer_status1.setTextColor(resources.getColor(R.color.level_failed))
             tv_completion_status.text = "Level Failed"
@@ -490,5 +506,17 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         //alertDialog.getWindow().setBackgroundDrawable(draw);
         alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
+    }
+
+    private fun flipAnimation() {
+        handler.postDelayed({
+            iv_card_front.startAnimation(zoomOutAnimation)
+            mSetRightOut!!.setTarget(iv_card_front)
+            iv_card_back.visibility=View.VISIBLE
+            mSetLeftIn!!.setTarget(iv_card_back)
+            iv_card_back.startAnimation(zoominAnimation)
+            mSetRightOut!!.start()
+            mSetLeftIn!!.start()
+        }, 1500)
     }
 }

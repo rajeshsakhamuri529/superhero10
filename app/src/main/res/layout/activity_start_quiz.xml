@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_17sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
             android:textSize="@dimen/_12ssp"
             android:text="questions"
             android:textAllCaps="true"
@@ -97,13 +97,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:src="@drawable/active_heart_copy"
-                android:layout_marginLeft="@dimen/_10sdp"/>
+                android:layout_marginStart="@dimen/_8sdp"/>
 
         <ImageView
                 android:id="@+id/iv_life3"
                 android:layout_width="@dimen/_16sdp"
                 android:layout_height="@dimen/_16sdp"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_8sdp"
                 android:src="@drawable/active_heart_copy"/>
 
     </LinearLayout>
@@ -126,6 +126,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
             android:text="start"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:textColor="@color/white"
             android:background="@drawable/action"
             android:layout_marginLeft="@dimen/_15sdp"
@@ -133,6 +134,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="@dimen/_15sdp"
             android:fontFamily="@font/quicksand_bold"
+            android:shadowColor="@color/white"
             android:textSize="@dimen/_13ssp"/>
 
 </RelativeLayout>

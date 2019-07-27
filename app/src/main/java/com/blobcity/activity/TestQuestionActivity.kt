@@ -131,6 +131,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var folderName: String? = null
     var gradeTitle: String? = null
     var unAnsweredList: ArrayList<Int>? = null
+    var readyCardNumber = 0
 
     override var layoutID: Int = R.layout.activity_test_question
 
@@ -148,6 +149,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         oPath = intent.getStringExtra(FOLDER_PATH)
         folderName = intent.getStringExtra(FOLDER_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
+        readyCardNumber = intent.getIntExtra(CARD_NO, -1)
         quizTimer = Timer()
 
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
@@ -312,7 +314,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (totalLife == 3) {
             iv_heart_3.visibility = View.VISIBLE
         } else {
-            iv_heart_3.visibility = View.INVISIBLE
+            iv_heart_3.visibility = View.GONE
         }
 
         if (availableLife == 2) {
@@ -1382,6 +1384,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(FOLDER_PATH, oPath)
         intent.putExtra(FOLDER_NAME, folderName)
         intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+        intent.putExtra(CARD_NO, readyCardNumber)
         startActivity(intent)
         finish()
     }
