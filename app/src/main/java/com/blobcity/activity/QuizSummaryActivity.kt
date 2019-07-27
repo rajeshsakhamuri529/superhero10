@@ -335,79 +335,6 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                     if (level.contains("advanced")) {
                                         Log.d("true", "true")
                                         isAdvancedCompleted = true
-                                        /*val pathStringList: ArrayList<String> = ArrayList()
-                                        for (imagePath in listAssetFiles(loaclAstraCardPath, applicationContext)) {
-                                            if (imagePath.contains("png")) {
-                                                pathStringList.add(imagePath)
-                                            }
-                                        }
-                                        *//*Collections.sort(pathStringList)*//*
-                                        var imagepath = ""
-                                        for (path in pathStringList) {
-                                            if (position!! == 0) {
-                                                if (path.equals("1.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 1) {
-                                                if (path.equals("2.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 2) {
-                                                if (path.equals("3.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 3) {
-                                                if (path.equals("4.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 4) {
-                                                if (path.equals("5.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 5) {
-                                                if (path.equals("6.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 6) {
-                                                if (path.equals("7.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 7) {
-                                                if (path.equals("8.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 8) {
-                                                if (path.equals("9.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                            if (position!! == 9) {
-                                                if (path.equals("10.png")) {
-                                                    imagepath = loaclAstraCardPath + path
-                                                }
-                                            }
-                                        }*/
-                                        /*Log.e("position: ", position.toString())
-                                        if (topicLevel!!.contains("advanced")) {
-                                            handler.postDelayed(object : Runnable {
-                                                override fun run() {
-                                                    iv_card_front.startAnimation(zoomOutAnimation)
-                                                    mSetRightOut!!.setTarget(iv_card_front)
-                                                    mSetLeftIn!!.setTarget(iv_card_back)
-                                                    iv_card_back.startAnimation(zoominAnimation)
-                                                    mSetRightOut!!.start()
-                                                    mSetLeftIn!!.start()
-                                                }
-                                            }, 1500)
-                                        }*/
                                     }
                                 }
                             }
@@ -515,8 +442,9 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                                 isLastTopicAvailable = true
                             } else {
                                 isLastTopicAvailable = false
-                                btn_next_level.setBackgroundResource(R.drawable.quiz_button_inactive)
+                                //btn_next_level.setBackgroundResource(R.drawable.quiz_button_inactive)
                                 //btn_next_level.isEnabled = false
+                                btn_next_level.setTextColor(resources.getColor(R.color.ready_summary_background))
                                 return
                             }
 

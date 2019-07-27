@@ -44,11 +44,10 @@
             android:id="@+id/iv_lock_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/purple_card"
             android:layout_below="@id/tv_quiz_level"
             android:layout_above="@id/tv_quiz_count"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_25sdp"
+            android:layout_marginBottom="@dimen/_25sdp"
             android:layout_centerHorizontal="true"/>
 
     <TextView
@@ -69,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_19sdp"
+            android:layout_marginBottom="@dimen/_17sdp"
             android:textSize="@dimen/_12ssp"
             android:text="questions"
             android:textAllCaps="true"
@@ -84,7 +83,7 @@
             android:orientation="horizontal"
             android:layout_above="@id/tv_lives"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/_2sdp"
+            android:layout_marginBottom="@dimen/_1sdp"
             android:weightSum="3">
 
         <ImageView
@@ -95,8 +94,8 @@
 
         <ImageView
                 android:id="@+id/iv_life2"
-                android:layout_width="@dimen/_16sdp"
-                android:layout_height="@dimen/_16sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:src="@drawable/active_heart_copy"
                 android:layout_marginLeft="@dimen/_10sdp"/>
 

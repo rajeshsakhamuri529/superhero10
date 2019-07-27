@@ -22,7 +22,6 @@ import kotlin.collections.ArrayList
 class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
     override var layoutID: Int = R.layout.activity_start_quiz
-    var quizCard: String? = null
 
     override fun initView() {
         val path = intent.getStringExtra(DYNAMIC_PATH)
@@ -47,95 +46,23 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         if (topicLevel.equals("basic")){
             level = "Quiz I"
             Glide.with(this@StartQuizActivity)
-                .load(Uri.parse(ConstantPath.WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .load(Uri.parse(WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
                 .into(iv_lock_card)
         }
 
         if (topicLevel.equals("intermediate")){
             level = "Quiz II"
             Glide.with(this@StartQuizActivity)
-                .load(Uri.parse(ConstantPath.WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .load(Uri.parse(WEBVIEW_PATH+ localQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
                 .into(iv_lock_card)
         }
 
         if (topicLevel.equals("advanced")){
             level = "Super Quiz"
             Glide.with(this@StartQuizActivity)
-                .load(Uri.parse(ConstantPath.WEBVIEW_PATH+ localSuperQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
+                .load(Uri.parse(WEBVIEW_PATH+ localSuperQuizReadyCardsPath+"ready-"+(rndImageNumber.nextInt(3)+1)+".png"))
                 .into(iv_lock_card)
-            /*Log.e("position: ", position.toString())
-            if(complete.equals("Advanced_completed")){
-                Log.d("Super Quiz","completed"+position)
-
-                val pathStringList: ArrayList<String> = ArrayList()
-                for (imagePath in Utils.listAssetFiles(loaclAstraCardPath, applicationContext)){
-                    if (imagePath.contains("png")){
-                        pathStringList.add(imagePath)
-                    }
-                }
-                var imagepath = ""
-                for (path in pathStringList){
-                    if (position!! == 0) {
-                        if (path.equals("1.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 1) {
-                        if (path.equals("2.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 2) {
-                        if (path.equals("3.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 3) {
-                        if (path.equals("4.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 4) {
-                        if (path.equals("5.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 5) {
-                        if (path.equals("6.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 6) {
-                        if (path.equals("7.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 7) {
-                        if (path.equals("8.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 8) {
-                        if (path.equals("9.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                    if (position!! == 9) {
-                        if (path.equals("10.png")) {
-                            imagepath = loaclAstraCardPath+path
-                        }
-                    }
-                }
-
-            }else{
-                Log.d("Super Quiz","not completed"+position)
-            }*/
         }
-
-        /*val readyCardIs=assets.open(quizCard!!)
-        val readyCardDrawable=Drawable.createFromStream(readyCardIs, null)
-        iv_lock_card.setImageDrawable(readyCardDrawable)
-        readyCardIs.close()*/
 
         tv_quiz_count.text = questionResponseModel.questionCount.toString()
         tv_chapter_title.text = topicName

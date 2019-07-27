@@ -207,8 +207,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/_50sdp"
-                    android:visibility="invisible"
-                    android:src="@drawable/purple_card"/>
+                    android:visibility="invisible"/>
 
         </RelativeLayout>
 

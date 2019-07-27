@@ -2,14 +2,14 @@
 <layer-list
         xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:height="20dp" android:width="40dp">
+    <item android:height="15dp" android:width="30dp">
         <shape android:shape="rectangle">
             <solid android:color="#E8E5FF"/>
             <corners android:radius="10dp"/>
         </shape>
     </item>
 
-    <item android:top="-3dp" android:bottom="-3dp" android:start="-3dp" android:end="17dp">
+    <item android:top="-2dp" android:bottom="-2dp" android:start="-2dp" android:end="14dp">
         <shape android:shape="oval">
             <solid android:color="#9437FF"/>
         </shape>
