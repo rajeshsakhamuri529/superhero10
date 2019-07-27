@@ -9,7 +9,7 @@
         </shape>
     </item>
 
-    <item android:top="-2dp" android:bottom="-2dp" android:start="14dp" android:end="-2dp">
+    <item android:top="-3dp" android:bottom="-3dp" android:start="13dp" android:end="-3dp">
         <shape android:shape="oval">
             <solid android:color="#9437FF" />
         </shape>

@@ -116,6 +116,7 @@
                 android:layout_height="@dimen/_25sdp"
                 android:id="@+id/btn_hint"
                 android:background="@drawable/hint_button_bg"
+                android:backgroundTint="@color/white"
                 android:text="Hint"
                 android:layout_centerVertical="true"
                 android:fontFamily="@font/quicksand_bold"
