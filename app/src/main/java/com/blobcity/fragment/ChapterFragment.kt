@@ -174,4 +174,6 @@ class ChapterFragment: Fragment(), TopicClickListener {
     override fun onClick(topic: Topic, topicId: String, position: Int) {
         callIntent(topic, topicId, position)
     }
+
+
 }

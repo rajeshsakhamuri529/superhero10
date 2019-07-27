@@ -1,25 +1,27 @@
 package com.blobcity.activity
 
-import android.app.Activity
-import android.content.Intent
+import android.app.PendingIntent.getActivity
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
-import android.util.Log
+import android.support.v4.app.FragmentManager
 import android.view.MenuItem
+import android.widget.Toast
 import com.blobcity.R
-import com.blobcity.fragment.AstraCardFragment
 import com.blobcity.fragment.ChapterFragment
 import com.blobcity.fragment.SettingFragment
 import com.blobcity.utils.ConstantPath.TITLE_TOPIC
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.io.File
+import java.sql.Time
 
 class DashBoardActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
 
     private var fragment: Fragment? = null
     lateinit var gradeTitle: String
+    private var backPressedTime: Long = 0
+    private var backPressToastMessage: Toast? = null
 
     override var layoutID: Int = R.layout.activity_dashboard
 
@@ -49,7 +51,20 @@ class DashBoardActivity : BaseActivity(),
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
+        val fragmentManager = supportFragmentManager
+        val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
+        if(currentFragment!! is ChapterFragment) {
+            if(backPressedTime+2000>System.currentTimeMillis()){
+                backPressToastMessage!!.cancel()
+                finishAffinity()
+                return
+            }
+            else{
+                backPressToastMessage = Toast.makeText(this, R.string.exit_message, Toast.LENGTH_SHORT)
+                backPressToastMessage!!.show()
+            }
+            backPressedTime=System.currentTimeMillis()
+        }
     }
 
     private fun loadFragment(fragment: Fragment): Boolean {
@@ -66,15 +81,6 @@ class DashBoardActivity : BaseActivity(),
             return true
         }
         return false
-    }
-
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
-        super.onActivityReenter(resultCode, data)
-        postponeEnterTransition()
-        if (resultCode == Activity.RESULT_OK) {
-            (fragment as AstraCardFragment).activityReenter(data!!)
-        }
-        Log.d("Activity reenter",resultCode.toString()+"!"+data.toString())
     }
 
     lateinit var myDir: File
