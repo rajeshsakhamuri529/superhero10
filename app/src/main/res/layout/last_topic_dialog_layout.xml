@@ -45,6 +45,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:background="@drawable/hint_button_bg"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:text="Ok"
                 android:textColor="@color/hint_text"
                 android:fontFamily="@font/quicksand_bold"

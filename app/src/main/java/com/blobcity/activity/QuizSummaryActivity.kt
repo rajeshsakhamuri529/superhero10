@@ -478,7 +478,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         val distance = 7000
         val scale = resources.displayMetrics.density * distance
         iv_card_front!!.setCameraDistance(scale)
-        //iv_card_back!!.setCameraDistance(scale)
+        iv_card_back!!.setCameraDistance(scale)
     }
 
     @SuppressLint("ResourceType")

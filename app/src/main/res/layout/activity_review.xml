@@ -7,6 +7,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/ready_summary_background"
         tools:context=".activity.ReviewActivity"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:paddingBottom="@dimen/_10sdp">
 
     <TextView
@@ -105,6 +106,7 @@
                 android:layout_alignParentRight="true"
                 android:fontFamily="@font/quicksand_bold"
                 android:background="@drawable/action"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingRight="@dimen/_10sdp"
                 android:text="Close Review"
@@ -116,6 +118,7 @@
                 android:layout_height="@dimen/_25sdp"
                 android:id="@+id/btn_hint"
                 android:background="@drawable/hint_button_bg"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:backgroundTint="@color/white"
                 android:text="Hint"
                 android:layout_centerVertical="true"
