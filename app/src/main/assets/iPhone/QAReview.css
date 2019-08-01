@@ -3,6 +3,10 @@ body {
     height: 100%;
     overflow: hidden;
 }
+@font-face {
+   font-family: 'MathJaxMainRegular';
+   src: url('file:///android_asset/fonts/MathJax_Main-Regular.otf');
+}
 body {
     background-color: transparent;
     font-size: 112%;
@@ -11,7 +15,3 @@ body {
     color: #424242;
 }
 
-@font-face {
-   font-family: 'MathJaxMainRegular';
-   src: url('file:///android_asset/fonts/MathJax_Main-Regular.otf');
-}

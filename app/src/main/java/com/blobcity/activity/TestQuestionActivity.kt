@@ -333,6 +333,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         } else if (availableLife == 0) {
             tv_text.text = "GAME OVER"
+            tv_text.setTextColor(resources.getColor(R.color.red_wrong_answer))
             if (totalLife == 3) {
                 heartType(this, false, iv_heart_3)
             }

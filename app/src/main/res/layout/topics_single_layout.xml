@@ -28,7 +28,9 @@
             android:layout_marginLeft="@dimen/_45sdp"
             android:layout_alignParentStart="true"
             android:fontFamily="@font/quicksand_medium"
-            android:textSize="@dimen/_15ssp"/>
+            android:textSize="@dimen/_15ssp"
+            android:layout_toStartOf="@+id/iv_progress_icon2"
+            android:layout_marginRight="5dp"/>
 
     <ImageView
             android:id="@+id/iv_progress_icon1"

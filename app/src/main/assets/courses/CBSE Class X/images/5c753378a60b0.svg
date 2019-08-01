@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+
+<svg 
+     version="1.1"
+     baseProfile="full"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink"
+     xmlns:ev="http://www.w3.org/2001/xml-events"
+     width="9.196093163035316cm"
+     height="10.262960180315558cm"
+     viewBox="0 0 610 680"
+     >
+<title>
+
+</title>
+<g stroke-linejoin="miter" stroke-dashoffset="0.0000" stroke-dasharray="none" stroke-width="1.0000" stroke-miterlimit="10.000" stroke-linecap="square">
+<g id="misc">
+</g><!-- misc -->
+<g id="layer0">
+<clipPath id="clipb52b5713-1362-437a-9bf7-5c9f831a603b">
+  <path d="M 0.0000 0.0000 L 0.0000 683.00 L 612.00 683.00 L 612.00 0.0000 z"/>
+</clipPath>
+<g clip-path="url(#clip1)">
+<g stroke-linejoin="round" stroke-width="5.5000" stroke-linecap="round" fill="none" stroke-opacity=".69804" stroke="#0096ff">
+  <path d="M 557.28 304.62 C 557.28 428.44 456.91 528.82 333.09 528.82 C 209.27 528.82 108.90 428.44 108.90 304.62 C 108.90 180.80 209.27 80.428 333.09 80.428 C 456.91 80.428 557.28 180.80 557.28 304.62 z"/>
+<title>Circle f</title>
+<desc>Circle f: Circle through G with center F</desc>
+
+</g> <!-- drawing style -->
+</g> <!-- clip1 -->
+<clipPath id="clip13e3bbec-9bfc-4871-8179-b93beb4c7d02">
+  <path d="M 0.0000 0.0000 L 0.0000 683.00 L 612.00 683.00 L 612.00 0.0000 z"/>
+</clipPath>
+<g clip-path="url(#clip2)">
+<g stroke-linejoin="round" stroke-width="5.5000" stroke-linecap="round" fill="none" stroke-opacity=".69804" stroke="#0096ff">
+  <path d="M -5.0000 330.13 L 378.43 688.00"/>
+<title>Line g</title>
+<desc>Line g: Line E, H</desc>
+
+</g> <!-- drawing style -->
+</g> <!-- clip2 -->
+<clipPath id="clipcc8bdb98-8a8f-469e-8887-3f7e4eca3e14">
+  <path d="M 0.0000 0.0000 L 0.0000 683.00 L 612.00 683.00 L 612.00 0.0000 z"/>
+</clipPath>
+<g clip-path="url(#clip3)">
+<g fill-opacity="1.0000" fill-rule="nonzero" stroke="none" fill="#0096ff">
+  <path d="M 342.09 304.62 C 342.09 309.59 338.06 313.62 333.09 313.62 C 328.12 313.62 324.09 309.59 324.09 304.62 C 324.09 299.65 328.12 295.62 333.09 295.62 C 338.06 295.62 342.09 299.65 342.09 304.62 z"/>
+<title>Point F</title>
+<desc>F = (2.41, 0.48)</desc>
+
+</g> <!-- drawing style -->
+</g> <!-- clip3 -->
+<g transform="matrix(51.000, 0.0000, 0.0000, 51.000, 296.00, 353.85)">
+<clipPath id="clipa0ec6a38-8560-48dc-8fc3-8f4371a5bf92">
+  <path d="M -5.8039 -6.9382 L -5.8039 6.4539 L 6.1961 6.4539 L 6.1961 -6.9382 z"/>
+</clipPath>
+<g clip-path="url(#clip4)">
+<g fill-opacity="1.0000" fill-rule="nonzero" stroke="none" fill="#ff2f92">
+  <path d="M .73438 -.43750 L .73438 -.43750 Q .73438 -.28125 .62500 -.15625 Q .53125 -.031250 .39062 .015625 Q .34375 .015625 .31250 .015625 Q .18750 .015625 .10938 -.062500 Q .046875 -.14062 .046875 -.25000 Q .046875 -.39062 .15625 -.53125 Q .25000 -.65625 .39062 -.68750 Q .43750 -.70312 .48438 -.70312 Q .60938 -.70312 .68750 -.60938 Q .73438 -.54688 .73438 -.43750 z M .31250 -0.0000 L .31250 -0.0000 Q .40625 -0.0000 .48438 -.093750 Q .51562 -.10938 .53125 -.12500 Q .62500 -.25000 .64062 -.42188 Q .65625 -.45312 .65625 -.46875 Q .65625 -.60938 .56250 -.65625 Q .56250 -.65625 .56250 -.65625 Q .51562 -.68750 .48438 -.68750 Q .39062 -.68750 .29688 -.59375 Q .26562 -.56250 .23438 -.53125 Q .15625 -.40625 .14062 -.25000 Q .14062 -.23438 .14062 -.21875 Q .14062 -.093750 .21875 -.031250 Q .26562 -0.0000 .31250 -0.0000 z"/>
+<title>$O$</title>
+<desc>text1_1 = “$O$”</desc>
+
+</g> <!-- drawing style -->
+</g> <!-- clip4 -->
+</g> <!-- transform -->
+</g><!-- layer0 -->
+</g> <!-- default stroke -->
+</svg> <!-- bounding box -->

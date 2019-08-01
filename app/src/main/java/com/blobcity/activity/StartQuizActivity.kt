@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import com.blobcity.R
 import com.blobcity.model.TopicOneBasicResponseModel
 import com.blobcity.utils.ConstantPath
@@ -38,7 +39,6 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         var level = ""
         var readyCardNumber = 0
         val rndImageNumber = Random()
-
 
         Log.e("path", path)
         val gsonFile = Gson()

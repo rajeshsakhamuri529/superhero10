@@ -17,6 +17,7 @@ import com.blobcity.model.ReviewModel
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.Utils
 import java.lang.Exception
+import java.net.URLDecoder
 
 class ReviewAdapter(
     val reviewModelList: ArrayList<ReviewModel>,
@@ -317,7 +318,7 @@ class ReviewAdapter(
             override fun onPageFinished(view: WebView?, url: String?) {
                 Log.d("onPageFinished", url + "!")
                 injectCSS(view, "QAReview")
-                view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+                //view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
             }
         }
 
@@ -370,9 +371,10 @@ class ReviewAdapter(
                 injectCSS(view, "QAReview")
                 // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
             }
+
         }
 
-        webView_question!!.webViewClient = qa
+        webView_question.webViewClient = qa
 
         webView_question.loadUrl(questionPath)
         webView_option1.loadUrl(opt2Path)

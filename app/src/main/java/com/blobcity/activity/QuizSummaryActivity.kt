@@ -483,8 +483,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
     @SuppressLint("ResourceType")
     private fun loadAnimations() {
-        zoominAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
-        zoomOutAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_out)
+        //zoominAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
+        //zoomOutAnimation = AnimationUtils.loadAnimation(this, R.anim.zoom_out)
         mSetRightOut = AnimatorInflater.loadAnimator(this, R.anim.out_animation) as AnimatorSet
         mSetLeftIn = AnimatorInflater.loadAnimator(this, R.anim.in_animation) as AnimatorSet
     }
@@ -510,11 +510,11 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private fun flipAnimation() {
         handler.postDelayed({
-            iv_card_front.startAnimation(zoomOutAnimation)
+            //iv_card_front.startAnimation(zoomOutAnimation)
             mSetRightOut!!.setTarget(iv_card_front)
             iv_card_back.visibility=View.VISIBLE
             mSetLeftIn!!.setTarget(iv_card_back)
-            iv_card_back.startAnimation(zoominAnimation)
+            //iv_card_back.startAnimation(zoominAnimation)
             mSetRightOut!!.start()
             mSetLeftIn!!.start()
         }, 1500)

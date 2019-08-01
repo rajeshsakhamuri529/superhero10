@@ -25,6 +25,11 @@
             android:id="@+id/tv_chapter_title"
             android:textSize="@dimen/_17ssp"
             android:text="Topic one"
+            android:gravity="center"
+            android:paddingRight="@dimen/_5sdp"
+            android:paddingLeft="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_35sdp"
+            android:layout_marginEnd="@dimen/_35sdp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_15sdp"/>
 
