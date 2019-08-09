@@ -13,9 +13,11 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Handler
 import android.support.v7.app.AlertDialog
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -77,6 +79,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     override var layoutID: Int = R.layout.activity_quiz_summary
 
     override fun initView() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         reviewModelList = intent.getSerializableExtra(REVIEW_MODEL) as ArrayList<ReviewModel>?
         topicLevel = intent.getStringExtra(TOPIC_LEVEL)
         topicName = intent.getStringExtra(TOPIC_NAME)
@@ -201,6 +204,11 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
             }
         }
         //btn_quiz3.setBackgroundResource(R.drawable.button_bg)
+        val displayMetrics= DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val displayWidth=displayMetrics.widthPixels
+        iv_card_back.layoutParams.width=((0.7*displayWidth).toInt())
+        iv_card_front.layoutParams.width=((0.7*displayWidth).toInt())
 
     }
 

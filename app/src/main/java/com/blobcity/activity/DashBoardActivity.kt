@@ -6,6 +6,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.MenuItem
+import android.view.WindowManager
 import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.fragment.ChapterFragment
@@ -26,6 +27,7 @@ class DashBoardActivity : BaseActivity(),
     override var layoutID: Int = R.layout.activity_dashboard
 
     override fun initView() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gradeTitle = "GRADE 6"
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
         loadFragment(ChapterFragment())

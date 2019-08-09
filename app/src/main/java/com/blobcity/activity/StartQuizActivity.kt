@@ -3,6 +3,7 @@ package com.blobcity.activity
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -25,6 +26,8 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
     override var layoutID: Int = R.layout.activity_start_quiz
 
     override fun initView() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         val path = intent.getStringExtra(DYNAMIC_PATH)
         val courseId = intent.getStringExtra(COURSE_ID)
         val topicId = intent.getStringExtra(TOPIC_ID)
@@ -94,6 +97,11 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
             finish()
         }
         iv_cancel.setOnClickListener(this)
+
+        val displayMetrics=DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val displayWidth=displayMetrics.widthPixels
+        iv_lock_card.layoutParams.width=((0.7*displayWidth).toInt())
 
     }
 

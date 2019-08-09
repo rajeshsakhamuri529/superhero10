@@ -9,6 +9,7 @@ import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
@@ -38,6 +39,7 @@ class ReviewActivity : BaseActivity() {
     override var layoutID: Int = R.layout.activity_review
 
     override fun initView() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         context = this
         reviewModelList = intent.getSerializableExtra(REVIEW_MODEL) as ArrayList<ReviewModel>?
         val mLayoutManager = LinearLayoutManager(applicationContext,

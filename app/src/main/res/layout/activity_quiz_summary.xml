@@ -51,10 +51,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_quiz_level"
             android:layout_above="@id/qs_cl"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:layout_marginBottom="@dimen/_40sdp">
+            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:layout_centerHorizontal="true">
         <ImageView
                 android:id="@+id/iv_card_back"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_15sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"/>
@@ -65,10 +68,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_quiz_level"
             android:layout_above="@id/qs_cl"
-            android:layout_marginTop="@dimen/_40sdp"
-            android:layout_marginBottom="@dimen/_40sdp">
+            android:layout_marginTop="@dimen/_35sdp"
+            android:layout_marginBottom="@dimen/_35sdp"
+            android:layout_centerHorizontal="true">
         <ImageView
                 android:id="@+id/iv_card_front"
+                android:paddingTop="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_15sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </FrameLayout>

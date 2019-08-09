@@ -156,7 +156,7 @@ public class Utils {
             doc = Jsoup.parse(is, "UTF-8", "http://example.com/");
             Element divTag = doc.getElementById("wrapper");
             System.out.println(divTag.text());
-            if(divTag.text().equals("True"))
+            if(divTag.text().toLowerCase().equals("true"))
             {
                 return true;
             }

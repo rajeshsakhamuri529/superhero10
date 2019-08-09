@@ -62,7 +62,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var topicName: String? = ""
     private var arrayMap: ArrayMap<String, List<TopicOneQuestionsItem>>? = null
     private var listWithUniqueString: ArrayList<String>? = null
-    private var position: Int = -1
+    //private var position: Int = -1
+    private var positionList: ArrayList<Int>? = ArrayList()
+    private var countQuestion: Int = -1
     private var questionsItem: List<TopicOneQuestionsItem>? = null
     private var singleQuestionsItem: TopicOneQuestionsItem? = null
     private var totalQuestion: Int? = null
@@ -487,6 +489,12 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val listWithDuplicateKeys = ArrayList<String>()
 
         totalQuestion = questionResponseModel.questionCount
+        var i=0
+        while(i<totalQuestion!!){
+            positionList!!.add(i)
+            i++
+        }
+        positionList!!.shuffle()
         var questionItemList: ArrayList<TopicOneQuestionsItem>
         arrayMap = ArrayMap()
 
@@ -534,7 +542,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         unAnsweredList!!.add(1)
         unAnsweredList!!.add(0)
         Log.d("createPath", unAnsweredList!!.size.toString() + "!")
-        position++
+        //position++
+        countQuestion++
         btn_hint!!.visibility = View.INVISIBLE
         quizTimer!!.scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
@@ -562,7 +571,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
              reviewModelList.add(reviewModel!!)
              reviewModel = null
          }*/
-        if (position < totalQuestion!!) {
+        if (countQuestion < totalQuestion!!) {
             bank = Bank()
             reviewModel = ReviewModel()
             answerList = ArrayList()
@@ -588,7 +597,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             tv_count2.text = "$totalQuestion"
 
             val paths: String
-            questionsItem = arrayMap!!.get(listWithUniqueString!!.get(position))
+            questionsItem = arrayMap!!.get(listWithUniqueString!!.get(positionList!![countQuestion]))
             if (questionsItem!!.size > 1) {
                 randomPosition = Random.nextInt(questionsItem!!.size)
                 singleQuestionsItem = questionsItem!!.get(randomPosition)
@@ -608,7 +617,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 loadDataInWebView(paths)
             }
         }
-        if (position >= totalQuestion!!) {
+        if (countQuestion >= totalQuestion!!) {
             navigateToSummaryScreen(true)
         }
     }
@@ -703,8 +712,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
             }, 2500)
 
-            opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
-            opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
+            opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
+            opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
 
 
             webView_option1!!.settings.javaScriptEnabled = true
@@ -736,16 +745,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             webView_option1_opacity!!.webViewClient = OpacitywebviewClient
             webView_option2_opacity!!.webViewClient = OpacitywebviewClient
 
-            if (Utils.jsoupWrapper(path + "/" + listOfOptions!!.get(1), this)) {
+            if (Utils.jsoupWrapper(path + "/" + listOfOptions!!.get(0), this)) {
                 webView_option1!!.loadUrl(opt1Path)
+                webView_option2!!.loadUrl(opt2Path)
                 webView_option1_opacity!!.loadUrl(opt1Path)
                 webView_option2_opacity!!.loadUrl(opt2Path)
-                webView_option2!!.loadUrl(opt2Path)
             } else {
                 webView_option1!!.loadUrl(opt2Path)
                 webView_option2!!.loadUrl(opt1Path)
-                webView_option2_opacity!!.loadUrl(opt1Path)
                 webView_option1_opacity!!.loadUrl(opt2Path)
+                webView_option2_opacity!!.loadUrl(opt1Path)
             }
 
         }
@@ -996,14 +1005,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (!isLifeZero) {
             if (!isAnswerCorrect) {
                 Log.d("2", "!" + isAnswerCorrect.toString())
-                if (position == 0) {
+                if (countQuestion == 0) {
                     isFirstAnswerGiven = true
                 }
                 dbAttempts++
                 if (listOfOptions!!.size > 2) {
                     Log.d("listOfOptions", "!" + listOfOptions!!.size.toString())
                     if (listOfOptions!!.get(optionClicked).contains("opt1")) {
-                        if (position + 1 == totalQuestion) {
+                        if (countQuestion + 1 == totalQuestion) {
                             isLevelCompleted = true
                         }
 
@@ -1043,7 +1052,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
                             isAnswerCorrect = true
                             isDbCorrectAnswer = "true"
-                            if (position + 1 == totalQuestion) {
+                            if (countQuestion + 1 == totalQuestion) {
                                 isLevelCompleted = true
                             }
                             checkWebView(optionClicked, isAnswerCorrect)
@@ -1071,7 +1080,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         if (answer.equals(questionsItem!!.get(0).text, true)) {
                             isAnswerCorrect = true
                             isDbCorrectAnswer = "true"
-                            if (position + 1 == totalQuestion) {
+                            if (countQuestion + 1 == totalQuestion) {
                                 isLevelCompleted = true
                             }
                             checkWebView(optionClicked, isAnswerCorrect)
@@ -1457,7 +1466,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val tv_quit = dialogView.findViewById(R.id.tv_quit) as TextView
         val tv_return = dialogView.findViewById(R.id.tv_return) as TextView
         tv_quit.setOnClickListener {
-            if (position >= 0) {
+            if (countQuestion >= 0) {
                 if (isFirstAnswerGiven) {
                     addAllDataInDb(false, true)
                 }

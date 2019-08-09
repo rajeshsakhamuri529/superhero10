@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -51,6 +52,8 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     override var layoutID: Int = R.layout.activity_quiz_level
 
     override fun initView() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
 
         val topic: Topic = intent.getSerializableExtra(TOPIC) as Topic

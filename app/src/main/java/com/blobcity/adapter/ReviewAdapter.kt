@@ -377,8 +377,13 @@ class ReviewAdapter(
         webView_question.webViewClient = qa
 
         webView_question.loadUrl(questionPath)
-        webView_option1.loadUrl(opt2Path)
-        webView_option2.loadUrl(opt1Path)
+        if (Utils.jsoupWrapper(path + "/" + listOfOptions!!.get(0), context)) {
+            webView_option1!!.loadUrl(opt1Path)
+            webView_option2!!.loadUrl(opt2Path)
+        } else {
+            webView_option1!!.loadUrl(opt2Path)
+            webView_option2!!.loadUrl(opt1Path)
+        }
     }
 
     class Layout4100ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
