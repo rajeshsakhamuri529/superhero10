@@ -32,7 +32,7 @@ class ChaptersAdapter(val context: Context,
     }
 
     override fun getItemCount(): Int {
-        return branchesItemList.size
+        return branchesItemList.size - 1
     }
 
     override fun onBindViewHolder(holder: ChaptersViewHolder, position: Int) {
@@ -115,7 +115,7 @@ class ChaptersAdapter(val context: Context,
                     if (branchesItem.advance == 1) {
                         isLastTopicAvailable = true
                     } else {
-                        isLastTopicAvailable = false
+                        isLastTopicAvailable = true
                         return
                     }
                 }else {
@@ -127,21 +127,23 @@ class ChaptersAdapter(val context: Context,
 
     fun lastItem(holder: ChaptersViewHolder){
         holder.singleTopic.setBackgroundResource(R.drawable.dashboard_bottom_corner)
-        if (isLastTopicAvailable) {
+       /* if (isLastTopicAvailable) {
             Log.d("lastItem",isLastTopicAvailable.toString()+"!")
             holder.tv_topic_number.alpha = 1.0f
             holder.iv_progress1.visibility = View.VISIBLE
             holder.iv_progress2.visibility = View.VISIBLE
             holder.iv_progress3.visibility = View.VISIBLE
+
         }else{
             Log.d("lastItem",isLastTopicAvailable.toString()+"!")
             //holder.singleTopic.alpha = 0.8f
             //holder.tv_topic_name.textColors.withAlpha(100)
             holder.tv_topic_number.alpha = 0.0f
+            holder.tv_topic_name.visibility = View.GONE
             holder.iv_progress1.visibility = View.INVISIBLE
             holder.iv_progress2.visibility = View.INVISIBLE
             holder.iv_progress3.visibility = View.INVISIBLE
-        }
+        }*/
     }
 
     class ChaptersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
