@@ -8,14 +8,17 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
@@ -75,7 +78,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     val rndImageNumber = Random()
     var readyCardNumber = 0
 
-
+    private lateinit var mediaPlayer: MediaPlayer
     override var layoutID: Int = R.layout.activity_quiz_summary
 
     override fun initView() {
@@ -184,7 +187,10 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         btn_play_again.setOnClickListener(this)
         btn_next_quiz.setOnClickListener(this)
         btn_next_level.setOnClickListener(this)
-
+        buttonEffect(btn_review)
+        buttonEffect(btn_play_again)
+        buttonEffect(btn_next_quiz)
+        buttonEffect(btn_next_level)
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         readFileLocally()
 
@@ -211,7 +217,21 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         iv_card_front.layoutParams.width=((0.7*displayWidth).toInt())
 
     }
-
+    fun buttonEffect(button: View) {
+        button.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.background.setColorFilter(Color.parseColor("#FFBEBCBC"), PorterDuff.Mode.SRC_ATOP)
+                    v.invalidate()
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.background.clearColorFilter()
+                    v.invalidate()
+                }
+            }
+            false
+        }
+    }
     override fun onClick(v: View?) {
         val intent: Intent
         when (v!!.id) {
@@ -280,6 +300,8 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToStartQuiz() {
+        mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+        mediaPlayer.start()
         val intent = Intent(this, StartQuizActivity::class.java)
         intent.putExtra(DYNAMIC_PATH, dPath)
         intent.putExtra(COURSE_ID, courseId)

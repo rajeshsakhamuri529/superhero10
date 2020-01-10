@@ -2,11 +2,13 @@ package com.blobcity.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -89,7 +91,6 @@ class ChaptersAdapter(val context: Context,
                 .load(R.drawable.progress_icon_grey)
                 .into(holder.iv_progress3)
         }
-
         holder.singleTopic.setOnClickListener {
             if (position == branchesItemList.size-1) {
                 if (isLastTopicAvailable) {
@@ -173,4 +174,6 @@ class ChaptersAdapter(val context: Context,
         alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
+
+
 }

@@ -6,8 +6,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Handler
 import android.support.annotation.RequiresApi
@@ -134,7 +136,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var gradeTitle: String? = null
     var unAnsweredList: ArrayList<Int>? = null
     var readyCardNumber = 0
-
+    private lateinit var mediaPlayer: MediaPlayer
     override var layoutID: Int = R.layout.activity_test_question
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -171,7 +173,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         btn_hint!!.visibility = View.INVISIBLE
         btn_next!!.visibility = View.INVISIBLE
-
+        buttonEffect(btn_next,true)
+        buttonEffect(btn_hint,false)
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -226,7 +229,26 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
+    fun buttonEffect(button: View,isNext:Boolean) {
+        button.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    if (isNext){
+                        v.background.setColorFilter(Color.parseColor("#FF790BF8"), PorterDuff.Mode.SRC_ATOP)
+                    }else{
+                        v.background.setColorFilter(Color.parseColor("#FFBDB6F3"), PorterDuff.Mode.SRC_ATOP)
+                    }
 
+                    v.invalidate()
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.background.clearColorFilter()
+                    v.invalidate()
+                }
+            }
+            false
+        }
+    }
     private fun clickOptions(
         event: MotionEvent,
         position: Int,
@@ -250,10 +272,14 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btn_next -> {
+                mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                mediaPlayer.start()
                 onBtnNext()
             }
 
             R.id.btn_hint -> {
+                mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                mediaPlayer.start()
                 hintAlertDialog()
             }
         }
@@ -266,13 +292,18 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         /*addTrackDataInDb("hint")*/
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
+        val dialogView = inflater.inflate(R.layout.hint_dialog, null)
         dialogBuilder.setView(dialogView)
 
         val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
         val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
 
         webview.settings.javaScriptEnabled = true
+        webview.setVerticalScrollBarEnabled(true)
+        // Enable responsive layout
+        webview.getSettings().setUseWideViewPort(true);
+        // Zoom out if the content width is greater than the width of the viewport
+        webview.getSettings().setLoadWithOverviewMode(true);
         val hint = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -281,15 +312,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
             }
         }
+        Log.e("test question activity","hint alert dialog....hint path..."+hintPath);
         webview.webViewClient = hint
         webview.loadUrl(hintPath)
         webview.setBackgroundColor(0)
-
+        buttonEffect(btn_gotIt,false)
         val alertDialog = dialogBuilder.create()
         btn_gotIt.setOnClickListener {
             alertDialog.dismiss()
         }
-
+       // val alertDialog = dialogBuilder.create()
         alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
         // }
@@ -397,9 +429,18 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 }
             }*/
         }
-
+        buttonEffect(btn_ok,false)
         btn_ok.setOnClickListener {
             btn_hint.visibility = View.VISIBLE
+            if (listOfOptions!!.size > 2) {
+
+            }else{
+                isAnswerCorrect = true
+                btn_next.text = "NEXT"
+                btn_next.visibility = View.VISIBLE
+                //TODO opacity;
+                setInactiveBackground2()
+            }
 
             if (availableLife == 0) {
                 btn_next.text = "DONE"
@@ -1002,6 +1043,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun checkAnswer(optionClicked: Int, answer: String) {
         //btn_hint!!.visibility = View.VISIBLE
+        Log.e("Test Question activity","listofoptions........"+listOfOptions+".........listofoptions size....."+ listOfOptions!!.size);
         if (!isLifeZero) {
             if (!isAnswerCorrect) {
                 Log.d("2", "!" + isAnswerCorrect.toString())
@@ -1048,6 +1090,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
                     }
                 } else {
+                    Log.e("Test Question activity","questionsItem........"+questionsItem+".........questionsItem size....."+ questionsItem!!.size);
                     if (questionsItem!!.size > 1) {
                         if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
                             isAnswerCorrect = true

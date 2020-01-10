@@ -4,7 +4,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rl_single_topics"
-        android:background="@color/white">
+
+        android:background="@drawable/selected_row_item">
 
     <TextView
             android:id="@+id/tv_topic_number"

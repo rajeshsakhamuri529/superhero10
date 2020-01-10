@@ -92,12 +92,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/level_completed"
-                android:fontFamily="@font/quicksand_bold"
+                android:fontFamily="@font/quicksand_regular"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:text="3"
-                android:textSize="@dimen/_19ssp"/>
+                android:textSize="@dimen/_17ssp"/>
 
         <TextView
                 android:id="@+id/tv_answer_status"

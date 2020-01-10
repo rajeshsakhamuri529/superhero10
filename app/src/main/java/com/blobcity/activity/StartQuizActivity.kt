@@ -1,10 +1,14 @@
 package com.blobcity.activity
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import android.net.Uri
 import android.util.DisplayMetrics
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import com.blobcity.R
@@ -24,7 +28,7 @@ import kotlin.collections.ArrayList
 class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
     override var layoutID: Int = R.layout.activity_start_quiz
-
+    private lateinit var mediaPlayer: MediaPlayer
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
@@ -78,8 +82,10 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         if (questionResponseModel.questionCount <= 4){
             iv_life3.visibility = View.GONE
         }
-
+        buttonEffect(btn_start)
         btn_start.setOnClickListener {
+            mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+            mediaPlayer.start()
             val intent = Intent(this, TestQuestionActivity::class.java)
             intent.putExtra(DYNAMIC_PATH, path)
             intent.putExtra(COURSE_ID, courseId)
@@ -104,7 +110,21 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         iv_lock_card.layoutParams.width=((0.7*displayWidth).toInt())
 
     }
-
+    fun buttonEffect(button: View) {
+        button.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.background.setColorFilter(Color.parseColor("#FF790BF8"), PorterDuff.Mode.SRC_ATOP)
+                    v.invalidate()
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.background.clearColorFilter()
+                    v.invalidate()
+                }
+            }
+            false
+        }
+    }
     override fun onClick(v: View?) {
 
         when(v?.id) {

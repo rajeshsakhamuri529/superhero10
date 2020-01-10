@@ -3,6 +3,7 @@ package com.blobcity.fragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -43,7 +44,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
     var topicStatusVM: TopicStatusVM?= null
     var localPath: String?= null
     var gradeTitle: String?= null
-
+    private lateinit var mediaPlayer: MediaPlayer
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chapter_layout, container, false)
     }
@@ -160,6 +161,8 @@ class ChapterFragment: Fragment(), TopicClickListener {
     }
 
     private fun callIntent(topic: Topic, topicId: String, position: Int){
+        mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
+        mediaPlayer.start()
         val intent = Intent(context!!, QuizLevelActivity::class.java)
         intent.putExtra(TOPIC, topic)
         intent.putExtra(COURSE_ID, courseId)

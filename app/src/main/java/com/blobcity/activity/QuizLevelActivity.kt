@@ -5,10 +5,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
+import android.media.MediaPlayer
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
@@ -47,6 +50,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var paths: String?= null
     var folderName: String?=null
     var gradeTitle: String?= null
+    private lateinit var mediaPlayer: MediaPlayer
     private var branchesItemList:List<BranchesItem>?=null
 
     override var layoutID: Int = R.layout.activity_quiz_level
@@ -98,6 +102,9 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         //tvBack.setOnClickListener(this)
         llBack.setOnClickListener(this)
         Log.d("position",position.toString()+"!")
+        buttonEffect(btn_quiz1)
+        buttonEffect(btn_quiz2)
+        buttonEffect(btn_quiz3)
     }
 
     private fun loadDataFromDb() {
@@ -202,7 +209,21 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
         loadDataFromDb()
     }
-
+    fun buttonEffect(button: View) {
+        button.setOnTouchListener { v, event ->
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    v.background.setColorFilter(Color.parseColor("#FF790BF8"), PorterDuff.Mode.SRC_ATOP)
+                    v.invalidate()
+                }
+                MotionEvent.ACTION_UP -> {
+                    v.background.clearColorFilter()
+                    v.invalidate()
+                }
+            }
+            false
+        }
+    }
     override fun onClick(v: View?) {
         var complete = ""
         when(v?.id){
@@ -266,6 +287,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         tv_msg2.text = "successfully to unlock Super Quiz"
         val alertDialog = dialogBuilder.create()
         //val tv_return = dialogView.findViewById(R.id.tv_return) as TextView
+        buttonEffect(tv_ok)
         tv_ok.setOnClickListener {
 
             alertDialog.dismiss()
@@ -276,7 +298,12 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         alertDialog.show()
     }
 
+
+
     private fun callIntent(path: String, level: String, complete: String){
+
+        mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+        mediaPlayer.start()
         val intent = Intent(this, StartQuizActivity::class.java)
         intent.putExtra(DYNAMIC_PATH, path)
         intent.putExtra(COURSE_ID, courseId)
@@ -290,8 +317,16 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(FOLDER_NAME, folderName)
         intent.putExtra(TITLE_TOPIC, gradeTitle!!)
         startActivity(intent)
+
     }
 
+    override fun onResume() {
+        super.onResume()
+        /*if(mediaPlayer.isPlaying){
+            mediaPlayer.release()
+            mediaPlayer.reset()
+        }*/
+    }
     override fun onDestroy() {
         super.onDestroy()
         if (context != null){
