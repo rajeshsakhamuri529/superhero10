@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Build
@@ -46,7 +45,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 import android.util.Base64
-import android.webkit.WebResourceRequest
 import android.widget.ImageView
 import java.lang.Exception
 import java.net.URLDecoder
@@ -350,7 +348,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         } else {
             iv_heart_3.visibility = View.GONE
         }
-
+        if (listOfOptions!!.size > 2) {
+            tv_text.visibility = View.VISIBLE
+        }else{
+            tv_text.visibility = View.GONE
+        }
         if (availableLife == 2) {
             if (totalLife == 3) {
                 heartType(this, false, iv_heart_3)
@@ -366,6 +368,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             heartType(this, true, iv_heart_1)
 
         } else if (availableLife == 0) {
+            tv_text.visibility = View.VISIBLE
             tv_text.text = "GAME OVER"
             tv_text.setTextColor(resources.getColor(R.color.red_wrong_answer))
             if (totalLife == 3) {
@@ -1161,6 +1164,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val optionsWithAnswer = OptionsWithAnswer()
         unAnsweredList!!.remove(optionClicked)
         if (isRightAnswer) {
+            mediaPlayer = MediaPlayer.create(this,R.raw.select_high_correct)
+            mediaPlayer.start()
             if (optionClicked == 0) {
                 optionsWithAnswer!!.option = 0
                 optionsWithAnswer!!.istrue = true
@@ -1187,6 +1192,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
             setInactiveBackground()
         } else {
+            mediaPlayer = MediaPlayer.create(this,R.raw.bounce_high_wrong)
+            mediaPlayer.start()
             if (optionClicked == 0) {
                 isOption1Wrong = true
                 optionsWithAnswer!!.option = 0
