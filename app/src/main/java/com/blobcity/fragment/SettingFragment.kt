@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.blobcity.R
 import com.blobcity.activity.WriteToUsActivity
+import com.blobcity.utils.ConstantPath.NOTIFICATION
 import com.blobcity.utils.ConstantPath.SOUNDS
 import com.blobcity.utils.SharedPrefs
 import kotlinx.android.synthetic.main.setting_layout.*
@@ -47,7 +48,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 sound_state_tv.text = "Sound Off"
             }
         }
-
+        notification = sharedPrefs?.getBooleanPrefVal(context!!, NOTIFICATION) ?: true
         cb_notifications_settings.isChecked=notification
         if(notification){
             notification_state_tv.text = "Notifications On"
@@ -57,6 +58,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
         }
         cb_notifications_settings.setOnClickListener{
             notification=!notification
+            sharedPrefs?.setBooleanPrefVal(context!!, NOTIFICATION, notification)
             cb_notifications_settings.isChecked=notification
             if(notification){
                 notification_state_tv.text = "Notifications On"

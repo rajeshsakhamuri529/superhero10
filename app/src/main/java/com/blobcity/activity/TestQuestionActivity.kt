@@ -46,6 +46,7 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 import android.util.Base64
 import android.widget.ImageView
+import com.blobcity.utils.SharedPrefs
 import java.lang.Exception
 import java.net.URLDecoder
 
@@ -135,6 +136,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var unAnsweredList: ArrayList<Int>? = null
     var readyCardNumber = 0
     private lateinit var mediaPlayer: MediaPlayer
+    var sharedPrefs: SharedPrefs? = null
+    var sound: Boolean = false
     override var layoutID: Int = R.layout.activity_test_question
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -153,7 +156,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         readyCardNumber = intent.getIntExtra(CARD_NO, -1)
         quizTimer = Timer()
-
+        sharedPrefs = SharedPrefs()
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
         animationFadeIn1500 = AnimationUtils.loadAnimation(this, R.anim.fade_in_500)
         animationFadeIn1000 = AnimationUtils.loadAnimation(this, R.anim.fade_in_300)
@@ -270,14 +273,20 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 onBackPressed()
             }
             R.id.btn_next -> {
-                mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-                mediaPlayer.start()
+                sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                if(sound){
+                    mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    mediaPlayer.start()
+                }
                 onBtnNext()
             }
 
             R.id.btn_hint -> {
-                mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-                mediaPlayer.start()
+                sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                if(sound){
+                    mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    mediaPlayer.start()
+                }
                 hintAlertDialog()
             }
         }
@@ -1164,8 +1173,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val optionsWithAnswer = OptionsWithAnswer()
         unAnsweredList!!.remove(optionClicked)
         if (isRightAnswer) {
-            mediaPlayer = MediaPlayer.create(this,R.raw.select_high_correct)
-            mediaPlayer.start()
+            sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+            if(sound){
+                mediaPlayer = MediaPlayer.create(this,R.raw.select_high_correct)
+                mediaPlayer.start()
+            }
             if (optionClicked == 0) {
                 optionsWithAnswer!!.option = 0
                 optionsWithAnswer!!.istrue = true
@@ -1192,8 +1204,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
             setInactiveBackground()
         } else {
-            mediaPlayer = MediaPlayer.create(this,R.raw.bounce_high_wrong)
-            mediaPlayer.start()
+            sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+            if(sound){
+                mediaPlayer = MediaPlayer.create(this,R.raw.bounce_high_wrong)
+                mediaPlayer.start()
+            }
             if (optionClicked == 0) {
                 isOption1Wrong = true
                 optionsWithAnswer!!.option = 0

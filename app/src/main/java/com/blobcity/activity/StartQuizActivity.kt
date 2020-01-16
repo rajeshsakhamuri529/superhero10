@@ -15,6 +15,7 @@ import com.blobcity.R
 import com.blobcity.model.TopicOneBasicResponseModel
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -29,6 +30,8 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
 
     override var layoutID: Int = R.layout.activity_start_quiz
     private lateinit var mediaPlayer: MediaPlayer
+    var sharedPrefs: SharedPrefs? = null
+    var sound: Boolean = false
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
@@ -46,7 +49,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         var level = ""
         var readyCardNumber = 0
         val rndImageNumber = Random()
-
+        sharedPrefs = SharedPrefs()
         Log.e("path", path)
         val gsonFile = Gson()
         val questionResponseModel = gsonFile.fromJson(path, TopicOneBasicResponseModel::class.java)
@@ -84,8 +87,11 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         }
         buttonEffect(btn_start)
         btn_start.setOnClickListener {
-            mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-            mediaPlayer.start()
+            sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+            if(sound){
+                mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                mediaPlayer.start()
+            }
             val intent = Intent(this, TestQuestionActivity::class.java)
             intent.putExtra(DYNAMIC_PATH, path)
             intent.putExtra(COURSE_ID, courseId)

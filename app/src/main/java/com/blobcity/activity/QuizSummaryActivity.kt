@@ -32,6 +32,7 @@ import com.blobcity.model.ReviewModel
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils.*
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
@@ -77,8 +78,9 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     var isLastTopicAvailable = false
     val rndImageNumber = Random()
     var readyCardNumber = 0
-
+    var sharedPrefs: SharedPrefs? = null
     private lateinit var mediaPlayer: MediaPlayer
+    var sound: Boolean = false
     override var layoutID: Int = R.layout.activity_quiz_summary
 
     override fun initView() {
@@ -98,6 +100,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         level_status = intent.getBooleanExtra(IS_LEVEL_COMPLETE, false)
         readyCardNumber = intent.getIntExtra(CARD_NO, -1)
+        sharedPrefs = SharedPrefs()
         tv_chapter_title.text = topicName
         changeCameraDistance()
         loadAnimations()
@@ -240,10 +243,18 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                 if (position == 8 && !isLastTopicAvailable) {
                     lastTopicDialog()
                 } else {
+                    sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                    if(sound){
+                        mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                        mediaPlayer.start()
+                    }
+                    var size:Int = sharedPrefs?.getIntPrefVal(this, TOPIC_SIZE) ?: 0
                     intent = Intent(this, QuizLevelActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    if (position == 9) {
+                    Log.e("quiz sumary","size........"+size)
+                    Log.e("quiz sumary","position........"+position)
+                    if (position == (size - 2)) {
                         intent.putExtra(TOPIC_POSITION, 0)
                     } else {
                         intent.putExtra(TOPIC_POSITION, (position!! + 1))
@@ -300,8 +311,11 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToStartQuiz() {
-        mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-        mediaPlayer.start()
+        sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+        if(sound){
+            mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+            mediaPlayer.start()
+        }
         val intent = Intent(this, StartQuizActivity::class.java)
         intent.putExtra(DYNAMIC_PATH, dPath)
         intent.putExtra(COURSE_ID, courseId)

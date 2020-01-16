@@ -65,6 +65,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443492773909:android:ef4253e16879307f3d9e1c",
+        "android_client_info": {
+          "package_name": "com.yomplex.simple"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443492773909-uso9864f2ouacr2suqbj9tad2ioj9ph0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB20HB1Tp_zRb4en0UxjtHqYgpS-hOFfUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443492773909-uso9864f2ouacr2suqbj9tad2ioj9ph0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "443492773909-h7daakbhc7miht1ni6un7p72r268u6m5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.astramath.10"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

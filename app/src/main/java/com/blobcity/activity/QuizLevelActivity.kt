@@ -24,6 +24,7 @@ import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.Topic
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
@@ -52,7 +53,8 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     var gradeTitle: String?= null
     private lateinit var mediaPlayer: MediaPlayer
     private var branchesItemList:List<BranchesItem>?=null
-
+    var sharedPrefs: SharedPrefs? = null
+    var sound: Boolean = false
     override var layoutID: Int = R.layout.activity_quiz_level
 
     override fun initView() {
@@ -67,7 +69,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         topicName = topic.title
         position = intent.getIntExtra(TOPIC_POSITION, -1)
         val index = topic.index
-
+        sharedPrefs = SharedPrefs()
         courseName = intent.getStringExtra(COURSE_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
 
@@ -301,9 +303,12 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun callIntent(path: String, level: String, complete: String){
+        sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+        if(sound){
+            mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+            mediaPlayer.start()
+        }
 
-        mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-        mediaPlayer.start()
         val intent = Intent(this, StartQuizActivity::class.java)
         intent.putExtra(DYNAMIC_PATH, path)
         intent.putExtra(COURSE_ID, courseId)

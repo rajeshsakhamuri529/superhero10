@@ -20,15 +20,19 @@ import java.util.*
 class NotificationHelper : FirebaseMessagingService() {
 
     val TAG = "Service"
-
+    var sharedPrefs: SharedPrefs? = null
+    var notification: Boolean = true
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
 
-
+        sharedPrefs = SharedPrefs()
         Log.d(TAG, "From: " + remoteMessage!!.from)
         Log.d(TAG, "Notification Message Body: " + remoteMessage.notification?.body!!)
+        notification = sharedPrefs?.getBooleanPrefVal(applicationContext, ConstantPath.NOTIFICATION) ?: true
+        if(notification){
+            sendNotification(remoteMessage)
+        }
 
-        sendNotification(remoteMessage)
         /*val intent = Intent(this@NotificationHelper, GradeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.putExtra("message", remoteMessage.notification!!.body!!)

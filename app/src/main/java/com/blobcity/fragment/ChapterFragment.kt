@@ -32,6 +32,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import com.blobcity.utils.DividerItem
 import com.blobcity.utils.DividerItemDecorations
+import com.blobcity.utils.SharedPrefs
 
 
 class ChapterFragment: Fragment(), TopicClickListener {
@@ -45,6 +46,8 @@ class ChapterFragment: Fragment(), TopicClickListener {
     var localPath: String?= null
     var gradeTitle: String?= null
     private lateinit var mediaPlayer: MediaPlayer
+    var sharedPrefs: SharedPrefs? = null
+    var sound: Boolean = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chapter_layout, container, false)
     }
@@ -53,6 +56,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
         super.onViewCreated(view, savedInstanceState)
         gradeTitle = arguments!!.getString(TITLE_TOPIC)!!
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+        sharedPrefs = SharedPrefs()
         readFileLocally()
         /*val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
         itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, R.drawable.rv_divider)!!)*/
@@ -140,7 +144,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
         val topicResponseModel: TopicResponseModel= gsonFile.fromJson(jsonString, topicType )
 
         branchesItemList = topicResponseModel.branches
-
+        sharedPrefs?.setIntPrefVal(context!!,TOPIC_SIZE, branchesItemList!!.size)
         /*val branchesItemList2 = ArrayList<BranchesItem>()
         val index1 = branchesItemList!![0].topic.index.toString()
         tv_topic_number1.text = index1
@@ -161,8 +165,13 @@ class ChapterFragment: Fragment(), TopicClickListener {
     }
 
     private fun callIntent(topic: Topic, topicId: String, position: Int){
-        mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
-        mediaPlayer.start()
+
+        sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
+        if(sound){
+            mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
+            mediaPlayer.start()
+        }
+
         val intent = Intent(context!!, QuizLevelActivity::class.java)
         intent.putExtra(TOPIC, topic)
         intent.putExtra(COURSE_ID, courseId)
