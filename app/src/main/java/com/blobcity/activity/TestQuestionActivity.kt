@@ -138,6 +138,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mediaPlayer: MediaPlayer
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
+    var isDialogOpen : Boolean = false
     override var layoutID: Int = R.layout.activity_test_question
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -306,11 +307,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val btn_gotIt = dialogView.findViewById(com.blobcity.R.id.btn_gotIt) as Button
 
         webview.settings.javaScriptEnabled = true
-        webview.setVerticalScrollBarEnabled(true)
+      //  webview.setVerticalScrollBarEnabled(true)
         // Enable responsive layout
-        webview.getSettings().setUseWideViewPort(true);
+       // webview.getSettings().setUseWideViewPort(true);
         // Zoom out if the content width is greater than the width of the viewport
-        webview.getSettings().setLoadWithOverviewMode(true);
+        //webview.getSettings().setLoadWithOverviewMode(true);
         val hint = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -350,7 +351,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val iv_heart_1 = dialogView.findViewById(R.id.dialog_iv_life1) as ImageView
         val tv_text = dialogView.findViewById(R.id.tv_msg2) as TextView
         val alertDialog = dialogBuilder.create()
-
+        if(alertDialog.isShowing){
+            alertDialog.dismiss()
+        }
         Log.d("dialog", availableLife.toString() + "!")
         if (totalLife == 3) {
             iv_heart_3.visibility = View.VISIBLE
@@ -499,6 +502,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     }
                 }*/
             }
+            isDialogOpen = false
             alertDialog.dismiss()
         }
 
@@ -1335,7 +1339,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 webViewOpacity.visibility = View.VISIBLE
                 //webView.setBackgroundResource(R.drawable.inactive_answer_overlay)
                 if (path!!.length != 0) {
-                    wrongAnswerAlertDialog()
+                    if(!isDialogOpen){
+                        isDialogOpen = true
+                        wrongAnswerAlertDialog()
+                    }
+
                 }
 
             }
