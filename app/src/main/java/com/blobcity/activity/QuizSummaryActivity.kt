@@ -254,11 +254,11 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     Log.e("quiz sumary","size........"+size)
                     Log.e("quiz sumary","position........"+position)
-                    if (position == (size - 2)) {
+                    /*if (position == (size - 2)) {
                         intent.putExtra(TOPIC_POSITION, 0)
-                    } else {
+                    } else {*/
                         intent.putExtra(TOPIC_POSITION, (position!! + 1))
-                    }
+                   // }
                     intent.putExtra(COURSE_ID, courseId)
                     intent.putExtra(COURSE_NAME, courseName)
                     intent.putExtra(FOLDER_PATH, paths)
@@ -416,7 +416,13 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
                             if (isBasicCompleted && isIntermediateCompleted && isAdvancedCompleted) {
                                 btn_next_quiz.visibility = View.GONE
-                                btn_next_level.visibility = View.VISIBLE
+                                var size:Int = sharedPrefs?.getIntPrefVal(applicationContext, TOPIC_SIZE) ?: 0
+                                if (position == (size - 2)) {
+                                    btn_next_level.visibility = View.GONE
+                                } else {
+                                    btn_next_level.visibility = View.VISIBLE
+                                }
+
                                 loadDatafromDb2()
                             }
                         }

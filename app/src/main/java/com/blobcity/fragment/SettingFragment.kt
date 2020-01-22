@@ -32,6 +32,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
         sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
         cb_sounds_settings.isChecked = sound
         if(sound){
+            sharedPrefs?.setBooleanPrefVal(context!!, SOUNDS, sound)
             sound_state_tv.text = "Sound On"
         }
         else{
@@ -51,6 +52,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
         notification = sharedPrefs?.getBooleanPrefVal(context!!, NOTIFICATION) ?: true
         cb_notifications_settings.isChecked=notification
         if(notification){
+            sharedPrefs?.setBooleanPrefVal(context!!, NOTIFICATION, notification)
             notification_state_tv.text = "Notifications On"
         }
         else{

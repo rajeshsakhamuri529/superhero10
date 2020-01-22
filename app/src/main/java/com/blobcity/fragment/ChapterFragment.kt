@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -23,16 +24,15 @@ import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.Topic
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.chapter_layout.*
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
-import com.blobcity.utils.DividerItem
-import com.blobcity.utils.DividerItemDecorations
-import com.blobcity.utils.SharedPrefs
+import android.widget.Toast
+import com.blobcity.utils.*
+import com.blobcity.utils.Utils.*
 
 
 class ChapterFragment: Fragment(), TopicClickListener {
@@ -45,9 +45,16 @@ class ChapterFragment: Fragment(), TopicClickListener {
     var topicStatusVM: TopicStatusVM?= null
     var localPath: String?= null
     var gradeTitle: String?= null
-    private lateinit var mediaPlayer: MediaPlayer
+
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
+
+    lateinit var  mSoundManager: SoundManager;
+
+
+
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chapter_layout, container, false)
     }
@@ -57,6 +64,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
         gradeTitle = arguments!!.getString(TITLE_TOPIC)!!
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         sharedPrefs = SharedPrefs()
+
         readFileLocally()
         /*val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
         itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, R.drawable.rv_divider)!!)*/
@@ -163,24 +171,60 @@ class ChapterFragment: Fragment(), TopicClickListener {
         /*rl_chapter_one.setOnClickListener(this)
         rl_chapter_two.setOnClickListener(this)*/
     }
-
+    private fun playSomeSound() {
+		if (mSoundManager != null) {
+			mSoundManager.play(R.raw.amount_low);
+            Thread.sleep(100)
+		}
+	}
     private fun callIntent(topic: Topic, topicId: String, position: Int){
 
         sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
+       // mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
+
+        //int maxSimultaneousStreams = 3;
+		mSoundManager = SoundManager(context, 2);
+		mSoundManager.start();
+		mSoundManager.load(R.raw.amount_low);
+        mSoundManager.load(R.raw.amount_low);
+		//mSoundManager.load(R.raw.my_sound_3);
         if(sound){
-            mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
-            mediaPlayer.start()
+            //MusicManager.getInstance().play(context, R.raw.amount_low);
+            // Is the sound loaded already?
+            if (loaded) {
+                soundPool.play(soundID, volume, volume, 1, 0, 1f);
+                Log.e("Test", "Played sound...volume..."+ volume);
+                Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+            }
+           // getPlayer(context).start()
+           // getPlayer(context).setOnCompletionListener {
+            //    Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+             //   mediaPlayer.release()
+              //  Thread.sleep(100)
+                val intent = Intent(context!!, QuizLevelActivity::class.java)
+                intent.putExtra(TOPIC, topic)
+                intent.putExtra(COURSE_ID, courseId)
+                intent.putExtra(COURSE_NAME, courseName)
+                intent.putExtra(TOPIC_ID, topicId)
+                intent.putExtra(TOPIC_POSITION, position)
+                intent.putExtra(FOLDER_PATH, localPath)
+                intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+                startActivity(intent)
+
+           // }
+        }else{
+            val intent = Intent(context!!, QuizLevelActivity::class.java)
+            intent.putExtra(TOPIC, topic)
+            intent.putExtra(COURSE_ID, courseId)
+            intent.putExtra(COURSE_NAME, courseName)
+            intent.putExtra(TOPIC_ID, topicId)
+            intent.putExtra(TOPIC_POSITION, position)
+            intent.putExtra(FOLDER_PATH, localPath)
+            intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+            startActivity(intent)
         }
 
-        val intent = Intent(context!!, QuizLevelActivity::class.java)
-        intent.putExtra(TOPIC, topic)
-        intent.putExtra(COURSE_ID, courseId)
-        intent.putExtra(COURSE_NAME, courseName)
-        intent.putExtra(TOPIC_ID, topicId)
-        intent.putExtra(TOPIC_POSITION, position)
-        intent.putExtra(FOLDER_PATH, localPath)
-        intent.putExtra(TITLE_TOPIC, gradeTitle!!)
-        startActivity(intent)
+
     }
 
     override fun onClick(topic: Topic, topicId: String, position: Int) {

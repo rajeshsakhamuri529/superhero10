@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Environment;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -37,7 +40,37 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import static android.content.Context.AUDIO_SERVICE;
+
 public class Utils {
+
+    public static SoundPool soundPool;
+    public static int soundID;
+    public static boolean loaded = false;
+    public static float volume;
+    public static void getPlayer(Context context){
+        // Set the hardware buttons to control the music
+       // context.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        // Load the sound
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId,
+                                       int status) {
+                loaded = true;
+            }
+        });
+        soundID = soundPool.load(context, R.raw.amount_low, 1);
+
+        // Getting the user sound settings
+        AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
+        float actualVolume = (float) audioManager
+                .getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager
+                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        volume = maxVolume;
+
+    }
 
     public static void transition(Context context, final WebView webView, Boolean isColourGreen){
         int colorFrom = context.getResources().getColor(R.color.answer_bg);

@@ -11,12 +11,11 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.model.TopicOneBasicResponseModel
-import com.blobcity.utils.ConstantPath
+import com.blobcity.utils.*
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.SharedPrefs
-import com.blobcity.utils.Utils
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
@@ -32,6 +31,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
     private lateinit var mediaPlayer: MediaPlayer
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
+    lateinit var  mSoundManager: SoundManager;
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
@@ -51,6 +51,7 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         val rndImageNumber = Random()
         sharedPrefs = SharedPrefs()
         Log.e("path", path)
+
         val gsonFile = Gson()
         val questionResponseModel = gsonFile.fromJson(path, TopicOneBasicResponseModel::class.java)
 
@@ -88,25 +89,55 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         buttonEffect(btn_start)
         btn_start.setOnClickListener {
             sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+          //  mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
             if(sound){
-                mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-                mediaPlayer.start()
+                if (Utils.loaded) {
+                    Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound");
+                    Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
+                }
+              //  playSomeSound()
+               //Utils.getPlayer(this).start()
+               // Utils.getPlayer(this).setOnCompletionListener {
+
+                   // mediaPlayer.release()
+               //     Thread.sleep(100)
+                    val intent = Intent(this, TestQuestionActivity::class.java)
+                    intent.putExtra(DYNAMIC_PATH, path)
+                    intent.putExtra(COURSE_ID, courseId)
+                    intent.putExtra(TOPIC_ID, topicId)
+                    intent.putExtra(COURSE_NAME, courseName)
+                    intent.putExtra(TOPIC_NAME, topicName)
+                    intent.putExtra(TOPIC_LEVEL, topicLevel)
+                    intent.putExtra(LEVEL_COMPLETED, complete)
+                    intent.putExtra(TOPIC_POSITION, position)
+                    intent.putExtra(FOLDER_PATH, paths)
+                    intent.putExtra(FOLDER_NAME, folderName)
+                    intent.putExtra(TITLE_TOPIC, gradeTitle)
+                    intent.putExtra(CARD_NO, readyCardNumber)
+                    startActivity(intent)
+                    finish()
+
+             //   }
+            } else {
+                val intent = Intent(this, TestQuestionActivity::class.java)
+                intent.putExtra(DYNAMIC_PATH, path)
+                intent.putExtra(COURSE_ID, courseId)
+                intent.putExtra(TOPIC_ID, topicId)
+                intent.putExtra(COURSE_NAME, courseName)
+                intent.putExtra(TOPIC_NAME, topicName)
+                intent.putExtra(TOPIC_LEVEL, topicLevel)
+                intent.putExtra(LEVEL_COMPLETED, complete)
+                intent.putExtra(TOPIC_POSITION, position)
+                intent.putExtra(FOLDER_PATH, paths)
+                intent.putExtra(FOLDER_NAME, folderName)
+                intent.putExtra(TITLE_TOPIC, gradeTitle)
+                intent.putExtra(CARD_NO, readyCardNumber)
+                startActivity(intent)
+                finish()
             }
-            val intent = Intent(this, TestQuestionActivity::class.java)
-            intent.putExtra(DYNAMIC_PATH, path)
-            intent.putExtra(COURSE_ID, courseId)
-            intent.putExtra(TOPIC_ID, topicId)
-            intent.putExtra(COURSE_NAME, courseName)
-            intent.putExtra(TOPIC_NAME, topicName)
-            intent.putExtra(TOPIC_LEVEL, topicLevel)
-            intent.putExtra(LEVEL_COMPLETED, complete)
-            intent.putExtra(TOPIC_POSITION, position)
-            intent.putExtra(FOLDER_PATH, paths)
-            intent.putExtra(FOLDER_NAME, folderName)
-            intent.putExtra(TITLE_TOPIC, gradeTitle)
-            intent.putExtra(CARD_NO, readyCardNumber)
-            startActivity(intent)
-            finish()
+
+
         }
         iv_cancel.setOnClickListener(this)
 
@@ -115,6 +146,27 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         val displayWidth=displayMetrics.widthPixels
         iv_lock_card.layoutParams.width=((0.7*displayWidth).toInt())
 
+    }
+
+    private fun playSomeSound() {
+        if (mSoundManager != null) {
+            mSoundManager.play(R.raw.amount_low);
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (mSoundManager != null) {
+            mSoundManager.cancel();
+            // mSoundManager = null;
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        mSoundManager = SoundManager(this, 2);
+        mSoundManager.start();
+        mSoundManager.load(R.raw.amount_low);
+        mSoundManager.load(R.raw.amount_low);
     }
     fun buttonEffect(button: View) {
         button.setOnTouchListener { v, event ->

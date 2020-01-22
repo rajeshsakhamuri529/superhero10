@@ -12,6 +12,7 @@ import com.blobcity.R
 import com.blobcity.fragment.ChapterFragment
 import com.blobcity.fragment.SettingFragment
 import com.blobcity.utils.ConstantPath.TITLE_TOPIC
+import com.blobcity.utils.Utils.getPlayer
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.io.File
 import java.sql.Time
@@ -29,6 +30,7 @@ class DashBoardActivity : BaseActivity(),
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gradeTitle = "GRADE 6"
+        getPlayer(this)
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
         loadFragment(ChapterFragment())
         navigation.setOnNavigationItemSelectedListener(this)

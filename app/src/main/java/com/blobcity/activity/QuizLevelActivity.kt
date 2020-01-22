@@ -24,7 +24,10 @@ import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.Topic
 import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath.*
+import com.blobcity.utils.MusicManager
 import com.blobcity.utils.SharedPrefs
+import com.blobcity.utils.SoundManager
+import com.blobcity.utils.Utils
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
@@ -55,6 +58,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     private var branchesItemList:List<BranchesItem>?=null
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
+    lateinit var  mSoundManager: SoundManager;
     override var layoutID: Int = R.layout.activity_quiz_level
 
     override fun initView() {
@@ -302,35 +306,75 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
 
 
+
     private fun callIntent(path: String, level: String, complete: String){
         sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+       // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
         if(sound){
-            mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-            mediaPlayer.start()
+            if (Utils.loaded) {
+                Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                Log.e("Test", "Played sound");
+                Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
+            }
+            //playSomeSound()
+           // Utils.getPlayer(this).start()
+           // Utils.getPlayer(this).setOnCompletionListener {
+              //  Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+             //   mediaPlayer.release()
+           //     Thread.sleep(100)
+                val intent = Intent(this, StartQuizActivity::class.java)
+                intent.putExtra(DYNAMIC_PATH, path)
+                intent.putExtra(COURSE_ID, courseId)
+                intent.putExtra(TOPIC_ID, topicId)
+                intent.putExtra(COURSE_NAME, courseName)
+                intent.putExtra(TOPIC_NAME, topicName)
+                intent.putExtra(TOPIC_LEVEL, level)
+                intent.putExtra(LEVEL_COMPLETED, complete)
+                intent.putExtra(TOPIC_POSITION, position)
+                intent.putExtra(FOLDER_PATH, paths)
+                intent.putExtra(FOLDER_NAME, folderName)
+                intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+                startActivity(intent)
+
+          //  }
+        }else{
+            val intent = Intent(this, StartQuizActivity::class.java)
+            intent.putExtra(DYNAMIC_PATH, path)
+            intent.putExtra(COURSE_ID, courseId)
+            intent.putExtra(TOPIC_ID, topicId)
+            intent.putExtra(COURSE_NAME, courseName)
+            intent.putExtra(TOPIC_NAME, topicName)
+            intent.putExtra(TOPIC_LEVEL, level)
+            intent.putExtra(LEVEL_COMPLETED, complete)
+            intent.putExtra(TOPIC_POSITION, position)
+            intent.putExtra(FOLDER_PATH, paths)
+            intent.putExtra(FOLDER_NAME, folderName)
+            intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+            startActivity(intent)
         }
 
-        val intent = Intent(this, StartQuizActivity::class.java)
-        intent.putExtra(DYNAMIC_PATH, path)
-        intent.putExtra(COURSE_ID, courseId)
-        intent.putExtra(TOPIC_ID, topicId)
-        intent.putExtra(COURSE_NAME, courseName)
-        intent.putExtra(TOPIC_NAME, topicName)
-        intent.putExtra(TOPIC_LEVEL, level)
-        intent.putExtra(LEVEL_COMPLETED, complete)
-        intent.putExtra(TOPIC_POSITION, position)
-        intent.putExtra(FOLDER_PATH, paths)
-        intent.putExtra(FOLDER_NAME, folderName)
-        intent.putExtra(TITLE_TOPIC, gradeTitle!!)
-        startActivity(intent)
+
 
     }
+    private fun playSomeSound() {
+        if (mSoundManager != null) {
+            mSoundManager.play(R.raw.amount_low);
+        }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        if (mSoundManager != null) {
+            mSoundManager.cancel();
+           // mSoundManager = null;
+        }
+    }
     override fun onResume() {
         super.onResume()
-        /*if(mediaPlayer.isPlaying){
-            mediaPlayer.release()
-            mediaPlayer.reset()
-        }*/
+        mSoundManager = SoundManager(this, 2);
+        mSoundManager.start();
+        mSoundManager.load(R.raw.amount_low);
+        mSoundManager.load(R.raw.amount_low);
     }
     override fun onDestroy() {
         super.onDestroy()

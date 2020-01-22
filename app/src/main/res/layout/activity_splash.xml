@@ -9,14 +9,37 @@
 
         tools:context=".activity.SplashActivity">
 
-    <View
-        android:id="@+id/view1"
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
-        android:background="#A371D8"
 
 
-        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="2"
+        android:visibility="visible">
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="#A371D8"
+            android:layout_weight="1"
+
+            />
+
+        <View
+            android:id="@+id/view2"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="#9638FB"
+            android:layout_weight="1"
+
+            />
+
+    </LinearLayout>
+
+
 
     <ImageView
         android:id="@+id/imageView2"
@@ -28,14 +51,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <View
-        android:id="@+id/view2"
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
-        android:background="#9638FB"
-        android:layout_alignParentBottom="true"
 
-         />
 
     <!--<ImageView
             android:id="@+id/imageView2"
