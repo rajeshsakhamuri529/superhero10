@@ -3,8 +3,6 @@ package com.blobcity.fragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.media.MediaPlayer
-import android.media.SoundPool
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -29,8 +27,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.chapter_layout.*
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
-import android.widget.Toast
+import com.blobcity.activity.SignInActivity
 import com.blobcity.utils.*
 import com.blobcity.utils.Utils.*
 
@@ -50,7 +47,6 @@ class ChapterFragment: Fragment(), TopicClickListener {
     var sound: Boolean = false
 
     lateinit var  mSoundManager: SoundManager;
-
 
 
 
@@ -144,6 +140,8 @@ class ChapterFragment: Fragment(), TopicClickListener {
             .fromJson(courseJsonString, courseType)
         courseId = courseResponseModel[0].id
         courseName = courseResponseModel[0].syllabus.title
+        tv_class.text = courseName
+        tv_class_board.text = courseResponseModel[0].syllabus.displayTitle
         localPath = "$localBlobcityPath$courseName/"
        // val jsonString = readFromFile(localPath +"topic.json")
         val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( localPath + "topic.json")
@@ -179,28 +177,39 @@ class ChapterFragment: Fragment(), TopicClickListener {
 	}
     private fun callIntent(topic: Topic, topicId: String, position: Int){
 
-        sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
-       // mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
+        if(position >  1){
+            val intent = Intent(context!!, SignInActivity::class.java)
+            intent.putExtra(TOPIC, topic)
+            intent.putExtra(COURSE_ID, courseId)
+            intent.putExtra(COURSE_NAME, courseName)
+            intent.putExtra(TOPIC_ID, topicId)
+            intent.putExtra(TOPIC_POSITION, position)
+            intent.putExtra(FOLDER_PATH, localPath)
+            intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+            startActivity(intent)
+        }else{
+            sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
+            // mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
 
-        //int maxSimultaneousStreams = 3;
-		mSoundManager = SoundManager(context, 2);
-		mSoundManager.start();
-		mSoundManager.load(R.raw.amount_low);
-        mSoundManager.load(R.raw.amount_low);
-		//mSoundManager.load(R.raw.my_sound_3);
-        if(sound){
-            //MusicManager.getInstance().play(context, R.raw.amount_low);
-            // Is the sound loaded already?
-            if (loaded) {
-                soundPool.play(soundID, volume, volume, 1, 0, 1f);
-                Log.e("Test", "Played sound...volume..."+ volume);
-                Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
-            }
-           // getPlayer(context).start()
-           // getPlayer(context).setOnCompletionListener {
-            //    Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
-             //   mediaPlayer.release()
-              //  Thread.sleep(100)
+            //int maxSimultaneousStreams = 3;
+            mSoundManager = SoundManager(context, 2);
+            mSoundManager.start();
+            mSoundManager.load(R.raw.amount_low);
+            mSoundManager.load(R.raw.amount_low);
+            //mSoundManager.load(R.raw.my_sound_3);
+            if(sound){
+                //MusicManager.getInstance().play(context, R.raw.amount_low);
+                // Is the sound loaded already?
+                if (loaded) {
+                    soundPool.play(soundID, volume, volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound...volume..."+ volume);
+                    //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                }
+                // getPlayer(context).start()
+                // getPlayer(context).setOnCompletionListener {
+                //    Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                //   mediaPlayer.release()
+                //  Thread.sleep(100)
                 val intent = Intent(context!!, QuizLevelActivity::class.java)
                 intent.putExtra(TOPIC, topic)
                 intent.putExtra(COURSE_ID, courseId)
@@ -211,18 +220,23 @@ class ChapterFragment: Fragment(), TopicClickListener {
                 intent.putExtra(TITLE_TOPIC, gradeTitle!!)
                 startActivity(intent)
 
-           // }
-        }else{
-            val intent = Intent(context!!, QuizLevelActivity::class.java)
-            intent.putExtra(TOPIC, topic)
-            intent.putExtra(COURSE_ID, courseId)
-            intent.putExtra(COURSE_NAME, courseName)
-            intent.putExtra(TOPIC_ID, topicId)
-            intent.putExtra(TOPIC_POSITION, position)
-            intent.putExtra(FOLDER_PATH, localPath)
-            intent.putExtra(TITLE_TOPIC, gradeTitle!!)
-            startActivity(intent)
+                // }
+            }else{
+                val intent = Intent(context!!, QuizLevelActivity::class.java)
+                intent.putExtra(TOPIC, topic)
+                intent.putExtra(COURSE_ID, courseId)
+                intent.putExtra(COURSE_NAME, courseName)
+                intent.putExtra(TOPIC_ID, topicId)
+                intent.putExtra(TOPIC_POSITION, position)
+                intent.putExtra(FOLDER_PATH, localPath)
+                intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+                startActivity(intent)
+            }
         }
+
+
+
+
 
 
     }

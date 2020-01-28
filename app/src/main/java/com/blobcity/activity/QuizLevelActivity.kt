@@ -314,7 +314,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
             if (Utils.loaded) {
                 Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
                 Log.e("Test", "Played sound");
-                Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
+               // Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
             }
             //playSomeSound()
            // Utils.getPlayer(this).start()

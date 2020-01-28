@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ready_summary_background"
+    tools:context="com.blobcity.activity.SignInActivity">
+
+    <ImageView
+        android:id="@+id/iv_cancel_quiz_summary"
+        android:layout_width="@dimen/_20sdp"
+        android:layout_height="@dimen/_20sdp"
+        android:src="@drawable/ic_cancel_white_24dp"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginTop="@dimen/_15sdp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/quicksand_medium"
+        android:textColor="@color/topic_text"
+        android:id="@+id/tv_chapter_title"
+        android:textSize="@dimen/_17ssp"
+        android:text="Unlock"
+        android:gravity="center"
+        android:paddingRight="@dimen/_5sdp"
+        android:paddingLeft="@dimen/_5sdp"
+        android:layout_marginStart="@dimen/_35sdp"
+        android:layout_marginEnd="@dimen/_35sdp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_15sdp"/>
+
+
+    <TextView
+        android:id="@+id/tv_topic_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quiz"
+        android:layout_marginTop="@dimen/_12sdp"
+        android:layout_below="@id/tv_chapter_title"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/_16ssp"
+        android:textAllCaps="true"
+        android:textColor="@color/quiz_text"
+        android:fontFamily="@font/quicksand_bold"/>
+
+
+
+    <RelativeLayout
+        android:id="@+id/signWithGoogleRLID"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="@dimen/_15sdp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/play_again"
+        android:elevation="5dp">
+
+
+        <TextView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_15sdp"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:background="@drawable/google_login" />
+
+        <TextView
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textSize="@dimen/_12ssp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:elevation="5dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="SIGN IN"
+            android:textAllCaps="true"
+            android:textStyle="bold"
+            android:textColor="@color/play_again_text"
+            android:fontFamily="@font/quicksand_bold" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

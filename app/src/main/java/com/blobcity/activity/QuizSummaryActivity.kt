@@ -3,14 +3,12 @@ package com.blobcity.activity
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Handler
@@ -22,7 +20,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
@@ -33,16 +30,13 @@ import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.SharedPrefs
-import com.blobcity.utils.Utils.*
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.activity_quiz_level.*
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
 import kotlinx.android.synthetic.main.activity_quiz_summary.tv_chapter_title
 import kotlinx.android.synthetic.main.activity_quiz_summary.tv_quiz_level
-import kotlinx.android.synthetic.main.activity_start_quiz.*
 import java.util.*
 import kotlin.collections.ArrayList
 

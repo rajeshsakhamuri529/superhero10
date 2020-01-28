@@ -40,6 +40,25 @@ class ChaptersAdapter(val context: Context,
     override fun onBindViewHolder(holder: ChaptersViewHolder, position: Int) {
 
 
+        if(position == 1){
+            holder.lockLayout.visibility = View.VISIBLE
+        }else{
+            if(position > 1){
+                holder.topLayout.alpha = 0.4f
+                //holder.tv_topic_name.textColors.withAlpha(100)
+               // holder.tv_topic_number.alpha = 0.0f
+               // holder.tv_topic_name.visibility = View.GONE
+                holder.iv_progress1.visibility = View.INVISIBLE
+                holder.iv_progress2.visibility = View.INVISIBLE
+                holder.iv_progress3.visibility = View.INVISIBLE
+            }else{
+                holder.tv_topic_number.alpha = 1.0f
+                holder.iv_progress1.visibility = View.VISIBLE
+                holder.iv_progress2.visibility = View.VISIBLE
+                holder.iv_progress3.visibility = View.VISIBLE
+            }
+            holder.lockLayout.visibility = View.GONE
+        }
 
         var index = branchesItemList[position].topic.index.toString()
         Log.d("chapter adapter",index);
@@ -154,6 +173,10 @@ class ChaptersAdapter(val context: Context,
         val iv_progress1 = itemView.iv_progress_icon1
         val iv_progress2 = itemView.iv_progress_icon2
         val iv_progress3 = itemView.iv_progress_icon3
+
+        val topLayout = itemView.top_layout
+        val lockLayout = itemView.lock_layout
+
     }
 
     private fun lastTopicDialog() {
