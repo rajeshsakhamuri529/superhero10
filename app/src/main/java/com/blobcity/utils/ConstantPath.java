@@ -26,6 +26,7 @@ public class ConstantPath {
     public static String BRANCH_LIST = "branch_list";
     public static final String PREF_UNIQUE_ID = "PREF_UNIQUE_ID";
     public static String SOUNDS = "sounds";
+    public static String ISNOTLOGIN = "isnotlogin";
     public static String NOTIFICATION = "notification";
     public static String TOPIC_SIZE = "topic_list_size";
     public static String REVIEW_MODEL = "review_model";

@@ -30,6 +30,7 @@ import com.blobcity.model.TopicResponseModel
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.*
 import com.blobcity.utils.SharedPrefs
+import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
@@ -239,8 +240,13 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
                     if(sound){
-                        mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-                        mediaPlayer.start()
+                        /*mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                        mediaPlayer.start()*/
+                        if (Utils.loaded) {
+                            Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                            Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                            //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                        }
                     }
                     var size:Int = sharedPrefs?.getIntPrefVal(this, TOPIC_SIZE) ?: 0
                     intent = Intent(this, QuizLevelActivity::class.java)
@@ -307,8 +313,13 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     private fun navigateToStartQuiz() {
         sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
         if(sound){
-            mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-            mediaPlayer.start()
+           /* mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+            mediaPlayer.start()*/
+            if (Utils.loaded) {
+                Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+            }
         }
         val intent = Intent(this, StartQuizActivity::class.java)
         intent.putExtra(DYNAMIC_PATH, dPath)

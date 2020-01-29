@@ -48,9 +48,6 @@ class ChapterFragment: Fragment(), TopicClickListener {
 
     lateinit var  mSoundManager: SoundManager;
 
-
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chapter_layout, container, false)
     }
@@ -175,10 +172,30 @@ class ChapterFragment: Fragment(), TopicClickListener {
             Thread.sleep(100)
 		}
 	}
-    private fun callIntent(topic: Topic, topicId: String, position: Int){
+    private fun withLogin(topic: Topic, topicId: String, position: Int){
+        sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
+        // mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
 
-        if(position >  1){
-            val intent = Intent(context!!, SignInActivity::class.java)
+        //int maxSimultaneousStreams = 3;
+        /*mSoundManager = SoundManager(context, 5);
+        mSoundManager.start();
+        mSoundManager.load(R.raw.select_high_correct);
+        mSoundManager.load(R.raw.select_high_correct);*/
+        //mSoundManager.load(R.raw.my_sound_3);
+        if(sound){
+            //MusicManager.getInstance().play(context, R.raw.amount_low);
+            // Is the sound loaded already?
+            if (loaded) {
+                soundPool.play(soundID, volume, volume, 1, 0, 1f);
+                Log.e("Test", "Played sound...volume..."+ volume);
+                //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+            }
+            // getPlayer(context).start()
+            // getPlayer(context).setOnCompletionListener {
+            //    Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+            //   mediaPlayer.release()
+            //  Thread.sleep(100)
+            val intent = Intent(context!!, QuizLevelActivity::class.java)
             intent.putExtra(TOPIC, topic)
             intent.putExtra(COURSE_ID, courseId)
             intent.putExtra(COURSE_NAME, courseName)
@@ -187,30 +204,27 @@ class ChapterFragment: Fragment(), TopicClickListener {
             intent.putExtra(FOLDER_PATH, localPath)
             intent.putExtra(TITLE_TOPIC, gradeTitle!!)
             startActivity(intent)
+
+            // }
         }else{
-            sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
-            // mediaPlayer = MediaPlayer.create(activity,R.raw.amount_low)
+            val intent = Intent(context!!, QuizLevelActivity::class.java)
+            intent.putExtra(TOPIC, topic)
+            intent.putExtra(COURSE_ID, courseId)
+            intent.putExtra(COURSE_NAME, courseName)
+            intent.putExtra(TOPIC_ID, topicId)
+            intent.putExtra(TOPIC_POSITION, position)
+            intent.putExtra(FOLDER_PATH, localPath)
+            intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+            startActivity(intent)
+        }
+    }
+    private fun callIntent(topic: Topic, topicId: String, position: Int){
 
-            //int maxSimultaneousStreams = 3;
-            mSoundManager = SoundManager(context, 2);
-            mSoundManager.start();
-            mSoundManager.load(R.raw.amount_low);
-            mSoundManager.load(R.raw.amount_low);
-            //mSoundManager.load(R.raw.my_sound_3);
-            if(sound){
-                //MusicManager.getInstance().play(context, R.raw.amount_low);
-                // Is the sound loaded already?
-                if (loaded) {
-                    soundPool.play(soundID, volume, volume, 1, 0, 1f);
-                    Log.e("Test", "Played sound...volume..."+ volume);
-                    //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
-                }
-                // getPlayer(context).start()
-                // getPlayer(context).setOnCompletionListener {
-                //    Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
-                //   mediaPlayer.release()
-                //  Thread.sleep(100)
-                val intent = Intent(context!!, QuizLevelActivity::class.java)
+        if(!(sharedPrefs?.getBooleanPrefVal(context!!, ISNOTLOGIN) ?: true)){
+            withLogin(topic, topicId, position)
+        }else{
+            if(position >  1){
+                val intent = Intent(context!!, SignInActivity::class.java)
                 intent.putExtra(TOPIC, topic)
                 intent.putExtra(COURSE_ID, courseId)
                 intent.putExtra(COURSE_NAME, courseName)
@@ -219,25 +233,10 @@ class ChapterFragment: Fragment(), TopicClickListener {
                 intent.putExtra(FOLDER_PATH, localPath)
                 intent.putExtra(TITLE_TOPIC, gradeTitle!!)
                 startActivity(intent)
-
-                // }
             }else{
-                val intent = Intent(context!!, QuizLevelActivity::class.java)
-                intent.putExtra(TOPIC, topic)
-                intent.putExtra(COURSE_ID, courseId)
-                intent.putExtra(COURSE_NAME, courseName)
-                intent.putExtra(TOPIC_ID, topicId)
-                intent.putExtra(TOPIC_POSITION, position)
-                intent.putExtra(FOLDER_PATH, localPath)
-                intent.putExtra(TITLE_TOPIC, gradeTitle!!)
-                startActivity(intent)
+                withLogin(topic, topicId, position)
             }
         }
-
-
-
-
-
 
     }
 

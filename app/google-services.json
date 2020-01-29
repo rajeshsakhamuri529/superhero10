@@ -75,6 +75,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "443492773909-ph78pjd65s62oipu8flff8csga68jt8o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yomplex.simple",
+            "certificate_hash": "03c4fbaf65ac3199416a019988cd1b55be746bc6"
+          }
+        },
+        {
+          "client_id": "443492773909-4vb2742g6s174kronhcfattecrji26e4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yomplex.simple",
+            "certificate_hash": "428408b5910de51061cf774a9bb4e9bf728ada2f"
+          }
+        },
+        {
+          "client_id": "443492773909-avtfkhl6rsh3l19129bofqiccisni0ai.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yomplex.simple",
+            "certificate_hash": "b7ec2a4997c10837475842d5243d577c2f783162"
+          }
+        },
+        {
           "client_id": "443492773909-uso9864f2ouacr2suqbj9tad2ioj9ph0.apps.googleusercontent.com",
           "client_type": 3
         }

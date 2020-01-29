@@ -9,6 +9,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -52,7 +54,7 @@ public class Utils {
         // Set the hardware buttons to control the music
        // context.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         // Load the sound
-        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
+        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 1);
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId,
@@ -68,8 +70,15 @@ public class Utils {
                 .getStreamVolume(AudioManager.STREAM_MUSIC);
         float maxVolume = (float) audioManager
                 .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        volume = maxVolume;
+        volume = actualVolume/maxVolume;
 
+    }
+    public static boolean isOnline(Context _Context) {
+        ConnectivityManager cm = (ConnectivityManager) _Context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = null;
+        if (cm != null)
+            netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
     public static void transition(Context context, final WebView webView, Boolean isColourGreen){

@@ -75,21 +75,27 @@
     </RelativeLayout>
 
 
-
+<RelativeLayout
+    android:id="@+id/lock_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/top_layout"
+    android:visibility="visible"
+    android:background="@color/quiz_background">
 
     <RelativeLayout
-        android:id="@+id/lock_layout"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top_layout"
+
         android:visibility="visible"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp">
 
         <ImageView
             android:id="@+id/lock"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:tint="@color/grey"
             android:src="@drawable/lock"
             android:layout_centerVertical="true"
@@ -100,7 +106,7 @@
             android:id="@+id/lock_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Below topics are locked"
+            android:text="Topics to unlock"
             android:layout_centerVertical="true"
             android:textColor="@color/dark_purple"
             android:layout_marginLeft="10dp"
@@ -111,6 +117,10 @@
             android:layout_marginRight="5dp"/>
 
     </RelativeLayout>
+
+</RelativeLayout>
+
+
 
 
 

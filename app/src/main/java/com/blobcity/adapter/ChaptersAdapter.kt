@@ -16,6 +16,8 @@ import android.widget.TextView
 import com.blobcity.R
 import com.blobcity.interfaces.TopicClickListener
 import com.blobcity.model.BranchesItem
+import com.blobcity.utils.ConstantPath
+import com.blobcity.utils.SharedPrefs
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.topics_single_layout.view.*
 
@@ -38,27 +40,45 @@ class ChaptersAdapter(val context: Context,
     }
 
     override fun onBindViewHolder(holder: ChaptersViewHolder, position: Int) {
+       // var sharedPrefs: SharedPrefs? = null
+        var sharedPrefs = SharedPrefs()
 
-
-        if(position == 1){
-            holder.lockLayout.visibility = View.VISIBLE
-        }else{
-            if(position > 1){
-                holder.topLayout.alpha = 0.4f
-                //holder.tv_topic_name.textColors.withAlpha(100)
-               // holder.tv_topic_number.alpha = 0.0f
-               // holder.tv_topic_name.visibility = View.GONE
-                holder.iv_progress1.visibility = View.INVISIBLE
-                holder.iv_progress2.visibility = View.INVISIBLE
-                holder.iv_progress3.visibility = View.INVISIBLE
-            }else{
-                holder.tv_topic_number.alpha = 1.0f
-                holder.iv_progress1.visibility = View.VISIBLE
-                holder.iv_progress2.visibility = View.VISIBLE
-                holder.iv_progress3.visibility = View.VISIBLE
-            }
+        Log.e("chapters adapter","....prefs value..."+(sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: false));
+        if(!(sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: false)){
             holder.lockLayout.visibility = View.GONE
+            holder.topLayout.alpha = 1.0f
+            holder.iv_progress1.visibility = View.VISIBLE
+            holder.iv_progress2.visibility = View.VISIBLE
+            holder.iv_progress3.visibility = View.VISIBLE
+        }else{
+            if(position == 1){
+                holder.lockLayout.visibility = View.VISIBLE
+                holder.lockLayout.alpha = 0.6f
+                holder.lock.alpha = 0.6f
+                holder.lock_txt.alpha = 0.6f
+            }else{
+                if(position > 1){
+                    holder.topLayout.alpha = 0.4f
+
+                    //holder.tv_topic_name.textColors.withAlpha(100)
+                    // holder.tv_topic_number.alpha = 0.0f
+                    // holder.tv_topic_name.visibility = View.GONE
+                    holder.iv_progress1.visibility = View.INVISIBLE
+                    holder.iv_progress2.visibility = View.INVISIBLE
+                    holder.iv_progress3.visibility = View.INVISIBLE
+                }else{
+                    holder.topLayout.alpha = 1.0f
+                    holder.iv_progress1.visibility = View.VISIBLE
+                    holder.iv_progress2.visibility = View.VISIBLE
+                    holder.iv_progress3.visibility = View.VISIBLE
+                }
+                holder.lockLayout.visibility = View.GONE
+            }
         }
+
+
+
+
 
         var index = branchesItemList[position].topic.index.toString()
         Log.d("chapter adapter",index);
@@ -110,7 +130,15 @@ class ChaptersAdapter(val context: Context,
                 .load(R.drawable.progress_icon_grey)
                 .into(holder.iv_progress3)
         }
-        holder.singleTopic.setOnClickListener {
+        holder.lockLayout.setOnClickListener {
+            topicClickListener.onClick(
+                branchesItemList[position].topic,
+                branchesItemList[position].id, position+1
+            )
+        }
+
+
+        holder.topLayout.setOnClickListener {
             if (position == branchesItemList.size-1) {
                 if (isLastTopicAvailable) {
                     topicClickListener.onClick(
@@ -176,6 +204,9 @@ class ChaptersAdapter(val context: Context,
 
         val topLayout = itemView.top_layout
         val lockLayout = itemView.lock_layout
+
+        val lock = itemView.lock
+        val lock_txt = itemView.lock_txt
 
     }
 

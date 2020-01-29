@@ -8,7 +8,9 @@ import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
+import android.media.AudioManager
 import android.media.MediaPlayer
+import android.media.SoundPool
 import android.os.Build
 import android.os.Handler
 import android.support.annotation.RequiresApi
@@ -276,8 +278,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_next -> {
                 sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
                 if(sound){
-                    mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-                    mediaPlayer.start()
+                   // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                  //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
                 }
                 onBtnNext()
             }
@@ -285,8 +292,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             R.id.btn_hint -> {
                 sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
                 if(sound){
-                    mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-                    mediaPlayer.start()
+                   // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                   // mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
                 }
                 hintAlertDialog()
             }
@@ -580,11 +592,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }
         if (questionResponseModel.questionCount > 4) {
             iv_life3.visibility = View.VISIBLE
-            availableLife = 3
+            availableLife = 0
             totalLife = 3
         } else {
             iv_life3.visibility = View.GONE
-            availableLife = 2
+            availableLife = 0
             totalLife = 2
         }
         createPath()
@@ -1099,9 +1111,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         isAnswerCorrect = false
                         checkWebView(optionClicked, isAnswerCorrect)
                         isDbCorrectAnswer = "false"
-                        //btn_hint!!.visibility = View.VISIBLE
-                        //tv_try_again!!.visibility = View.VISIBLE
-                        availableLife--
+
+                     //   availableLife--
                         checkLife(availableLife)
 
                     }
@@ -1129,11 +1140,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                             isDbCorrectAnswer = "false"
                             checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
-                            //btn_hint!!.visibility = View.VISIBLE
-                            //tv_try_again!!.visibility = View.VISIBLE
-                            availableLife--
+
+                          //  availableLife--
                             checkLife(availableLife)
-                            //wrongAnswerAlertDialog()
+
                         }
                     } else {
                         if (answer.equals(questionsItem!!.get(0).text, true)) {
@@ -1157,11 +1167,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                             isDbCorrectAnswer = "false"
                             checkWebView(optionClicked, isAnswerCorrect)
                             dbAnswer = answer
-                            //btn_hint!!.visibility = View.VISIBLE
-                            //tv_try_again!!.visibility = View.VISIBLE
-                            availableLife--
+
+                           // availableLife--
                             checkLife(availableLife)
-                            //wrongAnswerAlertDialog()
+
                         }
                     }
                 }
@@ -1179,8 +1188,26 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (isRightAnswer) {
             sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
             if(sound){
-                mediaPlayer = MediaPlayer.create(this,R.raw.select_high_correct)
-                mediaPlayer.start()
+                var soundID: Int = 0
+                var volume: Float = 1.0f
+                //mediaPlayer = MediaPlayer.create(this,R.raw.select_high_correct)
+                //mediaPlayer.start()
+                var soundPool = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
+                soundPool.setOnLoadCompleteListener(SoundPool.OnLoadCompleteListener { soundPool, sampleId, status ->
+                    //loaded = true
+                    soundPool.play(soundID, volume, volume, 1, 0, 1f);
+                })
+                soundID = soundPool.load(this, R.raw.select_high_correct, 1)
+
+                // Getting the user sound settings
+                val audioManager = this.getSystemService(AUDIO_SERVICE) as AudioManager
+                val actualVolume = audioManager
+                    .getStreamVolume(AudioManager.STREAM_MUSIC).toFloat()
+                val maxVolume = audioManager
+                    .getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
+                volume = actualVolume / maxVolume
+
+
             }
             if (optionClicked == 0) {
                 optionsWithAnswer!!.option = 0
@@ -1209,9 +1236,26 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             setInactiveBackground()
         } else {
             sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+            var soundID: Int = 0
+            var volume: Float = 1.0f
             if(sound){
-                mediaPlayer = MediaPlayer.create(this,R.raw.bounce_high_wrong)
-                mediaPlayer.start()
+               // mediaPlayer = MediaPlayer.create(this,R.raw.bounce_high_wrong)
+               // mediaPlayer.start()
+                var soundPool = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
+                soundPool.setOnLoadCompleteListener(SoundPool.OnLoadCompleteListener { soundPool, sampleId, status ->
+                    //loaded = true
+                    soundPool.play(soundID, volume, volume, 1, 0, 1f);
+                })
+                soundID = soundPool.load(this, R.raw.bounce_high_wrong, 1)
+
+                // Getting the user sound settings
+                val audioManager = this.getSystemService(AUDIO_SERVICE) as AudioManager
+                val actualVolume = audioManager
+                    .getStreamVolume(AudioManager.STREAM_MUSIC).toFloat()
+                val maxVolume = audioManager
+                    .getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
+                volume = actualVolume / maxVolume
+
             }
             if (optionClicked == 0) {
                 isOption1Wrong = true
