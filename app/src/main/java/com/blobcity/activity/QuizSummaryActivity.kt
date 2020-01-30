@@ -239,7 +239,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     lastTopicDialog()
                 } else {
                     sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
-                    if(sound){
+                    if(!sound){
                         /*mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
                         mediaPlayer.start()*/
                         if (Utils.loaded) {
@@ -312,7 +312,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private fun navigateToStartQuiz() {
         sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
-        if(sound){
+        if(!sound){
            /* mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
             mediaPlayer.start()*/
             if (Utils.loaded) {

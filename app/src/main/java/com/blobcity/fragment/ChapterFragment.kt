@@ -182,7 +182,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
         mSoundManager.load(R.raw.select_high_correct);
         mSoundManager.load(R.raw.select_high_correct);*/
         //mSoundManager.load(R.raw.my_sound_3);
-        if(sound){
+        if(!sound){
             //MusicManager.getInstance().play(context, R.raw.amount_low);
             // Is the sound loaded already?
             if (loaded) {
@@ -220,7 +220,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
     }
     private fun callIntent(topic: Topic, topicId: String, position: Int){
 
-        if(!(sharedPrefs?.getBooleanPrefVal(context!!, ISNOTLOGIN) ?: true)){
+        if((sharedPrefs?.getBooleanPrefVal(context!!, ISNOTLOGIN) ?: true)){
             withLogin(topic, topicId, position)
         }else{
             if(position >  1){

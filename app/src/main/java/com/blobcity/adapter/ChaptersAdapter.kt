@@ -44,7 +44,7 @@ class ChaptersAdapter(val context: Context,
         var sharedPrefs = SharedPrefs()
 
         Log.e("chapters adapter","....prefs value..."+(sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: false));
-        if(!(sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: false)){
+        if((sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: false)){
             holder.lockLayout.visibility = View.GONE
             holder.topLayout.alpha = 1.0f
             holder.iv_progress1.visibility = View.VISIBLE

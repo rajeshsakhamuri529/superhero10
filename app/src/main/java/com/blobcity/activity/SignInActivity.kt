@@ -69,7 +69,7 @@ class SignInActivity : BaseActivity(){
         signWithGoogleRLID.setOnClickListener {
 
            if(Utils.isOnline(this)){
-                signIn()
+               signIn()
             }else{
                 Toast.makeText(this,"Please connect internet!",Toast.LENGTH_SHORT).show()
             }
@@ -86,8 +86,10 @@ class SignInActivity : BaseActivity(){
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
 
-    }
 
+
+
+    }
 
     private fun signIn() {
         Log.e("signin activity","sign in")
@@ -117,21 +119,33 @@ class SignInActivity : BaseActivity(){
         Log.e("sign in activity", "firebaseAuthWithGoogle:" + acct.id!!)
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
+
+        auth.currentUser?.linkWithCredential(credential)
+            ?.addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.e("signin activity", "signInWithCredential:success")
-                    val user = auth.currentUser
+                    Log.e("sign in activity", "linkWithCredential:success")
+                    val user = task.result?.user
                     updateUI(user)
                 } else {
-                    // If sign in fails, display a message to the user.
-                    Log.e("sign in activity", "signInWithCredential:failure", task.exception)
-                    //Snackbar.make(main_layout, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
-                    updateUI(null)
-                }
+                    Log.e("sign in activity", "linkWithCredential:failure", task.exception)
+                    val prevUser = FirebaseAuth.getInstance().currentUser
+                    Log.e("sign in activity","...redentical.....provder id."+prevUser?.uid);
+                    prevUser?.delete()
+                    try {
+                        auth.signInWithCredential(credential)
+                            .addOnSuccessListener { result ->
+                                val currentUser = result.user
+                                updateUI(currentUser)
+                            }
+                            .addOnFailureListener {
+                            }
+                    } catch (e:java.lang.Exception){
+                        Log.e("sign in activity","e.........."+e)
+                    }
 
+                }
             }
+
     }
 
     private fun updateUI(user: FirebaseUser?) {
@@ -139,7 +153,7 @@ class SignInActivity : BaseActivity(){
 
             if (user != null) { // 8099256159
                 Log.e("sign in activity","...update ui.....");
-                sharedPrefs?.setBooleanPrefVal(this!!, ISNOTLOGIN, false)
+                sharedPrefs?.setBooleanPrefVal(this!!, ISNOTLOGIN, true)
                 Toast.makeText(this,"Sign-In success!",Toast.LENGTH_SHORT).show()
                 val intent = Intent(this!!, DashBoardActivity::class.java)
                 startActivity(intent)

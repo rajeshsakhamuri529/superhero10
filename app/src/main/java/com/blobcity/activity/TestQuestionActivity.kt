@@ -277,7 +277,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
             R.id.btn_next -> {
                 sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
-                if(sound){
+                if(!sound){
                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
                   //  mediaPlayer.start()
                     if (Utils.loaded) {
@@ -291,7 +291,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
             R.id.btn_hint -> {
                 sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
-                if(sound){
+                if(!sound){
                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
                    // mediaPlayer.start()
                     if (Utils.loaded) {
@@ -1187,7 +1187,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         unAnsweredList!!.remove(optionClicked)
         if (isRightAnswer) {
             sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
-            if(sound){
+            if(!sound){
                 var soundID: Int = 0
                 var volume: Float = 1.0f
                 //mediaPlayer = MediaPlayer.create(this,R.raw.select_high_correct)
@@ -1238,7 +1238,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
             var soundID: Int = 0
             var volume: Float = 1.0f
-            if(sound){
+            if(!sound){
                // mediaPlayer = MediaPlayer.create(this,R.raw.bounce_high_wrong)
                // mediaPlayer.start()
                 var soundPool = SoundPool(10, AudioManager.STREAM_MUSIC, 0)

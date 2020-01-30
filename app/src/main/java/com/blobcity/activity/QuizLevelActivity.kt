@@ -310,7 +310,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
     private fun callIntent(path: String, level: String, complete: String){
         sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
        // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-        if(sound){
+        if(!sound){
             if (Utils.loaded) {
                 Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
                 Log.e("Test", "Played sound");

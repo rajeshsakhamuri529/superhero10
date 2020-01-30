@@ -87,7 +87,7 @@ class SharedPrefs {
 
     fun getBooleanPrefVal(mContext: Context, key: String): Boolean {
         val pref = getSharedPref(mContext)
-        var value = true
+        var value = false
         try {
             if (pref.contains(key)) value = pref.getBoolean(key, false)
 
