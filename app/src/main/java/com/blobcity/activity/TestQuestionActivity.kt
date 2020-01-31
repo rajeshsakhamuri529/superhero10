@@ -1188,16 +1188,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (isRightAnswer) {
             sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
             if(!sound){
-                var soundID: Int = 0
+                /*var soundID: Int = 0
                 var volume: Float = 1.0f
-                //mediaPlayer = MediaPlayer.create(this,R.raw.select_high_correct)
-                //mediaPlayer.start()
-                var soundPool = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
-                soundPool.setOnLoadCompleteListener(SoundPool.OnLoadCompleteListener { soundPool, sampleId, status ->
-                    //loaded = true
-                    soundPool.play(soundID, volume, volume, 1, 0, 1f);
-                })
-                soundID = soundPool.load(this, R.raw.select_high_correct, 1)
 
                 // Getting the user sound settings
                 val audioManager = this.getSystemService(AUDIO_SERVICE) as AudioManager
@@ -1206,6 +1198,21 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 val maxVolume = audioManager
                     .getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
                 volume = actualVolume / maxVolume
+                //mediaPlayer = MediaPlayer.create(this,R.raw.select_high_correct)
+                //mediaPlayer.start()
+                var soundPool = SoundPool(10, AudioManager.STREAM_MUSIC, 1)
+                soundID = soundPool.load(this, R.raw.select_high_correct, 1)
+                soundPool.setOnLoadCompleteListener(SoundPool.OnLoadCompleteListener { soundPool, sampleId, status ->
+                    //loaded = true
+                    soundPool.play(soundID, volume, volume, 1, 0, 1f);
+                })*/
+
+                if (Utils.loaded) {
+                    Utils.soundPool1.play(Utils.soundID1, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound");
+                    // Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
+                }
+
 
 
             }
@@ -1239,22 +1246,29 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             var soundID: Int = 0
             var volume: Float = 1.0f
             if(!sound){
-               // mediaPlayer = MediaPlayer.create(this,R.raw.bounce_high_wrong)
-               // mediaPlayer.start()
-                var soundPool = SoundPool(10, AudioManager.STREAM_MUSIC, 0)
-                soundPool.setOnLoadCompleteListener(SoundPool.OnLoadCompleteListener { soundPool, sampleId, status ->
-                    //loaded = true
-                    soundPool.play(soundID, volume, volume, 1, 0, 1f);
-                })
-                soundID = soundPool.load(this, R.raw.bounce_high_wrong, 1)
-
                 // Getting the user sound settings
-                val audioManager = this.getSystemService(AUDIO_SERVICE) as AudioManager
+               /* val audioManager = this.getSystemService(AUDIO_SERVICE) as AudioManager
                 val actualVolume = audioManager
                     .getStreamVolume(AudioManager.STREAM_MUSIC).toFloat()
                 val maxVolume = audioManager
                     .getStreamMaxVolume(AudioManager.STREAM_MUSIC).toFloat()
                 volume = actualVolume / maxVolume
+               // mediaPlayer = MediaPlayer.create(this,R.raw.bounce_high_wrong)
+               // mediaPlayer.start()
+                var soundPool = SoundPool(10, AudioManager.STREAM_MUSIC, 1)
+                soundID = soundPool.load(this, R.raw.bounce_high_wrong, 1)
+                soundPool.setOnLoadCompleteListener(SoundPool.OnLoadCompleteListener { soundPool, sampleId, status ->
+                    //loaded = true
+                    soundPool.play(soundID, volume, volume, 1, 0, 1f);
+                })*/
+                if (Utils.loaded) {
+                    Utils.soundPool2.play(Utils.soundID2, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound");
+                    // Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
+                }
+
+
+
 
             }
             if (optionClicked == 0) {

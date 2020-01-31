@@ -83,16 +83,16 @@ class ChaptersAdapter(val context: Context,
         var index = branchesItemList[position].topic.index.toString()
         Log.d("chapter adapter",index);
        /* if(position != itemCount){*/
-            if(index.length == 1)
+           /* if(index.length == 1)
             {
                 index = "0"+index
-            }
+            }*/
         /*}else{
 
         }*/
 
         Log.d("chapter adapter",index);
-        holder.tv_topic_number.text = index
+        holder.tv_topic_number.text = branchesItemList[position].topic.displayNo.toString()
         holder.tv_topic_name.text = branchesItemList[position].topic.title
         if (position == 0){
             holder.singleTopic.setBackgroundResource(R.drawable.dashboard_top_corner)

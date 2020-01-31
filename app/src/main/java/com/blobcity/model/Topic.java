@@ -14,6 +14,8 @@ public class Topic implements Serializable {
 
 	@SerializedName("index")
 	private int index;
+	@SerializedName("display_no")
+	private int displayNo;
 
 	@SerializedName("created_at")
 	private String createdAt;
@@ -23,6 +25,14 @@ public class Topic implements Serializable {
 
 	@SerializedName("folderName")
 	private String folderName;
+
+	public int getDisplayNo() {
+		return displayNo;
+	}
+
+	public void setDisplayNo(int displayNo) {
+		this.displayNo = displayNo;
+	}
 
 	@SerializedName("category")
 	private Object category;

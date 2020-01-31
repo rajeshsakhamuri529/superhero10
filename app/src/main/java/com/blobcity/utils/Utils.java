@@ -47,7 +47,9 @@ import static android.content.Context.AUDIO_SERVICE;
 public class Utils {
 
     public static SoundPool soundPool;
-    public static int soundID;
+    public static SoundPool soundPool1;
+    public static SoundPool soundPool2;
+    public static int soundID,soundID1,soundID2;
     public static boolean loaded = false;
     public static float volume;
     public static void getPlayer(Context context){
@@ -63,6 +65,53 @@ public class Utils {
             }
         });
         soundID = soundPool.load(context, R.raw.amount_low, 1);
+
+        // Getting the user sound settings
+        AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
+        float actualVolume = (float) audioManager
+                .getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager
+                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        volume = actualVolume/maxVolume;
+
+    }
+
+    public static void getPlayerForCorrect(Context context){
+        // Set the hardware buttons to control the music
+        // context.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        // Load the sound
+        soundPool1 = new SoundPool(10, AudioManager.STREAM_MUSIC, 1);
+        soundPool1.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId,
+                                       int status) {
+                loaded = true;
+            }
+        });
+        soundID1 = soundPool1.load(context, R.raw.select_high_correct, 1);
+
+        // Getting the user sound settings
+        AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);
+        float actualVolume = (float) audioManager
+                .getStreamVolume(AudioManager.STREAM_MUSIC);
+        float maxVolume = (float) audioManager
+                .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        volume = actualVolume/maxVolume;
+
+    }
+    public static void getPlayerForwrong(Context context){
+        // Set the hardware buttons to control the music
+        // context.setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        // Load the sound
+        soundPool2 = new SoundPool(10, AudioManager.STREAM_MUSIC, 1);
+        soundPool2.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId,
+                                       int status) {
+                loaded = true;
+            }
+        });
+        soundID2 = soundPool2.load(context, R.raw.bounce_high_wrong, 1);
 
         // Getting the user sound settings
         AudioManager audioManager = (AudioManager) context.getSystemService(AUDIO_SERVICE);

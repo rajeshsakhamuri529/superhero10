@@ -27,6 +27,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.chapter_layout.*
 import android.support.v4.content.ContextCompat
+import android.widget.Toast
 import com.blobcity.activity.SignInActivity
 import com.blobcity.utils.*
 import com.blobcity.utils.Utils.*

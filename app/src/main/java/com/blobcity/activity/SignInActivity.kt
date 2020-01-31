@@ -1,11 +1,13 @@
 package com.blobcity.activity
 
+import android.app.ProgressDialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.util.Log
+import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.WindowManager
 import android.widget.RelativeLayout
@@ -34,7 +36,7 @@ class SignInActivity : BaseActivity(){
     private lateinit var auth: FirebaseAuth
 
     private var mGoogleSignInClient: GoogleSignInClient? = null
-
+    private var mPDialog: ProgressDialog? = null
     //Google Login
     private val RC_SIGN_IN = 9001
     var sharedPrefs: SharedPrefs? = null
@@ -114,10 +116,35 @@ class SignInActivity : BaseActivity(){
             }
         }
     }
+    fun showProgressDialog(loadText: String) {
+        hideProgressDialog()
+        try {
+            mPDialog = ProgressDialog.show(
+                ContextThemeWrapper(this@SignInActivity, R.style.DialogCustom),
+                "",
+                loadText
+            )
+            mPDialog!!.setCancelable(false)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
+    }
+
+    fun hideProgressDialog() {
+        try {
+            if (mPDialog != null && mPDialog!!.isShowing()) {
+                mPDialog!!.dismiss()
+                mPDialog = null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.e("sign in activity", "firebaseAuthWithGoogle:" + acct.id!!)
-
+        showProgressDialog("Verifying your account...")
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
 
         auth.currentUser?.linkWithCredential(credential)
@@ -145,6 +172,8 @@ class SignInActivity : BaseActivity(){
 
                 }
             }
+
+        hideProgressDialog()
 
     }
 
