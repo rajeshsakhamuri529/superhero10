@@ -72,12 +72,12 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         topicId = intent.getStringExtra(TOPIC_ID)
         topicName = topic.title
         position = intent.getIntExtra(TOPIC_POSITION, -1)
-        val index = topic.index
+        val index = topic.displayNo
         sharedPrefs = SharedPrefs()
         courseName = intent.getStringExtra(COURSE_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
 
-        if(index<10)
+       /* if(index<10)
         {
             val title = "0$index $topicName"
             tv_title.text = title
@@ -86,9 +86,9 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         }else{
             val title = "$index $topicName"
             tv_title.text = title
-        }
+        }*/
 
-
+        tv_title.text = topic.displayNo.toString()
         paths = intent.getStringExtra(FOLDER_PATH)
         val folderPath = paths+folderName
 
@@ -202,7 +202,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         folderName = topic.folderName
         topicId=branchesItemList!!.get(position!!).id
         topicName = topic.title
-        val index = topic.index
+        val index = topic.displayNo
         val title = "$index $topicName"
         tv_title.text = title
 
