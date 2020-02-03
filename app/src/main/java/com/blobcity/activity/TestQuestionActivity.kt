@@ -1117,7 +1117,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
                     }
                 } else {
-                    Log.e("Test Question activity","questionsItem........"+questionsItem+".........questionsItem size....."+ questionsItem!!.size);
+                    Log.e("Test Question activity","questionsItem........"+questionsItem+".........questionsItem size....."+ questionsItem!!.size+"....random position..."+randomPosition);
                     if (questionsItem!!.size > 1) {
                         if (answer.equals(questionsItem!!.get(randomPosition).text, true)) {
                             isAnswerCorrect = true

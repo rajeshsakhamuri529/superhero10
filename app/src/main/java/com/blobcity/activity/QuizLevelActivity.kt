@@ -87,8 +87,8 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
             val title = "$index $topicName"
             tv_title.text = title
         }*/
-
-        tv_title.text = topic.displayNo.toString()
+        val title = "$index $topicName"
+        tv_title.text = title
         paths = intent.getStringExtra(FOLDER_PATH)
         val folderPath = paths+folderName
 

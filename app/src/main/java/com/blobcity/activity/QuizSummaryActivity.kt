@@ -21,6 +21,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.Animation
 import android.widget.Button
+import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.BranchesItem
@@ -235,38 +236,29 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         when (v!!.id) {
 
             R.id.btn_next_level -> {
-                if (position == 8 && !isLastTopicAvailable) {
-                    lastTopicDialog()
-                } else {
-                    sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
-                    if(!sound){
-                        /*mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
-                        mediaPlayer.start()*/
-                        if (Utils.loaded) {
-                            Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
-                            Log.e("Test", "Played sound...volume..."+ Utils.volume);
-                            //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
-                        }
+
+                Log.e("quiz summary",".....btn next level...."+(sharedPrefs?.getBooleanPrefVal(this!!, ISNOTLOGIN) ?: true));
+                if((sharedPrefs?.getBooleanPrefVal(this!!, ISNOTLOGIN) ?: true)){
+                    nextBtnAction()
+                }else{
+                    Log.e("quiz summary",".....btn next level..else.."+position);
+                    if((position?.plus(1))!! >  1){
+                        Toast.makeText(this,"Please sign-in to unlock the next level",Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this!!, SignInActivity::class.java)
+                        /*intent.putExtra(TOPIC, topic)
+                        intent.putExtra(COURSE_ID, courseId)
+                        intent.putExtra(COURSE_NAME, courseName)
+                        intent.putExtra(TOPIC_ID, topicId)
+                        intent.putExtra(TOPIC_POSITION, position)
+                        intent.putExtra(FOLDER_PATH, localPath)
+                        intent.putExtra(TITLE_TOPIC, gradeTitle!!)*/
+                        startActivity(intent)
+                    }else{
+                        nextBtnAction()
                     }
-                    var size:Int = sharedPrefs?.getIntPrefVal(this, TOPIC_SIZE) ?: 0
-                    intent = Intent(this, QuizLevelActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    Log.e("quiz sumary","size........"+size)
-                    Log.e("quiz sumary","position........"+position)
-                    /*if (position == (size - 2)) {
-                        intent.putExtra(TOPIC_POSITION, 0)
-                    } else {*/
-                        intent.putExtra(TOPIC_POSITION, (position!! + 1))
-                   // }
-                    intent.putExtra(COURSE_ID, courseId)
-                    intent.putExtra(COURSE_NAME, courseName)
-                    intent.putExtra(FOLDER_PATH, paths)
-                    intent.putExtra(TITLE_TOPIC, gradeTitle!!)
-                    //intent.putExtra(TOPIC_LEVEL,topicLevel)
-                    finish()
-                    startActivity(intent)
+
                 }
+
 
             }
 
@@ -310,6 +302,40 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun nextBtnAction() {
+        if (position == 8 && !isLastTopicAvailable) {
+            lastTopicDialog()
+        } else {
+            sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+            if(!sound){
+                /*mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                mediaPlayer.start()*/
+                if (Utils.loaded) {
+                    Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                    //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                }
+            }
+            var size:Int = sharedPrefs?.getIntPrefVal(this, TOPIC_SIZE) ?: 0
+            intent = Intent(this, QuizLevelActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            Log.e("quiz sumary","size........"+size)
+            Log.e("quiz sumary","position........"+position)
+            /*if (position == (size - 2)) {
+                intent.putExtra(TOPIC_POSITION, 0)
+            } else {*/
+            intent.putExtra(TOPIC_POSITION, (position!! + 1))
+            // }
+            intent.putExtra(COURSE_ID, courseId)
+            intent.putExtra(COURSE_NAME, courseName)
+            intent.putExtra(FOLDER_PATH, paths)
+            intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+            //intent.putExtra(TOPIC_LEVEL,topicLevel)
+            finish()
+            startActivity(intent)
+        }
+    }
     private fun navigateToStartQuiz() {
         sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
         if(!sound){

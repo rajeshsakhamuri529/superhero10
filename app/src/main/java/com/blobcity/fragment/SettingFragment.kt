@@ -8,7 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.blobcity.R
+import com.blobcity.activity.DashBoardActivity
+import com.blobcity.activity.SignInActivity
 import com.blobcity.activity.WriteToUsActivity
+import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.NOTIFICATION
 import com.blobcity.utils.ConstantPath.SOUNDS
 import com.blobcity.utils.SharedPrefs
@@ -70,8 +73,17 @@ class SettingFragment : Fragment(), View.OnClickListener {
             }
         }
 
+        if((sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: true)){
+            //sign in
+            txt_sign_in.text = "Sign Out"
+        }else{
+            //not sign in
+            txt_sign_in.text = "Sign In"
+        }
+
         cl_terms_and_conditions.setOnClickListener(this)
         cl_write_to_us.setOnClickListener(this)
+        signout.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -86,6 +98,19 @@ class SettingFragment : Fragment(), View.OnClickListener {
             R.id.cl_write_to_us -> {
                 intent = Intent(context, WriteToUsActivity::class.java)
                 startActivity(intent)
+            }
+
+            R.id.signout -> {
+                if(txt_sign_in.text.equals("Sign In")) {
+                    val intent = Intent(context!!, SignInActivity::class.java)
+                    startActivity(intent)
+                    txt_sign_in.text = "Sign Out"
+                } else if(txt_sign_in.text.equals("Sign Out")){
+                    txt_sign_in.text = "Sign In"
+                    sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN, false)
+                    val intent = Intent(context!!, DashBoardActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }

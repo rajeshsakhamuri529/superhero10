@@ -47,14 +47,17 @@ class SignInActivity : BaseActivity(){
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
-        val topic: Topic = intent.getSerializableExtra(ConstantPath.TOPIC) as Topic
-        topicName = topic.title
+        //val topic: Topic = intent.getSerializableExtra(ConstantPath.TOPIC) as Topic
+        //topicName = topic.title
 
        // tv_topic_name.text = topicName
         sharedPrefs = SharedPrefs()
 
         iv_cancel_quiz_summary.setOnClickListener {
-            finish()
+            //finish()
+            val intent = Intent(this!!, DashBoardActivity::class.java)
+
+            startActivity(intent)
         }
 
         /*google_image.setOnClickListener {

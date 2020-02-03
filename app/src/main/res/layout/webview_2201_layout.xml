@@ -45,7 +45,7 @@
                 <WebView
                         android:id="@+id/webView_option1"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="match_parent"
                         android:clickable="true"
                         android:scrollbars="none"
                         android:textAlignment="center"/>
@@ -133,7 +133,7 @@
                 <WebView
                         android:id="@+id/webView_option4"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="match_parent"
                         android:clickable="true"
                         android:scrollbars="none"
                         android:textAlignment="center"/>

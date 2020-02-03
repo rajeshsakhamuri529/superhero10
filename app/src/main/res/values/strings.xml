@@ -31,5 +31,7 @@
     <string name="notifications_admin_channel_description">adminChannelDescription</string>
     <string name="t_amp_c_privacy"><![CDATA[T&C / Privacy]]></string>
     <string name="write_to_us">Write to us</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Sign In</string>
     <string name="exit_message">Are you sure you want to leave? Press the Back button again to exit.</string>
 </resources>
