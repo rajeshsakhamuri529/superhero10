@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">SuperHero10</string>
     <string name="str_chapter">Chapters</string>
+    <string name="str_topics">Topics</string>
     <string name="str_classXcbse">CLASS X</string>
     <string name="str_cbse">CBSE</string>
     <string name="str_Quiz_1">Quiz I</string>

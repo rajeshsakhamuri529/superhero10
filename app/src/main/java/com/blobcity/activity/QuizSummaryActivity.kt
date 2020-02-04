@@ -245,13 +245,6 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                     if((position?.plus(1))!! >  1){
                         Toast.makeText(this,"Please sign-in to unlock the next level",Toast.LENGTH_SHORT).show()
                         val intent = Intent(this!!, SignInActivity::class.java)
-                        /*intent.putExtra(TOPIC, topic)
-                        intent.putExtra(COURSE_ID, courseId)
-                        intent.putExtra(COURSE_NAME, courseName)
-                        intent.putExtra(TOPIC_ID, topicId)
-                        intent.putExtra(TOPIC_POSITION, position)
-                        intent.putExtra(FOLDER_PATH, localPath)
-                        intent.putExtra(TITLE_TOPIC, gradeTitle!!)*/
                         startActivity(intent)
                     }else{
                         nextBtnAction()
@@ -263,7 +256,21 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
             }
 
             R.id.iv_cancel_quiz_summary -> {
-                finish()
+
+                sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
+                if(!sound) {
+                    //MusicManager.getInstance().play(context, R.raw.amount_low);
+                    // Is the sound loaded already?
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..." + Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                    finish()
+                }else{
+                    finish()
+                }
+
             }
 
             R.id.btn_review -> {

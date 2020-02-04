@@ -23,11 +23,8 @@ import com.blobcity.model.BranchesItem
 import com.blobcity.model.CoursesResponseModel
 import com.blobcity.model.Topic
 import com.blobcity.model.TopicResponseModel
+import com.blobcity.utils.*
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.MusicManager
-import com.blobcity.utils.SharedPrefs
-import com.blobcity.utils.SoundManager
-import com.blobcity.utils.Utils
 import com.blobcity.utils.Utils.readFromFile
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
@@ -242,7 +239,21 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
             }*/
 
             R.id.llBack ->{
-                finish()
+                sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
+                if(!sound) {
+                    //MusicManager.getInstance().play(context, R.raw.amount_low);
+                    // Is the sound loaded already?
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..." + Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                    finish()
+                }else{
+                    finish()
+                }
+
+
             }
 
             R.id.btn_quiz1 ->{

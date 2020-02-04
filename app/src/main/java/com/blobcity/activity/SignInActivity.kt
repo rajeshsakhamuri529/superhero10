@@ -40,7 +40,7 @@ class SignInActivity : BaseActivity(){
     //Google Login
     private val RC_SIGN_IN = 9001
     var sharedPrefs: SharedPrefs? = null
-    //sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.SOUNDS) ?: true
+    var sound: Boolean = false
     lateinit var signIn: RelativeLayout;
     override var layoutID: Int = R.layout.activity_sign_in
 
@@ -54,10 +54,25 @@ class SignInActivity : BaseActivity(){
         sharedPrefs = SharedPrefs()
 
         iv_cancel_quiz_summary.setOnClickListener {
-            //finish()
-            val intent = Intent(this!!, DashBoardActivity::class.java)
+            sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
 
-            startActivity(intent)
+            if(!sound) {
+                //MusicManager.getInstance().play(context, R.raw.amount_low);
+                // Is the sound loaded already?
+                if (Utils.loaded) {
+                    Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound...volume..." + Utils.volume);
+                    //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                }
+                val intent = Intent(this!!, DashBoardActivity::class.java)
+
+                startActivity(intent)
+            }else{
+                val intent = Intent(this!!, DashBoardActivity::class.java)
+
+                startActivity(intent)
+            }
+
         }
 
         /*google_image.setOnClickListener {

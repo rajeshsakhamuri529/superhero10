@@ -1,12 +1,15 @@
 package com.blobcity.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.activity.DashBoardActivity
 import com.blobcity.activity.SignInActivity
@@ -104,14 +107,36 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 if(txt_sign_in.text.equals("Sign In")) {
                     val intent = Intent(context!!, SignInActivity::class.java)
                     startActivity(intent)
-                    txt_sign_in.text = "Sign Out"
+                    //txt_sign_in.text = "Sign Out"
                 } else if(txt_sign_in.text.equals("Sign Out")){
-                    txt_sign_in.text = "Sign In"
-                    sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN, false)
-                    val intent = Intent(context!!, DashBoardActivity::class.java)
-                    startActivity(intent)
+                    //passtxt_sign_in.text = "Sign In"
+                    showDialog(context!!)
                 }
             }
         }
     }
+
+
+    private fun showDialog(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        builder!!.setTitle("Sign Out")
+        builder.setMessage("Are you sure, You want to sign out?")
+        //builder.setPositiveButton("OK", DialogInterface.OnClickListener(function = x))
+
+        builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+            dialog.dismiss()
+            sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN, false)
+            val intent = Intent(context!!, DashBoardActivity::class.java)
+            startActivity(intent)
+        }
+
+        builder.setNegativeButton(android.R.string.no) { dialog, which ->
+            dialog.dismiss()
+        }
+
+        builder.show()
+    }
+
+
+
 }

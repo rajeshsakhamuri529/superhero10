@@ -4,7 +4,7 @@
     <item
             android:id="@+id/nav_chapter"
             android:icon="@drawable/chapter_icon"
-            android:title="Chapters" />
+            android:title="Topics" />
 
     <!--<item
             android:id="@+id/nav_astra_cards"
