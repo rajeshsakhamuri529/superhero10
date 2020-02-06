@@ -918,6 +918,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option3_opacity!!.settings.javaScriptEnabled = true
         webView_option4_opacity!!.settings.javaScriptEnabled = true
 
+       /* webView_option1.setInitialScale(1);
+        x.getSettings().setLoadWithOverviewMode(true);
+        x.getSettings().setUseWideViewPort(true);*/
         val webview = object : WebViewClient() {
 
             override fun onPageFinished(view: WebView?, url: String?) {

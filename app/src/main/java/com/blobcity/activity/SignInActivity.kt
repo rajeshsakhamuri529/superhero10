@@ -191,7 +191,7 @@ class SignInActivity : BaseActivity(){
                 }
             }
 
-        hideProgressDialog()
+
 
     }
 
@@ -201,6 +201,7 @@ class SignInActivity : BaseActivity(){
             if (user != null) { // 8099256159
                 Log.e("sign in activity","...update ui.....");
                 sharedPrefs?.setBooleanPrefVal(this!!, ISNOTLOGIN, true)
+                hideProgressDialog()
                 Toast.makeText(this,"Sign-In success!",Toast.LENGTH_SHORT).show()
                 val intent = Intent(this!!, DashBoardActivity::class.java)
                 startActivity(intent)
