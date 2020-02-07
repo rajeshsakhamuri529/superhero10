@@ -1,6 +1,7 @@
 package com.blobcity.activity
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
@@ -47,6 +48,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 import android.util.Base64
+import android.view.Window
 import android.widget.ImageView
 import com.blobcity.utils.SharedPrefs
 import java.lang.Exception
@@ -141,6 +143,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
     var isDialogOpen : Boolean = false
+
+    var alertDialog : AlertDialog? = null
+    var dialog: Dialog? = null;
+    var animFadeIn: Animation? = null
+    var animFadeOut: Animation? = null
     override var layoutID: Int = R.layout.activity_test_question
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -167,6 +174,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         firestore = FirebaseFirestore.getInstance()
 
+        animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),
+            R.anim.fade_in);
+
+        animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),
+            R.anim.fade_out);
         /*dbRStatus = FirebaseDatabase.getInstance()
             .getReference("topic_status")
         dbTrackingStatus = FirebaseDatabase.getInstance().getReference("quiz_tracking")
@@ -300,11 +312,57 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
-                hintAlertDialog()
+               // showDialog()
+                //txtFadeIn.startAnimation(animFadeIn);
+               // dialog!!.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
+                dialog!! .show()
+
+
             }
         }
     }
+    private fun showDialog() {
+         dialog = Dialog(this)
+        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog!!.setCancelable(false)
+        dialog!!.setContentView(R.layout.hint_dialog)
+        val webview = dialog!!.findViewById(com.blobcity.R.id.webview_hint) as WebView
+        val btn_gotIt = dialog!!.findViewById(com.blobcity.R.id.btn_gotIt) as Button
 
+        webview.settings.javaScriptEnabled = true
+        //  webview.setVerticalScrollBarEnabled(true)
+        // Enable responsive layout
+        // webview.getSettings().setUseWideViewPort(true);
+        // Zoom out if the content width is greater than the width of the viewport
+        //webview.getSettings().setLoadWithOverviewMode(true);
+        val hint = object : WebViewClient() {
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                Log.d("onPageFinished", url + "!")
+                injectCSS(view, "Hint")
+                // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+            }
+        }
+        Log.e("test question activity","hint alert dialog....hint path..."+hintPath);
+        webview.webViewClient = hint
+        webview.loadUrl(hintPath)
+        webview.setBackgroundColor(0)
+        buttonEffect(btn_gotIt,false)
+       // alertDialog = dialogBuilder.create()
+        btn_gotIt.setOnClickListener {
+            dialog!!.dismiss()
+        }
+
+        // val alertDialog = dialogBuilder.create()
+      //  alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+      //  alertDialog.show()
+        /*yesBtn.setOnClickListener {
+            dialog!!.dismiss()
+        }
+        noBtn.setOnClickListener { dialog .dismiss() }
+        dialog .show()*/
+
+    }
     private fun hintAlertDialog() {
         //if (!isLifeZero) {
         // if (!isAnswerCorrect) {
@@ -312,7 +370,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         /*addTrackDataInDb("hint")*/
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = this.layoutInflater
-        val dialogView = inflater.inflate(R.layout.hint_dialog, null)
+        val dialogView = inflater.inflate(R.layout.hint_dialog_layout, null)
         dialogBuilder.setView(dialogView)
 
         val webview = dialogView.findViewById(com.blobcity.R.id.webview_hint) as WebView
@@ -716,6 +774,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
             if (filename.contains("hint")) {
                 hintPath = WEBVIEW_PATH + path + "/" + filename
+                showDialog()
             }
         }
 
@@ -1211,9 +1270,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 })*/
 
                 if (Utils.loaded) {
-                    Utils.soundPool1.play(Utils.soundID1, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
                     Log.e("Test", "Played sound");
-                    // Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
+                     //Toast.makeText(this,"right answer", Toast.LENGTH_SHORT).show()
                 }
 
 
@@ -1265,7 +1324,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     soundPool.play(soundID, volume, volume, 1, 0, 1f);
                 })*/
                 if (Utils.loaded) {
-                    Utils.soundPool2.play(Utils.soundID2, Utils.volume, Utils.volume, 1, 0, 1f);
+                    //Utils.soundPool2.play(Utils.soundID2, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
                     Log.e("Test", "Played sound");
                     // Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
                 }

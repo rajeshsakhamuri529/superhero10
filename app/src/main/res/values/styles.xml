@@ -21,4 +21,9 @@
     <style name="DialogCustom">
         <item name="android:textSize">18sp</item>
     </style>
+
+    <style name="PauseDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
+    </style>
 </resources>

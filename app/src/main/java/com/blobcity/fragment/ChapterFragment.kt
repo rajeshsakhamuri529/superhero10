@@ -225,15 +225,35 @@ class ChapterFragment: Fragment(), TopicClickListener {
             withLogin(topic, topicId, position)
         }else{
             if(position >  1){
-                val intent = Intent(context!!, SignInActivity::class.java)
-                intent.putExtra(TOPIC, topic)
-                intent.putExtra(COURSE_ID, courseId)
-                intent.putExtra(COURSE_NAME, courseName)
-                intent.putExtra(TOPIC_ID, topicId)
-                intent.putExtra(TOPIC_POSITION, position)
-                intent.putExtra(FOLDER_PATH, localPath)
-                intent.putExtra(TITLE_TOPIC, gradeTitle!!)
-                startActivity(intent)
+                if(!sound) {
+                    //MusicManager.getInstance().play(context, R.raw.amount_low);
+                    // Is the sound loaded already?
+                    if (loaded) {
+                        soundPool.play(soundID, volume, volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..." + volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                    val intent = Intent(context!!, SignInActivity::class.java)
+                    intent.putExtra(TOPIC, topic)
+                    intent.putExtra(COURSE_ID, courseId)
+                    intent.putExtra(COURSE_NAME, courseName)
+                    intent.putExtra(TOPIC_ID, topicId)
+                    intent.putExtra(TOPIC_POSITION, position)
+                    intent.putExtra(FOLDER_PATH, localPath)
+                    intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+                    startActivity(intent)
+                }else{
+                    val intent = Intent(context!!, SignInActivity::class.java)
+                    intent.putExtra(TOPIC, topic)
+                    intent.putExtra(COURSE_ID, courseId)
+                    intent.putExtra(COURSE_NAME, courseName)
+                    intent.putExtra(TOPIC_ID, topicId)
+                    intent.putExtra(TOPIC_POSITION, position)
+                    intent.putExtra(FOLDER_PATH, localPath)
+                    intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+                    startActivity(intent)
+                }
+
             }else{
                 withLogin(topic, topicId, position)
             }

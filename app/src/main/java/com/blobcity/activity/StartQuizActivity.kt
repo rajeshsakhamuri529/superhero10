@@ -188,7 +188,19 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
         when(v?.id) {
             R.id.iv_cancel -> {
                 Log.d("startQuiz","1")
-                finish()
+                sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                //  mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                if(!sound) {
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound");
+                        // Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
+                    }
+                    finish()
+                }else{
+                    finish()
+                }
+
             }
         }
     }
