@@ -19,7 +19,7 @@ android {
     signingConfigs {
 
         release {
-            storeFile file('/home/srikanth/superhero10/superhero.jks')
+            storeFile file('/home/rajesh/Android Projects/superhero/superhero.jks')
             storePassword 'superhero'
             keyAlias 'superhero'
             keyPassword 'superhero'

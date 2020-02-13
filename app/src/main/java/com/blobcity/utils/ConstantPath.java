@@ -30,6 +30,7 @@ public class ConstantPath {
     public static String NOTIFICATION = "notification";
     public static String TOPIC_SIZE = "topic_list_size";
     public static String REVIEW_MODEL = "review_model";
+    public static String ISACCOUNTLINKED = "isaccountlinked";
     public static int type4100 = 4100;
     public static int type2100 = 2100;
     public static int type2210 = 2210;

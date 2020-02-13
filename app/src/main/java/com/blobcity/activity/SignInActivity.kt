@@ -15,6 +15,7 @@ import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.model.Topic
 import com.blobcity.utils.ConstantPath
+import com.blobcity.utils.ConstantPath.ISACCOUNTLINKED
 import com.blobcity.utils.ConstantPath.ISNOTLOGIN
 import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
@@ -164,32 +165,50 @@ class SignInActivity : BaseActivity(){
         Log.e("sign in activity", "firebaseAuthWithGoogle:" + acct.id!!)
         showProgressDialog("Verifying your account...")
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
-
-        auth.currentUser?.linkWithCredential(credential)
-            ?.addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Log.e("sign in activity", "linkWithCredential:success")
-                    val user = task.result?.user
-                    updateUI(user)
-                } else {
-                    Log.e("sign in activity", "linkWithCredential:failure", task.exception)
-                    val prevUser = FirebaseAuth.getInstance().currentUser
-                    Log.e("sign in activity","...redentical.....provder id."+prevUser?.uid);
-                    prevUser?.delete()
-                    try {
-                        auth.signInWithCredential(credential)
-                            .addOnSuccessListener { result ->
-                                val currentUser = result.user
-                                updateUI(currentUser)
-                            }
-                            .addOnFailureListener {
-                            }
-                    } catch (e:java.lang.Exception){
-                        Log.e("sign in activity","e.........."+e)
+        Log.e("sign in sctivity","isaccountlinked......"+sharedPrefs?.getBooleanPrefVal(this, ConstantPath.ISACCOUNTLINKED)!!);
+        if (sharedPrefs?.getBooleanPrefVal(this, ConstantPath.ISACCOUNTLINKED)!!) {
+            try {
+                auth.signInWithCredential(credential)
+                    .addOnSuccessListener { result ->
+                        val currentUser = result.user
+                        updateUI(currentUser)
                     }
-
-                }
+                    .addOnFailureListener {
+                    }
+            } catch (e:java.lang.Exception){
+                Log.e("sign in activity","e.........."+e)
             }
+        }else{
+            auth.currentUser?.linkWithCredential(credential)
+                ?.addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        Log.e("sign in activity", "linkWithCredential:success")
+                        val user = task.result?.user
+                        sharedPrefs?.setBooleanPrefVal(this!!, ISACCOUNTLINKED, true)
+                        updateUI(user)
+                    } else {
+                        Log.e("sign in activity", "linkWithCredential:failure", task.exception)
+                        val prevUser = FirebaseAuth.getInstance().currentUser
+                        Log.e("sign in activity","...redentical.....provder id."+prevUser?.uid);
+                        prevUser?.delete()
+                        try {
+                            sharedPrefs?.setBooleanPrefVal(this!!, ISACCOUNTLINKED, true)
+                            auth.signInWithCredential(credential)
+                                .addOnSuccessListener { result ->
+                                    val currentUser = result.user
+                                    updateUI(currentUser)
+                                }
+                                .addOnFailureListener {
+                                }
+                        } catch (e:java.lang.Exception){
+                            Log.e("sign in activity","e.........."+e)
+                        }
+
+                    }
+                }
+        }
+
+
 
 
 

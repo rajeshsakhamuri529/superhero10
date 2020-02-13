@@ -18,6 +18,12 @@ import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.NOTIFICATION
 import com.blobcity.utils.ConstantPath.SOUNDS
 import com.blobcity.utils.SharedPrefs
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.setting_layout.*
 
 class SettingFragment : Fragment(), View.OnClickListener {
@@ -26,7 +32,9 @@ class SettingFragment : Fragment(), View.OnClickListener {
     var sound: Boolean = false
     var notification: Boolean = false
     val TAG: String = "Settings Fragment"
+    private lateinit var auth: FirebaseAuth
 
+    private var mGoogleSignInClient: GoogleSignInClient? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.setting_layout, container, false)
     }
@@ -35,6 +43,17 @@ class SettingFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         sharedPrefs = SharedPrefs()
+
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance()
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this!!.activity!!, gso)
+
         sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
         cb_sounds_settings.isChecked = !sound
         if(!sound){
@@ -126,6 +145,15 @@ class SettingFragment : Fragment(), View.OnClickListener {
         builder.setPositiveButton(android.R.string.yes) { dialog, which ->
             dialog.dismiss()
             sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN, false)
+            // Firebase sign out
+            auth.signOut()
+
+            // Google sign out
+
+            mGoogleSignInClient!!.signOut().addOnCompleteListener(this,
+                OnCompleteListener<Void> {
+                    //updateUI(null)
+                })
             val intent = Intent(context!!, DashBoardActivity::class.java)
             startActivity(intent)
         }
@@ -138,5 +166,9 @@ class SettingFragment : Fragment(), View.OnClickListener {
     }
 
 
+
+}
+
+private fun <TResult> Task<TResult>.addOnCompleteListener(settingFragment: SettingFragment, onCompleteListener: OnCompleteListener<TResult>) {
 
 }
