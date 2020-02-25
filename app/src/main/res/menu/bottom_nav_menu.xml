@@ -5,7 +5,10 @@
             android:id="@+id/nav_chapter"
             android:icon="@drawable/chapter_icon"
             android:title="Topics" />
-
+    <item
+        android:id="@+id/nav_revision"
+        android:icon="@drawable/chapter_icon"
+        android:title="Revision" />
     <!--<item
             android:id="@+id/nav_astra_cards"
             android:icon="@drawable/astra_card_icon"

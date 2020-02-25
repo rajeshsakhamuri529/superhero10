@@ -15,18 +15,16 @@ import android.util.Log
 import android.view.View
 import com.blobcity.R
 import com.blobcity.adapter.GradeAdapter
+import com.blobcity.adapter.RevisionAdapter
 import com.blobcity.interfaces.GradeClickListener
 import com.blobcity.model.GradeResponseModel
-import com.blobcity.utils.ConstantPath
+import com.blobcity.model.RevisionModel
+import com.blobcity.utils.*
 import com.blobcity.utils.ConstantPath.*
-import com.blobcity.utils.ForceUpdateChecker
-import com.blobcity.utils.SharedPrefs
-import com.blobcity.utils.Utils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
@@ -36,6 +34,7 @@ import com.google.gson.reflect.TypeToken
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import kotlinx.android.synthetic.main.activity_grade.*
+import kotlinx.android.synthetic.main.revision_layout.*
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
@@ -75,7 +74,8 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
     private var listJson: String?= null
     private var auth: FirebaseAuth?= null
     private var mSnackBar: Snackbar? = null
-
+    private var revisionItemList:ArrayList<RevisionModel>?=null
+    var revisionModel:RevisionModel? = null
     override var layoutID: Int = R.layout.activity_splash
 
     override fun initView() {
@@ -88,6 +88,13 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
             .setPermissions(Manifest.permission.INTERNET)
             .check()
         auth = FirebaseAuth.getInstance()
+
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true)
+            .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+            .build()
+        db.firestoreSettings = settings
+
     }
 
 
@@ -110,7 +117,13 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
             val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
 
             Log.d("signin","true")
-            navigateToDashboard("GRADE 6")
+            if(sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME)){
+                navigateToSignIn()
+            }else{
+                navigateToDashboard("GRADE 6")
+            }
+
+
             // GRADE SCREEN
            /* val gson = Gson()
             if (!TextUtils.isEmpty(listJson)){
@@ -221,6 +234,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                             // Sign in success, update UI with the signed-in user's information
                             val user = auth!!.currentUser
                             sharedPrefs.setBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN, true)
+                            sharedPrefs.setBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME, true)
                             sharedPrefs.setPrefVal(this, ConstantPath.UID, user!!.uid)
                             Log.d("anonymous auth done","true")
                             TedPermission.with(this)
@@ -466,6 +480,15 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
             })
     }
 
+    fun navigateToSignIn(){
+        val intent = Intent(
+            this@GradeActivity,
+            SignInActivity::class.java
+        )
+        intent.putExtra(TITLE_TOPIC, title)
+        intent.putExtra(FIRST_TIME, "first time")
+        startActivity(intent)
+    }
     fun navigateToDashboard(title: String){
         val intent = Intent(
             this@GradeActivity,

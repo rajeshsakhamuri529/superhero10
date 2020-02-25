@@ -224,6 +224,7 @@ class ChapterFragment: Fragment(), TopicClickListener {
         if((sharedPrefs?.getBooleanPrefVal(context!!, ISNOTLOGIN) ?: true)){
             withLogin(topic, topicId, position)
         }else{
+            sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
             if(position >  1){
                 if(!sound) {
                     //MusicManager.getInstance().play(context, R.raw.amount_low);

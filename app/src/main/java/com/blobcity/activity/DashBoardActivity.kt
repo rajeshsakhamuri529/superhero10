@@ -1,15 +1,21 @@
 package com.blobcity.activity
 
 import android.app.PendingIntent.getActivity
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
+import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.fragment.ChapterFragment
+import com.blobcity.fragment.RevisionFragment
 import com.blobcity.fragment.SettingFragment
 import com.blobcity.utils.ConstantPath.TITLE_TOPIC
 import com.blobcity.utils.Utils.*
@@ -26,7 +32,20 @@ class DashBoardActivity : BaseActivity(),
     private var backPressToastMessage: Toast? = null
 
     override var layoutID: Int = R.layout.activity_dashboard
-
+    private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
+        {
+            for (permission in permissions)
+            {
+                if (ActivityCompat.checkSelfPermission(context, permission) !== PackageManager.PERMISSION_GRANTED)
+                {
+                    return false
+                }
+            }
+        }
+        return true
+    }
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gradeTitle = "GRADE 6"
@@ -34,6 +53,7 @@ class DashBoardActivity : BaseActivity(),
         getPlayerForCorrect(this)
         getPlayerForwrong(this)
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
+        ActivityCompat.requestPermissions(this@DashBoardActivity, PERMISSIONS, 112)
         loadFragment(ChapterFragment())
         navigation.setOnNavigationItemSelectedListener(this)
     }
@@ -43,7 +63,9 @@ class DashBoardActivity : BaseActivity(),
             R.id.nav_chapter -> {
                 fragment = ChapterFragment()
             }
-
+            R.id.nav_revision -> {
+                fragment = RevisionFragment()
+            }
            /* R.id.nav_astra_cards -> {
                 fragment = AstraCardFragment()
             }*/
@@ -52,7 +74,7 @@ class DashBoardActivity : BaseActivity(),
                 fragment = SettingFragment()
             }
         }
-
+        Log.e("dash board activity","on naviagtion item")
         return loadFragment(fragment!!)
     }
 
@@ -74,6 +96,7 @@ class DashBoardActivity : BaseActivity(),
     }
 
     private fun loadFragment(fragment: Fragment): Boolean {
+        Log.e("dash borad activity","......load fragment....."+fragment)
         //switching fragment
         if (fragment != null) {
             val bundle = Bundle()

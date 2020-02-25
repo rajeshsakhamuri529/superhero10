@@ -2,6 +2,7 @@
     <string name="app_name">SuperHero10</string>
     <string name="str_chapter">Chapters</string>
     <string name="str_topics">Topics</string>
+    <string name="str_textbooks">Tiny Textbooks</string>
     <string name="str_classXcbse">CLASS X</string>
     <string name="str_cbse">CBSE</string>
     <string name="str_Quiz_1">Quiz I</string>
@@ -34,5 +35,13 @@
     <string name="write_to_us">Write to us</string>
     <string name="sign_out">Sign Out</string>
     <string name="sign_in">Sign In</string>
+    <string name="rupee">₹</string>
     <string name="exit_message">Are you sure you want to leave? Press the Back button again to exit.</string>
+
+    <string name="text1">In the final weeks before your JEE exam, find the perfect selection of calculus resources all in one app! Content is carefully designed by Expert Educators.</string>
+    <string name="text2">Stay sharp before your exam by reviewing all the key concepts with bite-sized quizzes. Quizzes are based on questions and concepts from JEE syllabus and past papers.</string>
+    <string name="text3">The quizzes are designed to help you to learn with concentration and make no mistakes! This helps you get in the mindset for exams where each little mistake is expensive!</string>
+    <string name="text4">Play each quiz multiple times until you have mastered all Topics. Over 300 bite-siezed questions are included. More being added... Just spend 20 mins a day and feel the gains!</string>
+
+
 </resources>

@@ -53,9 +53,9 @@ class ChaptersAdapter(val context: Context,
         }else{
             if(position == 1){
                 holder.lockLayout.visibility = View.VISIBLE
-                holder.lockLayout.alpha = 0.6f
-                holder.lock.alpha = 0.6f
-                holder.lock_txt.alpha = 0.6f
+               // holder.lockLayout.alpha = 0.6f
+                //holder.lock.alpha = 0.6f
+                //holder.lock_txt.alpha = 0.6f
             }else{
                 if(position > 1){
                     holder.topLayout.alpha = 0.4f

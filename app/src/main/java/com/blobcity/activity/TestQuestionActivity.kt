@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageInfo
 import android.graphics.Color
@@ -19,16 +20,11 @@ import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.util.ArrayMap
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationSet
 import android.view.animation.AnimationUtils
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath.*
@@ -48,8 +44,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 import android.util.Base64
-import android.view.Window
-import android.widget.ImageView
+import android.util.TypedValue
+import android.view.*
+import android.widget.*
 import com.blobcity.utils.SharedPrefs
 import java.lang.Exception
 import java.net.URLDecoder
@@ -285,6 +282,16 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v!!.id) {
             R.id.iv_cancel_test_question -> {
+                sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
                 onBackPressed()
             }
             R.id.btn_next -> {
@@ -312,14 +319,61 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
-               // showDialog()
+               // showNewDialog()
                 //txtFadeIn.startAnimation(animFadeIn);
                // dialog!!.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
                 dialog!! .show()
 
+                /*val webView = WebView(this)
+                webView.loadUrl(hintPath)
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Hint")
+                    .setView(webView)
+                    .setNeutralButton("OK", null)
+                    .show()*/
+
+              //  showNewDialog()
+
 
             }
         }
+    }
+
+    private fun showNewDialog(){
+        val builder = AlertDialog.Builder(this)
+        val wv = WebView(this)
+        wv.loadUrl(hintPath)
+        wv.setWebViewClient(object:WebViewClient() {
+            override fun shouldOverrideUrlLoading(view:WebView, url:String):Boolean {
+                view.loadUrl(url)
+                return true
+            }
+        })
+        val container = FrameLayout(this@TestQuestionActivity)
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        //val height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, getResources().getDisplayMetrics().heightPixels * 0.8f, getResources().getDisplayMetrics()) as Int
+        //params.height = height
+        wv.setLayoutParams(params)
+        container.addView(wv)
+        builder.setView(container)
+        builder.setNegativeButton("OK", object:
+            DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface, id:Int) {
+                dialog.dismiss()
+            }
+        })
+
+        val dialog = builder.create()
+        val layoutParams = WindowManager.LayoutParams()
+        layoutParams.copyFrom(dialog.getWindow().getAttributes())
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        layoutParams.gravity = Gravity.BOTTOM
+        dialog.getWindow().setAttributes(layoutParams)
+        dialog.getWindow().setWindowAnimations(R.style.DialogNoAnimation);
+        dialog.show()
+
+
     }
     private fun showDialog() {
          dialog = Dialog(this)
@@ -350,9 +404,19 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         buttonEffect(btn_gotIt,false)
        // alertDialog = dialogBuilder.create()
         btn_gotIt.setOnClickListener {
+            sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+            if(!sound){
+                // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                //  mediaPlayer.start()
+                if (Utils.loaded) {
+                    Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                    //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                }
+            }
             dialog!!.dismiss()
         }
-
+       // dialog!!.show()
         // val alertDialog = dialogBuilder.create()
       //  alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
       //  alertDialog.show()
@@ -774,7 +838,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
             if (filename.contains("hint")) {
                 hintPath = WEBVIEW_PATH + path + "/" + filename
-                showDialog()
+               showDialog()
             }
         }
 

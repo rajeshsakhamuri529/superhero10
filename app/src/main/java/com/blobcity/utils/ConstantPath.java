@@ -40,11 +40,13 @@ public class ConstantPath {
     public static String VERSION = "version";
     public static final String PREFS = "prefs";
     public static String IS_LOGGED_IN = "isLoggedIn";
+    public static String IS_FIRST_TIME = "isFirstTime";
     public static String UID = "uid";
     public static final String ANONYMOUS_USER = "ANONYMOUS_USER";
     public static final String SETTINGS = "SETTINGS";
     public static final String GRADE_SHARED_PREFS = "grade_shared_prefs";
     public static final String TITLE_TOPIC = "title_topic";
+    public static final String FIRST_TIME = "first_time";
     public static final String CARD_NO = "card_number";
 
 
