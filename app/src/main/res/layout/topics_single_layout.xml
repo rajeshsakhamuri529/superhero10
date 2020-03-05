@@ -85,22 +85,23 @@
 
     <RelativeLayout
 
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
+android:layout_centerInParent="true"
         android:visibility="visible"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp">
 
         <ImageView
             android:id="@+id/lock"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/_35sdp"
+            android:layout_height="@dimen/_35sdp"
 
-            android:src="@drawable/unlock"
-            android:layout_centerVertical="true"
+            android:src="@drawable/ic_unlock"
+
+
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="@dimen/_10sdp"/>
+            />
 
         <TextView
             android:id="@+id/lock_txt"
@@ -109,7 +110,7 @@
             android:text="Unlock all Topics!"
             android:layout_centerVertical="true"
             android:textColor="@color/dark_purple"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/_2sdp"
             android:layout_toRightOf="@+id/lock"
             android:fontFamily="@font/quicksand_medium"
             android:textSize="@dimen/_12ssp"

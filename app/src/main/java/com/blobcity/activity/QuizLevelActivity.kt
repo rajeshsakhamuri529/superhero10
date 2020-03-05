@@ -8,6 +8,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
+import android.os.Build
 import android.support.v7.app.AlertDialog
 import android.util.Log
 import android.view.LayoutInflater
@@ -62,7 +63,9 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
-
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
         val topic: Topic = intent.getSerializableExtra(TOPIC) as Topic
         folderName = topic.folderName
         courseId = intent.getStringExtra(COURSE_ID)

@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 
+import com.blobcity.fragment.RevisionFragment;
+import com.blobcity.interfaces.RevisionItemDownloadListener;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -41,7 +44,7 @@ public class FileDownloader {
             }
             fileOutputStream.close();
             Log.v(TAG, "downloadFile() completed ");
-
+           // download.onDownload();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Log.e(TAG, "downloadFile() error" + e.getMessage());

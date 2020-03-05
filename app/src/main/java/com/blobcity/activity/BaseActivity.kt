@@ -15,9 +15,11 @@ import android.opengl.ETC1.getWidth
 import android.R.attr.top
 import android.app.Activity
 import android.graphics.Rect
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import com.blobcity.R
 
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -29,6 +31,9 @@ abstract class BaseActivity : AppCompatActivity() {
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(layoutID)
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
         initView()
     }
 

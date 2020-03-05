@@ -20,29 +20,88 @@ import android.support.annotation.NonNull
 import com.blobcity.interfaces.RevisionItemClickListener
 import com.google.android.gms.tasks.Task
 import android.app.Activity
+import android.app.ProgressDialog
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
-import android.os.AsyncTask
-import android.os.Environment
-import android.support.v4.app.FragmentActivity
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Handler
+import android.support.v4.app.ActivityCompat
+import android.view.ContextThemeWrapper
 import android.widget.Toast
 import com.blobcity.R
-import com.blobcity.activity.PDFViewActivity
 import com.blobcity.activity.PDFViewerActivity
+import com.blobcity.database.DatabaseHandler
+import com.blobcity.entity.RevisionEntity
+import com.blobcity.interfaces.RevisionItemDownloadListener
 import com.blobcity.utils.*
 
 import java.io.File
-import java.io.IOException
 
 
-class RevisionFragment: Fragment(), RevisionItemClickListener {
+class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownloadListener {
 
+    override fun onDownload() {
+        //Toast.makeText(activity,"download complete",Toast.LENGTH_LONG).show()
+        try{
+
+            if(isPDFVersionChange){
+                isPDFVersionChange = false
+                val revisionEntity = RevisionEntity()
+                revisionEntity.setDocumentId(revision?.documentid)
+                revisionEntity.setPdfVersion(revision?.pdfversion)
+                databaseHandler?.updateContact(revisionEntity)
+            }
+            hideProgressDialog()
+            revision?.filename?.let { moveToPDFActivity(it) }
+
+        }catch (e:Exception){
+            Log.e("revision fragment","...exception...."+e);
+        }
+
+    }
+
+    private var mDelayHandler: Handler? = null
+    private val SPLASH_DELAY: Long = 2000 //3 seconds
+
+    internal val mRunnable: Runnable = Runnable {
+        if(!isDataFromFirebase){
+            showProgressDialog("Please wait...");
+        }
+
+    }
+
+
+    var revisionList: ArrayList<RevisionEntity>?=null
+    var tempItemList: ArrayList<RevisionEntity>?=null
+    var revisionEntity: RevisionEntity? = null
+    private var mPDialog: ProgressDialog? = null
     private var revisionItemList:ArrayList<RevisionModel>?=null
     var revisionModel:RevisionModel? = null
+    var revision:RevisionModel? = null
     var topicStatusVM: TopicStatusVM?= null
+    var databaseHandler: DatabaseHandler?= null
     var sharedPrefs: SharedPrefs? = null
+    var mFile: File? = null
+    var isPDFVersionChange:Boolean = false
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     var adapter: RevisionAdapter?= null
+    var isDataFromFirebase:Boolean = false
+    private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
+        {
+            for (permission in permissions)
+            {
+                if (ActivityCompat.checkSelfPermission(context, permission) !== PackageManager.PERMISSION_GRANTED)
+                {
+                    return false
+                }
+            }
+        }
+        return true
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.revision_layout, container, false)
     }
@@ -50,18 +109,26 @@ class RevisionFragment: Fragment(), RevisionItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+        //DatabaseHandler db = new DatabaseHandler(this);
+        databaseHandler = DatabaseHandler(activity);
+        revisionList = ArrayList()
         sharedPrefs = SharedPrefs()
+        //Initialize the Handler
+        mDelayHandler = Handler()
+        //Navigate with delay
+        mDelayHandler!!.postDelayed(mRunnable, SPLASH_DELAY)
         revisionItemList = ArrayList<RevisionModel>()
+        tempItemList = ArrayList<RevisionEntity>()
+       // if(activity?.let { hasPermissions(it, *PERMISSIONS) }!!){
 
-        gettingDataFromFireStore()
-        /*if(gettingDataFromFireStore()?.size!! > 0){
+            gettingDataFromFireStore()
+       /* }else{
 
-            adapter = RevisionAdapter(activity!!, revisionItemList!!)
-            //rcv_revision.addItemDecoration(itemDecorator)
-            //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
-            rcv_revision.addItemDecoration(VerticalSpaceItemDecoration(48));
-            rcv_revision.adapter = adapter
+            requestPermissions(PERMISSIONS, 112)
         }*/
+
+
+
 
 
     }
@@ -78,8 +145,9 @@ class RevisionFragment: Fragment(), RevisionItemClickListener {
                    // val attractionsList = ArrayList()
                     for (document in task.getResult()!!)
                     {
-                        Log.e("revision fragment", "New city: ${document.data.get("shortdescription")}")
-                        Log.e("revision fragment", "New city: ${document.data.get("tags")}")
+                        //Log.e("revision fragment", "New city: ${document.id}")
+                       // Log.e("revision fragment", "New city: ${document.data.get("tags")}")
+
                         revisionModel=RevisionModel()
                         revisionModel?.rId = document.data.get("rid").toString()
                         revisionModel?.shortDescription = document.data.get("shortdescription").toString()
@@ -89,87 +157,252 @@ class RevisionFragment: Fragment(), RevisionItemClickListener {
                         revisionModel?.tilte = document.data.get("title").toString()
                         revisionModel?.timeToRead = document.data.get("timetoread").toString()
                         revisionModel?.filename = document.data.get("filename").toString()
+                        revisionModel?.pdfversion = document.data.get("pdfversion").toString()
+                        revisionModel?.sortorder = document.data.get("sortorder").toString()
+                        revisionModel?.documentid = document.id
+                        //Log.e("revision fragment", "New city: ${revisionModel?.pdfversion}")
 
-                        if(Utils.isOnline(activity)){
-                            //Toast.makeText(activity,"if.....", Toast.LENGTH_LONG).show()
-                            DownloadTask(activity,revisionModel?.pdfLink,revisionModel?.filename)
+
+
+                       // revisionItemList = sortedList as ArrayList<RevisionModel>?
+                        revisionModel?.let { revisionItemList?.add(it) }
+                        revisionEntity = RevisionEntity()
+                        revisionEntity?.setDocumentId(revisionModel?.documentid)
+                        revisionEntity?.setPdfVersion(revisionModel?.pdfversion)
+                        tempItemList?.add(revisionEntity!!)
+
+                    }
+                    try{
+                        revisionList = databaseHandler?.getAllContacts() as ArrayList<RevisionEntity>?
+                        Log.e("revision fragement","...revision list.."+revisionList?.size);
+                        Log.e("revision fragement","...tempItemList list.."+tempItemList?.size);
+                        if(revisionList?.size == 0){
+                            for (topicStatusModels in revisionItemList!!) {
+
+                                val revisionEntity = RevisionEntity()
+                                revisionEntity.setDocumentId(topicStatusModels?.documentid)
+                                revisionEntity.setPdfVersion(topicStatusModels?.pdfversion)
+                                databaseHandler?.addContact(revisionEntity)
+                            }
+
+                        }
+                        else if(tempItemList?.size!! > revisionList?.size!!){
+
+                            for (topicStatusModels in tempItemList!!) {
+
+                                if(!revisionList!!.contains(topicStatusModels)){
+                                    val revisionEntity = RevisionEntity()
+                                    revisionEntity.setDocumentId(topicStatusModels?.documentId)
+                                    revisionEntity.setPdfVersion(topicStatusModels?.pdfVersion)
+                                    databaseHandler?.addContact(revisionEntity)
+                                }
+
+                                /*for(i in 0..(revisionList?.size!!-1)){
+                                    if(topicStatusModels.documentId != revisionList!!.get(i).documentId){
+                                        val revisionEntity = RevisionEntity()
+                                        revisionEntity.setDocumentId(topicStatusModels?.documentId)
+                                        revisionEntity.setPdfVersion(topicStatusModels?.pdfVersion)
+                                        databaseHandler?.addContact(revisionEntity)
+                                    }
+                                }*/
+
+                            }
+
                         }
 
 
-                        Log.e("revision fragment",".....revision model...."+revisionModel?.shortDescription);
-                        revisionModel?.let { revisionItemList?.add(it) }
+
+                    }catch (e:Exception){
+
                     }
-                    Log.e("revision fragment", "revisionItemList.........."+ (revisionItemList?.size))
                     try {
-                        adapter = RevisionAdapter(activity!!, revisionItemList!!, this@RevisionFragment)
+                        var sortedList = revisionItemList?.sortedWith(compareBy({ it.sortorder }))
+
+                       // val sortedList:ArrayList<RevisionModel> = (revisionItemList?.sortedWith(compareBy({ it.sortorder })) as ArrayList<RevisionModel>?)!!
+                       // revisionItemList = sortedList
+                        Log.e("revision fragment","...sorted list..."+sortedList+"...size..."+sortedList?.size);
+                        hideProgressDialog()
+                        isDataFromFirebase = true
+                        adapter = RevisionAdapter(activity!!, sortedList!!, this@RevisionFragment)
                         //rcv_revision.addItemDecoration(itemDecorator)
                         //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
-                        rcv_revision.addItemDecoration(VerticalSpaceItemDecoration(48));
+                       // rcv_revision.addItemDecoration(VerticalSpaceItemDecoration(48));
                         rcv_revision.adapter = adapter
 
                     }catch (e:Exception){
                         Log.e("revision fragment",".....exception..."+e)
                     }
 
-                    // methodToProcessTheList(attractionsList)
                 }
             }
         })
 
-        /*val registration =  query.addSnapshotListener(MetadataChanges.INCLUDE) { querySnapshot, e ->
-                if (e != null) {
-                    Log.e("revision fragment", "Listen error", e)
-                    return@addSnapshotListener
-                }
-                for (change in querySnapshot!!.documentChanges) {
-                    if (change.type == DocumentChange.Type.ADDED) {
-                        Log.e("revision fragment", "New city: ${change.document.data.get("shortdescription")}")
-                        Log.e("revision fragment", "New city: ${change.document.data.get("tags")}")
-                        // pendingFDMModel.setTimeStamp(document.get("timeStamp")!!.toString())
-                        // pendingFDMModel.setAppVersion(document.get("appVersion")!!.toString())
-                        revisionModel=RevisionModel()
-                        revisionModel?.rId = change.document.data.get("rid").toString()
-                        revisionModel?.shortDescription = change.document.data.get("shortdescription").toString()
-                        revisionModel?.tags = change.document.data.get("tags").toString()
-                        revisionModel?.pdfLink = change.document.data.get("pdf").toString()
-                        revisionModel?.imageLink = change.document.data.get("thumbnail").toString()
-                        revisionModel?.tilte = change.document.data.get("title").toString()
-                        revisionModel?.timeToRead = change.document.data.get("timetoread").toString()
 
-                        Log.e("revision fragment",".....revision model...."+revisionModel?.shortDescription);
-                        revisionModel?.let { revisionItemList?.add(it) }
-                    }
-
-                    val source = if (querySnapshot.metadata.isFromCache)
-                        "local cache"
-                    else
-                        "server"
-                    Log.e("revision fragment", "Data fetched from $source")
-                }
-                //Thread.sleep(500)
-                Log.e("revision fragment", "revisionItemList.........."+ (revisionItemList?.size))
-            try {
-                adapter = RevisionAdapter(activity!!, revisionItemList!!,this)
-                //rcv_revision.addItemDecoration(itemDecorator)
-                //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
-                rcv_revision.addItemDecoration(VerticalSpaceItemDecoration(48));
-                rcv_revision.adapter = adapter
-
-            }catch (e:Exception){
-                Log.e("revision fragment",".....exception..."+e)
-            }
-
-
-            }*/
 
             return revisionItemList
 
 
     }
+    fun showProgressDialog(loadText: String) {
+        hideProgressDialog()
+        try {
+            mPDialog = ProgressDialog.show(
+                ContextThemeWrapper(activity, R.style.DialogCustom),
+                "",
+                loadText
+            )
+            mPDialog!!.setCancelable(false)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
-    override fun onClick(rID: String) {
-        Log.e("revision fragment",".......on click....."+rID)
-        moveToPDFActivity(rID)
+    }
+
+    fun hideProgressDialog() {
+        try {
+            if (mPDialog != null && mPDialog!!.isShowing()) {
+                mPDialog!!.dismiss()
+                mPDialog = null
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 112 ) {
+            Log.e("revision fragment","...grant result..."+grantResults);
+            Log.e("revision fragment","...grant result..."+grantResults[0]);
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // user rejected the permission
+              //  Toast.makeText(activity,"permission granted",Toast.LENGTH_LONG).show()
+                try {
+                    revisionList = databaseHandler?.getAllContacts() as ArrayList<RevisionEntity>?
+
+                    for (x in 0..(revisionList?.size!!-1)) {
+                        Log.e(
+                            "revision fragment",
+                            "...version..." + (revisionList?.get(x)?.getPdfVersion())
+                        );
+                        // Log.e("revision fragment","...revisionModel?.pdfversion..."+revisionItemList?.get(x)?.pdfversion);
+
+                        if (revision?.documentid == revisionList?.get(x)?.documentId) {
+                            if (revisionList?.get(x)?.getPdfVersion() != revision?.pdfversion) {
+                                isPDFVersionChange = true
+                                break
+
+
+                            }
+                        }
+
+                    }
+
+                    if(isPDFVersionChange){
+
+                        if(Utils.isOnline(activity)){
+                            showProgressDialog("Please wait...")
+                            DownloadTask(activity,revision?.pdfLink,revision?.filename,this@RevisionFragment)
+                        }else{
+                            Toast.makeText(activity,"Internet is required!",Toast.LENGTH_LONG).show();
+                        }
+
+                    }else{
+                        mFile = File(activity?.getExternalFilesDir(null), revision?.filename+".pdf")
+                        if(!mFile!!.exists()){
+                            if(Utils.isOnline(activity)){
+                                showProgressDialog("Please wait...")
+                                DownloadTask(activity,revision?.pdfLink,revision?.filename,this@RevisionFragment)
+                            }else{
+                                Toast.makeText(activity,"Internet is required!",Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            revision?.filename?.let { moveToPDFActivity(it) }
+
+                        }
+
+
+                    }
+
+                }catch (e:java.lang.Exception){
+
+                }
+
+
+            }else {
+                Toast.makeText(activity,"Permissions are required to view the file!",Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+
+    override fun onClick(revision: RevisionModel) {
+        Log.e("revision fragment",".......on click....."+revision.filename)
+        this.revision = revision
+        if(activity?.let { hasPermissions(it, *PERMISSIONS) }!!){
+            try {
+                revisionList = databaseHandler?.getAllContacts() as ArrayList<RevisionEntity>?
+                Log.e("revision fragment",".......size....."+revisionList?.size!!)
+                    for (x in 0..(revisionList?.size!!-1)) {
+
+                        // Log.e("revision fragment","...revisionModel?.pdfversion..."+revisionItemList?.get(x)?.pdfversion);
+
+                        if (revision.documentid == revisionList?.get(x)?.documentId) {
+
+                            if (revisionList?.get(x)?.getPdfVersion() != revision?.pdfversion) {
+                                Log.e("revision fragment",".......revision?.pdfversion....."+revision?.pdfversion)
+                                isPDFVersionChange = true
+                                break
+                            }
+
+                        }
+                        Log.e("revision fragment",".......revision.documentid....."+revision.documentid)
+                    }
+                Log.e("revision fragment",".......isPDFVersionChange....."+isPDFVersionChange)
+                if(isPDFVersionChange){
+
+                    if(Utils.isOnline(activity)){
+                        showProgressDialog("Please wait...")
+                        DownloadTask(activity,revision?.pdfLink,revision?.filename,this@RevisionFragment)
+                    }else{
+                        Toast.makeText(activity,"Internet is required!",Toast.LENGTH_LONG).show();
+                    }
+
+                }else{
+                    Log.e("revision fragment",".......else....."+isPDFVersionChange)
+                    mFile = File(activity?.getExternalFilesDir(null), revision.filename+".pdf")
+                    if(!mFile!!.exists()){
+                        if(Utils.isOnline(activity)){
+                            showProgressDialog("Please wait...")
+                            DownloadTask(activity,revision?.pdfLink,revision?.filename,this@RevisionFragment)
+                        }else{
+                            Toast.makeText(activity,"Internet is required!",Toast.LENGTH_LONG).show();
+                        }
+                    }else{
+                        Log.e("revision fragment",".......else...file exist..")
+                        revision.filename?.let { moveToPDFActivity(it) }
+
+                    }
+
+
+               }
+
+
+
+            }catch (e:java.lang.Exception){
+
+            }
+
+         }else{
+
+             requestPermissions(PERMISSIONS, 112)
+         }
+
+
 
     }
     private fun moveToPDFActivity(rID: String) {
@@ -181,36 +414,6 @@ class RevisionFragment: Fragment(), RevisionItemClickListener {
 
     }
 
-    /*private class DownloadFile(activity: RevisionFragment?) : AsyncTask<String, Void, Void>() {
-        var context:Context? = null
-        protected override fun doInBackground(vararg strings:String): Void? {
-            Log.v("pdf view activity", "doInBackground() Method invoked ")
-            val fileUrl = strings[0] // -> http://maven.apache.org/maven-1.x/maven.pdf
-            val fileName = strings[1] // -> maven.pdf
 
-           // context = strings[2]
-            val extStorageDirectory = Environment.getExternalStorageDirectory().toString()
-            //File folder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            //mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
-            val pdfFile = File(activity.getExternalFilesDir(null), fileName)
-            Log.v("pdf view activity", "doInBackground() pdfFile invoked " + pdfFile.getAbsolutePath())
-            Log.v("pdf view activity", "doInBackground() pdfFile invoked " + pdfFile.getAbsoluteFile())
-            try
-            {
-                pdfFile.createNewFile()
-                Log.v("pdf view activity", "doInBackground() file created" + pdfFile)
-            }
-            catch (e: IOException) {
-                e.printStackTrace()
-              //  Log.e("pdf view activity", "doInBackground() error" + e.getMessage())
-                Log.e("pdf view activity", "doInBackground() error" + e.getStackTrace())
-            }
-            FileDownloader.downloadFile(fileUrl, pdfFile)
-            Log.v("pdf view activity", "doInBackground() file download completed")
-            return null
-        }
-
-
-    }*/
 
 }

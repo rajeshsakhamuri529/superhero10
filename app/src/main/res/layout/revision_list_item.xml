@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/rootLayout"
+    android:layout_marginTop="@dimen/_20sdp"
     android:background="@drawable/layout_bg">
 
     <!--<android.support.v7.widget.CardView
@@ -27,70 +28,93 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_weight="10">
+                android:layout_weight="12">
 
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="8">
+                    android:layout_weight="9">
 
-                    <ImageView
-                        android:id="@+id/thumbnail"
-                        android:layout_width="@dimen/_90sdp"
-                        android:layout_height="@dimen/_200sdp"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/pic1">
-
-                    </ImageView>
-
-
-                    <TextView
-                        android:id="@+id/rid"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="B020"
-                        android:fontFamily="@font/quicksand_medium"
-                        android:textColor="@color/lives_text"
-                        android:layout_toRightOf="@+id/thumbnail"
-                        android:layout_marginLeft="@dimen/_5sdp"/>
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3">
+                            <ImageView
+                                android:id="@+id/thumbnail"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/pic1"
 
-                    <TextView
-                        android:id="@+id/timetotaken"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="22 minutes"
-                        android:fontFamily="@font/quicksand_medium"
-                        android:textColor="@color/lives_text"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginLeft="@dimen/_5sdp"/>
+                                >
+
+                            </ImageView>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7">
+
+                            <TextView
+                                android:id="@+id/rid"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="B020"
+                                android:fontFamily="@font/notosans_regular"
+                                android:textColor="@color/lives_text"
+
+                                android:layout_marginLeft="@dimen/_5sdp"/>
+
+                            <TextView
+                                android:id="@+id/timetotaken"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="22 minutes"
+                                android:fontFamily="@font/notosans_regular"
+                                android:textColor="@color/lives_text"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginLeft="@dimen/_5sdp"/>
 
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Solving Linear Differential Equations"
-                        android:textColor="@color/black_text"
-                        android:textSize="@dimen/_14sdp"
-                        android:fontFamily="@font/quicksand_bold"
-                        android:layout_below="@+id/rid"
-                        android:layout_toRightOf="@+id/thumbnail"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_15sdp"/>
+                            <TextView
+                                android:id="@+id/title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Solving Linear Differential Equations"
+                                android:textColor="@color/black_text"
+                                android:textSize="@dimen/_13sdp"
+                                android:fontFamily="@font/notosans_bold"
+                                android:layout_below="@+id/rid"
 
-                    <TextView
-                        android:id="@+id/shortdescription"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Learn to solve linear differential equations of the first order using an integrating factor"
-                        android:textColor="@color/lives_text"
-                        android:textSize="@dimen/_12sdp"
-                        android:fontFamily="@font/quicksand_medium"
-                        android:layout_below="@+id/title"
-                        android:layout_toRightOf="@+id/thumbnail"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_5sdp"/>
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_2sdp"/>
+
+                            <TextView
+                                android:id="@+id/shortdescription"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Learn to solve linear differential equations of the first order using an integrating factor"
+                                android:textColor="@color/lives_text"
+                                android:textSize="@dimen/_10sdp"
+                                android:fontFamily="@font/notosans_regular"
+                                android:layout_below="@+id/title"
+
+                                android:layout_marginLeft="@dimen/_5sdp"
+                                android:layout_marginTop="@dimen/_5sdp"/>
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+
+
+
+
                     <!--<LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -132,15 +156,16 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2">
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_weight="3">
 
                     <TextView
                         android:id="@+id/tags"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:fontFamily="@font/quicksand_bold"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:fontFamily="@font/inconsolata_regular"
+                        android:textColor="@color/header_line"
                         />
 
 

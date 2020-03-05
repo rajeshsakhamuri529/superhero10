@@ -22,12 +22,14 @@
             android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            app:itemIconTint="@drawable/bottom_nav_bar_selector"
+
             app:itemTextColor="@drawable/bottom_nav_bar_selector"
-            android:background="?android:attr/windowBackground"
+            android:background="#622CB1"
+
+            android:theme="@style/Widget.BottomNavigationView"
             android:layout_alignParentBottom="true"
             app:menu="@menu/bottom_nav_menu"/>
-
+<!--#301934-->
     <!--<android.support.v4.widget.NestedScrollView
             android:id="@+id/nsv"
             android:layout_width="match_parent"

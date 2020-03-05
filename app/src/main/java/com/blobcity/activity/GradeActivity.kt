@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
@@ -94,6 +95,9 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
             .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
             .build()
         db.firestoreSettings = settings
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
 
     }
 
@@ -118,7 +122,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
             Log.d("signin","true")
             if(sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME)){
-                navigateToSignIn()
+                navigateToIntro()
             }else{
                 navigateToDashboard("GRADE 6")
             }
@@ -484,6 +488,15 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         val intent = Intent(
             this@GradeActivity,
             SignInActivity::class.java
+        )
+        intent.putExtra(TITLE_TOPIC, title)
+        intent.putExtra(FIRST_TIME, "first time")
+        startActivity(intent)
+    }
+    fun navigateToIntro(){
+        val intent = Intent(
+            this@GradeActivity,
+            IntroActivity::class.java
         )
         intent.putExtra(TITLE_TOPIC, title)
         intent.putExtra(FIRST_TIME, "first time")

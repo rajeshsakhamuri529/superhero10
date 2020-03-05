@@ -2,11 +2,16 @@ package com.blobcity.activity
 
 import android.app.ProgressDialog
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.Paint
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
@@ -60,7 +65,20 @@ class SignInActivity : BaseActivity(){
 
     private lateinit var pagerAdapterView: MyPagerAdapter
     private val uiHelper = UiHelper()
-
+    private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
+        {
+            for (permission in permissions)
+            {
+                if (ActivityCompat.checkSelfPermission(context, permission) !== PackageManager.PERMISSION_GRANTED)
+                {
+                    return false
+                }
+            }
+        }
+        return true
+    }
     override var layoutID: Int = R.layout.activity_sign_in
 
     override fun initView() {
@@ -68,15 +86,18 @@ class SignInActivity : BaseActivity(){
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         //val topic: Topic = intent.getSerializableExtra(ConstantPath.TOPIC) as Topic
         //topicName = topic.title
+       // ActivityCompat.requestPermissions(this@SignInActivity, PERMISSIONS, 112)
         sharedPrefs = SharedPrefs()
         firstTime = intent.getStringExtra(ConstantPath.FIRST_TIME)
         if(sharedPrefs!!.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME)) {
             sharedPrefs!!.setBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME, false)
             signin_layout.visibility = View.GONE
             getStartedButton.visibility = View.VISIBLE
+            bottom_layout.setBackgroundColor(Color.parseColor("#DBD6FF"))
         } else {
             signin_layout.visibility = View.VISIBLE
             getStartedButton.visibility = View.GONE
+            bottom_layout.setBackgroundColor(Color.parseColor("#FFFFFF"))
         }
        // tv_topic_name.text = topicName
 //textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -217,7 +238,7 @@ class SignInActivity : BaseActivity(){
     }
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
         Log.e("sign in activity", "firebaseAuthWithGoogle:" + acct.id!!)
-        showProgressDialog("Verifying your account...")
+        showProgressDialog("Signing In...")
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         Log.e("sign in sctivity","isaccountlinked......"+sharedPrefs?.getBooleanPrefVal(this, ConstantPath.ISACCOUNTLINKED)!!);
         if (sharedPrefs?.getBooleanPrefVal(this, ConstantPath.ISACCOUNTLINKED)!!) {

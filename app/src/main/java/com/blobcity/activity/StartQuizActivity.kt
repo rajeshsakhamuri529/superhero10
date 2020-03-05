@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
@@ -34,7 +35,9 @@ class StartQuizActivity : BaseActivity(),View.OnClickListener {
     lateinit var  mSoundManager: SoundManager;
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
         val path = intent.getStringExtra(DYNAMIC_PATH)
         val courseId = intent.getStringExtra(COURSE_ID)
         val topicId = intent.getStringExtra(TOPIC_ID)

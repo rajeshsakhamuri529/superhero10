@@ -17,11 +17,21 @@ import com.blobcity.R
 import com.blobcity.fragment.ChapterFragment
 import com.blobcity.fragment.RevisionFragment
 import com.blobcity.fragment.SettingFragment
+import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.TITLE_TOPIC
+import com.blobcity.utils.SharedPrefs
+import com.blobcity.utils.Utils
 import com.blobcity.utils.Utils.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.io.File
 import java.sql.Time
+import android.support.v4.app.SupportActivity
+import android.support.v4.app.SupportActivity.ExtraData
+import android.support.v4.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
+
 
 class DashBoardActivity : BaseActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener {
@@ -30,22 +40,10 @@ class DashBoardActivity : BaseActivity(),
     lateinit var gradeTitle: String
     private var backPressedTime: Long = 0
     private var backPressToastMessage: Toast? = null
-
+    var sharedPrefs: SharedPrefs? = null
+    var sound: Boolean = false
     override var layoutID: Int = R.layout.activity_dashboard
-    private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
-        {
-            for (permission in permissions)
-            {
-                if (ActivityCompat.checkSelfPermission(context, permission) !== PackageManager.PERMISSION_GRANTED)
-                {
-                    return false
-                }
-            }
-        }
-        return true
-    }
+
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gradeTitle = "GRADE 6"
@@ -53,25 +51,77 @@ class DashBoardActivity : BaseActivity(),
         getPlayerForCorrect(this)
         getPlayerForwrong(this)
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
-        ActivityCompat.requestPermissions(this@DashBoardActivity, PERMISSIONS, 112)
-        loadFragment(ChapterFragment())
+        sharedPrefs = SharedPrefs()
+        val fragment = intent.getStringExtra("fragment")
+        if(fragment == "pdf"){
+            loadFragment(RevisionFragment())
+            val revisionItem = navigation.getMenu().getItem(1)
+            // Select home item
+            navigation.setSelectedItemId(revisionItem.getItemId());
+        }else{
+            loadFragment(ChapterFragment())
+        }
+        //loadFragment(ChapterFragment())
+        navigation.setItemIconTintList(null);
         navigation.setOnNavigationItemSelectedListener(this)
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             R.id.nav_chapter -> {
-                fragment = ChapterFragment()
+                sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
+                if(!sound) {
+                    //MusicManager.getInstance().play(context, R.raw.amount_low);
+                    // Is the sound loaded already?
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..." + Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                    fragment = ChapterFragment()
+                }else{
+                    fragment = ChapterFragment()
+                }
+
             }
             R.id.nav_revision -> {
-                fragment = RevisionFragment()
+                sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
+                if(!sound) {
+                    //MusicManager.getInstance().play(context, R.raw.amount_low);
+                    // Is the sound loaded already?
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..." + Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                    fragment = RevisionFragment()
+                }else{
+                    fragment = RevisionFragment()
+                }
+
             }
            /* R.id.nav_astra_cards -> {
                 fragment = AstraCardFragment()
             }*/
 
             R.id.nav_settings -> {
-                fragment = SettingFragment()
+                sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
+                if(!sound) {
+                    //MusicManager.getInstance().play(context, R.raw.amount_low);
+                    // Is the sound loaded already?
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..." + Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                    fragment = SettingFragment()
+                }else{
+                    fragment = SettingFragment()
+                }
+
             }
         }
         Log.e("dash board activity","on naviagtion item")

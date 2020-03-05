@@ -15,6 +15,7 @@ import android.view.ContextThemeWrapper;
 import android.widget.Toast;
 
 import com.blobcity.R;
+import com.blobcity.interfaces.RevisionItemDownloadListener;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,13 +30,13 @@ public class DownloadTask {
 
     private String downloadUrl = "", downloadFileName = "";
     private ProgressDialog progressDialog;
-
-    public DownloadTask(Context context, String downloadUrl,String downloadFileName) {
+    private RevisionItemDownloadListener downloadcomplete;
+    public DownloadTask(Context context, String downloadUrl, String downloadFileName, RevisionItemDownloadListener download) {
         this.context = context;
 
         this.downloadUrl = downloadUrl;
         this.downloadFileName = downloadFileName;
-
+        this.downloadcomplete = download;
        // downloadFileName = downloadUrl.substring(downloadUrl.lastIndexOf('/'), downloadUrl.length());//Create file name by picking download file name from URL
         Log.e(TAG, downloadFileName);
 
@@ -57,6 +58,8 @@ public class DownloadTask {
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
+            Log.e("download task",".....onpost execute.....");
+            downloadcomplete.onDownload();
         }
 
         @Override

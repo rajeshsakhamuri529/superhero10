@@ -26,6 +26,7 @@ class TopicStatusVM(application: Application) : AndroidViewModel(Application()) 
         return topicStatusRepository!!.getTopicsByLevel(topicLevel, gradeTitle)
     }
 
+
     fun insert(courseId: String, uId: String, topicId: String,
                topicLevel: String, dbPosition: Int, gradeTitle: String){
         val topicStatusEntity = TopicStatusEntity()

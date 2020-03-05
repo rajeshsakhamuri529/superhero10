@@ -4,6 +4,7 @@ import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
+
 import com.blobcity.dao.TopicStatusDao;
 import com.blobcity.entity.TopicStatusEntity;
 
@@ -13,6 +14,7 @@ public abstract class QuizDatabase extends RoomDatabase {
     private static QuizDatabase database;
 
     public abstract TopicStatusDao getTopicStatusDao();
+    //public abstract RevisionVersionStatusDao getRevisionVersionStatusDao();
 
     public static QuizDatabase getDatabase(final Context context){
         if (database == null){

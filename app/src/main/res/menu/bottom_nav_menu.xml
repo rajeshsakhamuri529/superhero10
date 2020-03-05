@@ -3,12 +3,13 @@
 
     <item
             android:id="@+id/nav_chapter"
-            android:icon="@drawable/chapter_icon"
-            android:title="Topics" />
+            android:icon="@drawable/practice_drawable"
+            
+            android:title="Practice" />
     <item
         android:id="@+id/nav_revision"
-        android:icon="@drawable/chapter_icon"
-        android:title="Revision" />
+        android:icon="@drawable/books_drawable"
+        android:title="Books" />
     <!--<item
             android:id="@+id/nav_astra_cards"
             android:icon="@drawable/astra_card_icon"
@@ -16,7 +17,7 @@
 
     <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/settings_icon"
+            android:icon="@drawable/settings_drawable"
             android:title="Settings" />
 
 </menu>

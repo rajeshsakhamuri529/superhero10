@@ -149,6 +149,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun initView() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         dynamicPath = intent.getStringExtra(DYNAMIC_PATH)
         courseId = intent.getStringExtra(COURSE_ID)
@@ -322,6 +325,17 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                // showNewDialog()
                 //txtFadeIn.startAnimation(animFadeIn);
                // dialog!!.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
+
+
+
+
+                /*alertLL.visibility = View.VISIBLE
+                grey_view.visibility = View.VISIBLE
+
+                btn_gotIt.setOnClickListener {
+                    alertLL.visibility = View.GONE
+                    grey_view.visibility = View.GONE
+                }*/
                 dialog!! .show()
 
                 /*val webView = WebView(this)
@@ -484,6 +498,10 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val iv_heart_2 = dialogView.findViewById(R.id.dialog_iv_life2) as ImageView
         val iv_heart_1 = dialogView.findViewById(R.id.dialog_iv_life1) as ImageView
         val tv_text = dialogView.findViewById(R.id.tv_msg2) as TextView
+        val tv_text1 = dialogView.findViewById(R.id.tv_msg1) as TextView
+        val tv_text2 = dialogView.findViewById(R.id.tv_msg3) as TextView
+
+
         val alertDialog = dialogBuilder.create()
         if(alertDialog.isShowing){
             alertDialog.dismiss()
@@ -516,6 +534,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         } else if (availableLife == 0) {
             tv_text.visibility = View.VISIBLE
             tv_text.text = "GAME OVER"
+            tv_text1.text = "Oops.. no mistakes allowed!"
+            tv_text2.text = "Check out the Hint and start again!"
             tv_text.setTextColor(resources.getColor(R.color.red_wrong_answer))
             if (totalLife == 3) {
                 heartType(this, false, iv_heart_3)
@@ -839,6 +859,19 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             if (filename.contains("hint")) {
                 hintPath = WEBVIEW_PATH + path + "/" + filename
                showDialog()
+                /*webview_hint.settings.javaScriptEnabled = true
+                val hint = object : WebViewClient() {
+
+                    override fun onPageFinished(view: WebView?, url: String?) {
+                        Log.d("onPageFinished", url + "!")
+                        injectCSS(view, "Hint")
+                        // view!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#ffffff}</style>';")
+                    }
+                }
+                Log.e("test question activity","hint alert dialog....hint path..."+hintPath);
+                webview_hint.webViewClient = hint
+                webview_hint.loadUrl(hintPath)
+                webview_hint.setBackgroundColor(0)*/
             }
         }
 

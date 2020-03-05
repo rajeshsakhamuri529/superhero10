@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#E8E5FF</color>
-    <color name="colorPrimaryDark">#9437FF</color>
+    <color name="colorPrimaryDark">#333333</color>
     <color name="colorAccent">#D81B60</color>
     <color name="light_purple">#C980DD</color>
     <color name="line_colour">#A47DAF</color>
@@ -59,4 +59,6 @@
     <color name="answer_bg_correct_transition">#D4FB79</color>
     <color name="answer_bg_correct_border">#8EFA00</color>
     <color name="super_quiz_inactive">#DBD6FF</color>
+
+    <color name="intro_pages">#797979</color>
 </resources>

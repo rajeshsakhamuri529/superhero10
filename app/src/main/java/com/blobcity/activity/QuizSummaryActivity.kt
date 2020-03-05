@@ -11,6 +11,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.util.DisplayMetrics
@@ -78,9 +79,12 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mediaPlayer: MediaPlayer
     var sound: Boolean = false
     override var layoutID: Int = R.layout.activity_quiz_summary
-
+    var size = 0
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+        }
         reviewModelList = intent.getSerializableExtra(REVIEW_MODEL) as ArrayList<ReviewModel>?
         topicLevel = intent.getStringExtra(TOPIC_LEVEL)
         topicName = intent.getStringExtra(TOPIC_NAME)
@@ -119,7 +123,12 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                 .load(Uri.parse(WEBVIEW_PATH + localSuperQuizReadyCardsPath + "ready-" + readyCardNumber + ".png"))
                 .into(iv_card_front)
         }
-        val size = reviewModelList!!.size
+        if(level_status!!){
+            size = (reviewModelList!!.size)
+        }else{
+            size = (reviewModelList!!.size) - 1
+        }
+
         //val answer_status = "$size / $totalQuestion"
         tv_answer_status1.text = "$size"
 
@@ -177,7 +186,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
                 flipAnimation()
             }
             tv_answer_status1.setTextColor(resources.getColor(R.color.level_failed))
-            tv_completion_status.text = "Level Failed"
+            tv_completion_status.text = "TRY AGAIN!"
             tv_completion_status.setTextColor(resources.getColor(R.color.level_failed))
         }
 

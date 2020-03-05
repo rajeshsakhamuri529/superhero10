@@ -9,10 +9,10 @@ import com.blobcity.entity.TopicStatusEntity
 
 class TopicStatusRepository(application: Application) {
     private var topicStatusDao: TopicStatusDao ?= null
-
     init {
         val db : QuizDatabase = QuizDatabase.getDatabase(application)
         topicStatusDao = db.topicStatusDao
+
     }
 
     fun getAllTopicStatus(gradeTitle: String) : LiveData<List<TopicStatusEntity>>{

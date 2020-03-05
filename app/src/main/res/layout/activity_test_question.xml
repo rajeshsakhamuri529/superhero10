@@ -161,4 +161,73 @@
                 android:textColor="@color/hint_text"
                 />
     </RelativeLayout>
+    <View
+        android:id="@+id/grey_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#333333"
+        android:visibility="gone"
+        android:alpha="0.5"/>
+    <LinearLayout
+        android:id="@+id/alertLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/hint_curve_border"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_16ssp"
+            android:text="Hint"
+            android:layout_gravity="center"
+            android:textColor="@color/hint_title_text"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_centerHorizontal="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:id="@+id/view1"
+            android:background="@color/hint_title_text"
+            android:layout_below="@id/tv_hint"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"/>
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/webview_hint"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <Button android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+
+            android:id="@+id/btn_gotIt"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/webview_hint"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/hint_button_bg"
+            android:text="Ok"
+            android:layout_gravity="center_horizontal"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textColor="@color/hint_text"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="@dimen/_13ssp"
+            android:paddingLeft="@dimen/_20sdp"
+            android:paddingRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"/>
+
+    </LinearLayout>
+
+
+
 </RelativeLayout>

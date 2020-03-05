@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.revision_list_item.view.*
 
 class RevisionAdapter(
     val context: Context,
-    val revisionItemList: ArrayList<RevisionModel>,
+    val revisionItemList: List<RevisionModel>,
     val pdfItemClickListener: RevisionItemClickListener
 ) : RecyclerView.Adapter<RevisionAdapter.RevisionViewHolder>() {
 
@@ -23,7 +23,7 @@ class RevisionAdapter(
        // Log.e("revision adapter","onCreateViewHolder.....revisionItemList...."+revisionItemList.size)
         return RevisionViewHolder(
             LayoutInflater.from(context)
-                .inflate(R.layout.revision_list_item, p0, false)
+                .inflate(R.layout.revision_list_new, p0, false)
         )
     }
 
@@ -46,12 +46,12 @@ class RevisionAdapter(
         var str: String? = revisionItemList[position].tags?.replace("[","")
         var str1: String? = str?.replace("]","")
 
-        Log.e("revision fragment",".....str1..."+str1);
+        //Log.e("revision fragment",".....str1..."+str1);
 
 
         val strarray = str1?.split(",")?.toTypedArray()
-        Log.e("revision fragment",".....strarray..."+strarray?.size);
-        Log.e("revision fragment",".....strarray..."+ (strarray?.get(0)));
+       // Log.e("revision fragment",".....strarray..."+strarray?.size);
+       // Log.e("revision fragment",".....strarray..."+ (strarray?.get(0)));
         val builder = StringBuilder()
         for (name in strarray!!) {
             println(name)
@@ -60,11 +60,11 @@ class RevisionAdapter(
                 .append(name.trim())
                 .append(" ")
         }
-        Log.e("revision fragment",".....builder..."+builder);
+      //  Log.e("revision fragment",".....builder..."+builder);
         holder.tags.text = builder
 
         holder.topLayout.setOnClickListener {
-            revisionItemList[position].filename?.let { it1 -> pdfItemClickListener.onClick(it1) }
+            revisionItemList[position]?.let { it1 -> pdfItemClickListener.onClick(it1) }
         }
 
         Glide.with(context)

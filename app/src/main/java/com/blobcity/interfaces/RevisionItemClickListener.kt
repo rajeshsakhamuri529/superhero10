@@ -1,5 +1,7 @@
 package com.blobcity.interfaces
 
+import com.blobcity.model.RevisionModel
+
 interface RevisionItemClickListener {
-    fun onClick(pdfUrl: String)
+    fun onClick(pdfUrl: RevisionModel)
 }

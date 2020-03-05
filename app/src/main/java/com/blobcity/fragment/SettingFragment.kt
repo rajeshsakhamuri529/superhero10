@@ -113,12 +113,14 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
         when (v!!.id) {
             R.id.cl_terms_and_conditions -> {
-                intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://google.com"))
+                intent = Intent(context, WriteToUsActivity::class.java)
+                intent.putExtra("activityname", "termsandconditions")
                 startActivity(intent)
             }
 
             R.id.cl_write_to_us -> {
                 intent = Intent(context, WriteToUsActivity::class.java)
+                intent.putExtra("activityname", "writetous")
                 startActivity(intent)
             }
 
