@@ -48,8 +48,8 @@ class DashBoardActivity : BaseActivity(),
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gradeTitle = "GRADE 6"
         getPlayer(this)
-        getPlayerForCorrect(this)
-        getPlayerForwrong(this)
+        //getPlayerForCorrect(this)
+        //getPlayerForwrong(this)
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
         sharedPrefs = SharedPrefs()
         val fragment = intent.getStringExtra("fragment")

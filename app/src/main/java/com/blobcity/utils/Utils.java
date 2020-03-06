@@ -77,7 +77,7 @@ public class Utils {
 
     }
 
-    public static void getPlayerForCorrect(Context context){
+    /*public static void getPlayerForCorrect(Context context){
         // Set the hardware buttons to control the music
         // context.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         // Load the sound
@@ -122,7 +122,7 @@ public class Utils {
                 .getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         volume = actualVolume/maxVolume;
 
-    }
+    }*/
     public static boolean isOnline(Context _Context) {
         ConnectivityManager cm = (ConnectivityManager) _Context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = null;
