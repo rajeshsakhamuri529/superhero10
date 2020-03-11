@@ -23,10 +23,11 @@ class WriteToUsActivity : AppCompatActivity() {
         }
         val activityname = intent.getStringExtra("activityname")
         if(activityname == "writetous"){
-            url = "https://www.yomplex.com/write-to-us.html"
+            url = "https://www.yomplex.com/#contact-us"
         } else if(activityname == "termsandconditions"){
-            url = "https://www.yomplex.com/termsandcondtions.html"
+            url = "https://www.yomplex.com/privacy.html"
         }
+        wv_write_to_us.settings.javaScriptEnabled = true
         wv_write_to_us.webViewClient = object : WebViewClient() {
 
             /*override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
