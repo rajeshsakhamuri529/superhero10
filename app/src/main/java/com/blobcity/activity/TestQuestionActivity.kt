@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.media.AudioManager
 import android.media.MediaPlayer
@@ -389,6 +390,28 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
 
     }
+    private fun show(msg: String) {
+        val builder = AlertDialog.Builder(this).apply {
+            setPositiveButton(android.R.string.ok, null)
+            setNegativeButton(android.R.string.cancel, null)
+        }
+
+        val dialog = builder.create().apply {
+            setMessage(msg)
+        }
+        dialog.show()
+
+        dialog.window?.decorView?.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            val displayRectangle = Rect()
+            val window = dialog.window
+            v.getWindowVisibleDisplayFrame(displayRectangle)
+            val maxHeight = displayRectangle.height() * 0.6f // 60%
+
+            if (v.height > maxHeight) {
+                window?.setLayout(window.attributes.width, maxHeight.toInt())
+            }
+        }
+    }
     private fun showDialog() {
          dialog = Dialog(this)
         dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -397,6 +420,24 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val webview = dialog!!.findViewById(com.blobcity.R.id.webview_hint) as WebView
         val btn_gotIt = dialog!!.findViewById(com.blobcity.R.id.btn_gotIt) as Button
 
+
+        // Creating Dynamic
+        /*val displayRectangle = Rect()
+        val window = this.getWindow()
+        window.getDecorView().getWindowVisibleDisplayFrame(displayRectangle)
+        dialog!!.getWindow().setLayout(((displayRectangle.width() * 0.8f).toInt()), dialog!!.getWindow().getAttributes().height)
+*/
+
+        dialog!!.window?.decorView?.addOnLayoutChangeListener { v, _, _, _, _, _, _, _, _ ->
+            val displayRectangle = Rect()
+            val window = dialog!!.window
+            v.getWindowVisibleDisplayFrame(displayRectangle)
+            val maxHeight = displayRectangle.height() * 0.8f // 60%
+
+            if (v.height > maxHeight) {
+                window?.setLayout(window.attributes.width, maxHeight.toInt())
+            }
+        }
         webview.settings.javaScriptEnabled = true
         //  webview.setVerticalScrollBarEnabled(true)
         // Enable responsive layout
