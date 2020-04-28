@@ -81,7 +81,11 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
     override fun initView() {
 
+        val action: String? = intent?.action
+        val data: Uri? = intent?.data
 
+        Log.e("grade activity","action......"+action);
+        Log.e("grade activity","data......"+data);
         TedPermission.with(this)
             .setPermissionListener(this)
             .setDeniedMessage("If you reject permission,you can not use this service\n"

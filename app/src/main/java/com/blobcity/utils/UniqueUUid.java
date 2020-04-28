@@ -1,6 +1,7 @@
 package com.blobcity.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.UUID;
 
@@ -13,7 +14,8 @@ public class UniqueUUid {
         if (uniqueID == null) {
             SharedPrefs sharedPrefs = new SharedPrefs();
             uniqueID = sharedPrefs.getPrefVal(context, PREF_UNIQUE_ID);
-            if (uniqueID == null) {
+            Log.e("unique id",".....id...."+uniqueID);
+            if (uniqueID == null || uniqueID == "") {
                 uniqueID = UUID.randomUUID().toString();
                 sharedPrefs.setPrefVal(context, PREF_UNIQUE_ID, uniqueID);
             }

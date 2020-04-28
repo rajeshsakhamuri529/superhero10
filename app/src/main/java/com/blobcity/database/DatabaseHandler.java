@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.blobcity.entity.DailyChallenge;
 import com.blobcity.entity.RevisionEntity;
 
 import java.util.ArrayList;
@@ -13,11 +14,23 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "revision";
     private static final String TABLE_CONTACTS = "revision_status";
     private static final String KEY_ID = "doc_id";
     private static final String KEY_VERSION = "pdf_version";
+
+    private static final String TABLE_DAILY_CHALLENGE = "DailyChallenge";
+    private static final String KEY_QID = "qid";
+    private static final String KEY_DOC_ID = "docid";
+    private static final String KEY_QUESTION_VERSION = "questionversion";
+    private static final String KEY_QTYPE = "qtype";
+    private static final String KEY_DATE = "date";
+    private static final String KEY_TITLE = "title";
+    private static final String KEY_ATTEMPT = "attempt";
+
+
+
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
@@ -26,18 +39,128 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
                 + KEY_ID + " TEXT PRIMARY KEY," + KEY_VERSION + " TEXT)";
-        db.execSQL(CREATE_CONTACTS_TABLE);
 
+        String CREATE_DAILY_CHALLENGE_TABLE = "CREATE TABLE " + TABLE_DAILY_CHALLENGE + "("
+                + KEY_DOC_ID + " TEXT PRIMARY KEY," + KEY_QID + " TEXT, " + KEY_QUESTION_VERSION + " TEXT, " + KEY_QTYPE + " TEXT, " + KEY_DATE + " TEXT, " + KEY_TITLE + " TEXT, " + KEY_ATTEMPT + " INTEGER)";
+
+
+        db.execSQL(CREATE_CONTACTS_TABLE);
+        db.execSQL(CREATE_DAILY_CHALLENGE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_DAILY_CHALLENGE);
         // Create tables again
         onCreate(db);
 
+    }
+
+    public void insertDailyChallenge(DailyChallenge dailyChallenge) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_QID, dailyChallenge.getQid()); // Contact Name
+        values.put(KEY_QTYPE, dailyChallenge.getQtype()); // Contact Phone
+        values.put(KEY_DATE, dailyChallenge.getDate()); // Contact Name
+        values.put(KEY_TITLE, dailyChallenge.getTitle()); // Contact Phone
+        values.put(KEY_ATTEMPT, dailyChallenge.getAttempt()); // Contact Name
+        values.put(KEY_DOC_ID, dailyChallenge.getDocid());
+        values.put(KEY_QUESTION_VERSION, dailyChallenge.getQuestionversion());
+        // Inserting Row
+        db.insert(TABLE_DAILY_CHALLENGE, KEY_DOC_ID, values);
+        //2nd argument is String containing nullColumnHack
+        db.close(); // Closing database connection
+    }
+
+    // code to update the single contact
+    public int updateDailyChallengeAttempt(String attempt,String docid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //values.put(KEY_NAME, contact.getName());
+        values.put(KEY_ATTEMPT, attempt);
+
+        // updating row
+        return db.update(TABLE_DAILY_CHALLENGE, values, KEY_DOC_ID + " = ?",
+                new String[] { String.valueOf(docid) });
+    }
+
+    public int updateQuestionVersion(String questionversion,String docid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //values.put(KEY_NAME, contact.getName());
+        values.put(KEY_QUESTION_VERSION, questionversion);
+
+        // updating row
+        return db.update(TABLE_DAILY_CHALLENGE, values, KEY_DOC_ID + " = ?",
+                new String[] { String.valueOf(docid) });
+    }
+
+    // code to get the single contact
+    public DailyChallenge getDailyChallenge(String qid) {
+        DailyChallenge dailyChallenge=new DailyChallenge();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_DAILY_CHALLENGE + " WHERE " + KEY_DOC_ID + "='" + qid+"'", new String[]{});
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+        if (cur.moveToFirst()) {
+            do {
+
+                dailyChallenge.setQid(cur.getString(cur.getColumnIndex(KEY_QID)));
+                dailyChallenge.setQtype(cur.getString(cur.getColumnIndex(KEY_QTYPE)));
+                dailyChallenge.setTitle(cur.getString(cur.getColumnIndex(KEY_TITLE)));
+                dailyChallenge.setDate(cur.getString(cur.getColumnIndex(KEY_DATE)));
+                dailyChallenge.setAttempt(cur.getString(cur.getColumnIndex(KEY_ATTEMPT)));
+
+                dailyChallenge.setDocid(cur.getString(cur.getColumnIndex(KEY_DOC_ID)));
+                dailyChallenge.setQuestionversion(cur.getString(cur.getColumnIndex(KEY_QUESTION_VERSION)));
+
+
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+
+        // return contact
+        return dailyChallenge;
+    }
+
+    // code to get the single contact
+    public List<DailyChallenge> getDailyChallengeList() {
+        List<DailyChallenge> dailychallengeList = new ArrayList<DailyChallenge>();
+
+       // SQLiteDatabase db = this.getReadableDatabase();
+        //Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_DAILY_CHALLENGE);
+        String selectQuery = "SELECT  * FROM " + TABLE_DAILY_CHALLENGE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cur = db.rawQuery(selectQuery, null);
+        if (cur.moveToFirst()) {
+            do {
+                DailyChallenge dailyChallenge=new DailyChallenge();
+                dailyChallenge.setQid(cur.getString(cur.getColumnIndex(KEY_QID)));
+                dailyChallenge.setQtype(cur.getString(cur.getColumnIndex(KEY_QTYPE)));
+                dailyChallenge.setTitle(cur.getString(cur.getColumnIndex(KEY_TITLE)));
+                dailyChallenge.setDate(cur.getString(cur.getColumnIndex(KEY_DATE)));
+                dailyChallenge.setAttempt(cur.getString(cur.getColumnIndex(KEY_ATTEMPT)));
+                dailyChallenge.setDocid(cur.getString(cur.getColumnIndex(KEY_DOC_ID)));
+                dailyChallenge.setQuestionversion(cur.getString(cur.getColumnIndex(KEY_QUESTION_VERSION)));
+                dailychallengeList.add(dailyChallenge);
+
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+
+        // return contact
+        return dailychallengeList;
     }
 
     public void addContact(RevisionEntity contact) {

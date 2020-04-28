@@ -12,6 +12,7 @@ import android.media.SoundPool;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -57,7 +58,16 @@ public class Utils {
         // Set the hardware buttons to control the music
        // context.setVolumeControlStream(AudioManager.STREAM_MUSIC);
         // Load the sound
-        soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(10)
+                    .build();
+        } else {
+            soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 1);
+        }
+
+
+        //soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 1);
         soundPool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
             @Override
             public void onLoadComplete(SoundPool soundPool, int sampleId,
@@ -76,6 +86,7 @@ public class Utils {
         volume = actualVolume/maxVolume;
 
     }
+
 
     /*public static void getPlayerForCorrect(Context context){
         // Set the hardware buttons to control the music
@@ -149,6 +160,30 @@ public class Utils {
             public void onAnimationUpdate(ValueAnimator animator) {
                 //webView.setBackgroundColor((int) animator.getAnimatedValue());
                // Log.d("onAnimationUpdate",background.getColors()+"!")
+                background.setColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+    }
+    public static void challengetransition(Context context, final WebView webView, Boolean isColourGreen){
+        int colorFrom = context.getResources().getColor(R.color.answer_bg);
+        int colorTo = context.getResources().getColor(R.color.red_wrong_answer);
+        if(isColourGreen)
+        {
+            colorTo = context.getResources().getColor(R.color.action_button);
+        }
+
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        final GradientDrawable background = (GradientDrawable) webView.getBackground();
+
+        colorAnimation.setDuration(1000); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                //webView.setBackgroundColor((int) animator.getAnimatedValue());
+                // Log.d("onAnimationUpdate",background.getColors()+"!")
                 background.setColor((int) animator.getAnimatedValue());
             }
 

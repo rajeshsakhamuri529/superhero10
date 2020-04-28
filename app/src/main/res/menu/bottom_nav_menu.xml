@@ -10,10 +10,11 @@
         android:id="@+id/nav_revision"
         android:icon="@drawable/books_drawable"
         android:title="Books" />
-    <!--<item
-            android:id="@+id/nav_astra_cards"
-            android:icon="@drawable/astra_card_icon"
-            android:title="Astra Cards" />-->
+    <item
+        android:id="@+id/nav_dialy_challenge"
+        android:icon="@drawable/challenge_drawable"
+
+        android:title="Challenge!" />
 
     <item
             android:id="@+id/nav_settings"

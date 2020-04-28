@@ -29,8 +29,9 @@ import android.support.v4.app.SupportActivity
 import android.support.v4.app.SupportActivity.ExtraData
 import android.support.v4.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
+import android.net.Uri
+import android.os.PersistableBundle
+import com.blobcity.fragment.DailyChallengeFragment
 
 
 class DashBoardActivity : BaseActivity(),
@@ -42,25 +43,63 @@ class DashBoardActivity : BaseActivity(),
     private var backPressToastMessage: Toast? = null
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
+    var action:String = ""
+    var data:String = ""
     override var layoutID: Int = R.layout.activity_dashboard
-
+    override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
+        super.onSaveInstanceState(outState, outPersistentState)
+    }
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gradeTitle = "GRADE 6"
         getPlayer(this)
+
         //getPlayerForCorrect(this)
         //getPlayerForwrong(this)
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
         sharedPrefs = SharedPrefs()
-        val fragment = intent.getStringExtra("fragment")
-        if(fragment == "pdf"){
-            loadFragment(RevisionFragment())
-            val revisionItem = navigation.getMenu().getItem(1)
-            // Select home item
-            navigation.setSelectedItemId(revisionItem.getItemId());
+
+        action = sharedPrefs!!.getPrefVal(this,"action")!!
+        data = sharedPrefs!!.getPrefVal(this,"data")!!
+        /*val action: String? = intent?.action
+        val data1: Uri? = intent?.data
+            Log.e("dashboard activity","action......"+action);
+        Log.e("dashboard activity","data1......"+data1.toString());
+        data = data1.toString()*/
+        if(data.equals("null") || data.equals("")){
+            val fragment = intent.getStringExtra("fragment")
+            if(fragment == "pdf"){
+                loadFragment(RevisionFragment())
+                val revisionItem = navigation.getMenu().getItem(1)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
+            }else if(fragment == "dailychallenge"){
+                loadFragment(DailyChallengeFragment())
+                val revisionItem = navigation.getMenu().getItem(2)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
+            }else{
+                Log.e("dashboard activity","load chapters......")
+                loadFragment(ChapterFragment())
+            }
         }else{
-            loadFragment(ChapterFragment())
+            sharedPrefs!!.setPrefVal(this,"data", "")
+            if(data.contains("books")){
+                loadFragment(RevisionFragment())
+                val revisionItem = navigation.getMenu().getItem(1)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
+            }else if(data.contains("challenge")){
+                loadFragment(DailyChallengeFragment())
+                val revisionItem = navigation.getMenu().getItem(2)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
+            }else if(data.contains("practice")){
+                loadFragment(ChapterFragment())
+            }
         }
+
+
         //loadFragment(ChapterFragment())
         navigation.setItemIconTintList(null);
         navigation.setOnNavigationItemSelectedListener(this)
@@ -84,6 +123,22 @@ class DashBoardActivity : BaseActivity(),
                     fragment = ChapterFragment()
                 }else{
                     fragment = ChapterFragment()
+                }
+
+            }
+            R.id.nav_dialy_challenge -> {
+                sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
+                if(!sound) {
+                    //MusicManager.getInstance().play(context, R.raw.amount_low);
+                    // Is the sound loaded already?
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..." + Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                    fragment = DailyChallengeFragment()
+                }else{
+                    fragment = DailyChallengeFragment()
                 }
 
             }
@@ -132,6 +187,39 @@ class DashBoardActivity : BaseActivity(),
         val fragmentManager = supportFragmentManager
         val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
         if(currentFragment!! is ChapterFragment) {
+            if(backPressedTime+2000>System.currentTimeMillis()){
+                backPressToastMessage!!.cancel()
+                finishAffinity()
+                return
+            }
+            else{
+                backPressToastMessage = Toast.makeText(this, R.string.exit_message, Toast.LENGTH_SHORT)
+                backPressToastMessage!!.show()
+            }
+            backPressedTime=System.currentTimeMillis()
+        }else if(currentFragment!! is RevisionFragment) {
+            if(backPressedTime+2000>System.currentTimeMillis()){
+                backPressToastMessage!!.cancel()
+                finishAffinity()
+                return
+            }
+            else{
+                backPressToastMessage = Toast.makeText(this, R.string.exit_message, Toast.LENGTH_SHORT)
+                backPressToastMessage!!.show()
+            }
+            backPressedTime=System.currentTimeMillis()
+        }else if(currentFragment!! is DailyChallengeFragment) {
+            if(backPressedTime+2000>System.currentTimeMillis()){
+                backPressToastMessage!!.cancel()
+                finishAffinity()
+                return
+            }
+            else{
+                backPressToastMessage = Toast.makeText(this, R.string.exit_message, Toast.LENGTH_SHORT)
+                backPressToastMessage!!.show()
+            }
+            backPressedTime=System.currentTimeMillis()
+        }else if(currentFragment!! is SettingFragment) {
             if(backPressedTime+2000>System.currentTimeMillis()){
                 backPressToastMessage!!.cancel()
                 finishAffinity()

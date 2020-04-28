@@ -25,7 +25,7 @@
 
             app:itemTextColor="@drawable/bottom_nav_bar_selector"
             android:background="#622CB1"
-
+            app:labelVisibilityMode="labeled"
             android:theme="@style/Widget.BottomNavigationView"
             android:layout_alignParentBottom="true"
             app:menu="@menu/bottom_nav_menu"/>
