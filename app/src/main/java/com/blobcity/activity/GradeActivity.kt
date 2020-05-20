@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import com.blobcity.R
 import com.blobcity.adapter.GradeAdapter
 import com.blobcity.adapter.RevisionAdapter
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
@@ -81,17 +83,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
     override fun initView() {
 
-        val action: String? = intent?.action
-        val data: Uri? = intent?.data
 
-        Log.e("grade activity","action......"+action);
-        Log.e("grade activity","data......"+data);
-        TedPermission.with(this)
-            .setPermissionListener(this)
-            .setDeniedMessage("If you reject permission,you can not use this service\n"
-                    + "\nPlease turn on permissions at [Setting] > [Permission]")
-            .setPermissions(Manifest.permission.INTERNET)
-            .check()
         auth = FirebaseAuth.getInstance()
 
         val settings = FirebaseFirestoreSettings.Builder()
@@ -102,6 +94,24 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
         }
+        TedPermission.with(this)
+            .setPermissionListener(this)
+            .setDeniedMessage("If you reject permission,you can not use this service\n"
+                    + "\nPlease turn on permissions at [Setting] > [Permission]")
+            .setPermissions(Manifest.permission.INTERNET)
+            .check()
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.e("grade actvity", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result?.token
+                Log.e("grade activity","token...."+token);
+
+            })
 
     }
 

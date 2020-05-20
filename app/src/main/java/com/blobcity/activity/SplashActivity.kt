@@ -16,6 +16,13 @@ import com.blobcity.utils.ForceUpdateChecker
 import com.blobcity.utils.SharedPrefs
 import com.google.firebase.FirebaseApp
 import kotlinx.android.synthetic.main.activity_dashboard.*
+import android.support.v4.app.SupportActivity
+import android.support.v4.app.SupportActivity.ExtraData
+import android.support.v4.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
+
 
 class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener {
 
@@ -27,7 +34,7 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
             ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         }
     }
-
+    var value = ""
     override var layoutID: Int = R.layout.activity_splash
 
     override fun initView() {
@@ -35,11 +42,28 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
         Log.d("onCreate","Splash")
         val action: String? = intent?.action
         val data: Uri? = intent?.data
+        var extras:Bundle? = intent.extras
+
+        if(extras != null){
+            value = extras.getString("screen")
+            /*for (key in extras.keySet()) {
+                value = extras.get(key).toString()
+
+            }*/
+        }
+        Log.e("splash activity","value......"+value);
         Log.e("splash activity","action......"+action);
         Log.e("splash activity","data......"+data.toString());
         sharedPrefs = SharedPrefs()
         sharedPrefs!!.setPrefVal(this,"action", action!!)
-        sharedPrefs!!.setPrefVal(this,"data", data.toString())
+        if(value != ""){
+            Log.e("splash activity","value...if..."+value);
+            sharedPrefs!!.setPrefVal(this,"data", value)
+        }else{
+            Log.e("splash activity","value...else..."+value);
+            sharedPrefs!!.setPrefVal(this,"data", data.toString())
+        }
+
 
 
         //Initialize the Handler
@@ -63,11 +87,27 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
 
         val action: String? = intent?.action
         val data: Uri? = intent?.data
+        var extras:Bundle? = intent?.extras
+
+        if(extras != null){
+            Log.e("splash activity","extras.getString......"+extras.getString("data"));
+            value = extras.getString("screen")
+            /*for (key in extras.keySet()) {
+                Log.e("splash activity","key......"+key)
+                value = extras.get(key).toString()
+
+            }*/
+        }
+        Log.e("splash activity","value......"+value);
         Log.e("splash activity","on new intent...action......"+action);
         Log.e("splash activity","on new intent....data......"+data.toString());
         sharedPrefs = SharedPrefs()
         sharedPrefs!!.setPrefVal(this,"action", action!!)
-        sharedPrefs!!.setPrefVal(this,"data", data.toString())
+        if(value != ""){
+            sharedPrefs!!.setPrefVal(this,"data", value)
+        }else{
+            sharedPrefs!!.setPrefVal(this,"data", data.toString())
+        }
 
 
         //Initialize the Handler

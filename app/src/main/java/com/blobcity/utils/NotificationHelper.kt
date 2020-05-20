@@ -24,7 +24,7 @@ class NotificationHelper : FirebaseMessagingService() {
     var notification: Boolean = true
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
         super.onMessageReceived(remoteMessage)
-
+        Log.e("notification helper","on message received......");
         sharedPrefs = SharedPrefs()
         Log.d(TAG, "From: " + remoteMessage!!.from)
         Log.d(TAG, "Notification Message Body: " + remoteMessage.notification?.body!!)
@@ -65,17 +65,18 @@ class NotificationHelper : FirebaseMessagingService() {
         val vibrate = longArrayOf(0, 100, 200, 300)
         notifbuilder.setAutoCancel(true)
             .setWhen(System.currentTimeMillis())
-            .setSmallIcon(R.drawable.ic_launcher_background)
+            .setSmallIcon(R.drawable.ic_stat_default)
             .setContentTitle(remoteMessage.notification!!.title)
             .setContentText(remoteMessage.notification!!.body)
             .setContentInfo("Info")
+            .setColor(Color.RED)
             .setSound(defaultSoundUri)
-            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background))
+            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_icon))
             .setVibrate(vibrate)
             .setContentIntent(pendingIntent)
 
-        notifbuilder.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_launcher_background))
-        notifbuilder.color = resources.getColor(R.color.colorPrimary)
+        notifbuilder.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.large_icon))
+        notifbuilder.color = resources.getColor(R.color.noticolor)
 
 
         notificationManager.notify(Random().nextInt(), notifbuilder.build())
