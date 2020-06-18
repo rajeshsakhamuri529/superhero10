@@ -32,7 +32,7 @@ class IntroActivity : BaseActivity() {
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         sharedPrefs = SharedPrefs()
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
 
         sharedPrefs!!.setBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME, false)

@@ -1,8 +1,12 @@
 package com.blobcity.activity
 
 import android.app.PendingIntent.getActivity
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
@@ -14,9 +18,6 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
 import com.blobcity.R
-import com.blobcity.fragment.ChapterFragment
-import com.blobcity.fragment.RevisionFragment
-import com.blobcity.fragment.SettingFragment
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.TITLE_TOPIC
 import com.blobcity.utils.SharedPrefs
@@ -31,7 +32,18 @@ import android.support.v4.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.net.Uri
 import android.os.PersistableBundle
-import com.blobcity.fragment.DailyChallengeFragment
+import android.support.constraint.ConstraintLayout
+import android.support.v7.app.AlertDialog
+import android.widget.Button
+import com.blobcity.BuildConfig
+import com.blobcity.fragment.*
+import com.blobcity.utils.BottomNavigationViewHelper
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class DashBoardActivity : BaseActivity(),
@@ -45,20 +57,47 @@ class DashBoardActivity : BaseActivity(),
     var sound: Boolean = false
     var action:String = ""
     var data:String = ""
+    var currentVersion:Int = 0
+    // Remote Config keys
+    private val VERSION_CODE_CONFIG_KEY = "upgrade"
+    var remoteConfig: FirebaseRemoteConfig? = null
+
     override var layoutID: Int = R.layout.activity_dashboard
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
         super.onSaveInstanceState(outState, outPersistentState)
     }
     override fun initView() {
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+       // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gradeTitle = "GRADE 6"
         getPlayer(this)
 
         //getPlayerForCorrect(this)
         //getPlayerForwrong(this)
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
-        sharedPrefs = SharedPrefs()
 
+        try {
+            currentVersion = packageManager.getPackageInfo(packageName, 0).versionCode
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
+
+
+
+        sharedPrefs = SharedPrefs()
+        remoteConfig = FirebaseRemoteConfig.getInstance()
+
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setDeveloperModeEnabled(BuildConfig.DEBUG)
+            .build()
+
+        remoteConfig!!.setConfigSettings(configSettings)
+
+        // Set default Remote Config parameter values. An app uses the in-app default values, and
+        // when you need to adjust those defaults, you set an updated value for only the values you
+        // want to change in the Firebase console. See Best Practices in the README for more
+        // information.
+        remoteConfig!!.setDefaults(R.xml.remote_config_defaults)
+        fetchVersion()
         action = sharedPrefs!!.getPrefVal(this,"action")!!
         data = sharedPrefs!!.getPrefVal(this,"data")!!
         /*val action: String? = intent?.action
@@ -70,12 +109,17 @@ class DashBoardActivity : BaseActivity(),
             val fragment = intent.getStringExtra("fragment")
             if(fragment == "pdf"){
                 loadFragment(RevisionFragment())
-                val revisionItem = navigation.getMenu().getItem(1)
+                val revisionItem = navigation.getMenu().getItem(2)
                 // Select home item
                 navigation.setSelectedItemId(revisionItem.getItemId());
             }else if(fragment == "dailychallenge"){
                 loadFragment(DailyChallengeFragment())
                 val revisionItem = navigation.getMenu().getItem(2)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
+            }else if(fragment == "tests"){
+                loadFragment(TestsFragment())
+                val revisionItem = navigation.getMenu().getItem(1)
                 // Select home item
                 navigation.setSelectedItemId(revisionItem.getItemId());
             }else{
@@ -86,7 +130,7 @@ class DashBoardActivity : BaseActivity(),
             sharedPrefs!!.setPrefVal(this,"data", "")
             if(data.contains("books")){
                 loadFragment(RevisionFragment())
-                val revisionItem = navigation.getMenu().getItem(1)
+                val revisionItem = navigation.getMenu().getItem(2)
                 // Select home item
                 navigation.setSelectedItemId(revisionItem.getItemId());
             }else if(data.contains("challenge")){
@@ -101,11 +145,98 @@ class DashBoardActivity : BaseActivity(),
 
 
         //loadFragment(ChapterFragment())
+        //navigation.clearAnimation()
+        //BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setItemIconTintList(null);
         navigation.setOnNavigationItemSelectedListener(this)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
+    }
+
+    fun fetchVersion(){
+        var cacheExpiration: Long = 3600 // 1 hour in seconds.
+        // If your app is using developer mode, cacheExpiration is set to 0, so each fetch will
+        // retrieve values from the service.
+        if (remoteConfig!!.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+            cacheExpiration = 0
+        }
+
+        remoteConfig!!.fetch(cacheExpiration)
+            .addOnCompleteListener(this, OnCompleteListener<Void> { task ->
+                if (task.isSuccessful) {
+                    // After config data is successfully fetched, it must be activated before newly fetched
+                    // values are returned.
+                    remoteConfig!!.activateFetched()
+                }
+                displayUpdateAlert()
+            })
+    }
+
+    fun displayUpdateAlert(){
+        val play = remoteConfig!!.getString(VERSION_CODE_CONFIG_KEY)
+        var playStoreVersionCode = 0
+        if (play != null && !play!!.isEmpty() && !play!!.equals("null", ignoreCase = true))
+            playStoreVersionCode = Integer.parseInt(play!!)
+
+        Log.e("dashboard activity","playStoreVersionCode......."+playStoreVersionCode)
+        Log.e("dashboard activity","currentVersion......."+currentVersion)
+
+        if(playStoreVersionCode > currentVersion){
+            val dialogBuilder = AlertDialog.Builder(this, R.style.mytheme)
+            val inflater = this.layoutInflater
+            val dialogView = inflater.inflate(R.layout.app_update_dialog, null)
+            dialogBuilder.setView(dialogView)
+
+
+            val btn_upgrade = dialogView.findViewById(R.id.btn_upgrade) as Button
+
+            val alertDialog = dialogBuilder.create()
+            alertDialog.setCancelable(false)
+            btn_upgrade.setOnClickListener {
+                alertDialog.dismiss()
+
+                var packagename:String = packageName
+
+                try {
+                    startActivity(
+                        Intent(
+                            "android.intent.action.VIEW",
+                            Uri.parse("market://details?id=$packagename")
+                        )
+                    )
+                    finish()
+                } catch (e: ActivityNotFoundException) {
+                    try {
+                        startActivity(
+                            Intent(
+                                "android.intent.action.VIEW",
+                                Uri.parse("http://play.google.com/store/apps/details?id=$packagename")
+                            )
+                        )
+                        finish()
+                    } catch (e3: Exception) {
+                        Log.w("Hari-->", e3)
+                    }
+
+                }
+
+
+                //navigateToSummaryScreenNew()
+                // var status:Int = databaseHandler!!.updatequizplayFinalstatus(testQuiz.title,"1",currentDate,testQuiz.lastplayed);
+                // var answers:Int = databaseHandler!!.updatequizplayFinalTimeTaken(testQuiz.title,timetaken.toString(),currentDate,testQuiz.lastplayed);
+                // navigateToSummaryScreenNew()
+            }
+
+            //alertDialog.getWindow().setBackgroundDrawable(draw);
+            alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            alertDialog.show()
+        }
+
+
+
+
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -136,9 +267,9 @@ class DashBoardActivity : BaseActivity(),
                         Log.e("Test", "Played sound...volume..." + Utils.volume);
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
-                    fragment = DailyChallengeFragment()
+                    fragment = TestsFragment()
                 }else{
-                    fragment = DailyChallengeFragment()
+                    fragment = TestsFragment()
                 }
 
             }
@@ -208,7 +339,7 @@ class DashBoardActivity : BaseActivity(),
                 backPressToastMessage!!.show()
             }
             backPressedTime=System.currentTimeMillis()
-        }else if(currentFragment!! is DailyChallengeFragment) {
+        }else if(currentFragment!! is TestsFragment) {
             if(backPressedTime+2000>System.currentTimeMillis()){
                 backPressToastMessage!!.cancel()
                 finishAffinity()

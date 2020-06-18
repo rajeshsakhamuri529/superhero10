@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/quiz_background"
+        android:background="#E8E8E8"
         tools:context=".activity.DashBoardActivity">
 
     <FrameLayout
@@ -24,7 +24,7 @@
             android:layout_height="?android:attr/actionBarSize"
 
             app:itemTextColor="@drawable/bottom_nav_bar_selector"
-            android:background="#622CB1"
+            android:background="#ffffff"
             app:labelVisibilityMode="labeled"
             android:theme="@style/Widget.BottomNavigationView"
             android:layout_alignParentBottom="true"

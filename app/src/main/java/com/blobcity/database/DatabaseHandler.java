@@ -8,17 +8,24 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.blobcity.entity.DailyChallenge;
 import com.blobcity.entity.RevisionEntity;
+import com.blobcity.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+
     private static final String DATABASE_NAME = "revision";
     private static final String TABLE_CONTACTS = "revision_status";
     private static final String KEY_ID = "doc_id";
     private static final String KEY_VERSION = "pdf_version";
+
+
+    private static final String TABLE_BOOKS_STATUS = "books_status";
+
+    private static final String KEY_RID = "doc_rid";
+    private static final String KEY_READ_STATUS = "bookstatus";
 
     private static final String TABLE_DAILY_CHALLENGE = "DailyChallenge";
     private static final String KEY_QID = "qid";
@@ -32,11 +39,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     public DatabaseHandler(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, Utils.DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
+        String CREATE_BOOKS_STATUS_TABLE = "CREATE TABLE " + TABLE_BOOKS_STATUS + "("
+                + KEY_ID + " TEXT PRIMARY KEY," + KEY_READ_STATUS + ","+ KEY_RID + " TEXT)";
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_CONTACTS + "("
                 + KEY_ID + " TEXT PRIMARY KEY," + KEY_VERSION + " TEXT)";
 
@@ -46,6 +55,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.execSQL(CREATE_CONTACTS_TABLE);
         db.execSQL(CREATE_DAILY_CHALLENGE_TABLE);
+        db.execSQL(CREATE_BOOKS_STATUS_TABLE);
     }
 
     @Override
@@ -53,9 +63,67 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CONTACTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_DAILY_CHALLENGE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKS_STATUS);
         // Create tables again
         onCreate(db);
 
+    }
+
+    public void insertBooksStatus(String id,String rid,String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_ID, id); // Contact Name
+        values.put(KEY_RID, rid); // Contact Phone
+        values.put(KEY_READ_STATUS, status);
+        // Inserting Row
+        db.insert(TABLE_BOOKS_STATUS, null, values);
+        //2nd argument is String containing nullColumnHack
+        db.close(); // Closing database connection
+    }
+
+    public void deleteAllBookStatus() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_BOOKS_STATUS);
+        db.close();
+    }
+
+    public int updateBookaReadStatus(String rid,String status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //values.put(KEY_NAME, contact.getName());
+        values.put(KEY_READ_STATUS, status);
+
+        // updating row
+        return db.update(TABLE_BOOKS_STATUS, values, KEY_RID + " = ?",
+                new String[] { String.valueOf(rid) });
+    }
+
+    public String getBookReadStatus(String rid) {
+
+        String status="";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_BOOKS_STATUS + " WHERE " + KEY_RID + "='" + rid+"'", new String[]{});
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+        if (cur.moveToFirst()) {
+            do {
+
+                status = (cur.getString(cur.getColumnIndex(KEY_READ_STATUS)));
+
+
+
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+
+        // return contact
+        return status;
     }
 
     public void insertDailyChallenge(DailyChallenge dailyChallenge) {
@@ -74,6 +142,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         //2nd argument is String containing nullColumnHack
         db.close(); // Closing database connection
     }
+
+
 
     // code to update the single contact
     public int updateDailyChallengeAttempt(String attempt,String docid) {
@@ -174,6 +244,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.insert(TABLE_CONTACTS, null, values);
         //2nd argument is String containing nullColumnHack
         db.close(); // Closing database connection
+    }
+
+    public void deleteAllRevisions() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_CONTACTS);
+        db.close();
     }
 
     // code to get the single contact

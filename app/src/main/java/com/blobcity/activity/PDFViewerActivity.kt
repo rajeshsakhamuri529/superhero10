@@ -5,7 +5,6 @@ import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.WindowManager
 import android.webkit.WebViewClient
 import android.widget.Toast
 import com.blobcity.R
@@ -28,6 +27,8 @@ import android.support.v4.content.FileProvider
 
 import android.support.v4.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.view.*
+import com.blobcity.database.DatabaseHandler
 import com.blobcity.fragment.RevisionFragment
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.SharedPrefs
@@ -39,14 +40,23 @@ class PDFViewerActivity : BaseActivity() {
     lateinit var mFile: File
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
+    var databaseHandler: DatabaseHandler?= null
+    var path:String=""
+    var rid:String =""
     override var layoutID: Int = R.layout.activity_pdfviewer
 
     override fun initView() {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
+        appBarID.elevation = 20F
         sharedPrefs = SharedPrefs()
+        databaseHandler = DatabaseHandler(this);
+
+
+
+
         backRL.setOnClickListener {
             sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
             if(!sound) {
@@ -69,7 +79,8 @@ class PDFViewerActivity : BaseActivity() {
                 //finish()
             }
         }
-        val path = intent.getStringExtra("rID")
+        path = intent.getStringExtra("filename")
+        rid = intent.getStringExtra("rID")
         Log.e("pdf viewer activity","....path....."+path)
         try {
 
@@ -77,7 +88,7 @@ class PDFViewerActivity : BaseActivity() {
             if (mFile.exists()) {
                 pdfView.fromFile(mFile).autoSpacing(false)
 
-                    .spacing(5).load()
+                    .spacing(8).load()
             }else{
                 Toast.makeText(this,"Please connect to the internet!",Toast.LENGTH_LONG).show()
                 /*if(Utils.isOnline(this)){
@@ -92,7 +103,66 @@ class PDFViewerActivity : BaseActivity() {
             e1.printStackTrace()
         }
 
-        shareRL.setOnClickListener {
+        var status = databaseHandler!!.getBookReadStatus(rid);
+        if(status.equals("1")){
+            tick1RL.visibility = View.VISIBLE
+        }else{
+            tick1RL.visibility = View.INVISIBLE
+        }
+
+
+        frameLL.setOnClickListener {
+            menuRL.visibility = View.GONE
+            frameLL.visibility = View.GONE
+            topRL.visibility = View.GONE
+        }
+
+        topRL.setOnClickListener {
+            menuRL.visibility = View.GONE
+            frameLL.visibility = View.GONE
+            topRL.visibility = View.GONE
+        }
+
+        moreRL.setOnClickListener {
+            menuRL.visibility = View.VISIBLE
+            frameLL.visibility = View.VISIBLE
+            topRL.visibility = View.VISIBLE
+            menuRL.bringToFront()
+            Log.e("pdf viewer","rid....."+rid);
+            var status = databaseHandler!!.getBookReadStatus(rid);
+            Log.e("pdf viewer","status....."+status);
+            if(status.equals("0")){
+                markread.text ="Mark as Read"
+                tick.background = resources.getDrawable(R.drawable.book_read_status)
+            }else{
+                markread.text ="Mark as Unread"
+                tick.background = resources.getDrawable(R.drawable.ic_tick_green_circle1)
+            }
+        }
+
+        markreadLL.setOnClickListener {
+            menuRL.visibility = View.GONE
+            frameLL.visibility = View.GONE
+            topRL.visibility = View.GONE
+            var status = databaseHandler!!.getBookReadStatus(rid);
+            Log.e("pdf viewer","status....."+status);
+            if(status.equals("0")){
+                tick1RL.visibility = View.VISIBLE
+                databaseHandler!!.updateBookaReadStatus(rid,"1");
+                markread.text ="Mark as Read"
+                tick.background = resources.getDrawable(R.drawable.book_read_status)
+            }else{
+                tick1RL.visibility = View.INVISIBLE
+                databaseHandler!!.updateBookaReadStatus(rid,"0");
+                markread.text ="Mark as Unread"
+                tick.background = resources.getDrawable(R.drawable.ic_tick_green_circle1)
+            }
+
+
+        }
+
+        shareLL.setOnClickListener {
+            menuRL.visibility = View.GONE
             sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
             if(!sound) {
                 //MusicManager.getInstance().play(context, R.raw.amount_low);
@@ -165,6 +235,36 @@ class PDFViewerActivity : BaseActivity() {
             context.revokeUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
     }*/
+
+   /* override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        var inflater = getMenuInflater();
+        inflater.inflate(R.menu.books_menu, menu);
+        return super.onCreateOptionsMenu(menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return super.onOptionsItemSelected(item)
+    }*/
+
+/*@Override
+public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.user_menu, menu);
+    return true;
+}*/
+
+/*@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+        case R.id.logout_menu:
+            // Do whatever you want to do on logout click.
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+    }
+}*/
+
 
 
 }

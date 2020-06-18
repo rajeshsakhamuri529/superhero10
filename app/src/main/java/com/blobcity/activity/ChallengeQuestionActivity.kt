@@ -100,7 +100,7 @@ class ChallengeQuestionActivity : BaseActivity(), View.OnClickListener {
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun initView() {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
         databaseHandler = DatabaseHandler(this);
         firestore = FirebaseFirestore.getInstance()

@@ -44,13 +44,13 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
         val data: Uri? = intent?.data
         var extras:Bundle? = intent.extras
 
-        if(extras != null){
-            value = extras.getString("screen")
-            /*for (key in extras.keySet()) {
-                value = extras.get(key).toString()
+        if(intent.hasExtra("screen")){
+            if(extras != null){
+                value = extras.getString("screen")
 
-            }*/
+            }
         }
+
         Log.e("splash activity","value......"+value);
         Log.e("splash activity","action......"+action);
         Log.e("splash activity","data......"+data.toString());
@@ -72,7 +72,7 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
         //Navigate with delay
         mDelayHandler!!.postDelayed(mRunnable, SPLASH_DELAY)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
     }
 
@@ -89,15 +89,13 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
         val data: Uri? = intent?.data
         var extras:Bundle? = intent?.extras
 
-        if(extras != null){
-            Log.e("splash activity","extras.getString......"+extras.getString("data"));
-            value = extras.getString("screen")
-            /*for (key in extras.keySet()) {
-                Log.e("splash activity","key......"+key)
-                value = extras.get(key).toString()
+        if(intent!!.hasExtra("screen")){
+            if(extras != null){
+                value = extras.getString("screen")
 
-            }*/
+            }
         }
+
         Log.e("splash activity","value......"+value);
         Log.e("splash activity","on new intent...action......"+action);
         Log.e("splash activity","on new intent....data......"+data.toString());

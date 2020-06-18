@@ -6,7 +6,7 @@
         android:id="@+id/splash_cl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
+        android:background="@color/white"
         tools:context=".activity.SplashActivity">
 
 
@@ -17,7 +17,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="2"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <View
             android:id="@+id/view1"
@@ -43,13 +43,13 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-
-        android:src="@drawable/splash"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="@dimen/_70sdp"
+        android:layout_marginRight="@dimen/_70sdp"
+        android:src="@drawable/ic_splash_new"
+        />
 
 
 

@@ -2,27 +2,28 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_45sdp"
         android:id="@+id/rl_single_topics"
 
-        android:background="@drawable/selected_row_item">
+        android:background="@drawable/close_button">
 
 
     <RelativeLayout
         android:id="@+id/top_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true">
         <TextView
             android:id="@+id/tv_topic_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="01"
-            android:textColor="@color/topics_text"
+            android:textColor="@color/course_text"
             android:layout_centerVertical="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:fontFamily="@font/quicksand_medium"
-            android:textSize="@dimen/_16ssp"/>
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:fontFamily="@font/lato_regular"
+            android:textSize="@dimen/_12ssp"/>
 
         <TextView
             android:id="@+id/tv_topic_name"
@@ -30,11 +31,12 @@
             android:layout_height="wrap_content"
             android:text="Real Numbers"
             android:layout_centerVertical="true"
-            android:textColor="@color/topics_text"
-            android:layout_marginLeft="@dimen/_45sdp"
+            android:textColor="@color/course_text"
+            android:layout_marginLeft="@dimen/_40sdp"
             android:layout_alignParentStart="true"
-            android:fontFamily="@font/quicksand_medium"
-            android:textSize="@dimen/_15ssp"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/_12ssp"
+
             android:layout_toStartOf="@+id/iv_progress_icon2"
             android:layout_marginRight="5dp"/>
 
@@ -42,6 +44,7 @@
             android:id="@+id/iv_progress_icon1"
             android:layout_width="@dimen/_11sdp"
             android:layout_height="@dimen/_11sdp"
+            android:visibility="gone"
             android:layout_alignParentRight="true"
             android:src="@drawable/progress_icon_grey"
             android:layout_marginTop="@dimen/_7sdp"
@@ -49,19 +52,21 @@
 
         <ImageView
             android:id="@+id/iv_progress_icon2"
-            android:layout_width="@dimen/_11sdp"
-            android:layout_height="@dimen/_11sdp"
+            android:layout_width="@dimen/_9sdp"
+            android:layout_height="@dimen/_9sdp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/progress_icon_grey"
-            android:layout_marginTop="@dimen/_4sdp"
+            android:src="@drawable/ic_right_arrow"
+            android:tint="@color/topics_arrow_tint"
+            android:layout_centerVertical="true"
             android:layout_below="@id/iv_progress_icon1"
-            android:layout_marginRight="@dimen/_10sdp"/>
+            android:layout_marginRight="@dimen/_15sdp"/>
 
         <ImageView
             android:id="@+id/iv_progress_icon3"
             android:layout_width="@dimen/_11sdp"
             android:layout_height="@dimen/_11sdp"
             android:layout_alignParentRight="true"
+            android:visibility="gone"
             android:src="@drawable/progress_icon_grey"
             android:layout_below="@id/iv_progress_icon2"
             android:layout_marginTop="@dimen/_4sdp"
@@ -80,8 +85,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/top_layout"
-    android:visibility="visible"
-    android:background="@color/quiz_background">
+    android:visibility="gone"
+    android:background="#E8E8E8">
 
     <RelativeLayout
 

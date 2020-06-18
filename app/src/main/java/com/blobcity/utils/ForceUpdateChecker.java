@@ -69,6 +69,7 @@ public class ForceUpdateChecker {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
 
+
     }
 
     private String getAppVersion(Context context) {

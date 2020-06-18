@@ -14,6 +14,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -48,12 +50,32 @@ import static android.content.Context.AUDIO_SERVICE;
 
 public class Utils {
 
+    public static final int DATABASE_VERSION = 12;
+
     public static SoundPool soundPool;
     public static SoundPool soundPool1;
     public static SoundPool soundPool2;
     public static int soundID,soundID1,soundID2;
     public static boolean loaded = false;
     public static float volume;
+    //public static int startTime = 0;
+    /**
+     * Returns the unique identifier for the device
+     *
+     * @return unique identifier for the device
+     */
+    public static String getDeviceIMEI(Context context) {
+        /*String deviceUniqueIdentifier = null;
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (null != tm) {
+            deviceUniqueIdentifier = tm.getDeviceId();
+        }
+        if (null == deviceUniqueIdentifier || 0 == deviceUniqueIdentifier.length()) {
+            deviceUniqueIdentifier = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        }*/
+        String androidID = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        return androidID;
+    }
     public static void getPlayer(Context context){
         // Set the hardware buttons to control the music
        // context.setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -142,6 +164,31 @@ public class Utils {
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
+    public static void reviewtransition(Context context, final WebView webView, Boolean isColourGreen){
+        int colorFrom = context.getResources().getColor(R.color.answer_bg);
+        int colorTo = context.getResources().getColor(R.color.review_wrong_answer);
+        if(isColourGreen)
+        {
+            colorTo = context.getResources().getColor(R.color.green_right_answer);
+        }
+
+        ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
+        final GradientDrawable background = (GradientDrawable) webView.getBackground();
+
+        colorAnimation.setDuration(1000); // milliseconds
+        colorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                //webView.setBackgroundColor((int) animator.getAnimatedValue());
+                // Log.d("onAnimationUpdate",background.getColors()+"!")
+                background.setColor((int) animator.getAnimatedValue());
+            }
+
+        });
+        colorAnimation.start();
+    }
+
     public static void transition(Context context, final WebView webView, Boolean isColourGreen){
         int colorFrom = context.getResources().getColor(R.color.answer_bg);
         int colorTo = context.getResources().getColor(R.color.red_wrong_answer);
@@ -192,8 +239,8 @@ public class Utils {
     }
 
     public static void transitionBack(Context context, final WebView webView){
-        int colorFrom = context.getResources().getColor(R.color.answer_bg);
-        int colorTo = context.getResources().getColor(R.color.answer_bg);
+        int colorFrom = context.getResources().getColor(R.color.option_bg);
+        int colorTo = context.getResources().getColor(R.color.option_bg);
 
         ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
         final GradientDrawable background = (GradientDrawable) webView.getBackground();
@@ -409,16 +456,17 @@ public class Utils {
             while ((ze = zis.getNextEntry()) != null)
             {
                 filename = ze.getName();
-
+                Log.e("Utis","path........."+path);
+                Log.e("Utis","filename........."+filename);
                 // Need to create directories if not exists, or
                 // it will generate an Exception...
                 if (ze.isDirectory()) {
-                    File fmd = new File(path + filename);
+                    File fmd = new File(path,filename);
                     fmd.mkdirs();
                     continue;
                 }
 
-                FileOutputStream fout = new FileOutputStream(path + filename);
+                FileOutputStream fout = new FileOutputStream(path +"/"+ filename);
 
                 while ((count = zis.read(buffer)) != -1)
                 {
@@ -439,6 +487,42 @@ public class Utils {
 
         return true;
     }
+
+    /*public static String readFromFile(String filepath) {
+
+        String ret = "";
+        InputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream("names.json");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+        finally {
+            try {
+                inputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ret;
+    }*/
 
     /*public static void copyFolder(String name, String outPath, Context context){
         AssetManager assetManager = context.getAssets();

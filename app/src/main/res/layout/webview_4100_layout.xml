@@ -37,7 +37,7 @@
             <WebView
                     android:id="@+id/webView_option1"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:clickable="true"
                     android:scrollbars="none"
                     android:layout_gravity="center"/>
@@ -45,7 +45,7 @@
                     android:visibility="gone"
                     android:id="@+id/webView_option1_opacity"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:clickable="true"
                     android:scrollbars="none"
                     android:layout_gravity="center"/>
@@ -55,12 +55,12 @@
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp">
+                android:layout_marginTop="@dimen/_5sdp">
 
             <WebView
                     android:id="@+id/webView_option2"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:clickable="true"
                     android:textAlignment="center"
                     android:scrollbars="none"
@@ -70,7 +70,7 @@
                     android:visibility="gone"
                     android:id="@+id/webView_option2_opacity"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:clickable="true"
                     android:textAlignment="center"
                     android:scrollbars="none"
@@ -81,12 +81,12 @@
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp">
+                android:layout_marginTop="@dimen/_5sdp">
 
             <WebView
                     android:id="@+id/webView_option3"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:clickable="true"
                     android:textAlignment="center"
                     android:scrollbars="none"
@@ -96,7 +96,7 @@
                     android:visibility="gone"
                     android:id="@+id/webView_option3_opacity"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:clickable="true"
                     android:textAlignment="center"
                     android:scrollbars="none"
@@ -107,12 +107,12 @@
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp">
+                android:layout_marginTop="@dimen/_5sdp">
 
             <WebView
                     android:id="@+id/webView_option4"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:clickable="true"
                     android:textAlignment="center"
                     android:scrollbars="none"
@@ -122,7 +122,7 @@
                     android:visibility="gone"
                     android:id="@+id/webView_option4_opacity"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_52sdp"
+                    android:layout_height="@dimen/_50sdp"
                     android:clickable="true"
                     android:textAlignment="center"
                     android:scrollbars="none"

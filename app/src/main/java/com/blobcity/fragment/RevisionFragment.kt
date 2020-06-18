@@ -21,7 +21,6 @@ import com.blobcity.interfaces.RevisionItemClickListener
 import com.google.android.gms.tasks.Task
 import android.app.Activity
 import android.app.ProgressDialog
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -42,6 +41,7 @@ import java.io.File
 
 class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownloadListener {
 
+
     override fun onDownload() {
         //Toast.makeText(activity,"download complete",Toast.LENGTH_LONG).show()
         try{
@@ -54,7 +54,10 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
                 databaseHandler?.updateContact(revisionEntity)
             }
             hideProgressDialog()
-            revision?.filename?.let { moveToPDFActivity(it) }
+
+            revision?.rId?.let { moveToPDFActivity(it,revision!!.filename) }
+
+            //revision?.filename?.let { moveToPDFActivity(it) }
 
         }catch (e:Exception){
             Log.e("revision fragment","...exception...."+e);
@@ -83,11 +86,13 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
     var topicStatusVM: TopicStatusVM?= null
     var databaseHandler: DatabaseHandler?= null
     var sharedPrefs: SharedPrefs? = null
+    var sound: Boolean = false
     var mFile: File? = null
     var isPDFVersionChange:Boolean = false
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     var adapter: RevisionAdapter?= null
     var isDataFromFirebase:Boolean = false
+    var position1 : Int = -1
     private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
@@ -113,6 +118,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
         databaseHandler = DatabaseHandler(activity);
         revisionList = ArrayList()
         sharedPrefs = SharedPrefs()
+        tv_revision.elevation = 15F
         //Initialize the Handler
         mDelayHandler = Handler()
         //Navigate with delay
@@ -127,8 +133,19 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
             requestPermissions(PERMISSIONS, 112)
         }*/
 
+        frameLL.setOnClickListener {
+            Log.e("revision adapter","frameLL onclick.....")
+            frameLL.visibility = View.GONE
+            textbooksrl.isEnabled = false
+            adapter!!.closeMore(position1)
+        }
 
-
+        textbooksrl.setOnClickListener {
+            Log.e("revision adapter","textbooksrl onclick.....")
+            frameLL.visibility = View.GONE
+            textbooksrl.isEnabled = false
+            adapter!!.closeMore(position1)
+        }
 
 
     }
@@ -159,11 +176,12 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
                         revisionModel?.filename = document.data.get("filename").toString()
                         revisionModel?.pdfversion = document.data.get("pdfversion").toString()
                         revisionModel?.sortorder = document.data.get("sortorder").toString()
+                        revisionModel?.sno = document.data.get("sno").toString()
                         revisionModel?.documentid = document.id
                         //Log.e("revision fragment", "New city: ${revisionModel?.pdfversion}")
 
 
-
+                        databaseHandler?.insertBooksStatus(revisionModel?.documentid,revisionModel?.rId,"0");
                        // revisionItemList = sortedList as ArrayList<RevisionModel>?
                         revisionModel?.let { revisionItemList?.add(it) }
                         revisionEntity = RevisionEntity()
@@ -226,7 +244,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
                         adapter = RevisionAdapter(activity!!, sortedList!!, this@RevisionFragment)
                         //rcv_revision.addItemDecoration(itemDecorator)
                         //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
-                       // rcv_revision.addItemDecoration(VerticalSpaceItemDecoration(48));
+                        rcv_revision.addItemDecoration(VerticalSpaceItemDecoration(40));
                         rcv_revision.adapter = adapter
 
                     }catch (e:Exception){
@@ -321,7 +339,8 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
                                 Toast.makeText(activity,"Internet is required!",Toast.LENGTH_LONG).show();
                             }
                         }else{
-                            revision?.filename?.let { moveToPDFActivity(it) }
+                            revision?.rId?.let { moveToPDFActivity(it,revision!!.filename) }
+                            //revision?.filename?.let { moveToPDFActivity(it) }
 
                         }
 
@@ -342,6 +361,13 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
 
     override fun onClick(revision: RevisionModel) {
         Log.e("revision fragment",".......on click....."+revision.filename)
+        sound = sharedPrefs?.getBooleanPrefVal(activity!!, ConstantPath.SOUNDS) ?: true
+        if(!sound){
+            if (Utils.loaded) {
+                Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                Log.e("Test", "Played sound...volume..."+ Utils.volume);
+            }
+        }
         this.revision = revision
         if(activity?.let { hasPermissions(it, *PERMISSIONS) }!!){
             try {
@@ -384,8 +410,8 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
                         }
                     }else{
                         Log.e("revision fragment",".......else...file exist..")
-                        revision.filename?.let { moveToPDFActivity(it) }
-
+                       // revision.filename?.let { moveToPDFActivity(it) }
+                        revision?.rId?.let { moveToPDFActivity(it,revision!!.filename) }
                     }
 
 
@@ -405,13 +431,30 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
 
 
     }
-    private fun moveToPDFActivity(rID: String) {
+    private fun moveToPDFActivity(rID: String, filename: String?) {
 
         val i = Intent(activity, PDFViewerActivity::class.java)
+        i.putExtra("filename", filename)
         i.putExtra("rID", rID)
         startActivity(i)
         (activity as Activity).overridePendingTransition(0, 0)
 
+    }
+
+    override fun onMoreButttonClicked(open: String,position:Int) {
+
+        if(open.equals("share")){
+           //frameLL.visibility
+        }else if(open.equals("frame")){
+
+        }else if(open.equals("more")){
+            Log.e("revision frag","position......"+position)
+            frameLL.visibility = View.VISIBLE
+            textbooksrl.isEnabled = true
+            position1 = position
+        }else if(open.equals("marked")){
+
+        }
     }
 
 

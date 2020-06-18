@@ -45,7 +45,7 @@
 
                 <FrameLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_136sdp"
+                    android:layout_height="@dimen/_134sdp"
                     android:layout_weight="1"
                     android:layout_gravity="center_horizontal">
 
@@ -61,7 +61,7 @@
                         android:visibility="gone"
                         android:id="@+id/webView_option1_opacity"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_134sdp"
                         android:clickable="true"
                         android:textAlignment="center"
                         android:scrollbars="none"/>
@@ -70,10 +70,10 @@
 
                 <FrameLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_136sdp"
+                    android:layout_height="@dimen/_134sdp"
                     android:layout_weight="1"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="@dimen/_3sdp">
+                    android:layout_marginStart="@dimen/_5sdp">
 
                     <WebView
                         android:id="@+id/webView_option2"
@@ -113,11 +113,11 @@
                 android:layout_height="wrap_content"
                 android:weightSum="2"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_3sdp">
+                android:layout_marginTop="@dimen/_5sdp">
 
                 <FrameLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_136sdp"
+                    android:layout_height="@dimen/_134sdp"
                     android:layout_weight="1"
                     android:layout_gravity="center_horizontal">
 
@@ -142,10 +142,10 @@
 
                 <FrameLayout
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/_136sdp"
+                    android:layout_height="@dimen/_134sdp"
                     android:layout_weight="1"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginStart="@dimen/_3sdp">
+                    android:layout_marginStart="@dimen/_5sdp">
 
                     <WebView
                         android:id="@+id/webView_option4"
@@ -159,7 +159,7 @@
                         android:visibility="gone"
                         android:id="@+id/webView_option4_opacity"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_136sdp"
+                        android:layout_height="@dimen/_134sdp"
                         android:clickable="true"
                         android:textAlignment="center"
                         android:scrollbars="none"/>

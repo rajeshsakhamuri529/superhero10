@@ -64,7 +64,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
         val topic: Topic = intent.getSerializableExtra(TOPIC) as Topic
         folderName = topic.folderName
@@ -330,12 +330,8 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                 Log.e("Test", "Played sound");
                // Toast.makeText(this,"end", Toast.LENGTH_SHORT).show()
             }
-            //playSomeSound()
-           // Utils.getPlayer(this).start()
-           // Utils.getPlayer(this).setOnCompletionListener {
-              //  Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
-             //   mediaPlayer.release()
-           //     Thread.sleep(100)
+            /*val intent = Intent(this, TestQuestionNewActivity::class.java)
+            startActivity(intent)*/
                 val intent = Intent(this, StartQuizActivity::class.java)
                 intent.putExtra(DYNAMIC_PATH, path)
                 intent.putExtra(COURSE_ID, courseId)
@@ -350,8 +346,10 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
                 intent.putExtra(TITLE_TOPIC, gradeTitle!!)
                 startActivity(intent)
 
-          //  }
+
         }else{
+            /*val intent = Intent(this, TestQuestionNewActivity::class.java)
+            startActivity(intent)*/
             val intent = Intent(this, StartQuizActivity::class.java)
             intent.putExtra(DYNAMIC_PATH, path)
             intent.putExtra(COURSE_ID, courseId)

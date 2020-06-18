@@ -14,6 +14,8 @@ import com.blobcity.R
 import com.blobcity.activity.DashBoardActivity
 import com.blobcity.activity.SignInActivity
 import com.blobcity.activity.WriteToUsActivity
+import com.blobcity.database.DatabaseHandler
+import com.blobcity.database.QuizGameDataBase
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.NOTIFICATION
 import com.blobcity.utils.ConstantPath.SOUNDS
@@ -32,6 +34,9 @@ class SettingFragment : Fragment(), View.OnClickListener {
     var sound: Boolean = false
     var notification: Boolean = false
     val TAG: String = "Settings Fragment"
+    var databaseHandler: QuizGameDataBase?= null
+
+    var databaseHandler1: DatabaseHandler? = null
     private lateinit var auth: FirebaseAuth
 
     private var mGoogleSignInClient: GoogleSignInClient? = null
@@ -41,9 +46,10 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        settings.elevation = 15f
         sharedPrefs = SharedPrefs()
-
+        databaseHandler = QuizGameDataBase(activity);
+        databaseHandler1 = DatabaseHandler(activity);
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
@@ -147,6 +153,14 @@ class SettingFragment : Fragment(), View.OnClickListener {
         builder.setPositiveButton(android.R.string.yes) { dialog, which ->
             dialog.dismiss()
             sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN, false)
+            sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.IS_FIRST_TIME, true)
+
+            //sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.IS_LOGGED_IN, false)
+
+            databaseHandler!!.deleteAllQuizTopicsLatPlayed()
+            databaseHandler!!.deleteAllQuizPlayFinal()
+            databaseHandler1!!.deleteAllRevisions()
+            databaseHandler1!!.deleteAllBookStatus()
             // Firebase sign out
             auth.signOut()
 
@@ -156,8 +170,9 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 OnCompleteListener<Void> {
                     //updateUI(null)
                 })
-            val intent = Intent(context!!, DashBoardActivity::class.java)
+            val intent = Intent(context!!, SignInActivity::class.java)
             startActivity(intent)
+            activity!!.finish()
         }
 
         builder.setNegativeButton(android.R.string.no) { dialog, which ->

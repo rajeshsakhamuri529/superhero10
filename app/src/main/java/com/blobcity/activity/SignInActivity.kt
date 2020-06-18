@@ -10,6 +10,7 @@ import android.graphics.Paint
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.util.Log
@@ -28,6 +29,7 @@ import com.blobcity.ViewPager.fragments.IntroThirdFragment
 import com.blobcity.ViewPager.listener.ViewPagerListener
 import com.blobcity.ViewPager.util.UiHelper
 import com.blobcity.model.Topic
+import com.blobcity.model.User
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.ISACCOUNTLINKED
 import com.blobcity.utils.ConstantPath.ISNOTLOGIN
@@ -39,10 +41,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_sign_in.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class SignInActivity : BaseActivity(){
 
@@ -58,6 +66,10 @@ class SignInActivity : BaseActivity(){
     var sound: Boolean = false
     lateinit var signIn: RelativeLayout;
     var firstTime:String? = null
+    private var backPressedTime: Long = 0
+    private var backPressToastMessage: Toast? = null
+    var firestore: FirebaseFirestore? = null
+
     companion object {
         private const val MIN_SCALE = 0.65f
         private const val MIN_ALPHA = 0.3f
@@ -88,8 +100,9 @@ class SignInActivity : BaseActivity(){
         //topicName = topic.title
        // ActivityCompat.requestPermissions(this@SignInActivity, PERMISSIONS, 112)
         sharedPrefs = SharedPrefs()
+        firestore = FirebaseFirestore.getInstance()
         firstTime = intent.getStringExtra(ConstantPath.FIRST_TIME)
-        if(sharedPrefs!!.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME)) {
+        /*if(sharedPrefs!!.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME)) {
             sharedPrefs!!.setBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME, false)
             signin_layout.visibility = View.GONE
             getStartedButton.visibility = View.VISIBLE
@@ -98,7 +111,7 @@ class SignInActivity : BaseActivity(){
             signin_layout.visibility = View.VISIBLE
             getStartedButton.visibility = View.GONE
             bottom_layout.setBackgroundColor(Color.parseColor("#FFFFFF"))
-        }
+        }*/
        // tv_topic_name.text = topicName
 //textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
  //       textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -295,10 +308,37 @@ class SignInActivity : BaseActivity(){
             if (user != null) { // 8099256159
                 Log.e("sign in activity","...update ui.....");
                 sharedPrefs?.setBooleanPrefVal(this!!, ISNOTLOGIN, true)
+                sharedPrefs?.setBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME, false)
                 hideProgressDialog()
+
+                var android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                Log.e("sign in activity","android_id....."+android_id)
+                Log.e("sign in activity","user.email....."+user.email)
+                val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
+                val currentDate = sdf.format(Date())
+                //sharedPrefs.setPrefVal(this@GradeActivity, "created_date", currentDate)
+                var userObj = User()
+                userObj.username = user.email
+                userObj.deviceuniqueid = android_id
+                userObj.createdon = currentDate
+                firestore!!.collection("users")
+                    .add(userObj)
+                    .addOnCompleteListener(object : OnCompleteListener<DocumentReference> {
+                        override fun onComplete(task: Task<DocumentReference>) {
+                            if (task.isSuccessful) {
+                                Log.e("user", "user added successfully")
+                            } else {
+                                Log.e("user", task.exception.toString())
+                            }
+                        }
+                    })
+
+
+
                 Toast.makeText(this,"Sign-In success!",Toast.LENGTH_SHORT).show()
                 val intent = Intent(this!!, DashBoardActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -312,25 +352,25 @@ class SignInActivity : BaseActivity(){
                 firstDotImageView.setImageResource(R.drawable.selected_dot)
                 secondDotImageView.setImageResource(R.drawable.unselected_dot)
                 thirdDotImageView.setImageResource(R.drawable.unselected_dot)
-                fourthDotImageView.setImageResource(R.drawable.unselected_dot)
+                //fourthDotImageView.setImageResource(R.drawable.unselected_dot)
             }
             1 -> {
                 firstDotImageView.setImageResource(R.drawable.unselected_dot)
                 secondDotImageView.setImageResource(R.drawable.selected_dot)
                 thirdDotImageView.setImageResource(R.drawable.unselected_dot)
-                fourthDotImageView.setImageResource(R.drawable.unselected_dot)
+                //fourthDotImageView.setImageResource(R.drawable.unselected_dot)
             }
             2 -> {
                 firstDotImageView.setImageResource(R.drawable.unselected_dot)
                 secondDotImageView.setImageResource(R.drawable.unselected_dot)
                 thirdDotImageView.setImageResource(R.drawable.selected_dot)
-                fourthDotImageView.setImageResource(R.drawable.unselected_dot)
+                //fourthDotImageView.setImageResource(R.drawable.unselected_dot)
             }
             3 -> {
                 firstDotImageView.setImageResource(R.drawable.unselected_dot)
                 secondDotImageView.setImageResource(R.drawable.unselected_dot)
                 thirdDotImageView.setImageResource(R.drawable.unselected_dot)
-                fourthDotImageView.setImageResource(R.drawable.selected_dot)
+               // fourthDotImageView.setImageResource(R.drawable.selected_dot)
             }
         }
     }
@@ -339,7 +379,22 @@ class SignInActivity : BaseActivity(){
         pagerAdapterView.addFragments(IntroFirstFragment())
         pagerAdapterView.addFragments(IntroSecondFragment())
         pagerAdapterView.addFragments(IntroThirdFragment())
-        pagerAdapterView.addFragments(IntroFourthFragment())
+        //pagerAdapterView.addFragments(IntroFourthFragment())
+    }
+
+    override fun onBackPressed() {
+        Log.e("sign in activity","on back pressed.......");
+        if(backPressedTime+2000>System.currentTimeMillis()){
+            backPressToastMessage!!.cancel()
+            finishAffinity()
+            return
+        }
+        else{
+            backPressToastMessage = Toast.makeText(this, R.string.exit_message, Toast.LENGTH_SHORT)
+            backPressToastMessage!!.show()
+        }
+        backPressedTime=System.currentTimeMillis()
+
     }
 
     private fun zoomOutTransformation(page: View, position: Float) {

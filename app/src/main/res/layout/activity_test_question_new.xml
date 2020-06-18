@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_root"
+    android:background="@color/white"
+    tools:context=".activity.TestQuestionActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:id="@+id/tq_cl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:id="@+id/btn_close"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/quicksand_bold"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:background="@drawable/close_button"
+            android:text="Close"
+            android:layout_centerVertical="true"
+            android:textColor="@color/button_close_text"/>
+
+        <LinearLayout
+            android:id="@+id/ll_dots"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+           android:layout_centerInParent="true"
+
+          />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="@dimen/_105sdp"
+        android:layout_height="1dp"
+        android:id="@+id/view"
+        android:visibility="invisible"
+        android:background="@color/header_line"
+        android:layout_below="@id/tq_cl"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_6sdp"/>
+
+    <LinearLayout
+        android:id="@+id/ll_inflate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/view"
+        android:paddingLeft="@dimen/_15sdp"
+        android:paddingRight="@dimen/_15sdp"
+        android:layout_above="@id/rl_hint_next"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_10sdp"/>
+
+    <!--<include
+            layout="@layout/webview_4100_layout"
+            android:id="@+id/ll_4100"/>
+
+    <include
+            layout="@layout/webview_2200_layout"
+            android:visibility="gone"
+            android:id="@+id/ll_2200"/>
+
+    <include
+            layout="@layout/webview_2100_layout"
+            android:visibility="gone"
+            android:id="@+id/ll_2100"
+    />-->
+    <RelativeLayout
+        android:id="@+id/rl_hint_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/tq_cl1"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="1dp"
+            android:background="@drawable/prev_next_active_btn">
+
+            <TextView
+
+                android:id="@+id/txt_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/_16sdp"
+                android:fontFamily="@font/quicksand_bold"
+                android:gravity="center_vertical"
+                android:text="NEXT"
+                android:textColor="#424242"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                 />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="14dp"
+                android:layout_height="17dp"
+
+
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintStart_toEndOf="@+id/txt_next"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.526"
+                app:srcCompat="@drawable/ic_right_arrow" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:id="@+id/btn_next"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="@font/quicksand_bold"
+            style="@style/Widget.AppCompat.Button.Borderless"
+
+            android:text="Next"
+
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"/>-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:visibility="visible"
+
+            android:layout_centerVertical="true">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:id="@+id/btn_submit"
+                android:layout_alignParentStart="true"
+                android:fontFamily="@font/quicksand_bold"
+                android:background="@drawable/submit_active_background"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:text="Submit"
+                android:layout_centerVertical="true"
+                android:textColor="@color/white"
+                />
+
+        </LinearLayout>
+
+        <!--<Button
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:id="@+id/btn_hint"
+            android:layout_alignParentStart="true"
+            android:fontFamily="@font/quicksand_bold"
+            android:background="@drawable/hint_button_bg"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:text="Hint"
+            android:layout_centerVertical="true"
+            android:textColor="@color/hint_text"
+            />-->
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/tq_cl2"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="1dp"
+            android:background="@drawable/prev_next_inactive_btn">
+
+            <TextView
+
+                android:id="@+id/txt_next1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/quicksand_bold"
+                android:gravity="center_vertical"
+
+                android:text="PREV"
+                android:textColor="#D6D6D6"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/imageView1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView1"
+                android:layout_width="14dp"
+                android:layout_height="17dp"
+
+
+                android:layout_marginStart="@dimen/_15sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:tint="#D6D6D6"
+                app:layout_constraintVertical_bias="0.533"
+                app:srcCompat="@drawable/ic_left_arrow" />
+
+        </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
+    <View
+        android:id="@+id/grey_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#333333"
+        android:visibility="gone"
+        android:alpha="0.5"/>
+    <LinearLayout
+        android:id="@+id/alertLL"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/_15sdp"
+        android:background="@drawable/hint_curve_border"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_16ssp"
+            android:text="Hint"
+            android:layout_gravity="center"
+            android:textColor="@color/hint_title_text"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/quicksand_bold"
+            android:layout_centerHorizontal="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:id="@+id/view1"
+            android:background="@color/hint_title_text"
+            android:layout_below="@id/tv_hint"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_10sdp"/>
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:id="@+id/webview_hint"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"/>
+
+        <Button android:layout_width="wrap_content"
+            android:layout_height="@dimen/_25sdp"
+
+            android:id="@+id/btn_gotIt"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/webview_hint"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:background="@drawable/hint_button_bg"
+            android:text="Ok"
+            android:layout_gravity="center_horizontal"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textColor="@color/hint_text"
+            android:fontFamily="@font/quicksand_bold"
+            android:textSize="@dimen/_13ssp"
+            android:paddingLeft="@dimen/_20sdp"
+            android:paddingRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

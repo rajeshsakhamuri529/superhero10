@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageInfo
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Rect
@@ -17,7 +18,10 @@ import android.media.SoundPool
 import android.os.Build
 import android.os.Handler
 import android.support.annotation.RequiresApi
+import android.support.v4.content.ContextCompat
+import android.support.v4.widget.ImageViewCompat
 import android.support.v7.app.AlertDialog
+import android.text.Html
 import android.text.TextUtils
 import android.util.ArrayMap
 import android.util.Log
@@ -48,8 +52,30 @@ import android.util.Base64
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
+import com.blobcity.database.QuizGameDataBase
+import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.SharedPrefs
+import kotlinx.android.synthetic.main.activity_test_question.btn_close
+import kotlinx.android.synthetic.main.activity_test_question.btn_hint
+import kotlinx.android.synthetic.main.activity_test_question.btn_next
+import kotlinx.android.synthetic.main.activity_test_question.btn_submit
+import kotlinx.android.synthetic.main.activity_test_question.iv_cancel_test_question
+import kotlinx.android.synthetic.main.activity_test_question.iv_life1
+import kotlinx.android.synthetic.main.activity_test_question.iv_life2
+import kotlinx.android.synthetic.main.activity_test_question.iv_life3
+import kotlinx.android.synthetic.main.activity_test_question.left_arrow
+import kotlinx.android.synthetic.main.activity_test_question.ll_dots
+import kotlinx.android.synthetic.main.activity_test_question.ll_inflate
+import kotlinx.android.synthetic.main.activity_test_question.next_btn
+import kotlinx.android.synthetic.main.activity_test_question.prev_btn
+import kotlinx.android.synthetic.main.activity_test_question.right_arrow
+import kotlinx.android.synthetic.main.activity_test_question.tv_count1
+import kotlinx.android.synthetic.main.activity_test_question.tv_count2
+import kotlinx.android.synthetic.main.activity_test_question.txt_next
+import kotlinx.android.synthetic.main.activity_test_question.txt_prev
+import kotlinx.android.synthetic.main.activity_test_quiz.*
 import java.lang.Exception
+import java.lang.StringBuilder
 import java.net.URLDecoder
 
 
@@ -146,14 +172,32 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var dialog: Dialog? = null;
     var animFadeIn: Animation? = null
     var animFadeOut: Animation? = null
+
+    lateinit var dot: Array<TextView?>
+    lateinit var optionsbuilder:StringBuilder
+    lateinit var questionsbuilder:StringBuilder
+    lateinit var answerbuilder:StringBuilder
+    lateinit var questionanswerbuilder:StringBuilder
+
+    lateinit var pathsbuilder:StringBuilder
+    lateinit var typebuilder:StringBuilder
+    var databaseHandler: QuizGameDataBase?= null
+    var lastplayed:String = ""
+    var displayno:Int = 0
+    var paths: String = ""
+    //lateinit var topic: Topic
     override var layoutID: Int = R.layout.activity_test_question
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun initView() {
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //window.clearFlags(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
+        //topic = intent.getSerializableExtra(TOPIC) as Topic
         dynamicPath = intent.getStringExtra(DYNAMIC_PATH)
         courseId = intent.getStringExtra(COURSE_ID)
         topicId = intent.getStringExtra(TOPIC_ID)
@@ -166,6 +210,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         folderName = intent.getStringExtra(FOLDER_NAME)
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         readyCardNumber = intent.getIntExtra(CARD_NO, -1)
+        lastplayed = intent.getStringExtra("LAST_PLAYED")
+        displayno = intent.getIntExtra("DISPLAY_NO", -1)
         quizTimer = Timer()
         sharedPrefs = SharedPrefs()
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
@@ -174,7 +220,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         animationFadeIn500 = AnimationUtils.loadAnimation(this, R.anim.fade_in_100)
 
         firestore = FirebaseFirestore.getInstance()
-
+        databaseHandler = QuizGameDataBase(this);
+        databaseHandler!!.updatequiztopicslastplayed(topicName,lastplayed)
         animFadeIn = AnimationUtils.loadAnimation(getApplicationContext(),
             R.anim.fade_in);
 
@@ -185,9 +232,9 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         dbTrackingStatus = FirebaseDatabase.getInstance().getReference("quiz_tracking")
         dbTrackingHintStatus = FirebaseDatabase.getInstance().getReference("hint_tracking")
         dbRStatus!!.keepSynced(true)*/
-
+        unAnsweredList = ArrayList<Int>()
         createArrayMapList(dynamicPath!!)
-
+        btn_submit.isEnabled = false
         btn_hint!!.visibility = View.INVISIBLE
         btn_next!!.visibility = View.INVISIBLE
         buttonEffect(btn_next,true)
@@ -213,6 +260,11 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         btn_next!!.setOnClickListener(this)
         btn_hint!!.setOnClickListener(this)
+
+        next_btn!!.setOnClickListener(this)
+        prev_btn!!.setOnClickListener(this)
+        btn_close!!.setOnClickListener(this)
+        btn_submit!!.setOnClickListener(this)
         iv_cancel_test_question!!.setOnClickListener(this)
         webView_option1!!.setOnTouchListener { v, event ->
             if (!isOption1Wrong) {
@@ -278,7 +330,13 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         if (event.action == MotionEvent.ACTION_UP) {
             val clickDuration = Calendar.getInstance().timeInMillis - startClickTime!!
             if (clickDuration < MAX_CLICK_DURATION) {
-                checkAnswer(position, stringAns)
+               // checkAnswer(position, stringAns)
+                unAnsweredList!!.clear()
+                unAnsweredList!!.add(3)
+                unAnsweredList!!.add(2)
+                unAnsweredList!!.add(1)
+                unAnsweredList!!.add(0)
+                checkAnswerNew(position, stringAns)
             }
         }
     }
@@ -323,33 +381,61 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
-               // showNewDialog()
-                //txtFadeIn.startAnimation(animFadeIn);
-               // dialog!!.getWindow().getAttributes().windowAnimations = R.style.PauseDialogAnimation;
 
-
-
-
-                /*alertLL.visibility = View.VISIBLE
-                grey_view.visibility = View.VISIBLE
-
-                btn_gotIt.setOnClickListener {
-                    alertLL.visibility = View.GONE
-                    grey_view.visibility = View.GONE
-                }*/
                 dialog!! .show()
 
-                /*val webView = WebView(this)
-                webView.loadUrl(hintPath)
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Hint")
-                    .setView(webView)
-                    .setNeutralButton("OK", null)
-                    .show()*/
-
-              //  showNewDialog()
-
-
+            }
+            R.id.next_btn -> {
+                sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                createPath()
+            }
+            R.id.prev_btn -> {
+                sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                createPathForPrev()
+            }
+            R.id.btn_close -> {
+                sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                backPressDialog()
+            }
+            R.id.btn_submit -> {
+                sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                navigateToSummaryScreenNew()
             }
         }
     }
@@ -782,12 +868,141 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             availableLife = 0
             totalLife = 2
         }
+
+        pathsbuilder = StringBuilder()
+        typebuilder = StringBuilder()
+        optionsbuilder = StringBuilder()
+        for (i in 0 until totalQuestion!!)
+        {
+            questionsItem = arrayMap!!.get(listWithUniqueString!!.get(positionList!![i]))
+            Log.e("test question act","questionsItem....."+questionsItem)
+            if (questionsItem!!.size > 1) {
+                randomPosition = Random.nextInt(questionsItem!!.size)
+                singleQuestionsItem = questionsItem!!.get(randomPosition)
+                dbQPaths = questionsItem!!.get(randomPosition).id
+                dbQuestionBank = questionsItem!!.get(randomPosition).bank
+                dbQLevel = questionsItem!!.get(randomPosition).level
+                paths = localBlobcityPath + dbQPaths
+                type = questionsItem!!.get(randomPosition).type
+
+            }
+            if(pathsbuilder.length == 0){
+                pathsbuilder.append(""+paths+"~"+type)
+
+            }else{
+                pathsbuilder.append(","+paths+"~"+type)
+            }
+
+            Log.e("test question activity","......for....i....."+i+"........"+paths);
+
+            if(optionsbuilder.length == 0){
+                var options = StringBuilder()
+                for (filename in listAssetFiles(paths, applicationContext)!!) {
+                    if (filename.contains("opt")) {
+                        if (!filename.contains("opt5")) {
+                            //listOfOptions!!.add(filename)
+                            if (options.length == 0) {
+                                options.append(filename)
+                            } else {
+                                options.append("-" + filename)
+                            }
+                        }
+                    }
+                }
+
+                optionsbuilder.append(""+(i+1)+"~"+options.toString())
+            }else{
+                var options = StringBuilder()
+                for (filename in listAssetFiles(paths, applicationContext)!!) {
+                    if (filename.contains("opt")) {
+                        if (!filename.contains("opt5")) {
+                            //listOfOptions!!.add(filename)
+                            if (options.length == 0) {
+                                options.append(filename)
+                            } else {
+                                options.append("-" + filename)
+                            }
+                        }
+                    }
+                }
+                optionsbuilder.append(","+(i+1)+"~"+options.toString())
+            }
+
+
+
+
+
+        }
+
+
+
+
+        questionsbuilder = StringBuilder()
+        answerbuilder = StringBuilder()
+        questionanswerbuilder = StringBuilder()
+        for (i in 0 until totalQuestion!!)
+        {
+            Log.e("test question activity","i value...."+i);
+            if(questionsbuilder.length == 0){
+                questionsbuilder.append(""+(i+1))
+                questionanswerbuilder.append(""+(i+1) + "~"+"-1")
+                answerbuilder.append(""+0)
+            }else{
+                questionsbuilder.append(","+(i+1))
+                questionanswerbuilder.append(","+(i+1) + "~"+"-1")
+                answerbuilder.append(","+0)
+            }
+        }
+
+        /*for (i in 0 until totalQuestion!!)
+        {
+
+            if(optionsbuilder.length == 0){
+                var options = StringBuilder()
+                for (filename in listAssetFiles(paths, applicationContext)!!) {
+                    if (filename.contains("opt")) {
+                        if (!filename.contains("opt5")) {
+                            //listOfOptions!!.add(filename)
+                            if (options.length == 0) {
+                                options.append(filename)
+                            } else {
+                                options.append("-" + filename)
+                            }
+                        }
+                    }
+                }
+
+                optionsbuilder.append(""+(i+1)+"~"+options.toString())
+            }else{
+                var options = StringBuilder()
+                for (filename in listAssetFiles(path, applicationContext)!!) {
+                    if (filename.contains("opt")) {
+                        if (!filename.contains("opt5")) {
+                            //listOfOptions!!.add(filename)
+                            if (options.length == 0) {
+                                options.append(filename)
+                            } else {
+                                options.append("-" + filename)
+                            }
+                        }
+                    }
+                }
+                optionsbuilder.append(","+(i+1)+"~"+options.toString())
+            }
+
+        }*/
+
+        Log.e("test question activity","totalQuestion....."+totalQuestion);
+        Log.e("test question activity","topicName....."+topicName);
+        Log.e("test question activity","questionsbuilder....."+questionsbuilder.toString());
+        Log.e("test question activity","answerbuilder....."+answerbuilder.toString());
+        Log.e("test question activity","questionanswerbuilder....."+questionanswerbuilder.toString());
+        databaseHandler!!.insertquizplay(topicName,
+            totalQuestion!!,questionsbuilder.toString(),answerbuilder.toString(),questionanswerbuilder.toString(),pathsbuilder.toString(),optionsbuilder.toString())
         createPath()
     }
 
     private fun createPath() {
-        unAnsweredList = ArrayList<Int>()
-        Log.d("createPath", unAnsweredList!!.size.toString() + "!")
         unAnsweredList!!.clear()
         unAnsweredList!!.add(3)
         unAnsweredList!!.add(2)
@@ -848,16 +1063,54 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             tv_count1.text = "$countInt"
             tv_count2.text = "$totalQuestion"
 
-            val paths: String
-            questionsItem = arrayMap!!.get(listWithUniqueString!!.get(positionList!![countQuestion]))
+
+
+
+
+            addDot(countInt, totalQuestion!!)
+
+
+
+            val paths: String = databaseHandler!!.getQuizQuestionPath(topicName)
+            var ans:List<String> = paths.split(",")
+            var ans1:List<String> = ans.get((countInt - 1)).split("~")
+            type = ans1[1].toInt()
+            loadDataInWebView(ans1[0])
+            var answers:String = databaseHandler!!.getQuizAnswers(topicName);
+
+
+            var anslist:List<String> = answers.split(",")
+            Log.e("test question activity","next.....countInt..."+countInt);
+            Log.e("test question activity","next.....ans..."+anslist);
+
+            if(anslist.get((countInt - 1)).equals("1")){
+
+                if(countInt == totalQuestion){
+                    next_btn.isEnabled = false
+                    next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_inactive_btn));
+                    txt_next.setTextColor(getResources().getColor(R.color.submit_inactive_color))
+                    ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.arrow_tint)));
+
+
+                }else{
+                    next_btn.isEnabled = true
+                    next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_active_btn));
+                    txt_next.setTextColor(getResources().getColor(R.color.button_close_text))
+                    ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.button_close_text)));
+
+                }
+
+            }
+
+            /*questionsItem = arrayMap!!.get(listWithUniqueString!!.get(positionList!![countQuestion]))
             if (questionsItem!!.size > 1) {
                 randomPosition = Random.nextInt(questionsItem!!.size)
-                singleQuestionsItem = questionsItem!!.get(randomPosition)
-                dbQPaths = questionsItem!!.get(randomPosition).id
-                dbQuestionBank = questionsItem!!.get(randomPosition).bank
-                dbQLevel = questionsItem!!.get(randomPosition).level
+                singleQuestionsItem = questionsItem!!.get((countInt-1))
+                dbQPaths = questionsItem!!.get((countInt-1)).id
+                dbQuestionBank = questionsItem!!.get((countInt-1)).bank
+                dbQLevel = questionsItem!!.get((countInt-1)).level
                 paths = localBlobcityPath + dbQPaths
-                type = questionsItem!!.get(randomPosition).type
+                type = questionsItem!!.get((countInt-1)).type
                 loadDataInWebView(paths)
             } else {
                 singleQuestionsItem = questionsItem!!.get(0)
@@ -867,12 +1120,256 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 paths = localBlobcityPath + dbQPaths
                 type = questionsItem!!.get(0).type
                 loadDataInWebView(paths)
-            }
+            }*/
         }
-        if (countQuestion >= totalQuestion!!) {
+        /*if (countQuestion >= totalQuestion!!) {
             navigateToSummaryScreen(true)
-        }
+        }*/
+
+
     }
+
+    fun createPathForPrev(){
+
+        unAnsweredList!!.clear()
+        unAnsweredList!!.add(3)
+        unAnsweredList!!.add(2)
+        unAnsweredList!!.add(1)
+        unAnsweredList!!.add(0)
+        Log.d("createPath", unAnsweredList!!.size.toString() + "!")
+        //position++
+        countQuestion--
+        btn_hint!!.visibility = View.INVISIBLE
+        quizTimer!!.scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                quizTimerCount--
+            }
+
+        }, 1000, 1000)
+        handler.removeCallbacksAndMessages(null)
+        if (child != null) {
+            ll_inflate.removeView(child!!)
+        }
+        if (bank != null) {
+            addBankData()
+            bankList.add(bank!!)
+            bank = null
+            dbIsHintUsed = false
+            dbAttempts = 0
+        }
+        if (perQuizTimer != null) {
+            perQuizTimer = null
+            perQuizTimerCount = 0
+        }
+        /* if (reviewModel != null){
+             reviewData()
+             reviewModelList.add(reviewModel!!)
+             reviewModel = null
+         }*/
+        if (countQuestion < totalQuestion!!) {
+            bank = Bank()
+            reviewModel = ReviewModel()
+            answerList = ArrayList()
+            optionsWithAnswerList = ArrayList()
+            perQuizTimer = Timer()
+            perQuizTimer!!.scheduleAtFixedRate(object : TimerTask() {
+                override fun run() {
+                    perQuizTimerCount--
+                }
+
+            }, 1000, 1000)
+            isOption1Wrong = false
+            isOption2Wrong = false
+            isOption3Wrong = false
+            isOption4Wrong = false
+            countInt--
+            isAnswerCorrect = false
+            btn_next!!.visibility = View.INVISIBLE
+            val count = "$countInt of $totalQuestion"
+
+            //tv_count.text = Utils.ofSize(count,countInt.toString().length)
+            tv_count1.text = "$countInt"
+            tv_count2.text = "$totalQuestion"
+
+
+
+            addDot(countInt, totalQuestion!!)
+
+            val paths: String = databaseHandler!!.getQuizQuestionPath(topicName)
+            var ans:List<String> = paths.split(",")
+            var ans1:List<String> = ans.get((countInt - 1)).split("~")
+            type = ans1[1].toInt()
+            loadDataInWebView(ans1[0])
+
+            var answers:String = databaseHandler!!.getQuizAnswers(topicName);
+
+
+            var anslist:List<String> = answers.split(",")
+            Log.e("test question activity","next.....countInt..."+countInt);
+            Log.e("test question activity","next.....ans..."+anslist);
+
+            if(anslist.get((countInt - 1)).equals("1")){
+
+                if(countInt == totalQuestion){
+                    next_btn.isEnabled = false
+                    next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_inactive_btn));
+                    txt_next.setTextColor(getResources().getColor(R.color.submit_inactive_color))
+                    ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.arrow_tint)));
+
+
+                }else{
+                    next_btn.isEnabled = true
+                    next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_active_btn));
+                    txt_next.setTextColor(getResources().getColor(R.color.button_close_text))
+                    ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.button_close_text)));
+
+                }
+            }
+
+
+
+            /*questionsItem = arrayMap!!.get(listWithUniqueString!!.get(positionList!![countQuestion]))
+            if (questionsItem!!.size > 1) {
+                randomPosition = Random.nextInt(questionsItem!!.size)
+                singleQuestionsItem = questionsItem!!.get((countInt-1))
+                dbQPaths = questionsItem!!.get((countInt-1)).id
+                dbQuestionBank = questionsItem!!.get((countInt-1)).bank
+                dbQLevel = questionsItem!!.get((countInt-1)).level
+                paths = localBlobcityPath + dbQPaths
+                type = questionsItem!!.get((countInt-1)).type
+                loadDataInWebView(paths)
+            } else {
+                singleQuestionsItem = questionsItem!!.get(0)
+                dbQPaths = questionsItem!!.get(0).id
+                dbQuestionBank = questionsItem!!.get(0).bank
+                dbQLevel = questionsItem!!.get(0).level
+                paths = localBlobcityPath + dbQPaths
+                type = questionsItem!!.get(0).type
+                loadDataInWebView(paths)
+            }*/
+        }
+       /* if (countQuestion >= totalQuestion!!) {
+            navigateToSummaryScreen(true)
+        }*/
+
+
+        /*var answers:String = databaseHandler!!.getQuizAnswers(topicName);
+
+
+        var ans:List<String> = answers.split(",")
+        Log.e("test question activity","prev.....countInt..."+countInt);
+        Log.e("test question activity","prev.....ans..."+ans);
+
+        if(ans.get((countInt - 1)).equals("1")){
+            var questionanswers:String = databaseHandler!!.getQuizQuestionAnswers(topicName);
+            var queans:List<String> = questionanswers.split(",")
+            var ans1:List<String> = queans.get((countInt - 1)).split("~")
+            Log.e("test question activity","prev.....ans1..."+ans1);
+            checkwebviewborder(ans1[1].toInt(),"")
+        }*/
+
+
+    }
+
+    fun addDot(countint:Int,totalquestions:Int) {
+        //val layout_dot = findViewById(R.id.ll_dots) as LinearLayout
+        dot = arrayOfNulls<TextView>(totalquestions)
+        ll_dots.removeAllViews()
+        for (i in 0 until dot!!.size)
+        {
+            if((i+1) == countint){
+                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
+                if(i != 0){
+                    params.leftMargin = getResources().getDimension(R.dimen._10sdp).toInt()
+                }
+                dot!![i] = TextView(this)
+                dot!![i]?.setText(Html.fromHtml("&#9679;"))
+                dot!![i]?.setTextSize(30F)
+                //set default dot color
+                dot!![i]?.setTextColor(getResources().getColor(R.color.button_close_text))
+                dot[i]!!.gravity = Gravity.CENTER
+                dot[i]!!.layoutParams = params
+                ll_dots.addView(dot!![i])
+            }else{
+                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
+                if(i != 0){
+                    params.leftMargin = getResources().getDimension(R.dimen._10sdp).toInt()
+                }
+                dot!![i] = TextView(this)
+                dot!![i]?.setText(Html.fromHtml("&#9675;"))
+                dot!![i]?.setTextSize(30F)
+                // dot!![i]?.setBackgroundResource(R.color.purple)
+                //set default dot color
+                dot!![i]?.setTextColor(getResources().getColor(R.color.button_close_text))
+                dot[i]!!.gravity = Gravity.CENTER
+                dot[i]!!.layoutParams = params
+                ll_dots.addView(dot!![i])
+            }
+
+        }
+
+        if(countint == 1){
+            /*next_btn.isEnabled = true
+            next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_active_btn));
+            txt_next.setTextColor(getResources().getColor(R.color.button_close_text))*/
+
+            next_btn.visibility = View.VISIBLE
+            prev_btn.visibility = View.GONE
+
+            next_btn.isEnabled = false
+            next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_inactive_btn));
+            txt_next.setTextColor(getResources().getColor(R.color.submit_inactive_color))
+            ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.arrow_tint)));
+
+
+
+            prev_btn.isEnabled = false
+            prev_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_inactive_btn));
+            txt_prev.setTextColor(getResources().getColor(R.color.submit_inactive_color))
+            ImageViewCompat.setImageTintList(left_arrow, ColorStateList.valueOf(getResources().getColor(R.color.arrow_tint)));
+
+        }else if(countint == totalquestions){
+
+            next_btn.visibility = View.GONE
+            prev_btn.visibility = View.VISIBLE
+            next_btn.isEnabled = false
+            next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_inactive_btn));
+            txt_next.setTextColor(getResources().getColor(R.color.submit_inactive_color))
+            ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.arrow_tint)));
+
+
+            prev_btn.isEnabled = true
+            prev_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_active_btn));
+            txt_prev.setTextColor(getResources().getColor(R.color.button_close_text))
+        }else{
+            /*next_btn.isEnabled = true
+            next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_active_btn));
+            txt_next.setTextColor(getResources().getColor(R.color.button_close_text))
+            ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.button_close_text)));
+*/
+            next_btn.visibility = View.VISIBLE
+            prev_btn.visibility = View.VISIBLE
+
+            next_btn.isEnabled = false
+            next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_inactive_btn));
+            txt_next.setTextColor(getResources().getColor(R.color.submit_inactive_color))
+            ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.arrow_tint)));
+
+
+
+            prev_btn.isEnabled = true
+            prev_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_active_btn));
+            txt_prev.setTextColor(getResources().getColor(R.color.button_close_text))
+            ImageViewCompat.setImageTintList(left_arrow, ColorStateList.valueOf(getResources().getColor(R.color.button_close_text)));
+            //left_arrow.setColorFilter(null)
+
+        }
+
+
+        //set active dot color
+        // dot[2]!!.setTextColor(getResources().getColor(R.color.button_close_text))
+    }
+
 
     private fun addBankData() {
         bank!!.answer = answerList
@@ -885,7 +1382,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun loadDataInWebView(path: String) {
         listOfOptions = ArrayList()
-        Log.e("testPath", path)
+        Log.e("test question activity","testPath................"+ path)
         var questionPath = ""
         //Log.d("list", "!" + listAssetFiles(path, applicationContext))
         for (filename in listAssetFiles(path, applicationContext)!!) {
@@ -916,6 +1413,31 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             }
         }
 
+        var answers:String = databaseHandler!!.getQuizAnswers(topicName);
+
+
+        var anslist:List<String> = answers.split(",")
+        Log.e("test question activity","next.....countInt..."+countInt);
+        Log.e("test question activity","next.....ans..."+anslist);
+
+        if(anslist.get((countInt - 1)).equals("1")){
+            listOfOptions!!.clear()
+            var optionString:String = databaseHandler!!.getQuizOptions(topicName)
+
+            var queans:List<String> = optionString.split(",")
+            var optionsmutanslist = queans.toMutableList()
+
+            var options1:List<String> = optionsmutanslist.get((countInt - 1)).split("~")
+            Log.e("review activity","options1......."+options1)
+            //var options1list = options1.toMutableList()
+            var options2list:List<String> = options1[1].split("-")
+            for(i in 0 until options2list.size){
+                listOfOptions!!.add(options2list[i])
+            }
+        }else{
+            Collections.shuffle(listOfOptions!!)
+        }
+
         if (type == 4100) {
             Log.d("type", "4100")
             inflateView4100()
@@ -925,7 +1447,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 override fun run() {
                     webViewAnimation()
                 }
-            }, 2500)
+            }, 500)
             webViewPathAndLoad(path, type)
         }
 
@@ -938,7 +1460,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 override fun run() {
                     webViewAnimation()
                 }
-            }, 2500)
+            }, 500)
             webViewPathAndLoad(path, type)
         }
 
@@ -951,7 +1473,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                 override fun run() {
                     webViewAnimation()
                 }
-            }, 2500)
+            }, 500)
             webViewPathAndLoad(path, type)
         }
 
@@ -976,7 +1498,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     webView_option2!!.startAnimation(animationFadeIn1000)
                 }
 
-            }, 2500)
+            }, 500)
 
             opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
             opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
@@ -1067,6 +1589,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         }*/
 
         webView_question!!.loadUrl(questionPath)
+
     }
 
     private fun webViewGone() {
@@ -1095,15 +1618,72 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option3!!.startAnimation(animationFadeIn1500)
         webView_option4!!.visibility = View.VISIBLE
         webView_option4!!.startAnimation(animationFadeIn)
+
+
+        var answers:String = databaseHandler!!.getQuizAnswers(topicName);
+
+
+        var ans:List<String> = answers.split(",")
+        Log.e("test question activity","next.....countInt..."+countInt);
+        Log.e("test question activity","next.....ans..."+ans);
+
+        if(ans.get((countInt - 1)).equals("1")){
+            var questionanswers:String = databaseHandler!!.getQuizQuestionAnswers(topicName);
+            var queans:List<String> = questionanswers.split(",")
+            var ans1:List<String> = queans.get((countInt - 1)).split("~")
+            Log.e("test question activity","next.....ans1..."+ans1);
+
+            checkwebviewborder(ans1[1])
+        }
     }
 
     private fun webViewPathAndLoad(path: String, type: Int) {
-        Collections.shuffle(listOfOptions!!)
+
         opt1Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(0)
         opt2Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(1)
         opt3Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(2)
         opt4Path = WEBVIEW_PATH + path + "/" + listOfOptions!!.get(3)
         Log.d("webViewPathAndLoad", opt1Path + " ! " + opt2Path)
+
+        var optionString:String = databaseHandler!!.getQuizOptions(topicName)
+
+        var queans:List<String> = optionString.split(",")
+        var optionsmutanslist = queans.toMutableList()
+        Log.e("test question activity","check answer new.....queansmutanslist..."+optionsmutanslist);
+        //var optionsmutanslist1 = optionsmutanslist.split("~")
+        Log.e("test question activity","check answer new.....queansmutanslist.get((countInt - 1))..."+optionsmutanslist.get((countInt - 1)));
+
+        var options1:List<String> = optionsmutanslist.get((countInt - 1)).split("~")
+
+        Log.e("test question activity","check answer new.....ans1..."+options1);
+        var mutanslist1 = options1.toMutableList()
+
+        var options = StringBuilder()
+        for (i in 0 until listOfOptions!!.size){
+            if(options.length == 0){
+                options.append(listOfOptions!!.get(i))
+            }else{
+                options.append("-"+listOfOptions!!.get(i))
+            }
+        }
+
+
+        Log.e("test question activity","selected option......."+options)
+        mutanslist1[1] = options.toString()
+        Log.e("test question activity","check answer new.....mutanslist1..."+mutanslist1);
+        optionsmutanslist[(countInt - 1)] = mutanslist1.get(0)+"~"+mutanslist1.get(1)
+
+        Log.e("test question activity","check answer new.....queansmutanslist...final....."+optionsmutanslist);
+        var optionstringBuilder = StringBuilder()
+        for(i in 0 until optionsmutanslist.size){
+            if(optionstringBuilder.length == 0){
+                optionstringBuilder.append(optionsmutanslist.get(i))
+            }else{
+                optionstringBuilder.append(","+optionsmutanslist.get(i))
+            }
+        }
+
+        databaseHandler!!.updatequizplayoptions(topicName,optionstringBuilder.toString())
 
 
         webView_option1!!.settings.javaScriptEnabled = true
@@ -1264,10 +1844,204 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
 
 
+
+
+
         /*val tran = webView_option1!!.background as GradientDrawable
         tran.color =applicationContext.resources.getColor(R.color.purple_opt_bg)*/
 
     }
+
+    private fun checkAnswerNew(optionClicked: Int, answer: String) {
+        Log.e("test question activity","check answer new.....optionClicked..."+optionClicked);
+        Log.e("test question activity","check answer new.....answer..."+answer);
+        Log.e("test question activity","check answer new.....listOfOptions..."+listOfOptions!!.size);
+
+        if(countInt == totalQuestion){
+            next_btn.isEnabled = false
+            next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_inactive_btn));
+            txt_next.setTextColor(getResources().getColor(R.color.submit_inactive_color))
+            ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.arrow_tint)));
+
+
+        }else{
+            next_btn.isEnabled = true
+            next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_active_btn));
+            txt_next.setTextColor(getResources().getColor(R.color.button_close_text))
+            ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.button_close_text)));
+
+        }
+
+        sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+        if(!sound){
+            // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+            //  mediaPlayer.start()
+            if (Utils.loaded) {
+                Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+            }
+        }
+        var answers:String = databaseHandler!!.getQuizAnswers(topicName);
+        var questionanswers:String = databaseHandler!!.getQuizQuestionAnswers(topicName);
+
+        var ans:List<String> = answers.split(",")
+        Log.e("test question activity","check answer new.....countInt..."+countInt);
+        Log.e("test question activity","check answer new.....ans..."+ans);
+        var mutanslist = ans.toMutableList()
+        mutanslist[(countInt - 1)] = "1"
+        Log.e("test question activity","check answer new.....after mutanslist....."+mutanslist);
+        var ansstringBuilder = StringBuilder()
+        for(i in 0 until mutanslist.size){
+            if(ansstringBuilder.length == 0){
+                ansstringBuilder.append(mutanslist.get(i))
+            }else{
+                ansstringBuilder.append(","+mutanslist.get(i))
+            }
+        }
+
+        var queans:List<String> = questionanswers.split(",")
+        var queansmutanslist = queans.toMutableList()
+        Log.e("test question activity","check answer new.....queansmutanslist..."+queansmutanslist);
+
+        Log.e("test question activity","check answer new.....queansmutanslist.get((countInt - 1))..."+queansmutanslist.get((countInt - 1)));
+
+        var ans1:List<String> = queansmutanslist.get((countInt - 1)).split("~")
+
+        Log.e("test question activity","check answer new.....ans1..."+ans1);
+        var mutanslist1 = ans1.toMutableList()
+        var selectedOption : String? = null
+        if (listOfOptions!!.get(optionClicked).contains("opt1")) {
+            selectedOption = "opt1"
+        }
+        if (listOfOptions!!.get(optionClicked).contains("opt2")) {
+            selectedOption = "opt2"
+        }
+        if (listOfOptions!!.get(optionClicked).contains("opt3")) {
+            selectedOption = "opt3"
+        }
+        if (listOfOptions!!.get(optionClicked).contains("opt4")) {
+            selectedOption = "opt4"
+        }
+
+
+        Log.e("test question activity","selected option......."+selectedOption)
+        mutanslist1[1] = selectedOption!!
+        Log.e("test question activity","check answer new.....mutanslist1..."+mutanslist1);
+        queansmutanslist[(countInt - 1)] = mutanslist1.get(0)+"~"+mutanslist1.get(1)
+
+        Log.e("test question activity","check answer new.....queansmutanslist...final....."+queansmutanslist);
+        var queansstringBuilder = StringBuilder()
+        for(i in 0 until queansmutanslist.size){
+            if(queansstringBuilder.length == 0){
+                queansstringBuilder.append(queansmutanslist.get(i))
+            }else{
+                queansstringBuilder.append(","+queansmutanslist.get(i))
+            }
+        }
+
+        Log.e("test question activity","check answer new.....ansstringBuilder..."+ansstringBuilder.toString());
+
+        Log.e("test question activity","check answer new.....queansstringBuilder..."+queansstringBuilder.toString());
+        databaseHandler!!.updatequizplayanswers(topicName,ansstringBuilder.toString())
+        databaseHandler!!.updatequizplayquestionanswers(topicName,queansstringBuilder.toString())
+
+        var answers1:String = databaseHandler!!.getQuizAnswers(topicName);
+
+
+        var finalans:List<String> = answers1.split(",")
+
+        if(finalans.contains("0")){
+            Log.e("test question","submit btn not enabled.........");
+            btn_submit.isEnabled = false
+            btn_submit.setBackground(ContextCompat.getDrawable(this, R.drawable.submit_inactive_background));
+            //txt_prev.setTextColor(getResources().getColor(R.color.button_close_text))
+        }else{
+            Log.e("test question","submit enabled.........");
+            btn_submit.isEnabled = true
+            btn_submit.setBackground(ContextCompat.getDrawable(this, R.drawable.submit_active_background));
+            //txt_prev.setTextColor(getResources().getColor(R.color.button_close_text))
+        }
+
+
+        //checkwebviewborder(optionClicked,answer)
+        unAnsweredList!!.remove(optionClicked)
+        if (listOfOptions!!.size > 2) {
+            if (optionClicked == 0) {
+                Log.e("change question","check answer...0.");
+                setCorrectBackground(webView_option1!!)
+            }
+            if (optionClicked == 1) {
+                Log.e("change question","check answer...1.");
+                setCorrectBackground(webView_option2!!)
+            }
+            if (optionClicked == 2) {
+                Log.e("change question","check answer...2.");
+                setCorrectBackground(webView_option3!!)
+            }
+            if (optionClicked == 3) {
+                Log.e("change question","check answer...3..");
+                setCorrectBackground(webView_option4!!)
+            }
+            setInactiveBackgroundNew();
+        }else{
+            if (optionClicked == 0) {
+                Log.e("change question","check answer...0.");
+                setCorrectBackground(webView_option1!!)
+            }
+            if (optionClicked == 1) {
+                Log.e("change question","check answer...1.");
+                setCorrectBackground(webView_option2!!)
+            }
+            setInactiveBackgroundNew()
+        }
+
+    }
+
+    private fun checkwebviewborder(answer: String){
+        //Log.e("test question actvitiy","..checkwebviewborder....optionClicked..."+optionClicked)
+        /*next_btn.isEnabled = true
+        next_btn.setBackground(ContextCompat.getDrawable(this, R.drawable.prev_next_active_btn));
+        txt_next.setTextColor(getResources().getColor(R.color.button_close_text))
+        ImageViewCompat.setImageTintList(right_arrow, ColorStateList.valueOf(getResources().getColor(R.color.button_close_text)));
+*/
+        if (listOfOptions!!.size > 2) {
+            if (webView_option1!!.url.contains(answer)) {
+                Log.e("change question","check answer...0.");
+                setCorrectBackground(webView_option1!!)
+                unAnsweredList!!.remove(0)
+            }
+            if (webView_option2!!.url.contains(answer)) {
+                Log.e("change question","check answer...1.");
+                setCorrectBackground(webView_option2!!)
+                unAnsweredList!!.remove(1)
+            }
+            if (webView_option3!!.url.contains(answer)) {
+                Log.e("change question","check answer...2.");
+                setCorrectBackground(webView_option3!!)
+                unAnsweredList!!.remove(2)
+            }
+            if (webView_option4!!.url.contains(answer)) {
+                Log.e("change question","check answer...3..");
+                setCorrectBackground(webView_option4!!)
+                unAnsweredList!!.remove(3)
+            }
+            setInactiveBackgroundNew();
+        }else{
+            if (webView_option1!!.url.contains(answer)) {
+                Log.e("change question","check answer...0.");
+                setCorrectBackground(webView_option1!!)
+                unAnsweredList!!.remove(0)
+            }
+            if (webView_option2!!.url.contains(answer)) {
+                Log.e("change question","check answer...1.");
+                setCorrectBackground(webView_option2!!)
+                unAnsweredList!!.remove(1)
+            }
+            setInactiveBackgroundNew()
+        }
+    }
+
 
     private fun checkAnswer(optionClicked: Int, answer: String) {
         //btn_hint!!.visibility = View.VISIBLE
@@ -1575,17 +2349,50 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun setCorrectBackground(webView: WebView) {
         Log.d("setCurrentBackground", webView.url + "!")
-        handler.postDelayed(object : Runnable {
+        webView.setBackgroundResource(R.drawable.option_correct_curved_border)
+        /*handler.postDelayed(object : Runnable {
             override fun run() {
                 isHandlerExecuted = true
                 webView.setBackgroundResource(R.drawable.option_correct_curved_border)
             }
 
-        }, 1500)
+        }, 1500)*/
         //webView.setBackgroundResource(R.drawable.option_correct_green_border)
-        Utils.transition(applicationContext, webView, true)
+       // Utils.transition(applicationContext, webView, true)
         //webView!!.loadUrl("javascript:document.getElementsByTagName('html')[0].innerHTML+='<style>*{color:#cdcdcd}</style>';")
 
+    }
+
+    private fun setInactiveBackgroundNew() {
+        Log.e("test question activity","unAnsweredList......"+unAnsweredList!!.size);
+        for (i in unAnsweredList!!) {
+            if (i == 0) {
+                webView_option1!!.setBackgroundResource(R.drawable.option_curved_border)
+                webView_option1!!.setBackgroundColor(0x00000000)
+                webView_option1_opacity!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                webView_option1_opacity!!.setBackgroundColor(0x00000000)
+            } else if (i == 1) {
+                webView_option2!!.setBackgroundResource(R.drawable.option_curved_border)
+                webView_option2!!.setBackgroundColor(0x00000000)
+                webView_option2_opacity!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                webView_option2_opacity!!.setBackgroundColor(0x00000000)
+            } else if (i == 2) {
+                if (webView_option3 != null) {
+                    webView_option3!!.setBackgroundResource(R.drawable.option_curved_border)
+                    webView_option3!!.setBackgroundColor(0x00000000)
+                    webView_option3_opacity!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    webView_option3_opacity!!.setBackgroundColor(0x00000000)
+                }
+
+            } else if (i == 3) {
+                if (webView_option4 != null) {
+                    webView_option4!!.setBackgroundResource(R.drawable.option_curved_border)
+                    webView_option4!!.setBackgroundColor(0x00000000)
+                    webView_option4_opacity!!.setBackgroundResource(R.drawable.inactive_answer_overlay)
+                    webView_option4_opacity!!.setBackgroundColor(0x00000000)
+                }
+            }
+        }
     }
 
     private fun setWrongBackground(webViewReal: WebView, path: String?, webViewOpacity: WebView) {
@@ -1607,7 +2414,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
             }
 
-        }, 1500)
+        }, 500)
         Utils.transition(applicationContext, webViewReal, false)
 
         /*val webviewClient = object : WebViewClient() {
@@ -1700,6 +2507,31 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             btn_next.visibility = View.VISIBLE*/
             /*navigateToSummaryScreen(false)*/
         }
+    }
+
+    private fun navigateToSummaryScreenNew(){
+        val intent = Intent(this, QuizSummaryActivityNew::class.java)
+        intent.putExtra(REVIEW_MODEL, reviewModelList)
+        intent.putExtra(TOPIC_NAME, topicName)
+        intent.putExtra(TOPIC_LEVEL, topicLevel)
+        intent.putExtra(QUIZ_COUNT, totalQuestion)
+        intent.putExtra(TOPIC_ID, topicId)
+        intent.putExtra(TOPIC_POSITION, dbPosition)
+        intent.putExtra(IS_LEVEL_COMPLETE, isLevelCompleted)
+
+        intent.putExtra(DYNAMIC_PATH, dynamicPath)
+        intent.putExtra(COURSE_ID, courseId)
+        intent.putExtra(COURSE_NAME, courseName)
+        intent.putExtra(LEVEL_COMPLETED, complete)
+        intent.putExtra(FOLDER_PATH, oPath)
+        intent.putExtra(FOLDER_NAME, folderName)
+        intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+        intent.putExtra(CARD_NO, readyCardNumber)
+        intent.putExtra("DISPLAY_NO", displayno)
+        intent.putExtra("LAST_PLAYED", lastplayed)
+
+        startActivity(intent)
+        finish()
     }
 
     private fun navigateToSummaryScreen(isLevelCompleted: Boolean) {
@@ -1795,8 +2627,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         val dialogView = inflater.inflate(R.layout.back_pressed_dialog_layout, null)
         dialogBuilder.setView(dialogView)
 
-        val tv_quit = dialogView.findViewById(R.id.tv_quit) as TextView
-        val tv_return = dialogView.findViewById(R.id.tv_return) as TextView
+        val tv_quit = dialogView.findViewById(R.id.tv_quit1) as Button
+        val tv_return = dialogView.findViewById(R.id.tv_return1) as Button
         tv_quit.setOnClickListener {
             if (countQuestion >= 0) {
                 if (isFirstAnswerGiven) {

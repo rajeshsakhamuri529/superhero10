@@ -37,7 +37,7 @@
                 android:layout_marginTop="@dimen/_10sdp">
 
             <FrameLayout android:layout_width="0dp"
-                         android:layout_height="@dimen/_84sdp"
+                         android:layout_height="@dimen/_82sdp"
                          android:layout_weight="1"
                          android:layout_gravity="center_horizontal">
                 <WebView
@@ -60,9 +60,9 @@
             </FrameLayout>
 
             <FrameLayout android:layout_width="0dp"
-                         android:layout_height="@dimen/_84sdp"
+                         android:layout_height="@dimen/_82sdp"
                          android:layout_weight="1"
-                         android:layout_marginStart="@dimen/_3sdp"
+                         android:layout_marginStart="@dimen/_5sdp"
                          android:layout_gravity="center_horizontal">
                 <WebView
                         android:id="@+id/webView_option2"
@@ -91,10 +91,10 @@
                 android:layout_height="wrap_content"
                 android:weightSum="2"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_3sdp">
+                android:layout_marginTop="@dimen/_5sdp">
 
             <FrameLayout android:layout_width="0dp"
-                         android:layout_height="@dimen/_84sdp"
+                         android:layout_height="@dimen/_82sdp"
                          android:layout_weight="1"
                          android:layout_gravity="center_horizontal">
                 <WebView
@@ -117,9 +117,9 @@
             </FrameLayout>
 
             <FrameLayout android:layout_width="0dp"
-                         android:layout_height="@dimen/_84sdp"
+                         android:layout_height="@dimen/_82sdp"
                          android:layout_weight="1"
-                         android:layout_marginStart="@dimen/_3sdp"
+                         android:layout_marginStart="@dimen/_5sdp"
                          android:layout_gravity="center_horizontal">
                 <WebView
                         android:id="@+id/webView_option4"

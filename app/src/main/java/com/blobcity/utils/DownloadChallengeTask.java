@@ -114,8 +114,8 @@ public class DownloadChallengeTask  {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                FileUtils.close(inputStream);
-                FileUtils.close(outputStream);
+                FileUtilsNew.close(inputStream);
+                FileUtilsNew.close(outputStream);
             }
             return file;
         }

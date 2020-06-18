@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ready_summary_background">
+    android:background="@color/white">
 
 
     <LinearLayout
@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/_15sdp">
 
         <RelativeLayout
@@ -70,35 +71,44 @@
         android:layout_centerHorizontal="true"
         android:contentDescription="@null"
         android:src="@drawable/icon3" />-->
+    <ImageView
+        android:id="@+id/image4"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:scaleType="fitXY"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_test" />
 
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PRACTICE TO PERFECTION"
-        android:layout_marginTop="@dimen/_18sdp"
-        android:textColor="@color/header_line"
-        android:layout_below="@+id/image"
+        android:text="Tiny Tests"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:textColor="#424242"
+        android:layout_below="@+id/image4"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/_15ssp"
-        android:fontFamily="@font/quicksand_bold"/>
+        android:fontFamily="@font/lato_bold"/>
 
     <TextView
         android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/text3"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:layout_marginLeft="@dimen/_15sdp"
-        android:layout_marginRight="@dimen/_15sdp"
-
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:gravity="center"
 
         android:justificationMode="none"
-        android:textColor="@color/intro_pages"
+        android:textColor="#424242"
         android:layout_below="@+id/text"
         android:layout_centerHorizontal="true"
-        android:textSize="@dimen/_13ssp"
-        android:fontFamily="@font/notosans_regular"/>
+        android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/lato_regular"/>
 
 
     <!--<ImageView

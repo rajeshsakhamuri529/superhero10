@@ -5,16 +5,18 @@
             android:id="@+id/nav_chapter"
             android:icon="@drawable/practice_drawable"
             
-            android:title="Practice" />
-    <item
-        android:id="@+id/nav_revision"
-        android:icon="@drawable/books_drawable"
-        android:title="Books" />
+            android:title="Quiz" />
+
     <item
         android:id="@+id/nav_dialy_challenge"
         android:icon="@drawable/challenge_drawable"
 
-        android:title="Challenge!" />
+        android:title="Tests" />
+    <item
+        android:id="@+id/nav_revision"
+        android:icon="@drawable/books_drawable"
+        android:title="Books" />
+
 
     <item
             android:id="@+id/nav_settings"

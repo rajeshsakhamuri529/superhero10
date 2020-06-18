@@ -37,6 +37,10 @@ class RevisionModel : Serializable {
     var sortorder: String? = null
     var documentid: String? = null
 
+    @SerializedName("sno")
+    @Expose
+    var sno: String? = null
+
     override fun toString(): String {
         return "RevisionModel(rId=$rId, pdfLink=$pdfLink, imageLink=$imageLink, shortDescription=$shortDescription, tags=$tags, timeToRead=$timeToRead, tilte=$tilte)"
     }

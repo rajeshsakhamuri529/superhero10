@@ -6,7 +6,6 @@ import android.net.NetworkInfo
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
-import java.io.IOException
 import java.nio.charset.Charset
 import java.util.*
 import android.graphics.Bitmap
@@ -20,6 +19,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import com.blobcity.R
+import java.io.*
 
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -28,11 +28,13 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        /*window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN)*/
+        /*window.setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         setContentView(layoutID)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+            getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
         initView()
     }
@@ -45,6 +47,37 @@ abstract class BaseActivity : AppCompatActivity() {
         val activeNetwork: NetworkInfo? = connectivityManager.activeNetworkInfo
         val isConnected: Boolean = activeNetwork?.isConnected == true
         return isConnected
+    }
+
+    fun readFromFile(path:String):String {
+        var ret = ""
+        try
+        {
+            val inputStream = FileInputStream(File(path))
+            if (inputStream != null)
+            {
+                val inputStreamReader = InputStreamReader(inputStream)
+                val bufferedReader = BufferedReader(inputStreamReader)
+                var receiveString = ""
+                val stringBuilder = StringBuilder()
+                receiveString = bufferedReader.readLine()
+                while ((receiveString) != null)
+                {
+                    stringBuilder.append(receiveString)
+                }
+                inputStream.close()
+                ret = stringBuilder.toString()
+                inputStreamReader.close()
+                bufferedReader.close()
+            }
+        }
+        catch (e:FileNotFoundException) {
+            Log.e("FileToJson", "File not found: " + e.toString())
+        }
+        catch (e:IOException) {
+            Log.e("FileToJson", "Can not read file: " + e.toString())
+        }
+        return ret
     }
 
     fun loadJSONFromAsset(path: String): String? {

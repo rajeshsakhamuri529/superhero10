@@ -44,7 +44,7 @@ class ChaptersAdapter(val context: Context,
         var sharedPrefs = SharedPrefs()
 
         Log.e("chapters adapter","....prefs value..."+(sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: false));
-        if((sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: false)){
+        /*if((sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: false)){
             holder.lockLayout.visibility = View.GONE
             holder.topLayout.alpha = 1.0f
             holder.iv_progress1.visibility = View.VISIBLE
@@ -74,7 +74,7 @@ class ChaptersAdapter(val context: Context,
                 }
                 holder.lockLayout.visibility = View.GONE
             }
-        }
+        }*/
 
 
 
@@ -92,13 +92,18 @@ class ChaptersAdapter(val context: Context,
         }*/
 
         Log.d("chapter adapter",index);
-        holder.tv_topic_number.text = branchesItemList[position].topic.displayNo.toString()
-        holder.tv_topic_name.text = branchesItemList[position].topic.title
-        if (position == 0){
-            holder.singleTopic.setBackgroundResource(R.drawable.dashboard_top_corner)
+        if(branchesItemList[position].topic.displayNo < 10){
+            holder.tv_topic_number.text = "0"+branchesItemList[position].topic.displayNo.toString()
+        }else{
+            holder.tv_topic_number.text = branchesItemList[position].topic.displayNo.toString()
         }
 
-        if (branchesItemList[position].basic == 1){
+        holder.tv_topic_name.text = branchesItemList[position].topic.title
+        /*if (position == 0){
+            holder.singleTopic.setBackgroundResource(R.drawable.dashboard_top_corner)
+        }*/
+
+        /*if (branchesItemList[position].basic == 1){
             Glide.with(context)
                 .load(R.drawable.progress_icon)
                 .into(holder.iv_progress1)
@@ -129,7 +134,7 @@ class ChaptersAdapter(val context: Context,
             Glide.with(context)
                 .load(R.drawable.progress_icon_grey)
                 .into(holder.iv_progress3)
-        }
+        }*/
         holder.lockLayout.setOnClickListener {
             topicClickListener.onClick(
                 branchesItemList[position].topic,
@@ -174,7 +179,7 @@ class ChaptersAdapter(val context: Context,
     }
 
     fun lastItem(holder: ChaptersViewHolder){
-        holder.singleTopic.setBackgroundResource(R.drawable.dashboard_bottom_corner)
+       // holder.singleTopic.setBackgroundResource(R.drawable.dashboard_bottom_corner)
        /* if (isLastTopicAvailable) {
             Log.d("lastItem",isLastTopicAvailable.toString()+"!")
             holder.tv_topic_number.alpha = 1.0f

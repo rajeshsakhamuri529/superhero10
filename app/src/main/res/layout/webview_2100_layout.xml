@@ -30,9 +30,9 @@
 
         <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_78sdp"
+                android:layout_height="@dimen/_75sdp"
                 android:layout_above="@id/webView_option2"
-                android:layout_marginBottom="@dimen/_3sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:layout_gravity="center">
 
@@ -58,7 +58,7 @@
 
         <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_78sdp"
+                android:layout_height="@dimen/_75sdp"
                 android:foregroundGravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_gravity="center">

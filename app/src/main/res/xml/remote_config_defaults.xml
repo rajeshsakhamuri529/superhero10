@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>upgrade</key>
+        <value>31</value>
+    </entry>
+    <!--<entry>
+        <key>android_latest_version_name</key>
+        <value>3.1</value>
+    </entry>-->
+</defaultsMap>
+    <!-- END xml_defaults -->

@@ -12,8 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.blobcity.R
-import com.blobcity.activity.DashBoardActivity
-import com.blobcity.activity.QuizLevelActivity
 import com.blobcity.adapter.ChaptersAdapter
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.interfaces.TopicClickListener
@@ -28,9 +26,12 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.chapter_layout.*
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
-import com.blobcity.activity.SignInActivity
+import com.blobcity.activity.*
+import com.blobcity.database.QuizGameDataBase
 import com.blobcity.utils.*
 import com.blobcity.utils.Utils.*
+import java.io.IOException
+import java.nio.charset.Charset
 
 
 class ChapterFragment: Fragment(), TopicClickListener {
@@ -46,9 +47,9 @@ class ChapterFragment: Fragment(), TopicClickListener {
 
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
-
+    var databaseHandler: QuizGameDataBase?= null
     lateinit var  mSoundManager: SoundManager;
-
+    var jsonStringBasic: String? =""
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.chapter_layout, container, false)
     }
@@ -58,8 +59,10 @@ class ChapterFragment: Fragment(), TopicClickListener {
         gradeTitle = arguments!!.getString(TITLE_TOPIC)!!
         topicStatusVM = ViewModelProviders.of(this).get(TopicStatusVM::class.java)
         sharedPrefs = SharedPrefs()
-
+        databaseHandler = QuizGameDataBase(context);
         readFileLocally()
+
+        topics.elevation = 15F
         /*val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
         itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, R.drawable.rv_divider)!!)*/
 
@@ -104,10 +107,21 @@ class ChapterFragment: Fragment(), TopicClickListener {
                         }
                     }
                     adapter = ChaptersAdapter(context!!, branchesItemList!!, this@ChapterFragment)
-
-                    rcv_chapter.addItemDecoration(itemDecorator)
+                    rcv_chapter.addItemDecoration(VerticalSpaceItemDecoration(40));
+                    //rcv_chapter.setNestedScrollingEnabled(false);
+                    rcv_chapter.setHasFixedSize(true);
+                    //rcv_chapter.addItemDecoration(itemDecorator)
                     //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
                     rcv_chapter.adapter = adapter
+                    databaseHandler!!.deleteAllQuizTopics()
+                    for(i in 0 until branchesItemList!!.size){
+                        var no = branchesItemList!![i].topic.displayNo.toString()
+                        var title = branchesItemList!![i].topic.title
+                        var lastplayed = "NA"
+                        databaseHandler!!.insertquiztopics(title,no,lastplayed)
+                    }
+
+
                 }
 
             })
@@ -138,8 +152,8 @@ class ChapterFragment: Fragment(), TopicClickListener {
             .fromJson(courseJsonString, courseType)
         courseId = courseResponseModel[0].id
         courseName = courseResponseModel[0].syllabus.title
-        tv_class.text = courseName
-        tv_class_board.text = courseResponseModel[0].syllabus.displayTitle
+       // tv_class.text = courseName
+       // tv_class_board.text = courseResponseModel[0].syllabus.displayTitle
         localPath = "$localBlobcityPath$courseName/"
        // val jsonString = readFromFile(localPath +"topic.json")
         val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( localPath + "topic.json")
@@ -196,29 +210,71 @@ class ChapterFragment: Fragment(), TopicClickListener {
             //    Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
             //   mediaPlayer.release()
             //  Thread.sleep(100)
-            val intent = Intent(context!!, QuizLevelActivity::class.java)
+            databaseHandler!!.deleteQuizPlayRecord(topic.title)
+            var lastplayed:String =""
+            var lastdisplayed = databaseHandler!!.getQuizTopicsLastPlayed(topic.title)
+            val folderPath = localPath+topic.folderName
+            if(lastdisplayed.equals("NA") || lastdisplayed.equals("intermediate")){
+                jsonStringBasic = loadJSONFromAsset("$folderPath/basic.json")
+                lastplayed = "basic"
+            }else{
+                jsonStringBasic = loadJSONFromAsset("$folderPath/intermediate.json")
+                lastplayed = "intermediate"
+            }
+
+            Log.e("chapter fragment.....","jsonStringBasic......."+jsonStringBasic);
+
+            val intent = Intent(context!!, StartQuizActivityNew::class.java)
             intent.putExtra(TOPIC, topic)
+            intent.putExtra(TOPIC_NAME, topic.title)
+            intent.putExtra(FOLDER_NAME, topic.folderName)
+            intent.putExtra(DYNAMIC_PATH, jsonStringBasic)
             intent.putExtra(COURSE_ID, courseId)
             intent.putExtra(COURSE_NAME, courseName)
             intent.putExtra(TOPIC_ID, topicId)
             intent.putExtra(TOPIC_POSITION, position)
             intent.putExtra(FOLDER_PATH, localPath)
             intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+            intent.putExtra("LAST_PLAYED", lastplayed)
+            intent.putExtra(TOPIC_LEVEL, "")
+            intent.putExtra(LEVEL_COMPLETED, "")
+            intent.putExtra(CARD_NO, "")
             startActivity(intent)
 
             // }
         }else{
-            val intent = Intent(context!!, QuizLevelActivity::class.java)
+            var lastplayed:String =""
+            var lastdisplayed = databaseHandler!!.getQuizTopicsLastPlayed(topic.title)
+            val folderPath = localPath+topic.folderName
+            if(lastdisplayed.equals("NA") || lastdisplayed.equals("intermediate")){
+                jsonStringBasic = loadJSONFromAsset("$folderPath/basic.json")
+                lastplayed = "basic"
+            }else{
+                jsonStringBasic = loadJSONFromAsset("$folderPath/intermediate.json")
+                lastplayed = "intermediate"
+            }
+
+            Log.e("chapter fragment.....","jsonStringBasic......."+jsonStringBasic);
+
+            val intent = Intent(context!!, StartQuizActivityNew::class.java)
             intent.putExtra(TOPIC, topic)
+            intent.putExtra(TOPIC_NAME, topic.title)
+            intent.putExtra(FOLDER_NAME, topic.folderName)
+            intent.putExtra(DYNAMIC_PATH, jsonStringBasic)
             intent.putExtra(COURSE_ID, courseId)
             intent.putExtra(COURSE_NAME, courseName)
             intent.putExtra(TOPIC_ID, topicId)
             intent.putExtra(TOPIC_POSITION, position)
             intent.putExtra(FOLDER_PATH, localPath)
             intent.putExtra(TITLE_TOPIC, gradeTitle!!)
+            intent.putExtra("LAST_PLAYED", lastplayed)
+            intent.putExtra(TOPIC_LEVEL, "")
+            intent.putExtra(LEVEL_COMPLETED, "")
+            intent.putExtra(CARD_NO, "")
             startActivity(intent)
         }
     }
+
     private fun callIntent(topic: Topic, topicId: String, position: Int){
 
         if((sharedPrefs?.getBooleanPrefVal(context!!, ISNOTLOGIN) ?: true)){
@@ -262,8 +318,27 @@ class ChapterFragment: Fragment(), TopicClickListener {
 
     }
 
+    fun loadJSONFromAsset(path: String): String? {
+        val json: String?
+        try {
+            val `is` = context!!.assets.open(path)
+            val size = `is`.available()
+            val buffer = ByteArray(size)
+            `is`.read(buffer)
+            `is`.close()
+            json = String(buffer, Charset.forName("UTF-8"))
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return null
+        }
+
+        return json
+    }
+
     override fun onClick(topic: Topic, topicId: String, position: Int) {
         callIntent(topic, topicId, position)
+        //val intent = Intent(context!!, QuizSummaryActivityNew::class.java)
+        //startActivity(intent)
     }
 
 

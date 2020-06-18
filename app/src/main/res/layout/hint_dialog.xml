@@ -5,17 +5,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/hint_curve_border"
-    android:padding="10dp">
+    >
 
     <TextView
         android:id="@+id/tv_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/_16ssp"
+        android:textSize="@dimen/_14ssp"
         android:text="Hint"
-        android:textColor="@color/hint_title_text"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:fontFamily="@font/quicksand_bold"
+        android:textColor="#424242"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:fontFamily="@font/lato_bold"
        android:layout_centerHorizontal="true"/>
 
     <View
@@ -24,9 +24,8 @@
         android:id="@+id/view"
         android:background="@color/hint_title_text"
         android:layout_below="@id/tv_hint"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginLeft="@dimen/_10sdp"/>
+        android:layout_marginTop="@dimen/_15sdp"
+        />
 
     <!--<ScrollView
         android:id="@+id/scroll"
@@ -38,11 +37,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/view"
-        android:layout_above="@+id/btnRL"
-        android:layout_marginLeft="@dimen/_10sdp"
-        android:layout_marginRight="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginBottom="@dimen/_5sdp">
+        android:layout_above="@+id/view1"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_1sdp">
         <WebView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -68,27 +66,39 @@
 
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:id="@+id/view1"
+        android:layout_above="@+id/btnRL"
+        android:background="@color/hint_title_text"
+
+        android:layout_marginTop="@dimen/_1sdp"
+
+        />
     <RelativeLayout
         android:id="@+id/btnRL"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_35sdp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_45sdp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         >
-        <Button android:layout_width="wrap_content"
+        <Button android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_25sdp"
             android:layout_centerInParent="true"
             android:id="@+id/btn_gotIt"
 
 
 
-            android:background="@drawable/hint_button_bg"
+            android:background="@drawable/submit_active_background"
             android:text="Ok"
 
+            android:letterSpacing="0.1"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:textColor="@color/hint_text"
-            android:fontFamily="@font/quicksand_bold"
-            android:textSize="@dimen/_13ssp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/_11ssp"
 
             />
 
