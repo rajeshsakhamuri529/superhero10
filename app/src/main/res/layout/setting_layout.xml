@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:background="#E8E8E8">
 
     <RelativeLayout
         android:id="@+id/settings"
@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_settings"
-            android:textSize="@dimen/_17ssp"
+            android:textSize="@dimen/_18ssp"
             android:layout_marginLeft="@dimen/_20sdp"
 
             android:layout_marginTop="@dimen/_18sdp"
@@ -318,6 +318,27 @@
 
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/_10sdp">
+
+        <TextView
+            android:id="@+id/versionname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#B1B1B1"
+            android:fontFamily="@font/lato_bold"
+            android:textSize="@dimen/_10sdp"
+            />
+
+
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

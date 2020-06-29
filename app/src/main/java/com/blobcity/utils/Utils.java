@@ -42,6 +42,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -50,7 +51,7 @@ import static android.content.Context.AUDIO_SERVICE;
 
 public class Utils {
 
-    public static final int DATABASE_VERSION = 12;
+    public static final int DATABASE_VERSION = 16;
 
     public static SoundPool soundPool;
     public static SoundPool soundPool1;
@@ -58,6 +59,7 @@ public class Utils {
     public static int soundID,soundID1,soundID2;
     public static boolean loaded = false;
     public static float volume;
+    public static Date date = new Date();
     //public static int startTime = 0;
     /**
      * Returns the unique identifier for the device

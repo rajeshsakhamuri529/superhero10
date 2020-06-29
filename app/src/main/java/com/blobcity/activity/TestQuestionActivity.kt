@@ -173,7 +173,8 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var animFadeIn: Animation? = null
     var animFadeOut: Animation? = null
 
-    lateinit var dot: Array<TextView?>
+    lateinit var circles: Array<ImageView?>
+    //lateinit var circles: Array<ImageView?>
     lateinit var optionsbuilder:StringBuilder
     lateinit var questionsbuilder:StringBuilder
     lateinit var answerbuilder:StringBuilder
@@ -183,6 +184,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     lateinit var typebuilder:StringBuilder
     var databaseHandler: QuizGameDataBase?= null
     var lastplayed:String = ""
+    var comingfrom:String = ""
     var displayno:Int = 0
     var paths: String = ""
     //lateinit var topic: Topic
@@ -211,6 +213,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         gradeTitle = intent.getStringExtra(TITLE_TOPIC)
         readyCardNumber = intent.getIntExtra(CARD_NO, -1)
         lastplayed = intent.getStringExtra("LAST_PLAYED")
+        comingfrom = intent.getStringExtra("comingfrom")
         displayno = intent.getIntExtra("DISPLAY_NO", -1)
         quizTimer = Timer()
         sharedPrefs = SharedPrefs()
@@ -1273,37 +1276,61 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
     fun addDot(countint:Int,totalquestions:Int) {
         //val layout_dot = findViewById(R.id.ll_dots) as LinearLayout
-        dot = arrayOfNulls<TextView>(totalquestions)
+        circles = arrayOfNulls<ImageView>(totalquestions)
+        //circles = arrayOfNulls<ImageView>(totalQuestion!!)
         ll_dots.removeAllViews()
-        for (i in 0 until dot!!.size)
+        for (i in 0 until circles!!.size)
         {
             if((i+1) == countint){
-                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
+                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._12sdp).toInt(), getResources().getDimension(R.dimen._12sdp).toInt())
                 if(i != 0){
-                    params.leftMargin = getResources().getDimension(R.dimen._10sdp).toInt()
+                    params.leftMargin = getResources().getDimension(R.dimen._8sdp).toInt()
                 }
-                dot!![i] = TextView(this)
+                /*dot!![i] = TextView(this)
                 dot!![i]?.setText(Html.fromHtml("&#9679;"))
                 dot!![i]?.setTextSize(30F)
                 //set default dot color
                 dot!![i]?.setTextColor(getResources().getColor(R.color.button_close_text))
                 dot[i]!!.gravity = Gravity.CENTER
-                dot[i]!!.layoutParams = params
-                ll_dots.addView(dot!![i])
+                dot[i]!!.layoutParams = params*/
+
+
+
+                circles[i] = ImageView(this)
+
+                Glide.with(this)
+                    .load(R.drawable.question_fill_circle)
+                    .into(circles[i]!!)
+                //ImageViewCompat.setImageTintList(circles[i]!!, ColorStateList.valueOf(getResources().getColor(R.color.right_tick)));
+                circles[i]!!.layoutParams = params
+
+
+                ll_dots.addView(circles!![i])
             }else{
-                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
+                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._12sdp).toInt(), getResources().getDimension(R.dimen._12sdp).toInt())
+                //val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
                 if(i != 0){
-                    params.leftMargin = getResources().getDimension(R.dimen._10sdp).toInt()
+                    params.leftMargin = getResources().getDimension(R.dimen._8sdp).toInt()
                 }
-                dot!![i] = TextView(this)
+                /*dot!![i] = TextView(this)
                 dot!![i]?.setText(Html.fromHtml("&#9675;"))
                 dot!![i]?.setTextSize(30F)
                 // dot!![i]?.setBackgroundResource(R.color.purple)
                 //set default dot color
                 dot!![i]?.setTextColor(getResources().getColor(R.color.button_close_text))
                 dot[i]!!.gravity = Gravity.CENTER
-                dot[i]!!.layoutParams = params
-                ll_dots.addView(dot!![i])
+                dot[i]!!.layoutParams = params*/
+
+                circles[i] = ImageView(this)
+
+                Glide.with(this)
+                    .load(R.drawable.question_white_circle)
+                    .into(circles[i]!!)
+                //ImageViewCompat.setImageTintList(circles[i]!!, ColorStateList.valueOf(getResources().getColor(R.color.right_tick)));
+                circles[i]!!.layoutParams = params
+
+
+                ll_dots.addView(circles!![i])
             }
 
         }
@@ -2529,6 +2556,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(CARD_NO, readyCardNumber)
         intent.putExtra("DISPLAY_NO", displayno)
         intent.putExtra("LAST_PLAYED", lastplayed)
+        intent.putExtra("comingfrom", comingfrom)
 
         startActivity(intent)
         finish()

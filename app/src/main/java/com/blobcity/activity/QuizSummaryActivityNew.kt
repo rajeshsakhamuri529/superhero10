@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v4.widget.ImageViewCompat
 import android.util.Log
 import android.view.View
@@ -14,10 +15,7 @@ import android.widget.LinearLayout
 import com.blobcity.R
 import com.blobcity.database.QuizGameDataBase
 import com.blobcity.entity.TopicStatusEntity
-import com.blobcity.model.BranchesItem
-import com.blobcity.model.CoursesResponseModel
-import com.blobcity.model.ReviewModel
-import com.blobcity.model.TopicResponseModel
+import com.blobcity.model.*
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
@@ -27,8 +25,12 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_quiz_summary_new.*
 import kotlinx.android.synthetic.main.activity_quiz_summary_new.left_arrow
-import kotlinx.android.synthetic.main.activity_test_question.*
+
 import kotlinx.android.synthetic.main.chapter_layout.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.random.Random
 
 
 class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
@@ -60,11 +62,13 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
     var isallcorrect:Boolean = false
     var displayno:Int = 0
     var lastplayed:String = ""
+    var comingfrom:String = ""
     var count:Int = 0
     var localPath: String?= null
     private var branchesItemList:List<BranchesItem>?=null
     var jsonStringBasic: String? =""
-
+    lateinit var challenge:Challenge
+    var mLastClickTime:Long = 0;
     override var layoutID: Int = R.layout.activity_quiz_summary_new
 
     override fun initView() {
@@ -91,7 +95,13 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
         readyCardNumber = intent.getIntExtra(ConstantPath.CARD_NO, -1)
         displayno = intent.getIntExtra("DISPLAY_NO", -1)
         lastplayed = intent.getStringExtra("LAST_PLAYED")
+        comingfrom = intent.getStringExtra("comingfrom")
 
+        if(comingfrom.equals("Home")){
+            txt_prev.text = "BACK"
+        }else{
+            txt_prev.text = "BACK"
+        }
         if(displayno < 10){
             title_no.text = "0"+displayno
         }else{
@@ -147,10 +157,46 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
             summaryTxt.text = "perfect!"
             summaryTxt.setTextColor(resources.getColor(R.color.perfect))
             btn_play_next.visibility = View.VISIBLE
+
+            val format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            var recordcount = databaseHandler!!.getChallengeForDate(format.format(Utils.date))
+
+            if(recordcount == 0){
+
+                challenge = Challenge(format.format(Utils.date),count,1,-1,-1)
+                databaseHandler!!.insertChallenge(challenge)
+            }else{
+                var quizstatus = databaseHandler!!.getChallengeForQuizStatus(format.format(Utils.date))
+                if(quizstatus != 1){
+                    databaseHandler!!.updateChallengeQuiz(format.format(Utils.date),count,1)
+                }
+
+            }
+
+
+
         }else{
+
             summaryTxt.text = "not perfect."
             summaryTxt.setTextColor(resources.getColor(R.color.not_perfect))
             btn_play_next.visibility = View.GONE
+
+            val format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            var recordcount = databaseHandler!!.getChallengeForDate(format.format(Utils.date))
+
+            if(recordcount == 0){
+
+                challenge = Challenge(format.format(Utils.date),count,0,-1,-1)
+                databaseHandler!!.insertChallenge(challenge)
+            }else{
+                var quizstatus = databaseHandler!!.getChallengeForQuizStatus(format.format(Utils.date))
+                if(quizstatus != 1){
+                    databaseHandler!!.updateChallengeQuiz(format.format(Utils.date),count,0)
+                }
+
+            }
+
+
         }
 
         btn_topics!!.setOnClickListener(this)
@@ -163,6 +209,10 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime()
         when (v!!.id) {
 
             R.id.btn_topics -> {
@@ -176,9 +226,18 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
-                val intent = Intent(this, DashBoardActivity::class.java)
-                startActivity(intent)
-                 finish()
+                if(comingfrom.equals("Home")){
+                    val intent = Intent(this, DashBoardActivity::class.java)
+                    intent.putExtra("fragment", "Home")
+                    startActivity(intent)
+                    finish()
+                }else{
+                    val intent = Intent(this, DashBoardActivity::class.java)
+                    intent.putExtra("fragment", "Topics")
+                    startActivity(intent)
+                    finish()
+                }
+
             }
             R.id.btn_start ->{
                 sound = sharedPrefs?.getBooleanPrefVal(this, ConstantPath.SOUNDS) ?: true
@@ -210,6 +269,7 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
 
                 intent.putExtra("DISPLAY_NO", displayno)
                 intent.putExtra("LAST_PLAYED", lastplayed)
+                intent.putExtra("comingfrom", comingfrom)
                 startActivity(intent)
                 finish()
 
@@ -227,7 +287,12 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
                     }
                 }
 
-                playNextBtnAction(position!!)
+                if(comingfrom.equals("Home")){
+                    playNextBtnActionForHome(position!!)
+                }else{
+                    playNextBtnAction(position!!)
+                }
+                //
 
             }
 
@@ -265,6 +330,143 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
             }
 
         }
+    }
+
+    private fun playNextBtnActionForHome(position:Int){
+        var randomPosition: Int = -1
+        var randomPos: Int = -1
+        var topic: Topic
+        var folderPath:String = ""
+        var positionList: java.util.ArrayList<String>? = java.util.ArrayList()
+        positionList!!.add("basic.json")
+        positionList!!.add("intermediate.json")
+        val courseJsonString = loadJSONFromAsset( ConstantPath.localBlobcityPath + "Courses.json")
+        //val courseJsonString = readFromFile("$localBlobcityPath/Courses.json")
+        Log.d("courseJsonString",courseJsonString+"!");
+        /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
+        val gsonFile = Gson()
+        val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
+        val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
+            .fromJson(courseJsonString, courseType)
+        courseId = courseResponseModel[0].id
+        courseName = courseResponseModel[0].syllabus.title
+        // tv_class.text = courseName
+        // tv_class_board.text = courseResponseModel[0].syllabus.displayTitle
+        localPath = "${ConstantPath.localBlobcityPath}$courseName/"
+        // val jsonString = readFromFile(localPath +"topic.json")
+        val jsonString = loadJSONFromAsset( localPath + "topic.json")
+        Log.d("jsonString",jsonString);
+        val topicType = object : TypeToken<TopicResponseModel>() {}.type
+        val topicResponseModel: TopicResponseModel = gsonFile.fromJson(jsonString, topicType )
+
+        branchesItemList = topicResponseModel.branches
+
+        randomPosition = Random.nextInt(branchesItemList!!.size)
+
+        topic = branchesItemList!![randomPosition].topic
+        folderPath = localPath+topic.folderName
+        Log.e("test fragment","testQuiz.folderPath......"+folderPath)
+
+        randomPos = Random.nextInt(positionList!!.size)
+        Log.e("test fragment","randomPos......"+randomPos)
+        jsonStringBasic =  loadJSONFromAsset("$folderPath/"+positionList!![randomPos])
+
+
+        val intent = Intent(this!!, StartQuizActivityNew::class.java)
+        intent.putExtra(ConstantPath.TOPIC, topic)
+        intent.putExtra(ConstantPath.TOPIC_NAME, topic.title)
+        intent.putExtra(ConstantPath.FOLDER_NAME, topic.folderName)
+        intent.putExtra(ConstantPath.DYNAMIC_PATH, jsonStringBasic)
+        intent.putExtra(ConstantPath.COURSE_ID, courseId)
+        intent.putExtra(ConstantPath.COURSE_NAME, courseName)
+        intent.putExtra(ConstantPath.TOPIC_ID, topicId)
+        intent.putExtra(ConstantPath.TOPIC_POSITION, position)
+        intent.putExtra(ConstantPath.FOLDER_PATH, localPath)
+        intent.putExtra(ConstantPath.TITLE_TOPIC, gradeTitle!!)
+        intent.putExtra("LAST_PLAYED", lastplayed)
+        intent.putExtra("comingfrom", comingfrom)
+        intent.putExtra(ConstantPath.TOPIC_LEVEL, "")
+        intent.putExtra(ConstantPath.LEVEL_COMPLETED, "")
+        intent.putExtra(ConstantPath.CARD_NO, "")
+        startActivity(intent)
+        finish()
+
+        /*if((position+1) <= branchesItemList!!.size){
+            var topic = branchesItemList!![(position+1)].topic
+            databaseHandler!!.deleteQuizPlayRecord(topic.title)
+
+            var lastplayed:String =""
+            var lastdisplayed = databaseHandler!!.getQuizTopicsLastPlayed(topic.title)
+            val folderPath = localPath+topic.folderName
+            if(lastdisplayed.equals("NA") || lastdisplayed.equals("intermediate")){
+                jsonStringBasic = loadJSONFromAsset("$folderPath/basic.json")
+                lastplayed = "basic"
+            }else{
+                jsonStringBasic = loadJSONFromAsset("$folderPath/intermediate.json")
+                lastplayed = "intermediate"
+            }
+
+            val intent = Intent(this!!, StartQuizActivityNew::class.java)
+            intent.putExtra(ConstantPath.TOPIC, topic)
+            intent.putExtra(ConstantPath.TOPIC_NAME, topic.title)
+            intent.putExtra(ConstantPath.FOLDER_NAME, topic.folderName)
+            intent.putExtra(ConstantPath.DYNAMIC_PATH, jsonStringBasic)
+            intent.putExtra(ConstantPath.COURSE_ID, courseId)
+            intent.putExtra(ConstantPath.COURSE_NAME, courseName)
+            intent.putExtra(ConstantPath.TOPIC_ID, topicId)
+            intent.putExtra(ConstantPath.TOPIC_POSITION, position)
+            intent.putExtra(ConstantPath.FOLDER_PATH, localPath)
+            intent.putExtra(ConstantPath.TITLE_TOPIC, gradeTitle!!)
+            intent.putExtra("LAST_PLAYED", lastplayed)
+            intent.putExtra(ConstantPath.TOPIC_LEVEL, "")
+            intent.putExtra(ConstantPath.LEVEL_COMPLETED, "")
+            intent.putExtra(ConstantPath.CARD_NO, "")
+            startActivity(intent)
+            finish()
+
+
+
+        }else{
+
+            var topic = branchesItemList!![0].topic
+            databaseHandler!!.deleteQuizPlayRecord(topic.title)
+
+            var lastplayed:String =""
+            var lastdisplayed = databaseHandler!!.getQuizTopicsLastPlayed(topic.title)
+            val folderPath = localPath+topic.folderName
+            if(lastdisplayed.equals("NA") || lastdisplayed.equals("intermediate")){
+                jsonStringBasic = loadJSONFromAsset("$folderPath/basic.json")
+                lastplayed = "basic"
+            }else{
+                jsonStringBasic = loadJSONFromAsset("$folderPath/intermediate.json")
+                lastplayed = "intermediate"
+            }
+
+            val intent = Intent(this!!, StartQuizActivityNew::class.java)
+            intent.putExtra(ConstantPath.TOPIC, topic)
+            intent.putExtra(ConstantPath.TOPIC_NAME, topic.title)
+            intent.putExtra(ConstantPath.FOLDER_NAME, topic.folderName)
+            intent.putExtra(ConstantPath.DYNAMIC_PATH, jsonStringBasic)
+            intent.putExtra(ConstantPath.COURSE_ID, courseId)
+            intent.putExtra(ConstantPath.COURSE_NAME, courseName)
+            intent.putExtra(ConstantPath.TOPIC_ID, topicId)
+            intent.putExtra(ConstantPath.TOPIC_POSITION, position)
+            intent.putExtra(ConstantPath.FOLDER_PATH, localPath)
+            intent.putExtra(ConstantPath.TITLE_TOPIC, gradeTitle!!)
+            intent.putExtra("LAST_PLAYED", lastplayed)
+            intent.putExtra(ConstantPath.TOPIC_LEVEL, "")
+            intent.putExtra(ConstantPath.LEVEL_COMPLETED, "")
+            intent.putExtra(ConstantPath.CARD_NO, "")
+            startActivity(intent)
+            finish()
+
+
+
+        }*/
+
+
+
+
     }
 
     private fun playNextBtnAction(position:Int){

@@ -10,6 +10,7 @@ import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Handler
+import android.os.SystemClock
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.ImageViewCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -24,6 +25,7 @@ import android.view.animation.AnimationUtils
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.blobcity.R
@@ -38,8 +40,22 @@ import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
 import com.blobcity.utils.Utils.getListOfFilesFromFolder
 import com.blobcity.utils.Utils.listAssetFiles
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_quiz_summary.*
 import kotlinx.android.synthetic.main.activity_review.*
+import kotlinx.android.synthetic.main.activity_review.btn_close
+import kotlinx.android.synthetic.main.activity_review.btn_hint
+import kotlinx.android.synthetic.main.activity_review.btn_next
+import kotlinx.android.synthetic.main.activity_review.iv_cancel_test_question
+import kotlinx.android.synthetic.main.activity_review.left_arrow
+import kotlinx.android.synthetic.main.activity_review.ll_dots
+import kotlinx.android.synthetic.main.activity_review.ll_inflate
+import kotlinx.android.synthetic.main.activity_review.next_btn
+import kotlinx.android.synthetic.main.activity_review.prev_btn
+import kotlinx.android.synthetic.main.activity_review.right_arrow
+import kotlinx.android.synthetic.main.activity_review.txt_next
+import kotlinx.android.synthetic.main.activity_review.txt_prev
+import kotlinx.android.synthetic.main.activity_test_question.*
 import java.lang.Exception
 import java.net.URLDecoder
 import java.util.*
@@ -93,7 +109,7 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
 
     var child: View? = null
     private var listOfOptions: ArrayList<String>? = null
-    lateinit var dot: Array<TextView?>
+    lateinit var circles: Array<ImageView?>
     var unAnsweredList: ArrayList<Int>? = null
     var databaseHandler: QuizGameDataBase?= null
     var dialog: Dialog? = null;
@@ -106,7 +122,7 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
     var animationFadeIn1000: Animation? = null
     var animationFadeIn500: Animation? = null
 
-
+    var mLastClickTime:Long = 0;
     override var layoutID: Int = R.layout.activity_review
 
     override fun initView() {
@@ -192,9 +208,9 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
 
     fun addDot(countint:Int,totalquestions:Int) {
         //val layout_dot = findViewById(R.id.ll_dots) as LinearLayout
-        dot = arrayOfNulls<TextView>(totalquestions)
+        circles = arrayOfNulls<ImageView>(totalquestions)
         ll_dots.removeAllViews()
-        for (i in 0 until dot!!.size)
+        /*for (i in 0 until dot!!.size)
         {
             if((i+1) == countint){
                 val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
@@ -223,6 +239,62 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
                 dot[i]!!.gravity = Gravity.CENTER
                 dot[i]!!.layoutParams = params
                 ll_dots.addView(dot!![i])
+            }
+
+        }*/
+
+        for (i in 0 until circles!!.size)
+        {
+            if((i+1) == countint){
+                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._12sdp).toInt(), getResources().getDimension(R.dimen._12sdp).toInt())
+                if(i != 0){
+                    params.leftMargin = getResources().getDimension(R.dimen._8sdp).toInt()
+                }
+                /*dot!![i] = TextView(this)
+                dot!![i]?.setText(Html.fromHtml("&#9679;"))
+                dot!![i]?.setTextSize(30F)
+                //set default dot color
+                dot!![i]?.setTextColor(getResources().getColor(R.color.button_close_text))
+                dot[i]!!.gravity = Gravity.CENTER
+                dot[i]!!.layoutParams = params*/
+
+
+
+                circles[i] = ImageView(this)
+
+                Glide.with(this)
+                    .load(R.drawable.question_fill_circle)
+                    .into(circles[i]!!)
+                //ImageViewCompat.setImageTintList(circles[i]!!, ColorStateList.valueOf(getResources().getColor(R.color.right_tick)));
+                circles[i]!!.layoutParams = params
+
+
+                ll_dots.addView(circles!![i])
+            }else{
+                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._12sdp).toInt(), getResources().getDimension(R.dimen._12sdp).toInt())
+                //val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
+                if(i != 0){
+                    params.leftMargin = getResources().getDimension(R.dimen._8sdp).toInt()
+                }
+                /*dot!![i] = TextView(this)
+                dot!![i]?.setText(Html.fromHtml("&#9675;"))
+                dot!![i]?.setTextSize(30F)
+                // dot!![i]?.setBackgroundResource(R.color.purple)
+                //set default dot color
+                dot!![i]?.setTextColor(getResources().getColor(R.color.button_close_text))
+                dot[i]!!.gravity = Gravity.CENTER
+                dot[i]!!.layoutParams = params*/
+
+                circles[i] = ImageView(this)
+
+                Glide.with(this)
+                    .load(R.drawable.question_white_circle)
+                    .into(circles[i]!!)
+                //ImageViewCompat.setImageTintList(circles[i]!!, ColorStateList.valueOf(getResources().getColor(R.color.right_tick)));
+                circles[i]!!.layoutParams = params
+
+
+                ll_dots.addView(circles!![i])
             }
 
         }
@@ -978,6 +1050,10 @@ class ReviewActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        /*if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime()*/
         when (v!!.id) {
             R.id.btn_close -> {
                 sound = sharedPrefs?.getBooleanPrefVal(this, ConstantPath.SOUNDS) ?: true

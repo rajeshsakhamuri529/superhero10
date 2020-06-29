@@ -57,6 +57,42 @@ class TestsAdapter(val context: Context,
                 .load(R.drawable.red_circle)
                 .into(holder.iv_progress_icon)
         }
+
+        if(count == 0){
+            holder.tv_correct.text = ""+count
+            holder.totalLL.background = context.resources.getDrawable(R.drawable.test_summary_0)
+            //summaryTxt.text = "seriously?"
+            holder.tv_correct.setTextColor(context.resources.getColor(R.color.seriously))
+           // summaryTxt.setTextColor(resources.getColor(R.color.seriously))
+        }else if(count == 1){
+            holder.tv_correct.text = ""+count
+            holder.totalLL.background = context.resources.getDrawable(R.drawable.test_summary_0)
+            //summaryTxt.text = "not good"
+            holder.tv_correct.setTextColor(context.resources.getColor(R.color.not_good))
+            //summaryTxt.setTextColor(resources.getColor(R.color.not_good))
+        }else if(count == 2){
+            holder.tv_correct.text = ""+count
+            holder.totalLL.background = context.resources.getDrawable(R.drawable.test_summary_2)
+            //summaryTxt.text = "not bad"
+            holder.tv_correct.setTextColor(context.resources.getColor(R.color.not_bad))
+            //summaryTxt.setTextColor(resources.getColor(R.color.not_bad))
+        }else if(count == 3){
+            holder.tv_correct.text = ""+count
+            holder.totalLL.background = context.resources.getDrawable(R.drawable.test_summary_3)
+            //summaryTxt.text = "good"
+            holder.tv_correct.setTextColor(context.resources.getColor(R.color.good))
+            //summaryTxt.setTextColor(resources.getColor(R.color.good))
+
+        }else if(count == 4){
+            holder.tv_correct.text = ""+count
+            holder.tv_correct.setTextColor(context.resources.getColor(R.color.white))
+            holder.totalLL.background = context.resources.getDrawable(R.drawable.test_summary_4)
+            //summaryTxt.text = "superrr!"
+            //summaryTxt.setTextColor(resources.getColor(R.color.perfect))
+
+        }
+
+
         val dateFormat = SimpleDateFormat("dd-MM-yyyy")
         var oldDate = dateFormat.parse(branchesItemList[position].pdate)
         var current = Date().time
@@ -65,11 +101,18 @@ class TestsAdapter(val context: Context,
         //Log.e("tests adapter","diff date...."+diff);
         val diff1 = diff.toInt() / (1000 * 60 * 60 * 24)
         Log.e("tests adapter","diff date...."+diff1);
-        if(diff1 == 1){
-            holder.tv_challenge_date.text = ""+diff1 + "  day ago"
+        if(diff1 == 0){
+            holder.tv_challenge_date.text = "Today"
+        }else if(diff1 == 1){
+            holder.tv_challenge_date.text = "Yesterday"
         }else{
             holder.tv_challenge_date.text = ""+diff1 + "  days ago"
         }
+        /*if(diff1 == 1){
+            holder.tv_challenge_date.text = ""+diff1 + "  day ago"
+        }else{
+            holder.tv_challenge_date.text = ""+diff1 + "  days ago"
+        }*/
 
         if(branchesItemList[position].timetaken.equals("0")){
             holder.tv_challenge_time.text =  "1"
@@ -98,6 +141,9 @@ class TestsAdapter(val context: Context,
 
         val tv_challenge_score = itemView.tv_challenge_score
         val rootLayout = itemView.rootLayout;
+        val totalLL = itemView.totalLL;
+        val tv_correct = itemView.tv_correct;
+
 
     }
 

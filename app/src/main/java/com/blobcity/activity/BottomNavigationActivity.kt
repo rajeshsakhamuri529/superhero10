@@ -18,10 +18,10 @@ class BottomNavigationActivity : AppCompatActivity() {
                 message.setText(R.string.title_dashboard)
                 return@OnNavigationItemSelectedListener true
             }*/
-            R.id.nav_settings -> {
+            /*R.id.nav_settings -> {
                 message.setText(R.string.title_notifications)
                 return@OnNavigationItemSelectedListener true
-            }
+            }*/
         }
         false
     }

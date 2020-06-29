@@ -2,8 +2,10 @@ package com.blobcity.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
@@ -38,7 +40,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
     var databaseHandler1: DatabaseHandler? = null
     private lateinit var auth: FirebaseAuth
-
+    var mLastClickTime:Long = 0;
     private var mGoogleSignInClient: GoogleSignInClient? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.setting_layout, container, false)
@@ -47,6 +49,14 @@ class SettingFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         settings.elevation = 15f
+        try {
+            var currentVersion = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionName
+            var currentCode = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionCode
+            //versionname.text = "V "+currentVersion+" ("+currentCode+")"
+            versionname.text = "V "+currentVersion
+        } catch (e: PackageManager.NameNotFoundException) {
+            e.printStackTrace()
+        }
         sharedPrefs = SharedPrefs()
         databaseHandler = QuizGameDataBase(activity);
         databaseHandler1 = DatabaseHandler(activity);
@@ -116,7 +126,10 @@ class SettingFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         val intent: Intent
-
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime()
         when (v!!.id) {
             R.id.cl_terms_and_conditions -> {
                 intent = Intent(context, WriteToUsActivity::class.java)

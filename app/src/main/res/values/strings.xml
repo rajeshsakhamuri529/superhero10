@@ -5,6 +5,7 @@
     <string name="topics">Topics</string>
     <string name="quiz">QUIZ</string>
     <string name="tests">TESTS</string>
+    <string name="home">HOME</string>
     <string name="str_daily_chanllenge">Daily Challenges</string>
     <string name="str_textbooks">BOOKS</string>
     <string name="str_classXcbse">CLASS X</string>
@@ -48,4 +49,6 @@
     <string name="text4">Tiny Textbooks, specially designed  by experts, contain reference formulas, difficult concepts, etc. More books are being added based on student and teacher suggestions. Save offline and study when you want.</string>
 
     <string name="revision_practice">Revision &amp; Practice</string>
+
+    <string name="str_quiz">Score a <b>4</b> in one</string>
 </resources>

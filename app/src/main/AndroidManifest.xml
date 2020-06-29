@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".utils.App"
@@ -21,17 +22,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".activity.QuizTimeReviewActivity"
-            android:screenOrientation="portrait" ></activity>
-        <activity android:name=".activity.QuizTimeSummaryActivity"
+        <activity android:name=".activity.SettingsActivity"></activity>
+        <activity
+            android:name=".activity.QuizTimeReviewActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.StartQuizTimerActivity"
+        <activity
+            android:name=".activity.QuizTimeSummaryActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.TestQuizActivity"
+        <activity
+            android:name=".activity.StartQuizTimerActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.StartQuizActivityNew"
+        <activity
+            android:name=".activity.TestQuizActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.QuizSummaryActivityNew"
+        <activity
+            android:name=".activity.StartQuizActivityNew"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.QuizSummaryActivityNew"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.TestQuestionNewActivity"
@@ -146,6 +154,15 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fileprovider" />
         </provider>
+
+        <service
+            android:name=".Service.JobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".Service.ProgressJobService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
 
 </manifest>

@@ -36,7 +36,7 @@ class ChaptersAdapter(val context: Context,
     }
 
     override fun getItemCount(): Int {
-        return branchesItemList.size - 1
+        return branchesItemList.size
     }
 
     override fun onBindViewHolder(holder: ChaptersViewHolder, position: Int) {

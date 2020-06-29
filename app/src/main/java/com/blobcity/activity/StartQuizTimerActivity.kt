@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -41,6 +42,7 @@ class StartQuizTimerActivity : BaseActivity(), View.OnClickListener {
     var courseName: String? = ""
     var topicName: String? = ""
     var lastplayed:String = ""
+    var comingfrom:String = ""
     var dbPosition: Int? = null
     var oPath: String? = null
     private var totalQuestion: Int? = null
@@ -48,6 +50,7 @@ class StartQuizTimerActivity : BaseActivity(), View.OnClickListener {
     var sound: Boolean = false
     lateinit var topic: Topic
     lateinit var circles: Array<ImageView?>
+    var mLastClickTime:Long = 0;
     override var layoutID: Int = R.layout.activity_start_quiz_timer
 
     override fun initView() {
@@ -69,9 +72,9 @@ class StartQuizTimerActivity : BaseActivity(), View.OnClickListener {
         oPath = intent.getStringExtra(ConstantPath.FOLDER_PATH)
         folderName = intent.getStringExtra(ConstantPath.FOLDER_NAME)
         gradeTitle = intent.getStringExtra(ConstantPath.TITLE_TOPIC)
-        readyCardNumber = intent.getIntExtra(ConstantPath.CARD_NO, -1)
+      //  readyCardNumber = intent.getIntExtra(ConstantPath.CARD_NO, 0)
         lastplayed = intent.getStringExtra("LAST_PLAYED")
-
+        comingfrom = intent.getStringExtra("comingfrom")
         val gsonFile = Gson()
         val questionResponseModel = gsonFile.fromJson(dynamicPath, TopicOneBasicResponseModel::class.java)
         val questionsItems = questionResponseModel.questions
@@ -107,6 +110,10 @@ class StartQuizTimerActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime()
         when (v!!.id) {
             R.id.btn_topics -> {
                 sound = sharedPrefs?.getBooleanPrefVal(this, ConstantPath.SOUNDS) ?: true
@@ -145,6 +152,7 @@ class StartQuizTimerActivity : BaseActivity(), View.OnClickListener {
                 intent.putExtra(ConstantPath.FOLDER_PATH, oPath)
                 intent.putExtra(ConstantPath.TITLE_TOPIC, gradeTitle!!)
                 intent.putExtra("LAST_PLAYED", lastplayed)
+                intent.putExtra("comingfrom", comingfrom)
                 intent.putExtra(ConstantPath.TOPIC_LEVEL, "")
                 intent.putExtra(ConstantPath.LEVEL_COMPLETED, "")
                 intent.putExtra(ConstantPath.CARD_NO, "")

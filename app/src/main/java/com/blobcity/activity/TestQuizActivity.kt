@@ -169,7 +169,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
     var animFadeIn: Animation? = null
     var animFadeOut: Animation? = null
 
-    lateinit var dot: Array<TextView?>
+    lateinit var circles: Array<ImageView?>
     lateinit var optionsbuilder:StringBuilder
     lateinit var questionsbuilder:StringBuilder
     lateinit var answerbuilder:StringBuilder
@@ -179,6 +179,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
     lateinit var typebuilder:StringBuilder
     var databaseHandler: QuizGameDataBase?= null
     var lastplayed:String = ""
+    var comingfrom:String = ""
     var displayno:Int = 0
     //var progress1:Int = 0
     var paths: String = ""
@@ -242,6 +243,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
         readyCardNumber = intent.getIntExtra(CARD_NO, -1)
         lastplayed = intent.getStringExtra("LAST_PLAYED")
         displayno = intent.getIntExtra("DISPLAY_NO", -1)
+        comingfrom = intent.getStringExtra("comingfrom")
         quizTimer = Timer()
         sharedPrefs = SharedPrefs()
         animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in_700)
@@ -339,7 +341,15 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
                     //minutescountDownTimer.cancel()
                     progressBarCircle.visibility = View.GONE
                     iv_progress_icon.visibility = View.VISIBLE
-                    textViewTime.text = ""+hmsTimeFormatter(millisUntilFinished)
+                    /*if(!hmsTimeFormatter(millisUntilFinished).equals("00")){
+                        textViewTime.text = ""+hmsTimeFormatter(millisUntilFinished)
+                    }*/
+                    if(millisUntilFinished/1000 <= 9){
+                        textViewTime.text = "0"+millisUntilFinished/1000
+                    }else{
+                        textViewTime.text = ""+millisUntilFinished/1000
+                    }
+
                     textViewTime.setTextColor(resources.getColor(R.color.white))
                     //startCountDownTimerForSeconds(millisUntilFinished)
 
@@ -347,12 +357,17 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
 
 
                     setProgress1(timetaken,timeCountInMilliSeconds)
-                    textViewTime.text = ""+(Math.ceil(f1)).toInt()
+                    if((Math.ceil(f1)).toInt() != 1){
+                        textViewTime.text = ""+(Math.ceil(f1)).toInt()
+                    }
 
                 }else{
 
                     setProgress(timetaken,timeCountInMilliSeconds)
-                    textViewTime.text = ""+(Math.ceil(f1)).toInt()
+                    if((Math.ceil(f1)).toInt() != 1){
+                        textViewTime.text = ""+(Math.ceil(f1)).toInt()
+                    }
+
                 }
 
             }
@@ -812,14 +827,16 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
         tv_message3.text = ""+totalQuestion
         val alertDialog = dialogBuilder.create()
         btn_ok.setOnClickListener {
-            /*if(isTimerRunning){
-                minutescountDownTimer.cancel()
+            sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+            if(!sound){
+                // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                //  mediaPlayer.start()
+                if (Utils.loaded) {
+                    Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                    //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                }
             }
-            if(isTimerRunning1){
-                secondscountDownTimer.cancel()
-            }*/
-           // updateHandler.removeCallbacksAndMessages(null);
-           // updateHandler.removeCallbacks(runnable);
             if(isTimerRunning){
                 minutescountDownTimer.cancel()
             }
@@ -829,7 +846,16 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
             navigateToSummaryScreenNew()
         }
         btn_close.setOnClickListener {
-
+            sound = sharedPrefs?.getBooleanPrefVal(this, SOUNDS) ?: true
+            if(!sound){
+                // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                //  mediaPlayer.start()
+                if (Utils.loaded) {
+                    Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                    Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                    //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                }
+            }
             alertDialog.dismiss()
         }
         //alertDialog.getWindow().setBackgroundDrawable(draw);
@@ -1612,9 +1638,65 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
 
     fun addDot(countint:Int,totalquestions:Int) {
         //val layout_dot = findViewById(R.id.ll_dots) as LinearLayout
-        dot = arrayOfNulls<TextView>(totalquestions)
+        circles = arrayOfNulls<ImageView>(totalquestions)
         ll_dots.removeAllViews()
-        for (i in 0 until dot!!.size)
+
+        for (i in 0 until circles!!.size)
+        {
+            if((i+1) == countint){
+                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._12sdp).toInt(), getResources().getDimension(R.dimen._12sdp).toInt())
+                if(i != 0){
+                    params.leftMargin = getResources().getDimension(R.dimen._8sdp).toInt()
+                }
+                /*dot!![i] = TextView(this)
+                dot!![i]?.setText(Html.fromHtml("&#9679;"))
+                dot!![i]?.setTextSize(30F)
+                //set default dot color
+                dot!![i]?.setTextColor(getResources().getColor(R.color.button_close_text))
+                dot[i]!!.gravity = Gravity.CENTER
+                dot[i]!!.layoutParams = params*/
+
+
+
+                circles[i] = ImageView(this)
+
+                Glide.with(this)
+                    .load(R.drawable.question_fill_circle)
+                    .into(circles[i]!!)
+                //ImageViewCompat.setImageTintList(circles[i]!!, ColorStateList.valueOf(getResources().getColor(R.color.right_tick)));
+                circles[i]!!.layoutParams = params
+
+
+                ll_dots.addView(circles!![i])
+            }else{
+                val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._12sdp).toInt(), getResources().getDimension(R.dimen._12sdp).toInt())
+                //val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
+                if(i != 0){
+                    params.leftMargin = getResources().getDimension(R.dimen._8sdp).toInt()
+                }
+                /*dot!![i] = TextView(this)
+                dot!![i]?.setText(Html.fromHtml("&#9675;"))
+                dot!![i]?.setTextSize(30F)
+                // dot!![i]?.setBackgroundResource(R.color.purple)
+                //set default dot color
+                dot!![i]?.setTextColor(getResources().getColor(R.color.button_close_text))
+                dot[i]!!.gravity = Gravity.CENTER
+                dot[i]!!.layoutParams = params*/
+
+                circles[i] = ImageView(this)
+
+                Glide.with(this)
+                    .load(R.drawable.question_white_circle)
+                    .into(circles[i]!!)
+                //ImageViewCompat.setImageTintList(circles[i]!!, ColorStateList.valueOf(getResources().getColor(R.color.right_tick)));
+                circles[i]!!.layoutParams = params
+
+
+                ll_dots.addView(circles!![i])
+            }
+
+        }
+        /*for (i in 0 until dot!!.size)
         {
             if((i+1) == countint){
                 val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._15sdp).toInt(), getResources().getDimension(R.dimen._30sdp).toInt())
@@ -1646,7 +1728,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
                 ll_dots.addView(dot!![i])
             }
 
-        }
+        }*/
 
         if(countint == 1 && countint == totalquestions){
             /*next_btn.isEnabled = true
@@ -2985,7 +3067,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(CARD_NO, readyCardNumber)
         intent.putExtra("DISPLAY_NO", displayno)
         intent.putExtra("LAST_PLAYED", lastplayed)
-
+        intent.putExtra("comingfrom", comingfrom)
         startActivity(intent)
         finish()
     }

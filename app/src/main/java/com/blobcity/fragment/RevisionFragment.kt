@@ -93,6 +93,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
     var adapter: RevisionAdapter?= null
     var isDataFromFirebase:Boolean = false
     var position1 : Int = -1
+    var view1:View? = null
     private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
@@ -107,8 +108,20 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
         }
         return true
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.revision_layout, container, false)
+
+       // view = inflater.inflate(R.layout.revision_layout, container, false) as Nothing?
+        if (view1 == null)
+        {
+            view1 = inflater.inflate(R.layout.revision_layout, container, false)
+        }
+        return view1 //inflater.inflate(R.layout.revision_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

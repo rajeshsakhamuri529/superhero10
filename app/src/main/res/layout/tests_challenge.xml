@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/tests"
-            android:textSize="@dimen/_17ssp"
+            android:textSize="@dimen/_18ssp"
             android:layout_marginLeft="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_18sdp"
 
@@ -79,7 +79,7 @@
                             android:layout_centerVertical="true"
                             android:textColor="@color/chapters_text"
                             android:textStyle="bold"
-                            android:fontFamily="@font/lato_light"
+                            android:fontFamily="@font/lato_regular"
                             />
                         <TextView
                             android:id="@+id/tv_tiny2"
@@ -90,7 +90,7 @@
                             android:layout_centerVertical="true"
                             android:textColor="@color/chapters_text"
                             android:textStyle="bold"
-                            android:fontFamily="@font/lato_light"
+                            android:fontFamily="@font/lato_regular"
                             />
 
                         <RelativeLayout
@@ -122,10 +122,23 @@
                                 android:layout_marginEnd="1dp"
                                 android:background="@drawable/close_btn">
 
+                                <ProgressBar
+                                    android:id="@+id/progress_bar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="gone"
+                                    android:indeterminateTint="@color/white"
+                                    android:layout_centerInParent="true"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
                                 <TextView
                                     android:id="@+id/txt_next"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:visibility="visible"
 
 
                                     android:layout_marginStart="20dp"
@@ -145,6 +158,7 @@
                                     android:layout_width="11dp"
                                     android:layout_height="11dp"
                                     android:layout_marginStart="3dp"
+                                    android:visibility="visible"
                                     android:tint="@color/white"
                                     app:layout_constraintVertical_bias="0.5"
                                     app:layout_constraintBottom_toBottomOf="parent"
@@ -181,8 +195,8 @@
 
 
                         android:textColor="@color/chapters_text"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/lato_bold"
+
+                        android:fontFamily="@font/lato_black"
                         />
 
                     <TextView
@@ -221,12 +235,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/reviewRL"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginLeft="@dimen/_15sdp"
                     android:layout_marginRight="@dimen/_15sdp"
                     android:visibility="gone"
                     android:nestedScrollingEnabled="false"
-                    android:layout_marginBottom="@dimen/_40sdp"
+
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
             </RelativeLayout>

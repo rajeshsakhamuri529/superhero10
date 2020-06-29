@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.blobcity.model.Challenge;
 import com.blobcity.model.TestQuiz;
 import com.blobcity.model.TestQuizFinal;
 import com.blobcity.utils.Utils;
@@ -26,6 +27,7 @@ public class QuizGameDataBase extends SQLiteOpenHelper {
     private static final String TABLE_TEST_CONTENT_DOWNLOAD = "testcontentdownload";
     private static final String KEY_TEST_CONTENT_VERSION = "TestContentVersion";
     private static final String KEY_TEST_CONTENT_URL = "TestContentUrl";
+    private static final String KEY_TEST_DOWNLOAD_STATUS = "doenloadstatus";
 
     private static final String TABLE_QUIZ_PLAY = "quizplay";
     private static final String KEY_TOTAL_QUESTIONS = "totalquestions";
@@ -54,6 +56,45 @@ public class QuizGameDataBase extends SQLiteOpenHelper {
 
     private static final String KEY_ID = "id";
 
+
+    private static final String TABLE_CHALLENGE_STATUS = "challenge_status";
+    private static final String KEY_DATE = "date";
+    private static final String KEY_CHALLENGE_STATUS = "challengestatus";
+
+
+    private static final String TABLE_CHALLENGE = "challenge";
+
+    private static final String KEY_CHALLENGE_QUIZ_CORRECT_ANSWERS = "challengequizans";
+    private static final String KEY_CHALLENGE_TEST_CORRECT_ANSWERS = "challengetestans";
+    private static final String KEY_CHALLENGE_QUIZ_STATUS = "challengequizstatus";
+    private static final String KEY_CHALLENGE_TEST_STATUS = "challengeteststatus";
+
+    private static final String TABLE_CHALLENGE_WEEKLY = "weeklychallenge";
+
+    private static final String KEY_CHALLENGE_DATE_FROM = "challengedatefrom";
+    private static final String KEY_CHALLENGE_DATE_TO = "challengeto";
+    private static final String KEY_CHALLENGE_TEST_PASS_COUNT = "challengetestpasscount";
+
+
+
+    String CREATE_TABLE_CHALLENGE_STATUS = "CREATE TABLE " + TABLE_CHALLENGE_STATUS + "("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_DATE + " TEXT, " + KEY_CHALLENGE_STATUS + " INTEGER)";
+
+    String CREATE_TABLE_CHALLENGE_WEEKLY = "CREATE TABLE " + TABLE_CHALLENGE_WEEKLY + "("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_CHALLENGE_DATE_FROM + " TEXT, "
+            + KEY_CHALLENGE_DATE_TO + " TEXT, "
+            + KEY_CHALLENGE_TEST_PASS_COUNT + " INTEGER)";
+
+    String CREATE_TABLE_CHALLENGE = "CREATE TABLE " + TABLE_CHALLENGE + "("
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + KEY_DATE + " TEXT, "
+            + KEY_CHALLENGE_QUIZ_CORRECT_ANSWERS + " INTEGER, "
+            + KEY_CHALLENGE_QUIZ_STATUS + " INTEGER, "
+            + KEY_CHALLENGE_TEST_CORRECT_ANSWERS + " INTEGER, "
+            + KEY_CHALLENGE_TEST_STATUS + " INTEGER)";
+
+
     String CREATE_QUIZ_TABLE_WITH_TIMER = "CREATE TABLE " + TABLE_QUIZ_WITH_TIMER_FINAL + "("
             + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + KEY_SERIAL_NUMBER + " TEXT, "
@@ -69,7 +110,7 @@ public class QuizGameDataBase extends SQLiteOpenHelper {
             + KEY_PRESENT_DATE + " TEXT)";
 
     String CREATE_TABLE_TEST_CONTENT_DOWNLOAD = "CREATE TABLE " + TABLE_TEST_CONTENT_DOWNLOAD + "("
-            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TEST_CONTENT_VERSION + " TEXT, " + KEY_TEST_CONTENT_URL + " TEXT)";
+            + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_TEST_CONTENT_VERSION + " TEXT, " + KEY_TEST_CONTENT_URL + " TEXT, " + KEY_TEST_DOWNLOAD_STATUS + " INTEGER)";
 
     String CREATE_QUIZ_PLAY_TABLE_WITH_TIMER = "CREATE TABLE " + TABLE_QUIZ_PLAY_WITH_TIME + "("
             + KEY_SERIAL_NUMBER + " TEXT, " + KEY_TITLE + " TEXT, " + KEY_LAST_PLAYED + " TEXT)";
@@ -100,6 +141,11 @@ public class QuizGameDataBase extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_TEST_CONTENT_DOWNLOAD);
         db.execSQL(CREATE_TABLE_TEST_TIMER);
 
+        db.execSQL(CREATE_TABLE_CHALLENGE_STATUS);
+        db.execSQL(CREATE_TABLE_CHALLENGE);
+        db.execSQL(CREATE_TABLE_CHALLENGE_WEEKLY);
+
+
 
     }
 
@@ -111,9 +157,316 @@ public class QuizGameDataBase extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_QUIZ_WITH_TIMER_FINAL);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEST_CONTENT_DOWNLOAD);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_TEST_TIMER);
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHALLENGE_STATUS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHALLENGE);
+
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CHALLENGE_WEEKLY);
         // Create tables again
         onCreate(db);
     }
+
+
+    public void insertChallengeWeekly(String fromdate,String todate,int testpasscount) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_CHALLENGE_DATE_FROM, fromdate);
+        values.put(KEY_CHALLENGE_DATE_TO, todate);
+        values.put(KEY_CHALLENGE_TEST_PASS_COUNT, testpasscount);
+
+
+        // Inserting Row
+        db.insert(TABLE_CHALLENGE_WEEKLY, null, values);
+        //2nd argument is String containing nullColumnHack
+        db.close(); // Closing database connection
+    }
+
+    public int getChallengeForWEEKLY(String fromdate,String todate) {
+        //DailyChallenge dailyChallenge=new DailyChallenge();
+        Log.e("quiz database","getChallengeForDate....fromdate..."+fromdate);
+        int count = 0;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_CHALLENGE_WEEKLY + " WHERE " + KEY_CHALLENGE_DATE_FROM + "='" + fromdate+"' AND "+KEY_CHALLENGE_DATE_TO+"='"+todate+"'", new String[]{});
+
+        //Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_QUIZ_WITH_TIMER_FINAL + " WHERE " + KEY_TITLE + "='" + title+"' AND "+KEY_PRESENT_DATE + " ='"+pdate+"' AND "+KEY_TYPE_OF_PLAY +"= '"+typeofplay+"'", new String[]{});
+        count = cur.getCount();
+        cur.close();
+        db.close();
+
+        //  Log.e("quiz game database","answers.........."+answers);
+        // return contact
+        return count;
+    }
+
+    public int updateChallengeweeklystatus(String fromdate,String todate,int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //values.put(KEY_NAME, contact.getName());
+        values.put(KEY_CHALLENGE_TEST_PASS_COUNT, status);
+
+        // updating row
+        return db.update(TABLE_CHALLENGE_WEEKLY, values, KEY_CHALLENGE_DATE_FROM + " = ? AND "+KEY_CHALLENGE_DATE_TO + " = ?",
+                new String[] { String.valueOf(fromdate),todate });
+    }
+
+    public int getChallengeWeeklystatus(String fromdate,String todate) {
+        //DailyChallenge dailyChallenge=new DailyChallenge();
+        int count = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_CHALLENGE_WEEKLY + " WHERE " + KEY_CHALLENGE_DATE_FROM + "='" + fromdate+"' AND "+KEY_CHALLENGE_DATE_TO + " ='"+todate+"'", new String[]{});
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+        if (cur.moveToFirst()) {
+            do {
+
+                count = (cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_TEST_PASS_COUNT)));
+
+
+
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+        Log.e("quiz game database","count.........."+count);
+        // return contact
+        return count;
+    }
+
+
+    public void insertChallenge(Challenge challenge) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_DATE, challenge.getDate());
+        values.put(KEY_CHALLENGE_QUIZ_CORRECT_ANSWERS, challenge.getChallengeQuizCorrectAnswers());
+        values.put(KEY_CHALLENGE_QUIZ_STATUS, challenge.getChallengeQuizStatus());
+        values.put(KEY_CHALLENGE_TEST_CORRECT_ANSWERS, challenge.getChallengeTestCorrectAnswers());
+        values.put(KEY_CHALLENGE_TEST_STATUS, challenge.getChallengeTestStatus());
+
+        // Inserting Row
+        db.insert(TABLE_CHALLENGE, null, values);
+        //2nd argument is String containing nullColumnHack
+        db.close(); // Closing database connection
+    }
+
+
+
+    public List<Challenge> getChallengeFrombetweenDates(String fromdate,String todate) {
+
+        Log.e("quiz game db","getChallengeFrombetweenDates...fromdate.."+fromdate);
+        Log.e("quiz game db","getChallengeFrombetweenDates...todate.."+todate);
+        //DailyChallenge dailyChallenge=new DailyChallenge();
+        List<Challenge> challengeList = new ArrayList<Challenge>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM (SELECT * FROM " + TABLE_CHALLENGE+" WHERE "+KEY_DATE+" BETWEEN '"+fromdate+"' AND '"+todate+"') WHERE "+KEY_CHALLENGE_QUIZ_STATUS+"='1' AND "+KEY_CHALLENGE_TEST_STATUS+"='1'" , new String[]{});
+        Log.e("quiz game","query......"+"SELECT * FROM (SELECT * FROM " + TABLE_CHALLENGE+" WHERE "+KEY_DATE+" BETWEEN '"+fromdate+"' AND '"+todate+"') WHERE "+KEY_CHALLENGE_QUIZ_STATUS+"='1' AND "+KEY_CHALLENGE_TEST_STATUS+"='1'" );
+        //select * from (select * from challenge where date between '22/06/2020' AND '28/06/2020') where challengequizstatus='1' AND challengeteststatus = '1'
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+        if (cur.moveToFirst()) {
+            do {
+                Challenge challenge =new Challenge();
+                challenge.setDate((cur.getString(cur.getColumnIndex(KEY_DATE))));
+                challenge.setChallengeQuizCorrectAnswers((cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_QUIZ_CORRECT_ANSWERS))));
+                challenge.setChallengeQuizStatus((cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_QUIZ_STATUS))));
+                challenge.setChallengeTestCorrectAnswers((cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_TEST_CORRECT_ANSWERS))));
+                challenge.setChallengeTestStatus((cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_TEST_STATUS))));
+                challengeList.add(challenge);
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+      //  Log.e("quiz game database","answers.........."+answers);
+        // return contact
+        return challengeList;
+    }
+
+    public int getChallengeForDate(String date) {
+        //DailyChallenge dailyChallenge=new DailyChallenge();
+        Log.e("quiz database","getChallengeForDate....date..."+date);
+        int count = 0;
+        Challenge challenge =new Challenge();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_CHALLENGE + " WHERE " + KEY_DATE + "='" + date+"'", new String[]{});
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+
+        /*if (cur.moveToFirst()) {
+            do {
+
+                challenge.setDate((cur.getString(cur.getColumnIndex(KEY_DATE))));
+                challenge.setChallengeQuizCorrectAnswers((cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_QUIZ_CORRECT_ANSWERS))));
+                challenge.setChallengeQuizStatus((cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_QUIZ_STATUS))));
+                challenge.setChallengeTestCorrectAnswers((cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_TEST_CORRECT_ANSWERS))));
+                challenge.setChallengeTestStatus((cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_TEST_STATUS))));
+
+            } while (cur.moveToNext());
+        }*/
+        count = cur.getCount();
+        cur.close();
+        db.close();
+
+        //  Log.e("quiz game database","answers.........."+answers);
+        // return contact
+        return count;
+    }
+
+    public int getChallengeForQuizStatus(String date) {
+        //DailyChallenge dailyChallenge=new DailyChallenge();
+        int status = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_CHALLENGE + " WHERE " + KEY_DATE + "='" + date+"'", new String[]{});
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+        if (cur.moveToFirst()) {
+            do {
+
+                status = (cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_QUIZ_STATUS)));
+
+
+
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+        Log.e("quiz game database","status.........."+status);
+        // return contact
+        return status;
+    }
+
+    public int getChallengeForTestStatus(String date) {
+        //DailyChallenge dailyChallenge=new DailyChallenge();
+        int status = -1;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_CHALLENGE + " WHERE " + KEY_DATE + "='" + date+"'", new String[]{});
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+        if (cur.moveToFirst()) {
+            do {
+
+                status = (cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_TEST_STATUS)));
+
+
+
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+        Log.e("quiz game database","status.........."+status);
+        // return contact
+        return status;
+    }
+
+
+
+    public boolean updateChallengeQuiz(String date,
+                                  int correctanswers,
+                                  int status) {
+
+        boolean isUpdateCustomer;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+
+
+        initialValues.put(KEY_CHALLENGE_QUIZ_CORRECT_ANSWERS, correctanswers);
+        initialValues.put(KEY_CHALLENGE_QUIZ_STATUS, status);
+
+
+        String args[] = {date};
+
+        isUpdateCustomer = db.update(TABLE_CHALLENGE, initialValues, KEY_DATE + "=?", args) > 0;
+        db.close();
+        return isUpdateCustomer;
+    }
+
+    public boolean updateChallengeTest(String date,
+                                       int correctanswers,
+                                       int status) {
+
+        boolean isUpdateCustomer;
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues initialValues = new ContentValues();
+
+
+        initialValues.put(KEY_CHALLENGE_TEST_CORRECT_ANSWERS, correctanswers);
+        initialValues.put(KEY_CHALLENGE_TEST_STATUS, status);
+
+
+        String args[] = {date};
+
+        isUpdateCustomer = db.update(TABLE_CHALLENGE, initialValues, KEY_DATE + "=?", args) > 0;
+        db.close();
+        return isUpdateCustomer;
+    }
+
+    public void insertChallengeStatus(String date,int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_CHALLENGE_STATUS, status); // Contact Name
+        values.put(KEY_DATE, date);
+
+        // Inserting Row
+        db.insert(TABLE_CHALLENGE_STATUS, null, values);
+        //2nd argument is String containing nullColumnHack
+        db.close(); // Closing database connection
+    }
+
+
+
+    public int updateChallengeStatus(int status,String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //values.put(KEY_NAME, contact.getName());
+        values.put(KEY_CHALLENGE_STATUS, status);
+
+        // updating row
+        return db.update(TABLE_CHALLENGE_STATUS, values, KEY_DATE + " = ?",
+                new String[] { String.valueOf(date) });
+    }
+
+    public int getChallengeStatus(String date) {
+        //DailyChallenge dailyChallenge=new DailyChallenge();
+        int status = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_CHALLENGE_STATUS + " WHERE " + KEY_DATE + "='" + date+"'", new String[]{});
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+        if (cur.moveToFirst()) {
+            do {
+
+                status = (cur.getInt(cur.getColumnIndex(KEY_CHALLENGE_STATUS)));
+
+
+
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+        Log.e("quiz game database","status.........."+status);
+        // return contact
+        return status;
+    }
+
+
 
     /*public void inserttesttimer(int id,int value) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -175,13 +528,13 @@ public class QuizGameDataBase extends SQLiteOpenHelper {
     }*/
 
 
-    public void insertTESTCONTENTDOWNLOAD(String version,String URL) {
+    public void insertTESTCONTENTDOWNLOAD(String version,String URL,int status) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_TEST_CONTENT_VERSION, version); // Contact Name
         values.put(KEY_TEST_CONTENT_URL, URL); // Contact Phone
-
+        values.put(KEY_TEST_DOWNLOAD_STATUS, status);
 
         // Inserting Row
         db.insert(TABLE_TEST_CONTENT_DOWNLOAD, null, values);
@@ -193,6 +546,44 @@ public class QuizGameDataBase extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_TEST_CONTENT_DOWNLOAD);
         db.close();
+    }
+
+    // code to update the single contact
+    public int updatetestcontentdownloadstatus(int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        //values.put(KEY_NAME, contact.getName());
+        values.put(KEY_TEST_DOWNLOAD_STATUS, status);
+
+        // updating row
+        return db.update(TABLE_TEST_CONTENT_DOWNLOAD, values, KEY_ID + " = ?",
+                new String[] { String.valueOf(1) });
+    }
+
+    public int gettesttopicdownloadstatus() {
+        //DailyChallenge dailyChallenge=new DailyChallenge();
+        int version = 0;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cur = db.rawQuery("SELECT * FROM " + TABLE_TEST_CONTENT_DOWNLOAD + " WHERE " + KEY_ID + "='" + 1+"'", new String[]{});
+        /*Cursor cursor = db.query(TABLE_DAILY_CHALLENGE, new String[] { KEY_ID,
+                        KEY_VERSION }, KEY_ID + "=?",
+                new String[] { String.valueOf(id) }, null, null, null, null);*/
+        if (cur.moveToFirst()) {
+            do {
+
+                version = (cur.getInt(cur.getColumnIndex(KEY_TEST_DOWNLOAD_STATUS)));
+
+
+
+            } while (cur.moveToNext());
+        }
+        cur.close();
+        db.close();
+
+        Log.e("quiz game database","version.........."+version);
+        // return contact
+        return version;
     }
 
     // code to update the single contact

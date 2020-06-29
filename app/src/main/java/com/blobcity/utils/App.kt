@@ -7,6 +7,7 @@ import com.google.firebase.database.FirebaseDatabase
 //import org.junit.experimental.results.ResultMatchers.isSuccessful
 import com.google.android.gms.tasks.Task
 import android.support.annotation.NonNull
+import com.downloader.PRDownloader
 import com.google.android.gms.tasks.OnCompleteListener
 //import javax.swing.UIManager.put
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -23,7 +24,7 @@ class App : Application() {
 
         Log.d("onCreate","app")
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
-
+        PRDownloader.initialize(applicationContext)
         // set in-app defaults
         /*var remoteConfigDefaults = HashMap<String,Any>()
         remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_REQUIRED, false)

@@ -21,6 +21,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.blobcity.R
+import com.blobcity.Service.JobService
 import com.blobcity.adapter.GradeAdapter
 import com.blobcity.adapter.RevisionAdapter
 import com.blobcity.database.QuizGameDataBase
@@ -321,20 +322,40 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 112 ) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                if(Utils.isOnline(this)){
+
+                var url = databaseHandler!!.gettesttopicurl()
+                var version = databaseHandler!!.gettesttopicversion()
+                downloadDataFromBackground(this@GradeActivity,url,version)
+                if(sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME))
+                {
+                    navigateToIntro()
+                }else if(!sharedPrefs.getBooleanPrefVal(this, ISNOTLOGIN)){
+                    navigateToIntro()
+                }else{
+                    navigateToDashboard("GRADE 6")
+                }
+
+                /*if(Utils.isOnline(this)){
                     var url = databaseHandler!!.gettesttopicurl()
                     Log.e("grade actvity","is first time........url....."+url);
                     val task = MyAsyncTask(this)
                     task.execute(url)
                 }else{
                     Toast.makeText(this,"Internet is required!",Toast.LENGTH_LONG).show();
-                }
+                }*/
 
             }else {
                 Toast.makeText(this,"Permissions are required to view the file!",Toast.LENGTH_LONG).show()
             }
         }
 
+    }
+
+    private fun downloadDataFromBackground(
+        mainActivity: GradeActivity,
+        url: String,version:String
+    ) {
+        JobService.enqueueWork(mainActivity, url,version)
     }
 
     private fun updateversion(){
@@ -352,17 +373,28 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                 if(hasPermissions(this, *PERMISSIONS)){
 
-                    if(sharedPrefs.getBooleanPrefVal(this, "iscontentdownload")){
+                    var downloadstatus = databaseHandler!!.gettesttopicdownloadstatus()
+
+                    if(downloadstatus == 1){
                         navigateToIntro()
                     }else{
-                        if(Utils.isOnline(this)){
-                            var url = databaseHandler!!.gettesttopicurl()
+
+                        var url = databaseHandler!!.gettesttopicurl()
+                        var version = databaseHandler!!.gettesttopicversion()
+                        downloadDataFromBackground(this@GradeActivity,url,version)
+                        navigateToIntro()
+                        /*if(Utils.isOnline(this)){
+
 
                             val task = MyAsyncTask(this)
                             task.execute(url)
                         }else{
                             Toast.makeText(this,"Internet is required!",Toast.LENGTH_LONG).show();
-                        }
+                        }*/
+
+
+
+
                     }
 
                 }else{
@@ -378,7 +410,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                 if(!sharedPrefs.getBooleanPrefVal(this, ISNOTLOGIN)){
                     //this block is for not sign in users
-                    if(Utils.isOnline(this@GradeActivity)){
+                    //if(Utils.isOnline(this@GradeActivity)){
 
                         val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
                         docRef.get().addOnSuccessListener { document ->
@@ -390,17 +422,14 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                 Log.e("grade activity","version......."+version)
                                 Log.e("grade activity","url......."+url)
 
-                                databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url)
-                                sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
+                                databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
+
+                                //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
                                 if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
                                     // var url = databaseHandler!!.gettesttopicurl()
-                                    if(Utils.isOnline(this@GradeActivity)){
-                                        val task = MyAsyncTask(this@GradeActivity)
-                                        task.execute(url)
-                                    }else{
-                                        Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                                    }
-
+                                    //var url = databaseHandler!!.gettesttopicurl()
+                                    downloadDataFromBackground(this@GradeActivity,url,version)
+                                    navigateToIntro()
                                 }else{
 
                                     requestPermissions(PERMISSIONS, 112)
@@ -409,10 +438,12 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                             } else {
                                 Log.e("grade activity", "No such document")
+                                navigateToIntro()
                             }
                         }
                             .addOnFailureListener { exception ->
                                 Log.e("grade activity", "get failed with ", exception)
+                                navigateToIntro()
 
                             }
                         /*val rootRef = FirebaseFirestore.getInstance()
@@ -446,9 +477,9 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                             }
                         })*/
 
-                    }else{
+                    /*}else{
                         Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                    }
+                    }*/
 
 
 
@@ -458,7 +489,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                     var dbversion = databaseHandler!!.gettesttopicversion()
                     if(dbversion == null){
                         //this block is for already logged user but content is not downloded
-                        if(Utils.isOnline(this@GradeActivity)){
+                        //if(Utils.isOnline(this@GradeActivity)){
 
                             val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
                             docRef.get().addOnSuccessListener { document ->
@@ -470,16 +501,18 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                     Log.e("grade activity","version......."+version)
                                     Log.e("grade activity","url......."+url)
 
-                                    databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url)
+                                    databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
                                     //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
                                     if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
                                         // var url = databaseHandler!!.gettesttopicurl()
-                                        if(Utils.isOnline(this@GradeActivity)){
+                                        downloadDataFromBackground(this@GradeActivity,url,version)
+                                        navigateToDashboard("GRADE 6")
+                                        /*if(Utils.isOnline(this@GradeActivity)){
                                             val task = MyAsyncTask(this@GradeActivity)
                                             task.execute(url)
                                         }else{
                                             Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                                        }
+                                        }*/
 
                                     }else{
 
@@ -489,10 +522,13 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                                 } else {
                                     Log.e("grade activity", "No such document")
+                                    navigateToDashboard("GRADE 6")
+
                                 }
                             }
                                 .addOnFailureListener { exception ->
                                     Log.e("grade activity", "get failed with ", exception)
+                                    navigateToDashboard("GRADE 6")
 
                                 }
                             /*val rootRef = FirebaseFirestore.getInstance()
@@ -526,12 +562,12 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                 }
                             })*/
 
-                        }else{
+                        /*}else{
                             Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                        }
+                        }*/
 
                     }else{
-                       //this block is for already logged user but content is downloaded
+                       //this block is for already logged user but version checking for content downloaded
                             if(Utils.isOnline(this@GradeActivity)){
 
                                 val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
@@ -549,9 +585,10 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                                 if (hasPermissions(this@GradeActivity, *PERMISSIONS)) {
                                                     // var url = databaseHandler!!.gettesttopicurl()
                                                     //if(Utils.isOnline(this@GradeActivity)){
-                                                    val task = MyAsyncTask(this@GradeActivity)
-                                                    task.execute(url)
-
+                                                   // val task = MyAsyncTask(this@GradeActivity)
+                                                   // task.execute(url)
+                                                    downloadDataFromBackground(this@GradeActivity,url,version)
+                                                    navigateToDashboard("GRADE 6")
                                                 } else {
 
                                                     requestPermissions(PERMISSIONS, 112)
@@ -567,6 +604,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                     }
                                     .addOnFailureListener { exception ->
                                         Log.e("grade activity", "get failed with ", exception)
+                                        navigateToDashboard("GRADE 6")
 
                                     }
 
@@ -747,7 +785,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                         Log.e("grade activity","version......."+version)
                                         Log.e("grade activity","url......."+url)
 
-                                        databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url)
+                                        databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
 
                                         // Sign in success, update UI with the signed-in user's information
                                         val user = auth!!.currentUser

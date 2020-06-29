@@ -36,10 +36,14 @@ import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AlertDialog
 import android.widget.Button
 import com.blobcity.BuildConfig
+import com.blobcity.Service.JobService
+import com.blobcity.database.QuizGameDataBase
 import com.blobcity.fragment.*
 import com.blobcity.utils.BottomNavigationViewHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import java.text.SimpleDateFormat
@@ -58,10 +62,13 @@ class DashBoardActivity : BaseActivity(),
     var action:String = ""
     var data:String = ""
     var currentVersion:Int = 0
+    var databaseHandler: QuizGameDataBase?= null
     // Remote Config keys
     private val VERSION_CODE_CONFIG_KEY = "upgrade"
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     var remoteConfig: FirebaseRemoteConfig? = null
-
+    var version : String = ""
+    var url : String = ""
     override var layoutID: Int = R.layout.activity_dashboard
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
         super.onSaveInstanceState(outState, outPersistentState)
@@ -70,10 +77,54 @@ class DashBoardActivity : BaseActivity(),
        // getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         gradeTitle = "GRADE 6"
         getPlayer(this)
-
+        val settings = FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true)
+            .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
+            .build()
+        db.firestoreSettings = settings
+        databaseHandler = QuizGameDataBase(this);
         //getPlayerForCorrect(this)
         //getPlayerForwrong(this)
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
+
+        var dburl = databaseHandler!!.gettesttopicurl()
+        if(dburl == null){
+            val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
+            docRef.get().addOnSuccessListener { document ->
+                if (document != null) {
+                    Log.e("grade activity", "DocumentSnapshot data: ${document.data}")
+                    version = document.data!!.get("TestContentVersion").toString()
+                    url = document.data!!.get("TestContentUrl").toString()
+
+
+                    databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
+                    //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
+                    //if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
+                        // var url = databaseHandler!!.gettesttopicurl()
+                        downloadDataFromBackground(this@DashBoardActivity,url,version)
+                        //navigateToDashboard("GRADE 6")
+                        /*if(Utils.isOnline(this@GradeActivity)){
+                            val task = MyAsyncTask(this@GradeActivity)
+                            task.execute(url)
+                        }else{
+                            Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
+                        }*/
+
+
+
+
+                } else {
+                    Log.e("grade activity", "No such document")
+                    //navigateToDashboard("GRADE 6")
+
+                }
+            }
+                .addOnFailureListener { exception ->
+                    Log.e("grade activity", "get failed with ", exception)
+                    //navigateToDashboard("GRADE 6")
+
+                }
+        }
 
         try {
             currentVersion = packageManager.getPackageInfo(packageName, 0).versionCode
@@ -109,7 +160,7 @@ class DashBoardActivity : BaseActivity(),
             val fragment = intent.getStringExtra("fragment")
             if(fragment == "pdf"){
                 loadFragment(RevisionFragment())
-                val revisionItem = navigation.getMenu().getItem(2)
+                val revisionItem = navigation.getMenu().getItem(3)
                 // Select home item
                 navigation.setSelectedItemId(revisionItem.getItemId());
             }else if(fragment == "dailychallenge"){
@@ -119,18 +170,28 @@ class DashBoardActivity : BaseActivity(),
                 navigation.setSelectedItemId(revisionItem.getItemId());
             }else if(fragment == "tests"){
                 loadFragment(TestsFragment())
+                val revisionItem = navigation.getMenu().getItem(2)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
+            }else if(fragment == "Home"){
+                loadFragment(HomeFragment())
+                val revisionItem = navigation.getMenu().getItem(0)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
+            }else if(fragment == "Topics"){
+                loadFragment(ChapterFragment())
                 val revisionItem = navigation.getMenu().getItem(1)
                 // Select home item
                 navigation.setSelectedItemId(revisionItem.getItemId());
             }else{
                 Log.e("dashboard activity","load chapters......")
-                loadFragment(ChapterFragment())
+                loadFragment(HomeFragment())
             }
         }else{
             sharedPrefs!!.setPrefVal(this,"data", "")
             if(data.contains("books")){
                 loadFragment(RevisionFragment())
-                val revisionItem = navigation.getMenu().getItem(2)
+                val revisionItem = navigation.getMenu().getItem(3)
                 // Select home item
                 navigation.setSelectedItemId(revisionItem.getItemId());
             }else if(data.contains("challenge")){
@@ -153,6 +214,15 @@ class DashBoardActivity : BaseActivity(),
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
     }
+
+    private fun downloadDataFromBackground(
+        mainActivity: DashBoardActivity,
+        url: String,version:String
+    ) {
+        JobService.enqueueWork(mainActivity, url,version)
+    }
+
+
 
     fun fetchVersion(){
         var cacheExpiration: Long = 3600 // 1 hour in seconds.
@@ -241,7 +311,9 @@ class DashBoardActivity : BaseActivity(),
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
-            R.id.nav_chapter -> {
+            R.id.nav_home -> {
+                val fragmentManager = supportFragmentManager
+                val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
                 sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
                 if(!sound) {
                     //MusicManager.getInstance().play(context, R.raw.amount_low);
@@ -251,13 +323,43 @@ class DashBoardActivity : BaseActivity(),
                         Log.e("Test", "Played sound...volume..." + Utils.volume);
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
-                    fragment = ChapterFragment()
-                }else{
-                    fragment = ChapterFragment()
                 }
+                if(currentFragment!! is HomeFragment){
+                    fragment = currentFragment
+                }else{
+
+                    fragment = HomeFragment()
+
+                }
+
+
+            }
+            R.id.nav_chapter -> {
+                val fragmentManager = supportFragmentManager
+                val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
+                sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
+                if(!sound) {
+                    //MusicManager.getInstance().play(context, R.raw.amount_low);
+                    // Is the sound loaded already?
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..." + Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                if(currentFragment!! is ChapterFragment){
+                    fragment = currentFragment
+                }else{
+
+                    fragment = ChapterFragment()
+
+                }
+
 
             }
             R.id.nav_dialy_challenge -> {
+                val fragmentManager = supportFragmentManager
+                val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
                 sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
                 if(!sound) {
                     //MusicManager.getInstance().play(context, R.raw.amount_low);
@@ -267,13 +369,20 @@ class DashBoardActivity : BaseActivity(),
                         Log.e("Test", "Played sound...volume..." + Utils.volume);
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
-                    fragment = TestsFragment()
-                }else{
-                    fragment = TestsFragment()
                 }
+                if(currentFragment!! is TestsFragment){
+                    fragment = currentFragment
+                }else{
+
+                    fragment = TestsFragment()
+
+                }
+
 
             }
             R.id.nav_revision -> {
+                val fragmentManager = supportFragmentManager
+                val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
                 sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
                 if(!sound) {
                     //MusicManager.getInstance().play(context, R.raw.amount_low);
@@ -283,10 +392,15 @@ class DashBoardActivity : BaseActivity(),
                         Log.e("Test", "Played sound...volume..." + Utils.volume);
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
-                    fragment = RevisionFragment()
-                }else{
-                    fragment = RevisionFragment()
                 }
+                if(currentFragment!! is RevisionFragment){
+                    fragment = currentFragment
+                }else{
+
+                    fragment = RevisionFragment()
+
+                }
+
 
             }
            /* R.id.nav_astra_cards -> {
@@ -294,6 +408,8 @@ class DashBoardActivity : BaseActivity(),
             }*/
 
             R.id.nav_settings -> {
+                val fragmentManager = supportFragmentManager
+                val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
                 sound = sharedPrefs?.getBooleanPrefVal(this!!, ConstantPath.SOUNDS) ?: true
                 if(!sound) {
                     //MusicManager.getInstance().play(context, R.raw.amount_low);
@@ -303,10 +419,15 @@ class DashBoardActivity : BaseActivity(),
                         Log.e("Test", "Played sound...volume..." + Utils.volume);
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
-                    fragment = SettingFragment()
-                }else{
-                    fragment = SettingFragment()
                 }
+                if(currentFragment!! is SettingFragment){
+                    fragment = currentFragment
+                }else{
+
+                    fragment = SettingFragment()
+
+                }
+
 
             }
         }
@@ -361,23 +482,45 @@ class DashBoardActivity : BaseActivity(),
                 backPressToastMessage!!.show()
             }
             backPressedTime=System.currentTimeMillis()
+        }else if(currentFragment!! is HomeFragment) {
+            if(backPressedTime+2000>System.currentTimeMillis()){
+                backPressToastMessage!!.cancel()
+                finishAffinity()
+                return
+            }
+            else{
+                backPressToastMessage = Toast.makeText(this, R.string.exit_message, Toast.LENGTH_SHORT)
+                backPressToastMessage!!.show()
+            }
+            backPressedTime=System.currentTimeMillis()
         }
     }
 
     private fun loadFragment(fragment: Fragment): Boolean {
         Log.e("dash borad activity","......load fragment....."+fragment)
-        //switching fragment
-        if (fragment != null) {
-            val bundle = Bundle()
-            bundle.putString(TITLE_TOPIC, gradeTitle)
-            fragment.arguments = bundle
-            getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commit()
-
+        val fragmentManager = supportFragmentManager
+        val currentFragment = fragmentManager.findFragmentById(R.id.fragment_container)
+        Log.e("dash borad activity","...... fragment....."+fragment)
+        Log.e("dash borad activity","......currentFragment fragment....."+currentFragment)
+        if(fragment!!.equals(currentFragment)){
+            Log.e("dash borad activity","......same fragment.....")
             return true
+        }else{
+            Log.e("dash borad activity","......different fragment.....")
+            if (fragment != null) {
+                val bundle = Bundle()
+                bundle.putString(TITLE_TOPIC, gradeTitle)
+                fragment.arguments = bundle
+                getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit()
+
+                return true
+            }
         }
+        //switching fragment
+
         return false
     }
 

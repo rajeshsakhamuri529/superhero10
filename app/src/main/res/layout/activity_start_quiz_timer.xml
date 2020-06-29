@@ -10,135 +10,176 @@
     tools:context=".activity.QuizSummaryActivity">
 
 
-
-
-
     <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/_100sdp">
-
-
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_summary_buttons">
 
         <LinearLayout
-            android:id="@+id/titleLL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="3">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_light"
-                android:textColor="@color/topic_text"
-                android:id="@+id/title_no"
-                android:textSize="@dimen/_18ssp"
-                android:text="01"
-                android:visibility="gone"
-                android:gravity="center"
-
-                android:layout_centerHorizontal="true"
-                />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentBottom="true">
 
 
-            <TextView
-                android:id="@+id/tv_quiz_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TINY TEST"
-                android:gravity="center"
-                android:layout_centerHorizontal="true"
-                android:textSize="@dimen/_18ssp"
 
-                android:layout_marginLeft="@dimen/_11sdp"
-                android:textColor="@color/topic_text"
-                android:fontFamily="@font/lato_bold"/>
+                    <LinearLayout
+                        android:id="@+id/titleLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_light"
+                            android:textColor="@color/topic_text"
+                            android:id="@+id/title_no"
+                            android:textSize="@dimen/_18ssp"
+                            android:text="01"
+                            android:visibility="gone"
+                            android:gravity="center"
+
+                            android:layout_centerHorizontal="true"
+                            />
+
+
+                        <TextView
+                            android:id="@+id/tv_quiz_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="TINY TEST"
+                            android:gravity="center"
+                            android:layout_centerHorizontal="true"
+                            android:textSize="@dimen/_18ssp"
+
+                            android:layout_marginLeft="@dimen/_11sdp"
+                            android:textColor="@color/topic_text"
+                            android:fontFamily="@font/lato_bold"/>
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.7">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <LinearLayout
+                        android:id="@+id/textLL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_light"
+                            android:textColor="@color/topic_text"
+                            android:id="@+id/total_no"
+                            android:textSize="@dimen/_20ssp"
+                            android:text="4"
+                            android:gravity="center"
+
+                            android:layout_centerHorizontal="true"
+                            />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_light"
+                            android:textColor="@color/topic_text"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:textSize="@dimen/_20ssp"
+                            android:text="Qs"
+                            android:gravity="center"
+
+                            android:layout_centerInParent="true"
+                            />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_answers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_below="@+id/textLL"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_centerInParent="true"
+
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/lato_light"
+                        android:textColor="@color/topic_text"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_below="@+id/ll_answers"
+                        android:textSize="@dimen/_20ssp"
+                        android:text="12 mins"
+                        android:gravity="center"
+
+                        android:layout_centerInParent="true"
+                        />
+
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5">
+
+                <TextView
+                    android:id="@+id/summaryTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_light"
+                    android:textColor="#0080ff"
+
+
+                    android:textSize="@dimen/_30ssp"
+                    android:text="ready?"
+                    android:gravity="center"
+
+                    android:layout_centerHorizontal="true"
+                    />
+
+            </RelativeLayout>
+
+
+
+
         </LinearLayout>
+
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true">
-
-        <LinearLayout
-            android:id="@+id/textLL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_light"
-                android:textColor="@color/topic_text"
-                android:id="@+id/total_no"
-                android:textSize="@dimen/_20ssp"
-                android:text="4"
-                android:gravity="center"
-
-                android:layout_centerHorizontal="true"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/lato_light"
-                android:textColor="@color/topic_text"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:textSize="@dimen/_20ssp"
-                android:text="Qs"
-                android:gravity="center"
-
-                android:layout_centerInParent="true"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_answers"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/textLL"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_centerInParent="true"
-
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/lato_light"
-            android:textColor="@color/topic_text"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:layout_below="@+id/ll_answers"
-            android:textSize="@dimen/_20ssp"
-            android:text="12 mins"
-            android:gravity="center"
-
-            android:layout_centerInParent="true"
-            />
 
 
-    </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/summaryTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/lato_hairline"
-        android:textColor="@color/topic_text"
-        android:layout_above="@+id/ll_summary_buttons"
-        android:layout_marginBottom="@dimen/_100sdp"
-        android:textSize="@dimen/_30ssp"
-        android:text="ready?"
-        android:visibility="gone"
-        android:gravity="center"
 
-        android:layout_centerHorizontal="true"
-        />
+
 
 
     <LinearLayout

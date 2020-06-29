@@ -85,4 +85,10 @@
     <color name="not_perfect">#FD5E53</color>
 
 
+    <color name="seriously">#FD5E53</color>
+    <color name="not_good">#FD5E53</color>
+    <color name="not_bad">#FF9300</color>
+    <color name="good">#009193</color>
+
+
 </resources>

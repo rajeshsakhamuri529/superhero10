@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v4.widget.ImageViewCompat
 import android.util.Log
 import android.view.View
@@ -58,11 +59,14 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
     var isallcorrect:Boolean = false
     var displayno:Int = 0
     var lastplayed:String = ""
+    var comingfrom:String = ""
     var count:Int = 0
     var localPath: String?= null
     private var branchesItemList:List<BranchesItem>?=null
     var jsonStringBasic: String? =""
     lateinit var testQuiz: TestQuiz
+    lateinit var challenge:Challenge
+    var mLastClickTime:Long = 0;
     override var layoutID: Int = R.layout.activity_quiz_time_summary
 
     override fun initView() {
@@ -89,6 +93,7 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
         readyCardNumber = intent.getIntExtra(ConstantPath.CARD_NO, -1)
         displayno = intent.getIntExtra("DISPLAY_NO", -1)
         lastplayed = intent.getStringExtra("LAST_PLAYED")
+        comingfrom = intent.getStringExtra("comingfrom")
 
         testQuiz = databaseHandler!!.getQuizTopicsForTimerLastPlayed()
 
@@ -142,17 +147,109 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
                 ll_answers.addView(circles!![i])
             }
         }
-        tv_correct.text = ""+count
+
         tv_total.text = ""+totalQuestion
         if(count == totalQuestion){
 
-            successRL.background = resources.getDrawable(R.drawable.quiz_time_success)
+            //successRL.background = resources.getDrawable(R.drawable.quiz_time_success)
             tv_correct.setTextColor(resources.getColor(R.color.button_close_text))
+
+            val format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            var recordcount = databaseHandler!!.getChallengeForDate(format.format(Utils.date))
+
+            if(recordcount == 0){
+
+
+                challenge = Challenge(format.format(Utils.date),-1,-1,count,1)
+                databaseHandler!!.insertChallenge(challenge)
+            }else{
+                var teststatus = databaseHandler!!.getChallengeForTestStatus(format.format(Utils.date))
+                if(teststatus != 1){
+                    databaseHandler!!.updateChallengeTest(format.format(Utils.date),count,1)
+                }
+
+            }
+
+            var weeklycount = databaseHandler!!.getChallengeForWEEKLY(format.format(getWeekStartDate()),format.format(getWeekEndDate()))
+            if(weeklycount == 0){
+                databaseHandler!!.insertChallengeWeekly(format.format(getWeekStartDate()),format.format(getWeekEndDate()),1)
+            }else{
+                var passcount = databaseHandler!!.getChallengeWeeklystatus(format.format(getWeekStartDate()),format.format(getWeekEndDate()))
+                databaseHandler!!.updateChallengeweeklystatus(format.format(getWeekStartDate()),format.format(getWeekEndDate()),(passcount+1))
+
+            }
+
+
+
         }else{
-            successRL.background = resources.getDrawable(R.drawable.quiz_time_failure)
+            //successRL.background = resources.getDrawable(R.drawable.quiz_time_failure)
             tv_correct.setTextColor(resources.getColor(R.color.test_fail))
 
+            val format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            var recordcount = databaseHandler!!.getChallengeForDate(format.format(Utils.date))
+
+            if(recordcount == 0){
+                var testStatus:Int = -1
+                if(count >= 2){
+                    testStatus = 1
+                }else{
+                    testStatus = 0
+                }
+
+                challenge = Challenge(format.format(Utils.date),-1,-1,count,testStatus)
+                databaseHandler!!.insertChallenge(challenge)
+            }else{
+                var teststatus = databaseHandler!!.getChallengeForTestStatus(format.format(Utils.date))
+                if(teststatus != 1){
+                    var testStatus:Int = -1
+                    if(count >= 2){
+                        testStatus = 1
+                    }else{
+                        testStatus = 0
+                    }
+                    databaseHandler!!.updateChallengeTest(format.format(Utils.date),count,testStatus)
+                }
+
+            }
+
         }
+
+        if(count == 0){
+            tv_correct.text = ""+count
+            totalLL.background = resources.getDrawable(R.drawable.test_summary_0_0)
+            summaryTxt.text = "seriously?"
+            tv_correct.setTextColor(resources.getColor(R.color.seriously))
+            summaryTxt.setTextColor(resources.getColor(R.color.seriously))
+        }else if(count == 1){
+            tv_correct.text = ""+count
+            totalLL.background = resources.getDrawable(R.drawable.test_summary_0_0)
+            summaryTxt.text = "not good"
+            tv_correct.setTextColor(resources.getColor(R.color.not_good))
+            summaryTxt.setTextColor(resources.getColor(R.color.not_good))
+        }else if(count == 2){
+            tv_correct.text = ""+count
+            totalLL.background = resources.getDrawable(R.drawable.test_summary_2_2)
+            summaryTxt.text = "not bad"
+            tv_correct.setTextColor(resources.getColor(R.color.not_bad))
+            summaryTxt.setTextColor(resources.getColor(R.color.not_bad))
+        }else if(count == 3){
+            tv_correct.text = ""+count
+            totalLL.background = resources.getDrawable(R.drawable.test_summary_3_3)
+            summaryTxt.text = "good"
+            tv_correct.setTextColor(resources.getColor(R.color.good))
+            summaryTxt.setTextColor(resources.getColor(R.color.good))
+
+        }else if(count == 4){
+            tv_correct.text = ""+count
+            tv_correct.setTextColor(resources.getColor(R.color.white))
+            totalLL.background = resources.getDrawable(R.drawable.test_summary_4_4)
+            summaryTxt.text = "superrr!"
+            summaryTxt.setTextColor(resources.getColor(R.color.perfect))
+
+        }
+
+
+
         var time:String = databaseHandler!!.getQuiztimetakens(testQuiz.title,currentDate,testQuiz.lastplayed);
         if(time.equals("0")){
             tv_time.text = "1 min"
@@ -169,7 +266,35 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
 
     }
 
+    fun getWeekStartDate(): Date {
+        val calendar = Calendar.getInstance()
+        calendar.setTime(Utils.date)
+        while (calendar.get(Calendar.DAY_OF_WEEK) !== Calendar.MONDAY) {
+            calendar.add(Calendar.DATE, -1)
+        }
+        return calendar.time
+    }
+
+    fun getWeekEndDate(): Date {
+        val calendar = Calendar.getInstance()
+        calendar.setTime(Utils.date)
+        if(calendar.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY){
+            calendar.add(Calendar.DATE, 7)
+        }else {
+            while (calendar.get(Calendar.DAY_OF_WEEK) !== Calendar.MONDAY) {
+                calendar.add(Calendar.DATE, 1)
+            }
+        }
+
+        calendar.add(Calendar.DATE, -1)
+        return calendar.time
+    }
+
     override fun onClick(v: View?) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime()
         when (v!!.id) {
 
             R.id.btn_topics -> {
@@ -183,10 +308,20 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
-                val intent = Intent(this, DashBoardActivity::class.java)
-                intent.putExtra("fragment","tests")
-                startActivity(intent)
-                finish()
+
+                if(comingfrom.equals("Home")){
+                    val intent = Intent(this, DashBoardActivity::class.java)
+                    intent.putExtra("fragment","Home")
+                    startActivity(intent)
+                    finish()
+                }else{
+                    val intent = Intent(this, DashBoardActivity::class.java)
+                    intent.putExtra("fragment","tests")
+                    startActivity(intent)
+                    finish()
+                }
+
+
             }
             R.id.btn_new_test -> {
                 sound = sharedPrefs?.getBooleanPrefVal(this, ConstantPath.SOUNDS) ?: true
@@ -465,6 +600,7 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(ConstantPath.FOLDER_PATH, localPath)
         intent.putExtra(ConstantPath.TITLE_TOPIC, gradeTitle!!)
         intent.putExtra("LAST_PLAYED", lastplayed)
+        intent.putExtra("comingfrom", comingfrom)
         intent.putExtra(ConstantPath.TOPIC_LEVEL, "")
         intent.putExtra(ConstantPath.LEVEL_COMPLETED, "")
         intent.putExtra(ConstantPath.CARD_NO, "")
