@@ -73,7 +73,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Take a Tiny Test now!"
-                            android:textSize="@dimen/_12ssp"
+                            android:textSize="@dimen/_11ssp"
 
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_centerVertical="true"
@@ -85,6 +85,8 @@
                             android:id="@+id/tv_tiny2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:lineSpacingExtra="2dp"
                             android:text="Specially designed to help you master calculus concepts for JEE. Questions based on JEE Mains Syllabus and past papers."
                             android:textSize="@dimen/_11ssp"
                             android:layout_centerVertical="true"

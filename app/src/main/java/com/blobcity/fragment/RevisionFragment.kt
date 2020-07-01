@@ -94,7 +94,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
     var isDataFromFirebase:Boolean = false
     var position1 : Int = -1
     var view1:View? = null
-    private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    /*private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
         {
@@ -107,7 +107,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
             }
         }
         return true
-    }
+    }*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -382,7 +382,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
             }
         }
         this.revision = revision
-        if(activity?.let { hasPermissions(it, *PERMISSIONS) }!!){
+        //if(activity?.let { hasPermissions(it, *PERMISSIONS) }!!){
             try {
                 revisionList = databaseHandler?.getAllContacts() as ArrayList<RevisionEntity>?
                 Log.e("revision fragment",".......size....."+revisionList?.size!!)
@@ -436,10 +436,10 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
 
             }
 
-         }else{
+        /* }else{
 
              requestPermissions(PERMISSIONS, 112)
-         }
+         }*/
 
 
 

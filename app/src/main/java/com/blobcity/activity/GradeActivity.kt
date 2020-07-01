@@ -98,7 +98,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
     var url : String = ""
     override var layoutID: Int = R.layout.activity_splash
 
-    private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    /*private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
         {
@@ -111,7 +111,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
             }
         }
         return true
-    }
+    }*/
 
     override fun initView() {
 
@@ -371,7 +371,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
             if(sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME)){
 
-                if(hasPermissions(this, *PERMISSIONS)){
+                //if(hasPermissions(this, *PERMISSIONS)){
 
                     var downloadstatus = databaseHandler!!.gettesttopicdownloadstatus()
 
@@ -397,10 +397,10 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                     }
 
-                }else{
+               /* }else{
 
                     requestPermissions(PERMISSIONS, 112)
-                }
+                }*/
 
 
                 //navigateToIntro()
@@ -425,15 +425,15 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                 databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
 
                                 //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
-                                if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
+                               // if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
                                     // var url = databaseHandler!!.gettesttopicurl()
                                     //var url = databaseHandler!!.gettesttopicurl()
                                     downloadDataFromBackground(this@GradeActivity,url,version)
                                     navigateToIntro()
-                                }else{
+                                /*}else{
 
                                     requestPermissions(PERMISSIONS, 112)
-                                }
+                                }*/
 
 
                             } else {
@@ -503,7 +503,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                                     databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
                                     //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
-                                    if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
+                                   // if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
                                         // var url = databaseHandler!!.gettesttopicurl()
                                         downloadDataFromBackground(this@GradeActivity,url,version)
                                         navigateToDashboard("GRADE 6")
@@ -514,10 +514,10 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                             Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
                                         }*/
 
-                                    }else{
+                                   /* }else{
 
                                         requestPermissions(PERMISSIONS, 112)
-                                    }
+                                    }*/
 
 
                                 } else {
@@ -582,17 +582,17 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                                             var dbversion = databaseHandler!!.gettesttopicversion()
                                             if(dbversion != version) {
-                                                if (hasPermissions(this@GradeActivity, *PERMISSIONS)) {
+                                               // if (hasPermissions(this@GradeActivity, *PERMISSIONS)) {
                                                     // var url = databaseHandler!!.gettesttopicurl()
                                                     //if(Utils.isOnline(this@GradeActivity)){
                                                    // val task = MyAsyncTask(this@GradeActivity)
                                                    // task.execute(url)
                                                     downloadDataFromBackground(this@GradeActivity,url,version)
                                                     navigateToDashboard("GRADE 6")
-                                                } else {
+                                               /* } else {
 
                                                     requestPermissions(PERMISSIONS, 112)
-                                                }
+                                                }*/
                                             }else{
 
                                                 navigateToDashboard("GRADE 6")
