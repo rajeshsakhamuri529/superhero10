@@ -43,17 +43,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.analytics.FirebaseAnalytics
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+
 import kotlinx.android.synthetic.main.activity_sign_in.*
 import java.text.SimpleDateFormat
 import java.util.*
 
 class SignInActivity : BaseActivity(){
-
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     var topicName: String?=""
     var topicStatusVM: TopicStatusVM?= null
     private lateinit var auth: FirebaseAuth
@@ -102,6 +105,9 @@ class SignInActivity : BaseActivity(){
         sharedPrefs = SharedPrefs()
         firestore = FirebaseFirestore.getInstance()
         firstTime = intent.getStringExtra(ConstantPath.FIRST_TIME)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        firebaseAnalytics.setCurrentScreen(this, "Signup", null /* class override */)
         /*if(sharedPrefs!!.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME)) {
             sharedPrefs!!.setBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME, false)
             signin_layout.visibility = View.GONE
@@ -317,6 +323,14 @@ class SignInActivity : BaseActivity(){
                 val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
                 val currentDate = sdf.format(Date())
                 //sharedPrefs.setPrefVal(this@GradeActivity, "created_date", currentDate)
+                firebaseAnalytics.setUserId(user!!.uid)
+
+                val bundle = Bundle()
+                bundle.putString("Category", "Setup")
+                bundle.putString("Action", "Registered")
+                firebaseAnalytics?.logEvent("On_sucessful_Signup", bundle)
+
+
                 var userObj = User()
                 userObj.username = user.email
                 userObj.deviceuniqueid = android_id

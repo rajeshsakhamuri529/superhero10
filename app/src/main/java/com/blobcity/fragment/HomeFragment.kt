@@ -33,11 +33,12 @@ import com.bumptech.glide.Glide
 import com.downloader.Error
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.home_fragment.*
+import kotlinx.android.synthetic.main.home_fragment.view.*
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
@@ -78,6 +79,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
     private var randomPos: Int = -1
     private var positionList: ArrayList<String>? = ArrayList()
     var alertDialog: AlertDialog? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
      // variable to track event time
     var mLastClickTime:Long = 0;
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -89,19 +91,23 @@ class HomeFragment: Fragment(),View.OnClickListener {
         databaseHandler = QuizGameDataBase(context);
         sharedPrefs = SharedPrefs()
         gradeTitle = arguments!!.getString(ConstantPath.TITLE_TOPIC)!!
-        home.elevation = 15F
+        view.home.elevation = 15F
         val firebasesettings = FirebaseFirestoreSettings.Builder()
             .setPersistenceEnabled(true)
             .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
             .build()
         db.firestoreSettings = firebasesettings
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(activity!!)
+
+        firebaseAnalytics.setCurrentScreen(activity!!, "Home", null /* class override */)
+
        // quizRL.setOnClickListener(this)
        // testRL.setOnClickListener(this)
-        dateRL.setOnClickListener(this)
-        multi_quiz_go_btn.setOnClickListener(this)
-        go_btn_multi_test.setOnClickListener(this)
-        settings.setOnClickListener(this)
+        view.dateRL.setOnClickListener(this)
+        view.multi_quiz_go_btn.setOnClickListener(this)
+        view.go_btn_multi_test.setOnClickListener(this)
+        view.settings.setOnClickListener(this)
         positionList!!.add("basic.json")
         positionList!!.add("intermediate.json")
         Log.e("home fragment","sharedPrefs!!.getBooleanPrefVal(activity!!, \"isfirsttimeinstalled\")..."+sharedPrefs!!.getBooleanPrefVal(activity!!, "isfirsttimeinstalled"))
@@ -126,20 +132,20 @@ class HomeFragment: Fragment(),View.OnClickListener {
 
         }
         Log.e("home fragment","day of week......"+dayofweek.size)*/
-        multi_quiz_go_btn.isEnabled = true
-        go_btn_multi_test.isEnabled = true
+        view.multi_quiz_go_btn.isEnabled = true
+        view.go_btn_multi_test.isEnabled = true
 
 
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
 
-        tv_date.setText(""+format.format(Utils.date))
+        view.tv_date.setText(""+format.format(Utils.date))
         //Utils.date = Date()
         var count = databaseHandler!!.getChallengeForDate(format.format(Date()))
         Log.e("home fragment","cahllenge......"+count)
 
 
         val sourceString = "Get a perfect Score in a QUIZ"
-        quizscoretxt.setText(Html.fromHtml(sourceString))
+        view.quizscoretxt.setText(Html.fromHtml(sourceString))
         val face1: Typeface = Typeface.createFromAsset(activity!!.assets,"fonts/lato_bold.ttf")
         val face2: Typeface = Typeface.createFromAsset(activity!!.assets,"fonts/lato_black.ttf")
 
@@ -152,7 +158,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
         //SS.setSpan (face1, 0, 4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         SS.setSpan (CustomTypefaceSpan("", face2), 5, 7,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
         SS.setSpan (CustomTypefaceSpan("", face1), 7, 25,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-        testscoretxt1.setText(SS);
+        view.testscoretxt1.setText(SS);
 
         //val sourceString1 = "Score <b>2</b> or more in a TEST"
         //testscoretxt.setText(Html.fromHtml(sourceString1))
@@ -171,13 +177,13 @@ class HomeFragment: Fragment(),View.OnClickListener {
         var quizstatus = databaseHandler!!.getChallengeForQuizStatus(format.format(Utils.date))
         var teststatus = databaseHandler!!.getChallengeForTestStatus(format.format(Utils.date))
         if(quizstatus == 1){
-            multi_quiz_go_btn.visibility = View.GONE
-            multi_quiz_tick.visibility = View.VISIBLE
+            view.multi_quiz_go_btn.visibility = View.GONE
+            view.multi_quiz_tick.visibility = View.VISIBLE
         }
 
         if(teststatus == 1){
-            go_btn_multi_test.visibility = View.GONE
-            multi_test_tick.visibility = View.VISIBLE
+            view.go_btn_multi_test.visibility = View.GONE
+            view.multi_test_tick.visibility = View.VISIBLE
         }
         challengelist = databaseHandler!!.getChallengeFrombetweenDates(format.format(getWeekStartDate()),format.format(getWeekEndDate()))
 
@@ -210,9 +216,9 @@ class HomeFragment: Fragment(),View.OnClickListener {
             //SS.setSpan (face1, 0, 4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
            // SS.setSpan (CustomTypefaceSpan("", face1), 9, 15,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             SS.setSpan (CustomTypefaceSpan("", face1), 9, 31,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            bottom_txt1.setText(SS);
+            view.bottom_txt1.setText(SS);
             circles = arrayOfNulls<TextView>(4)
-            ll_test_status.removeAllViews()
+            view.ll_test_status.removeAllViews()
             for(i in 0 until 4){
                 val params = LinearLayout.LayoutParams(getResources().getDimension(R.dimen._20sdp).toInt(), getResources().getDimension(R.dimen._20sdp).toInt())
                 if(i != 0){
@@ -236,7 +242,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
                     .into(circles[i]!!)*/
                 circles[i]!!.typeface = face
                 circles[i]!!.layoutParams = params
-                ll_test_status.addView(circles!![i])
+                view.ll_test_status.addView(circles!![i])
             }
         }else{
 
@@ -247,7 +253,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
             //SS.setSpan (face1, 0, 4, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             SS.setSpan (CustomTypefaceSpan("", face2), 7, 9,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
             SS.setSpan (CustomTypefaceSpan("", face1), 9, 34,Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-            bottom_txt1.setText(SS);
+            view.bottom_txt1.setText(SS);
             circles = arrayOfNulls<TextView>(4)
             for(i in 0 until 4) {
                 if((i+1) <= testcount){
@@ -269,7 +275,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
                         .into(circles[i]!!)*/
                     circles[i]!!.typeface = face
                     circles[i]!!.layoutParams = params
-                    ll_test_status.addView(circles!![i])
+                    view.ll_test_status.addView(circles!![i])
                 }else{
                     val params = LinearLayout.LayoutParams(
                         getResources().getDimension(R.dimen._20sdp).toInt(),
@@ -289,7 +295,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
                         .into(circles[i]!!)*/
                     circles[i]!!.typeface = face
                     circles[i]!!.layoutParams = params
-                    ll_test_status.addView(circles!![i])
+                    view.ll_test_status.addView(circles!![i])
                 }
 
             }
@@ -304,37 +310,37 @@ class HomeFragment: Fragment(),View.OnClickListener {
         when(dayofweek) {
             1 -> {
                 //println("Invalid number")
-                image7.background = resources.getDrawable(R.drawable.day_of_week_success)
-                text7.setTextColor(resources.getColor(R.color.white))
+                view!!.image7.background = resources.getDrawable(R.drawable.day_of_week_success)
+                view!!.text7.setTextColor(resources.getColor(R.color.white))
             }
 
             2 -> {
                 //println("Number too low")
-                image1.background = resources.getDrawable(R.drawable.day_of_week_success)
-                text1.setTextColor(resources.getColor(R.color.white))
+                view!!.image1.background = resources.getDrawable(R.drawable.day_of_week_success)
+                view!!.text1.setTextColor(resources.getColor(R.color.white))
             }
             3 -> {
                // println("Number correct")
-                image2.background = resources.getDrawable(R.drawable.day_of_week_success)
-                text2.setTextColor(resources.getColor(R.color.white))
+                view!!.image2.background = resources.getDrawable(R.drawable.day_of_week_success)
+                view!!.text2.setTextColor(resources.getColor(R.color.white))
 
             }
             4 -> {
                 //println("Number too high, but acceptable")
-                image3.background = resources.getDrawable(R.drawable.day_of_week_success)
-                text3.setTextColor(resources.getColor(R.color.white))
+                view!!.image3.background = resources.getDrawable(R.drawable.day_of_week_success)
+                view!!.text3.setTextColor(resources.getColor(R.color.white))
             }
             5 -> {
-                image4.background = resources.getDrawable(R.drawable.day_of_week_success)
-                text4.setTextColor(resources.getColor(R.color.white))
+                view!!.image4.background = resources.getDrawable(R.drawable.day_of_week_success)
+                view!!.text4.setTextColor(resources.getColor(R.color.white))
             }
             6 -> {
-                image5.background = resources.getDrawable(R.drawable.day_of_week_success)
-                text5.setTextColor(resources.getColor(R.color.white))
+                view!!.image5.background = resources.getDrawable(R.drawable.day_of_week_success)
+                view!!.text5.setTextColor(resources.getColor(R.color.white))
             }
             7 -> {
-                image6.background = resources.getDrawable(R.drawable.day_of_week_success)
-                text6.setTextColor(resources.getColor(R.color.white))
+                view!!.image6.background = resources.getDrawable(R.drawable.day_of_week_success)
+                view!!.text6.setTextColor(resources.getColor(R.color.white))
             }
 
         }
@@ -356,7 +362,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
                 try {
                     val birthDate =
                         sdf.parse(year.toString() + "-" + (monthOfYear + 1) + "-" +dayOfMonth)
-                    tv_date.setText(sdf.format(birthDate))
+                    view!!.tv_date.setText(sdf.format(birthDate))
                     Log.e("home fragment...","....dayOfMonth...."+dayOfMonth)
                     Log.e("home fragment...","....(monthOfYear + 1)...."+(monthOfYear + 1))
                     Log.e("home fragment...","....year...."+year)
@@ -455,7 +461,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
-                multi_quiz_go_btn.isEnabled = false
+                view!!.multi_quiz_go_btn.isEnabled = false
                 quizbuttonAction()
             }
             R.id.go_btn_multi_test -> {
@@ -469,7 +475,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
-                go_btn_multi_test.isEnabled = false
+                view!!.go_btn_multi_test.isEnabled = false
                 testbuttonAction()
             }
             R.id.settings -> {
@@ -512,9 +518,9 @@ class HomeFragment: Fragment(),View.OnClickListener {
                 if(isdownload){
                     downloaddialog("We’re downloading the latest Tests. Please try again in a few minutes.")
                 }else {
-                    progress_bar.visibility = View.VISIBLE
-                    txt_next.visibility = View.GONE
-                    right_arrow.visibility = View.GONE
+                    view!!.progress_bar.visibility = View.VISIBLE
+                    view!!.txt_next.visibility = View.GONE
+                    view!!.right_arrow.visibility = View.GONE
                     val docRef =
                         db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
                     docRef.get().addOnSuccessListener { document ->
@@ -528,17 +534,17 @@ class HomeFragment: Fragment(),View.OnClickListener {
 
                             var dbversion = databaseHandler!!.gettesttopicversion()
                             if (dbversion != version) {
-                                progress_bar.visibility = View.GONE
-                                txt_next.visibility = View.VISIBLE
-                                right_arrow.visibility = View.VISIBLE
+                                view!!.progress_bar.visibility = View.GONE
+                                view!!.txt_next.visibility = View.VISIBLE
+                                view!!.right_arrow.visibility = View.VISIBLE
                                 downloaddialog("We’re downloading the latest Tests. Please try again in a few minutes.")
                                 //showDataFromBackground(activity!!,url,version, mServiceResultReceiver!!)
                                 downdata(url)
                             } else {
                                 //   test_btn.isEnabled = true
-                                progress_bar.visibility = View.GONE
-                                txt_next.visibility = View.VISIBLE
-                                right_arrow.visibility = View.VISIBLE
+                                view!!.progress_bar.visibility = View.GONE
+                                view!!.txt_next.visibility = View.VISIBLE
+                                view!!.right_arrow.visibility = View.VISIBLE
                                 gotoStartScreen()
                             }
 
@@ -566,9 +572,9 @@ class HomeFragment: Fragment(),View.OnClickListener {
                     }else {
 
 
-                        progress_bar.visibility = View.VISIBLE
-                        txt_next.visibility = View.GONE
-                        right_arrow.visibility = View.GONE
+                        view!!.progress_bar.visibility = View.VISIBLE
+                        view!!.txt_next.visibility = View.GONE
+                        view!!.right_arrow.visibility = View.GONE
                         val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
                         docRef.get().addOnSuccessListener { document ->
                             if (document != null) {
@@ -576,9 +582,9 @@ class HomeFragment: Fragment(),View.OnClickListener {
                                 version = document.data!!.get("TestContentVersion").toString()
                                 url = document.data!!.get("TestContentUrl").toString()
 
-                                progress_bar.visibility = View.GONE
-                                txt_next.visibility = View.VISIBLE
-                                right_arrow.visibility = View.VISIBLE
+                                view!!.progress_bar.visibility = View.GONE
+                                view!!.txt_next.visibility = View.VISIBLE
+                                view!!.right_arrow.visibility = View.VISIBLE
                                 databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
                                 //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
                                 //if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
@@ -611,9 +617,9 @@ class HomeFragment: Fragment(),View.OnClickListener {
                     }
 
                 }else{
-                    progress_bar.visibility = View.GONE
-                    txt_next.visibility = View.VISIBLE
-                    right_arrow.visibility = View.VISIBLE
+                    view!!.progress_bar.visibility = View.GONE
+                    view!!.txt_next.visibility = View.VISIBLE
+                    view!!.right_arrow.visibility = View.VISIBLE
                     var url = databaseHandler!!.gettesttopicurl()
                     var version = databaseHandler!!.gettesttopicversion()
                     downdata(url)
@@ -895,12 +901,16 @@ class HomeFragment: Fragment(),View.OnClickListener {
 
 
         }*/
-
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "QuizGo")
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+        //bundle.putString("Label", "QuizGo")
+        firebaseAnalytics?.logEvent("PlayQuiz", bundle)
 
 
 
         Log.e("chapter fragment.....","jsonStringBasic......."+jsonStringBasic);
-        multi_quiz_go_btn.isEnabled = true
+        view!!.multi_quiz_go_btn.isEnabled = true
 
         val intent = Intent(context!!, StartQuizActivityNew::class.java)
         intent.putExtra(ConstantPath.TOPIC, topic)
@@ -981,10 +991,17 @@ class HomeFragment: Fragment(),View.OnClickListener {
         }
 
 
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "TestGo")
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+       // bundle.putString("Label", "TestGo")
+        firebaseAnalytics?.logEvent("PlayTest", bundle)
+
+
 
 
         Log.e("chapter fragment.....","jsonStringBasic......."+jsonStringBasic);
-        go_btn_multi_test.isEnabled = true
+        view!!.go_btn_multi_test.isEnabled = true
         val intent = Intent(context!!, StartQuizTimerActivity::class.java)
         intent.putExtra(ConstantPath.TOPIC, topic)
         intent.putExtra(ConstantPath.TOPIC_NAME, topic.title)

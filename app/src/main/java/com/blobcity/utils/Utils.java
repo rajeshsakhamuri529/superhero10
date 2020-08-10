@@ -23,6 +23,9 @@ import android.util.Log;
 import android.webkit.WebView;
 import android.widget.TextView;
 import com.blobcity.R;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -60,6 +63,24 @@ public class Utils {
     public static boolean loaded = false;
     public static float volume;
     public static Date date = new Date();
+    public static Tracker sTracker;
+
+    public void getApp(Context context){
+
+    }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     * @return tracker
+     */
+    synchronized public static Tracker getDefaultTracker(GoogleAnalytics sAnalytics) {
+        // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+        if (sTracker == null) {
+            sTracker = sAnalytics.newTracker(R.xml.global_tracker);
+        }
+
+        return sTracker;
+    }
     //public static int startTime = 0;
     /**
      * Returns the unique identifier for the device

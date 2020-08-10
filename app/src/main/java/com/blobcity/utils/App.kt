@@ -12,10 +12,26 @@ import com.google.android.gms.tasks.OnCompleteListener
 //import javax.swing.UIManager.put
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
+import android.support.v4.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.google.android.gms.analytics.GoogleAnalytics
+import android.support.v4.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.google.android.gms.analytics.Tracker
+import android.R
+import android.support.v4.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
+
+
 private val TAG = App::class.java.simpleName
 
 
 class App : Application() {
+    private var sAnalytics: GoogleAnalytics? = null
+    private var sTracker: Tracker? = null
+
 
     override fun onCreate() {
         super.onCreate()
@@ -25,6 +41,9 @@ class App : Application() {
         Log.d("onCreate","app")
         val firebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         PRDownloader.initialize(applicationContext)
+        sAnalytics = GoogleAnalytics.getInstance(this);
+        sTracker = Utils.getDefaultTracker(sAnalytics);
+
         // set in-app defaults
         /*var remoteConfigDefaults = HashMap<String,Any>()
         remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_REQUIRED, false)
@@ -51,4 +70,7 @@ class App : Application() {
                 }
             }
     }
+
+
+
 }

@@ -27,8 +27,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.setting_layout.*
+import kotlinx.android.synthetic.main.setting_layout.view.*
 
 class SettingFragment : Fragment(), View.OnClickListener {
 
@@ -42,18 +43,19 @@ class SettingFragment : Fragment(), View.OnClickListener {
     private lateinit var auth: FirebaseAuth
     var mLastClickTime:Long = 0;
     private var mGoogleSignInClient: GoogleSignInClient? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.setting_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        settings.elevation = 15f
+        view.settings.elevation = 15f
         try {
             var currentVersion = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionName
             var currentCode = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionCode
             //versionname.text = "V "+currentVersion+" ("+currentCode+")"
-            versionname.text = "V "+currentVersion
+            view.versionname.text = "V "+currentVersion
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
@@ -63,6 +65,10 @@ class SettingFragment : Fragment(), View.OnClickListener {
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(activity!!)
+
+        firebaseAnalytics.setCurrentScreen(activity!!, "Settings", null /* class override */)
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -71,57 +77,153 @@ class SettingFragment : Fragment(), View.OnClickListener {
         mGoogleSignInClient = GoogleSignIn.getClient(this!!.activity!!, gso)
 
         sound = sharedPrefs?.getBooleanPrefVal(context!!, SOUNDS) ?: true
-        cb_sounds_settings.isChecked = !sound
+        view.cb_sounds_settings.isChecked = !sound
         if(!sound){
             sharedPrefs?.setBooleanPrefVal(context!!, SOUNDS, sound)
-            sound_state_tv.text = "Sound On"
+            view.sound_state_tv.text = "Sound On"
+            /*val bundle = Bundle()
+            bundle.putString("Category", "Settings")
+            bundle.putString("Action", "Toggle")
+            bundle.putString("Label", "Sounds")
+            bundle.putString("Value", "1")
+            firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Sounds")
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+            bundle.putString(FirebaseAnalytics.Param.VALUE, "1")
+            firebaseAnalytics?.logEvent("Toggle", bundle)
         }
         else{
-            sound_state_tv.text = "Sound Off"
+            view.sound_state_tv.text = "Sound Off"
+            /*val bundle = Bundle()
+            bundle.putString("Category", "Settings")
+            bundle.putString("Action", "Toggle")
+            bundle.putString("Label", "Sounds")
+            bundle.putString("Value", "0")
+            firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Sounds")
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+            bundle.putString(FirebaseAnalytics.Param.VALUE, "0")
+            firebaseAnalytics?.logEvent("Toggle", bundle)
         }
-        cb_sounds_settings.setOnClickListener {
+        view.cb_sounds_settings.setOnClickListener {
             sound = !sound
             sharedPrefs?.setBooleanPrefVal(context!!, SOUNDS, sound)
-            cb_sounds_settings.isChecked = !sound
+            view.cb_sounds_settings.isChecked = !sound
             if(!sound){
-                sound_state_tv.text = "Sound On"
+                view.sound_state_tv.text = "Sound On"
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Settings")
+                bundle.putString("Action", "Toggle")
+                bundle.putString("Label", "Sounds")
+                bundle.putString("Value", "1")
+                firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Sounds")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+                bundle.putString(FirebaseAnalytics.Param.VALUE, "1")
+                firebaseAnalytics?.logEvent("Toggle", bundle)
             }
             else{
-                sound_state_tv.text = "Sound Off"
+                view.sound_state_tv.text = "Sound Off"
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Settings")
+                bundle.putString("Action", "Toggle")
+                bundle.putString("Label", "Sounds")
+                bundle.putString("Value", "0")
+                firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Sounds")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+                bundle.putString(FirebaseAnalytics.Param.VALUE, "0")
+                firebaseAnalytics?.logEvent("Toggle", bundle)
             }
         }
         notification = sharedPrefs?.getBooleanPrefVal(context!!, NOTIFICATION) ?: true
-        cb_notifications_settings.isChecked = !notification
+        view.cb_notifications_settings.isChecked = !notification
         if(!notification){
             sharedPrefs?.setBooleanPrefVal(context!!, NOTIFICATION, notification)
-            notification_state_tv.text = "Notifications On"
+            view.notification_state_tv.text = "Notifications On"
+            /*val bundle = Bundle()
+            bundle.putString("Category", "Settings")
+            bundle.putString("Action", "Toggle")
+            bundle.putString("Label", "Notifications")
+            bundle.putString("Value", "1")
+            firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Notifications")
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+            bundle.putString(FirebaseAnalytics.Param.VALUE, "1")
+            firebaseAnalytics?.logEvent("Toggle", bundle)
         }
         else{
-            notification_state_tv.text = "Notifications Off"
+            view.notification_state_tv.text = "Notifications Off"
+            /*val bundle = Bundle()
+            bundle.putString("Category", "Settings")
+            bundle.putString("Action", "Toggle")
+            bundle.putString("Label", "Notifications")
+            bundle.putString("Value", "0")
+            firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Notifications")
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+            bundle.putString(FirebaseAnalytics.Param.VALUE, "0")
+            firebaseAnalytics?.logEvent("Toggle", bundle)
         }
-        cb_notifications_settings.setOnClickListener{
+        view.cb_notifications_settings.setOnClickListener{
             notification=!notification
             sharedPrefs?.setBooleanPrefVal(context!!, NOTIFICATION, notification)
-            cb_notifications_settings.isChecked = !notification
+            view.cb_notifications_settings.isChecked = !notification
             if(!notification){
-                notification_state_tv.text = "Notifications On"
+                view.notification_state_tv.text = "Notifications On"
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Settings")
+                bundle.putString("Action", "Toggle")
+                bundle.putString("Label", "Notifications")
+                bundle.putString("Value", "1")
+                firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Notifications")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+                bundle.putString(FirebaseAnalytics.Param.VALUE, "1")
+                firebaseAnalytics?.logEvent("Toggle", bundle)
             }
             else{
-                notification_state_tv.text = "Notifications Off"
+                view.notification_state_tv.text = "Notifications Off"
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Settings")
+                bundle.putString("Action", "Toggle")
+                bundle.putString("Label", "Notifications")
+                bundle.putString("Value", "0")
+                firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Notifications")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+                bundle.putString(FirebaseAnalytics.Param.VALUE, "0")
+                firebaseAnalytics?.logEvent("Toggle", bundle)
             }
         }
 
         if((sharedPrefs?.getBooleanPrefVal(context!!, ConstantPath.ISNOTLOGIN) ?: true)){
             //sign in
-            txt_sign_in.text = "Sign Out"
+            view.txt_sign_in.text = "Sign Out"
         }else{
             //not sign in
-            txt_sign_in.text = "Sign In"
+            view.txt_sign_in.text = "Sign In"
         }
 
-        cl_terms_and_conditions.setOnClickListener(this)
-        cl_write_to_us.setOnClickListener(this)
-        signout.setOnClickListener(this)
+        view.cl_terms_and_conditions.setOnClickListener(this)
+        view.cl_write_to_us.setOnClickListener(this)
+        view.signout.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -132,24 +234,45 @@ class SettingFragment : Fragment(), View.OnClickListener {
         mLastClickTime = SystemClock.elapsedRealtime()
         when (v!!.id) {
             R.id.cl_terms_and_conditions -> {
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Settings")
+                bundle.putString("Action", "Policy")
+                bundle.putString("Label", "PrivacyPolicy")
+                firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "PrivacyPolicy")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+                firebaseAnalytics?.logEvent("Policy", bundle)
                 intent = Intent(context, WriteToUsActivity::class.java)
                 intent.putExtra("activityname", "termsandconditions")
                 startActivity(intent)
             }
 
             R.id.cl_write_to_us -> {
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Settings")
+                bundle.putString("Action", "Contact")
+                bundle.putString("Label", "WriteToUs")
+                firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "WriteToUs")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+                firebaseAnalytics?.logEvent("Contact", bundle)
                 intent = Intent(context, WriteToUsActivity::class.java)
                 intent.putExtra("activityname", "writetous")
                 startActivity(intent)
             }
 
             R.id.signout -> {
-                if(txt_sign_in.text.equals("Sign In")) {
+                if(view!!.txt_sign_in.text.equals("Sign In")) {
                     val intent = Intent(context!!, SignInActivity::class.java)
                     startActivity(intent)
                     //txt_sign_in.text = "Sign Out"
-                } else if(txt_sign_in.text.equals("Sign Out")){
+                } else if(view!!.txt_sign_in.text.equals("Sign Out")){
                     //passtxt_sign_in.text = "Sign In"
+
                     showDialog(context!!)
                 }
             }
@@ -169,6 +292,16 @@ class SettingFragment : Fragment(), View.OnClickListener {
             sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.IS_FIRST_TIME, true)
 
             //sharedPrefs?.setBooleanPrefVal(context!!, ConstantPath.IS_LOGGED_IN, false)
+            /*val bundle = Bundle()
+            bundle.putString("Category", "Settings")
+            bundle.putString("Action", "SignOut")
+            bundle.putString("Label", "SignOut")
+            firebaseAnalytics?.logEvent("Settings", bundle)*/
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "SignOut")
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+            firebaseAnalytics?.logEvent("SignOut", bundle)
 
             databaseHandler!!.deleteAllQuizTopicsLatPlayed()
             databaseHandler!!.deleteAllQuizPlayFinal()

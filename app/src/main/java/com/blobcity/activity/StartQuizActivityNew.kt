@@ -24,6 +24,7 @@ import android.support.v4.app.SupportActivity
 import android.support.v4.app.SupportActivity.ExtraData
 import android.support.v4.content.ContextCompat.getSystemService
 import com.blobcity.model.Topic
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 class StartQuizActivityNew : BaseActivity(), View.OnClickListener {
@@ -50,6 +51,7 @@ class StartQuizActivityNew : BaseActivity(), View.OnClickListener {
     lateinit var topic: Topic
     lateinit var circles: Array<ImageView?>
     var mLastClickTime:Long = 0;
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override var layoutID: Int = R.layout.activity_start_quiz_new
 
     override fun initView() {
@@ -94,7 +96,7 @@ class StartQuizActivityNew : BaseActivity(), View.OnClickListener {
         }
 
         tv_quiz_title.text = topic.title
-
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         circles = arrayOfNulls<ImageView>(totalQuestion!!)
         ll_answers.removeAllViews()
         for(i in 0 until totalQuestion!!){
@@ -151,6 +153,18 @@ class StartQuizActivityNew : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
+
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Quiz")
+                bundle.putString("Action", "Launch")
+                bundle.putString("Label", topic.title)
+                firebaseAnalytics?.logEvent("QuizLaunch", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topic.title)
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+                // bundle.putString("Label", "TestGo")
+                firebaseAnalytics?.logEvent("Launch", bundle)
 
                 val intent = Intent(this!!, TestQuestionActivity::class.java)
                 intent.putExtra(ConstantPath.TOPIC, topic)

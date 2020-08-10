@@ -32,9 +32,12 @@ import com.blobcity.utils.*
 import com.blobcity.utils.ConstantPath.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.firebase.analytics.FirebaseAnalytics
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.*
 import com.google.firebase.iid.FirebaseInstanceId
+
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
@@ -78,7 +81,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         startActivity(intent)
         finish()
     }
-
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
     val storage = FirebaseStorage.getInstance()
@@ -126,6 +129,9 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorbottomnav));
         }
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        //firebaseAnalytics.setCurrentScreen(this, "Signup", null /* class override */)
 
         TedPermission.with(this)
             .setPermissionListener(this)

@@ -32,6 +32,7 @@ import com.blobcity.database.DatabaseHandler
 import com.blobcity.fragment.RevisionFragment
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.SharedPrefs
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 class PDFViewerActivity : BaseActivity() {
@@ -43,6 +44,7 @@ class PDFViewerActivity : BaseActivity() {
     var databaseHandler: DatabaseHandler?= null
     var path:String=""
     var rid:String =""
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override var layoutID: Int = R.layout.activity_pdfviewer
 
     override fun initView() {
@@ -54,7 +56,9 @@ class PDFViewerActivity : BaseActivity() {
         sharedPrefs = SharedPrefs()
         databaseHandler = DatabaseHandler(this);
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
+        firebaseAnalytics.setCurrentScreen(this, "BookName", null /* class override */)
 
 
         backRL.setOnClickListener {
@@ -153,6 +157,11 @@ class PDFViewerActivity : BaseActivity() {
                 tick.background = resources.getDrawable(R.drawable.book_read_status)
             }else{
                 tick1RL.visibility = View.INVISIBLE
+                val bundle = Bundle()
+                bundle.putString("Category", "Book")
+                bundle.putString("Action", "Mark as Read")
+                bundle.putString("Label", path)
+                firebaseAnalytics?.logEvent("Book", bundle)
                 databaseHandler!!.updateBookaReadStatus(rid,"0");
                 markread.text ="Mark as Unread"
                 tick.background = resources.getDrawable(R.drawable.ic_tick_green_circle1)

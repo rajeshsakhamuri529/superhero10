@@ -2,6 +2,7 @@ package com.blobcity.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v4.content.FileProvider
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -13,6 +14,7 @@ import com.blobcity.database.DatabaseHandler
 import com.blobcity.interfaces.RevisionItemClickListener
 import com.blobcity.model.RevisionModel
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.revision_list_item.view.*
 import kotlinx.android.synthetic.main.revision_list_item.view.rid
 import kotlinx.android.synthetic.main.revision_list_item.view.rootLayout
@@ -27,7 +29,7 @@ import java.io.File
 class RevisionAdapter(
     val context: Context,
     val revisionItemList: List<RevisionModel>,
-    val pdfItemClickListener: RevisionItemClickListener
+    val pdfItemClickListener: RevisionItemClickListener,var firebaseAnalytics: FirebaseAnalytics
 ) : RecyclerView.Adapter<RevisionAdapter.RevisionViewHolder>() {
     var databaseHandler: DatabaseHandler?= null
     lateinit var holder1: RevisionViewHolder
@@ -124,6 +126,19 @@ class RevisionAdapter(
                 holder.markread.text ="Mark as Read"
                 holder.tick1.background = context.resources.getDrawable(R.drawable.book_read_status)
             }else{
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Book")
+                bundle.putString("Action", "Mark as Read")
+                bundle.putString("Label", revisionItemList[position].filename)
+                firebaseAnalytics?.logEvent("Book", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, revisionItemList[position].filename)
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Book")
+                // bundle.putString("Label", "TestGo")
+                firebaseAnalytics?.logEvent("MarkasRead", bundle)
+
+
                 holder.markread.text ="Mark as Unread"
                 holder.tick1.background = context.resources.getDrawable(R.drawable.ic_tick_green_circle1)
             }

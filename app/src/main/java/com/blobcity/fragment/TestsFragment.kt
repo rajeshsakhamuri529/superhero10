@@ -33,11 +33,12 @@ import com.blobcity.interfaces.TestQuizReviewClickListener
 import com.blobcity.model.*
 import com.blobcity.utils.*
 import com.downloader.*
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.tests_challenge.*
+import kotlinx.android.synthetic.main.tests_challenge.view.*
 import org.apache.commons.io.FileUtils
 import java.io.File
 
@@ -66,6 +67,7 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
     private var mServiceResultReceiver: ServiceResultReceiver? = null
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     var isdownload:Boolean = false
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.tests_challenge, container, false)
     }
@@ -73,7 +75,7 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         gradeTitle = arguments!!.getString(ConstantPath.TITLE_TOPIC)!!
-        tests.elevation = 15F
+        view.tests.elevation = 15F
         sharedPrefs = SharedPrefs()
         val settings = FirebaseFirestoreSettings.Builder()
             .setPersistenceEnabled(true)
@@ -85,8 +87,10 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
         mServiceResultReceiver?.setReceiver(this)
         databaseHandler = QuizGameDataBase(context);
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(activity!!)
 
-        test_btn.setOnClickListener(this)
+        firebaseAnalytics.setCurrentScreen(activity!!, "Test", null /* class override */)
+        view.test_btn.setOnClickListener(this)
 
 
         var downloadstatus = databaseHandler!!.gettesttopicdownloadstatus()
@@ -97,20 +101,20 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
         testquizlist = databaseHandler!!.getTestQuizList()
 
         if(testquizlist!!.size == 0){
-            tv_no_review.visibility = View.VISIBLE
-            rcv_tests.visibility = View.GONE
+            view.tv_no_review.visibility = View.VISIBLE
+            view.rcv_tests.visibility = View.GONE
         }else{
-            rcv_tests.visibility = View.VISIBLE
-            tv_no_review.visibility = View.GONE
+            view.rcv_tests.visibility = View.VISIBLE
+            view.tv_no_review.visibility = View.GONE
 
 
             adapter = TestsAdapter(context!!, testquizlist!!,this)
 
 
-            rcv_tests.addItemDecoration(VerticalSpaceItemDecoration(30));
+            view.rcv_tests.addItemDecoration(VerticalSpaceItemDecoration(30));
             //rcv_chapter.addItemDecoration(itemDecorator)
             //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
-            rcv_tests.adapter = adapter
+            view.rcv_tests.adapter = adapter
         }
 
     }
@@ -264,9 +268,9 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
                        if(isdownload){
                            downloaddialog("We’re downloading the latest Tests. Please try again in a few minutes.")
                        }else {
-                           progress_bar.visibility = View.VISIBLE
-                           txt_next.visibility = View.GONE
-                           right_arrow.visibility = View.GONE
+                           view!!.progress_bar.visibility = View.VISIBLE
+                           view!!.txt_next.visibility = View.GONE
+                           view!!.right_arrow.visibility = View.GONE
                            val docRef =
                                db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
                            docRef.get().addOnSuccessListener { document ->
@@ -280,17 +284,17 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
 
                                    var dbversion = databaseHandler!!.gettesttopicversion()
                                    if (dbversion != version) {
-                                       progress_bar.visibility = View.GONE
-                                       txt_next.visibility = View.VISIBLE
-                                       right_arrow.visibility = View.VISIBLE
+                                       view!!.progress_bar.visibility = View.GONE
+                                       view!!.txt_next.visibility = View.VISIBLE
+                                       view!!.right_arrow.visibility = View.VISIBLE
                                        downloaddialog("We’re downloading the latest Tests. Please try again in a few minutes.")
                                        //showDataFromBackground(activity!!,url,version, mServiceResultReceiver!!)
                                        downdata(url)
                                    } else {
                                        //   test_btn.isEnabled = true
-                                       progress_bar.visibility = View.GONE
-                                       txt_next.visibility = View.VISIBLE
-                                       right_arrow.visibility = View.VISIBLE
+                                       view!!.progress_bar.visibility = View.GONE
+                                       view!!.txt_next.visibility = View.VISIBLE
+                                       view!!.right_arrow.visibility = View.VISIBLE
                                        gotoStartScreen()
                                    }
 
@@ -318,9 +322,9 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
                            }else {
 
 
-                           progress_bar.visibility = View.VISIBLE
-                           txt_next.visibility = View.GONE
-                           right_arrow.visibility = View.GONE
+                               view!!.progress_bar.visibility = View.VISIBLE
+                               view!!.txt_next.visibility = View.GONE
+                               view!!.right_arrow.visibility = View.GONE
                            val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
                            docRef.get().addOnSuccessListener { document ->
                                if (document != null) {
@@ -328,9 +332,9 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
                                    version = document.data!!.get("TestContentVersion").toString()
                                    url = document.data!!.get("TestContentUrl").toString()
 
-                                   progress_bar.visibility = View.GONE
-                                   txt_next.visibility = View.VISIBLE
-                                   right_arrow.visibility = View.VISIBLE
+                                   view!!.progress_bar.visibility = View.GONE
+                                   view!!.txt_next.visibility = View.VISIBLE
+                                   view!!.right_arrow.visibility = View.VISIBLE
                                    databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
                                    //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
                                    //if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
@@ -363,9 +367,9 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
                            }
 
                        }else{
-                           progress_bar.visibility = View.GONE
-                           txt_next.visibility = View.VISIBLE
-                           right_arrow.visibility = View.VISIBLE
+                           view!!.progress_bar.visibility = View.GONE
+                           view!!.txt_next.visibility = View.VISIBLE
+                           view!!.right_arrow.visibility = View.VISIBLE
                            var url = databaseHandler!!.gettesttopicurl()
                            var version = databaseHandler!!.gettesttopicversion()
                            downdata(url)
@@ -515,6 +519,17 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
         }
 
 
+        /*val bundle = Bundle()
+        bundle.putString("Category", "Test")
+        bundle.putString("Action", "Test")
+        bundle.putString("Label", topic.title)
+        firebaseAnalytics?.logEvent("Test", bundle)*/
+
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topic.title)
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+        // bundle.putString("Label", "TestGo")
+        firebaseAnalytics?.logEvent("Test", bundle)
 
 
         Log.e("chapter fragment.....","jsonStringBasic......."+jsonStringBasic);

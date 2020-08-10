@@ -34,7 +34,7 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
-import kotlinx.android.synthetic.main.daily_challenge.*
+import kotlinx.android.synthetic.main.daily_challenge.view.*
 
 import java.io.File
 import java.text.DateFormat
@@ -303,11 +303,11 @@ class DailyChallengeFragment: Fragment(), ChallengeItemClickListener,
 
 
         //swipe_container.setOnRefreshListener(activity);
-        swipe_container.setOnRefreshListener {
+        view.swipe_container.setOnRefreshListener {
             gettingChallengesFromFireStore();
         }
 
-        swipe_container.setColorSchemeResources(R.color.colorPrimary,
+        view.swipe_container.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
@@ -320,7 +320,7 @@ class DailyChallengeFragment: Fragment(), ChallengeItemClickListener,
 
     fun gettingChallengesFromFireStore() : ArrayList<ChallengeModel>? {
 // Hide swipe to refresh icon animation
-        swipe_container.isRefreshing = true
+        view!!.swipe_container.isRefreshing = true
         tempItemList?.clear()
         dailyChallengeList?.clear()
         dailyList?.clear()
@@ -486,12 +486,12 @@ class DailyChallengeFragment: Fragment(), ChallengeItemClickListener,
                         //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
                         if(!isFirstTime){
                             isFirstTime = true
-                            rcv_daily_challenges.addItemDecoration(VerticalSpaceItemDecoration(48));
+                            view!!.rcv_daily_challenges.addItemDecoration(VerticalSpaceItemDecoration(48));
                         }
 
-                        rcv_daily_challenges.adapter = adapter
+                        view!!.rcv_daily_challenges.adapter = adapter
                         // Hide swipe to refresh icon animation
-                        swipe_container.isRefreshing = false
+                        view!!.swipe_container.isRefreshing = false
 
                     }catch (e:Exception){
                         Log.e("revision fragment",".....exception..."+e)

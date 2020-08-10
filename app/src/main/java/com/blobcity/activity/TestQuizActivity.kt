@@ -17,6 +17,7 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.os.Build
+import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.support.annotation.RequiresApi
@@ -61,6 +62,7 @@ import android.widget.*
 import com.blobcity.database.QuizGameDataBase
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.SharedPrefs
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 import kotlinx.android.synthetic.main.activity_test_quiz.*
@@ -217,6 +219,8 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
             = HashMap<Int, Int> ()
     var isfirsttime:Boolean = true
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     override var layoutID: Int = R.layout.activity_test_quiz
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -268,7 +272,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
         //databaseHandler!!.deleteAlltime()
         testStartTime = System.currentTimeMillis();
 
-
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         // assigning values after converting to milliseconds
 
         val makeVertical = RotateAnimation(0F, -90F, RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f)
@@ -752,6 +756,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
 
+
                 submitDialog()
 
                 //navigateToSummaryScreenNew()
@@ -843,6 +848,19 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
             var status:Int = databaseHandler!!.updatequizplayFinalstatus(testQuiz.title,"1",currentDate,testQuiz.lastplayed);
             var answers:Int = databaseHandler!!.updatequizplayFinalTimeTaken(testQuiz.title,timetaken.toString(),currentDate,testQuiz.lastplayed);
+
+            /*val bundle = Bundle()
+            bundle.putString("Category", "Test")
+            bundle.putString("Action", "TestSubmit")
+            bundle.putString("Label", topicName)
+            firebaseAnalytics?.logEvent("TestPlay", bundle)*/
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+            // bundle.putString("Label", "TestGo")
+            firebaseAnalytics?.logEvent("TestSubmit", bundle)
+
             navigateToSummaryScreenNew()
         }
         btn_close.setOnClickListener {
@@ -3179,6 +3197,19 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
                 }
 
             }
+            /*val bundle = Bundle()
+            bundle.putString("Category", "Test")
+            bundle.putString("Action", "TestQuit")
+            bundle.putString("Label", topicName)
+            firebaseAnalytics?.logEvent("TestPlay", bundle)*/
+
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+            // bundle.putString("Label", "TestGo")
+            firebaseAnalytics?.logEvent("TestQuit", bundle)
+
           //  updateHandler.removeCallbacksAndMessages(null);
            // updateHandler.removeCallbacks(runnable);
             finish()

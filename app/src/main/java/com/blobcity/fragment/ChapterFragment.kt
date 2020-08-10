@@ -23,19 +23,20 @@ import com.blobcity.utils.ConstantPath.*
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.android.synthetic.main.chapter_layout.*
+import kotlinx.android.synthetic.main.chapter_layout.view.*
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
 import com.blobcity.activity.*
 import com.blobcity.database.QuizGameDataBase
 import com.blobcity.utils.*
 import com.blobcity.utils.Utils.*
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.io.IOException
 import java.nio.charset.Charset
 
 
 class ChapterFragment: Fragment(), TopicClickListener {
-
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     private var branchesItemList:List<BranchesItem>?=null
     var courseId: String?=""
     var courseName: String?=""
@@ -62,7 +63,11 @@ class ChapterFragment: Fragment(), TopicClickListener {
         databaseHandler = QuizGameDataBase(context);
         readFileLocally()
 
-        topics.elevation = 15F
+        view.topics.elevation = 15F
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(activity!!)
+
+        firebaseAnalytics.setCurrentScreen(activity!!, "Quiz", null /* class override */)
         /*val itemDecorator = DividerItemDecoration(context!!, DividerItemDecoration.VERTICAL)
         itemDecorator.setDrawable(ContextCompat.getDrawable(activity!!, R.drawable.rv_divider)!!)*/
 
@@ -107,12 +112,12 @@ class ChapterFragment: Fragment(), TopicClickListener {
                         }
                     }
                     adapter = ChaptersAdapter(context!!, branchesItemList!!, this@ChapterFragment)
-                    rcv_chapter.addItemDecoration(VerticalSpaceItemDecoration(40));
+                    view.rcv_chapter.addItemDecoration(VerticalSpaceItemDecoration(40));
                     //rcv_chapter.setNestedScrollingEnabled(false);
-                    rcv_chapter.setHasFixedSize(true);
+                    view.rcv_chapter.setHasFixedSize(true);
                     //rcv_chapter.addItemDecoration(itemDecorator)
                     //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
-                    rcv_chapter.adapter = adapter
+                    view.rcv_chapter.adapter = adapter
                     databaseHandler!!.deleteAllQuizTopics()
                     for(i in 0 until branchesItemList!!.size){
                         var no = branchesItemList!![i].topic.displayNo.toString()
@@ -125,14 +130,14 @@ class ChapterFragment: Fragment(), TopicClickListener {
                 }
 
             })
-        rcv_chapter.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        view.rcv_chapter.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val layoutManager = (recyclerView.layoutManager as LinearLayoutManager)
                 val totalItemCount = layoutManager.itemCount
                 val lastVisible = layoutManager.findLastVisibleItemPosition()
                 Log.d("lastVisible",lastVisible.toString()+"!")
                 adapter!!.lastItem(
-                    (rcv_chapter
+                    (view.rcv_chapter
                         .findViewHolderForAdapterPosition(lastVisible)
                             as ChaptersAdapter.ChaptersViewHolder)
                 )
@@ -338,6 +343,19 @@ class ChapterFragment: Fragment(), TopicClickListener {
     }
 
     override fun onClick(topic: Topic, topicId: String, position: Int) {
+       /* val bundle = Bundle()
+        bundle.putString("Category", "Quiz")
+        bundle.putString("Action", "Topic")
+        bundle.putString("Label", topic.title)
+        firebaseAnalytics?.logEvent("Quiz", bundle)*/
+
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topic.title)
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+        // bundle.putString("Label", "TestGo")
+        firebaseAnalytics?.logEvent("Topic", bundle)
+
+
         callIntent(topic, topicId, position)
         //val intent = Intent(context!!, QuizSummaryActivityNew::class.java)
         //startActivity(intent)

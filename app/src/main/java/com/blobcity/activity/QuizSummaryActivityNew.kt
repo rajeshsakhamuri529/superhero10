@@ -21,6 +21,7 @@ import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_quiz_summary_new.*
@@ -35,7 +36,7 @@ import kotlin.random.Random
 
 class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
 
-
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     var reviewModelList: ArrayList<ReviewModel>? = null
     var topicLevel: String? = ""
     var topicName: String? = ""
@@ -97,6 +98,10 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
         lastplayed = intent.getStringExtra("LAST_PLAYED")
         comingfrom = intent.getStringExtra("comingfrom")
 
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+
+
         if(comingfrom.equals("Home")){
             txt_prev.text = "BACK"
         }else{
@@ -157,7 +162,7 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
             summaryTxt.text = "perfect!"
             summaryTxt.setTextColor(resources.getColor(R.color.perfect))
             btn_play_next.visibility = View.VISIBLE
-
+            firebaseAnalytics.setCurrentScreen(this, "QuizSuccess", null /* class override */)
             val format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             var recordcount = databaseHandler!!.getChallengeForDate(format.format(Utils.date))
 
@@ -176,7 +181,7 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
 
 
         }else{
-
+            firebaseAnalytics.setCurrentScreen(this, "QuizFail", null /* class override */)
             summaryTxt.text = "not perfect."
             summaryTxt.setTextColor(resources.getColor(R.color.not_perfect))
             btn_play_next.visibility = View.GONE
@@ -250,6 +255,32 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
+                if(count == totalQuestion){
+                   /* val bundle = Bundle()
+                    bundle.putString("Category", "Quiz")
+                    bundle.putString("Action", "QuizSPlayAgain")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("QuizSuccess", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("QuizSPlayAgain", bundle)
+
+                }else{
+                    /*val bundle = Bundle()
+                    bundle.putString("Category", "Quiz")
+                    bundle.putString("Action", "QuizFPlayAgain")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("QuizFail", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("QuizFPlayAgain", bundle)
+                }
                 databaseHandler!!.deleteQuizPlayRecord(topicName)
                 val intent = Intent(this, TestQuestionActivity::class.java)
                 intent.putExtra(ConstantPath.DYNAMIC_PATH, dPath)
@@ -286,6 +317,31 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
+                if(count == totalQuestion){
+                   /* val bundle = Bundle()
+                    bundle.putString("Category", "Quiz")
+                    bundle.putString("Action", "QuizSPlayNext")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("QuizSuccess", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("QuizSPlayNext", bundle)
+                }else{
+                    /*val bundle = Bundle()
+                    bundle.putString("Category", "Quiz")
+                    bundle.putString("Action", "QuizFPlayNext")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("QuizFail", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("QuizFPlayNext", bundle)
+                }
 
                 if(comingfrom.equals("Home")){
                     playNextBtnActionForHome(position!!)
@@ -306,6 +362,32 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
                         Log.e("Test", "Played sound...volume..."+ Utils.volume);
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
+                }
+
+                if(count == totalQuestion){
+                    /*val bundle = Bundle()
+                    bundle.putString("Category", "Quiz")
+                    bundle.putString("Action", "QuizSReview")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("QuizSuccess", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("QuizSReview", bundle)
+                }else{
+                    /*val bundle = Bundle()
+                    bundle.putString("Category", "Quiz")
+                    bundle.putString("Action", "QuizFReview")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("QuizFail", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("QuizFReview", bundle)
                 }
 
 

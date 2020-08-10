@@ -11,7 +11,7 @@ import com.blobcity.adapter.RevisionAdapter
 import com.blobcity.model.RevisionModel
 import com.blobcity.viewmodel.TopicStatusVM
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.revision_layout.*
+import kotlinx.android.synthetic.main.revision_layout.view.*
 
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.android.gms.tasks.OnCompleteListener
@@ -35,6 +35,7 @@ import com.blobcity.database.DatabaseHandler
 import com.blobcity.entity.RevisionEntity
 import com.blobcity.interfaces.RevisionItemDownloadListener
 import com.blobcity.utils.*
+import com.google.firebase.analytics.FirebaseAnalytics
 
 import java.io.File
 
@@ -94,6 +95,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
     var isDataFromFirebase:Boolean = false
     var position1 : Int = -1
     var view1:View? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     /*private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
     private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
@@ -117,11 +119,11 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
        // view = inflater.inflate(R.layout.revision_layout, container, false) as Nothing?
-        if (view1 == null)
+        /*if (view1 == null)
         {
             view1 = inflater.inflate(R.layout.revision_layout, container, false)
-        }
-        return view1 //inflater.inflate(R.layout.revision_layout, container, false)
+        }*/
+        return inflater.inflate(R.layout.revision_layout, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -131,7 +133,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
         databaseHandler = DatabaseHandler(activity);
         revisionList = ArrayList()
         sharedPrefs = SharedPrefs()
-        tv_revision.elevation = 15F
+        view.tv_revision.elevation = 15F
         //Initialize the Handler
         mDelayHandler = Handler()
         //Navigate with delay
@@ -145,18 +147,20 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
 
             requestPermissions(PERMISSIONS, 112)
         }*/
+        firebaseAnalytics = FirebaseAnalytics.getInstance(activity!!)
 
-        frameLL.setOnClickListener {
+        firebaseAnalytics.setCurrentScreen(activity!!, "Book", null /* class override */)
+        view.frameLL.setOnClickListener {
             Log.e("revision adapter","frameLL onclick.....")
-            frameLL.visibility = View.GONE
-            textbooksrl.isEnabled = false
+            view.frameLL.visibility = View.GONE
+            view.textbooksrl.isEnabled = false
             adapter!!.closeMore(position1)
         }
 
-        textbooksrl.setOnClickListener {
+        view.textbooksrl.setOnClickListener {
             Log.e("revision adapter","textbooksrl onclick.....")
-            frameLL.visibility = View.GONE
-            textbooksrl.isEnabled = false
+            view.frameLL.visibility = View.GONE
+            view.textbooksrl.isEnabled = false
             adapter!!.closeMore(position1)
         }
 
@@ -254,11 +258,11 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
                         Log.e("revision fragment","...sorted list..."+sortedList+"...size..."+sortedList?.size);
                         hideProgressDialog()
                         isDataFromFirebase = true
-                        adapter = RevisionAdapter(activity!!, sortedList!!, this@RevisionFragment)
+                        adapter = RevisionAdapter(activity!!, sortedList!!, this@RevisionFragment,firebaseAnalytics)
                         //rcv_revision.addItemDecoration(itemDecorator)
                         //rcv_chapter.addItemDecoration(DividerItemDecoration(context,))
-                        rcv_revision.addItemDecoration(VerticalSpaceItemDecoration(40));
-                        rcv_revision.adapter = adapter
+                        view!!.rcv_revision.addItemDecoration(VerticalSpaceItemDecoration(40));
+                        view!!.rcv_revision.adapter = adapter
 
                     }catch (e:Exception){
                         Log.e("revision fragment",".....exception..."+e)
@@ -446,6 +450,17 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
     }
     private fun moveToPDFActivity(rID: String, filename: String?) {
 
+        /*val bundle = Bundle()
+        bundle.putString("Category", "Book")
+        bundle.putString("Action", "OpenBook")
+        bundle.putString("Label", filename)
+        firebaseAnalytics?.logEvent("Book", bundle)*/
+
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, filename)
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Book")
+        // bundle.putString("Label", "TestGo")
+        firebaseAnalytics?.logEvent("OpenBook", bundle)
         val i = Intent(activity, PDFViewerActivity::class.java)
         i.putExtra("filename", filename)
         i.putExtra("rID", rID)
@@ -462,8 +477,8 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
 
         }else if(open.equals("more")){
             Log.e("revision frag","position......"+position)
-            frameLL.visibility = View.VISIBLE
-            textbooksrl.isEnabled = true
+            view!!.frameLL.visibility = View.VISIBLE
+            view!!.textbooksrl.isEnabled = true
             position1 = position
         }else if(open.equals("marked")){
 

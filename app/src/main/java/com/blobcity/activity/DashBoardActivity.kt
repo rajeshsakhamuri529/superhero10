@@ -40,6 +40,9 @@ import com.blobcity.Service.JobService
 import com.blobcity.database.QuizGameDataBase
 import com.blobcity.fragment.*
 import com.blobcity.utils.BottomNavigationViewHelper
+import com.google.android.gms.analytics.GoogleAnalytics
+import com.google.android.gms.analytics.HitBuilders
+import com.google.android.gms.analytics.Tracker
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
@@ -69,6 +72,8 @@ class DashBoardActivity : BaseActivity(),
     var remoteConfig: FirebaseRemoteConfig? = null
     var version : String = ""
     var url : String = ""
+    var mTracker: Tracker? = null
+    private var sAnalytics: GoogleAnalytics? = null
     override var layoutID: Int = R.layout.activity_dashboard
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
         super.onSaveInstanceState(outState, outPersistentState)
@@ -86,6 +91,11 @@ class DashBoardActivity : BaseActivity(),
         //getPlayerForCorrect(this)
         //getPlayerForwrong(this)
         /*gradeTitle = intent.getStringExtra(TITLE_TOPIC)*/
+        sAnalytics = GoogleAnalytics.getInstance(this);
+        mTracker = Utils.getDefaultTracker(sAnalytics);
+
+        mTracker!!.setScreenName("Dashboard")
+        mTracker!!.send(HitBuilders.ScreenViewBuilder().build())
 
         var dburl = databaseHandler!!.gettesttopicurl()
         if(dburl == null){

@@ -24,6 +24,7 @@ import android.support.v4.app.SupportActivity
 import android.support.v4.app.SupportActivity.ExtraData
 import android.support.v4.content.ContextCompat.getSystemService
 import com.blobcity.model.Topic
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_start_quiz_timer.*
 
 
@@ -51,6 +52,7 @@ class StartQuizTimerActivity : BaseActivity(), View.OnClickListener {
     lateinit var topic: Topic
     lateinit var circles: Array<ImageView?>
     var mLastClickTime:Long = 0;
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override var layoutID: Int = R.layout.activity_start_quiz_timer
 
     override fun initView() {
@@ -81,6 +83,8 @@ class StartQuizTimerActivity : BaseActivity(), View.OnClickListener {
         val listWithDuplicateKeys = ArrayList<String>()
 
         totalQuestion = questionResponseModel.questionCount
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
 
 
         //tv_quiz_title.text = topic.title
@@ -139,6 +143,18 @@ class StartQuizTimerActivity : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
+
+                /*val bundle = Bundle()
+                bundle.putString("Category", "Test")
+                bundle.putString("Action", "Launch")
+                bundle.putString("Label", topic.title)
+                firebaseAnalytics?.logEvent("TestLaunch", bundle)*/
+
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topic.title)
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+                // bundle.putString("Label", "TestGo")
+                firebaseAnalytics?.logEvent("Launch", bundle)
 
                 val intent = Intent(this!!, TestQuizActivity::class.java)
                 intent.putExtra(ConstantPath.TOPIC, topic)

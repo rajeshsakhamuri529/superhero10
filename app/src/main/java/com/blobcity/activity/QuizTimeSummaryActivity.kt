@@ -21,6 +21,7 @@ import com.blobcity.utils.SharedPrefs
 import com.blobcity.utils.Utils
 import com.blobcity.viewmodel.TopicStatusVM
 import com.bumptech.glide.Glide
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_quiz_time_summary.*
@@ -67,6 +68,7 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
     lateinit var testQuiz: TestQuiz
     lateinit var challenge:Challenge
     var mLastClickTime:Long = 0;
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override var layoutID: Int = R.layout.activity_quiz_time_summary
 
     override fun initView() {
@@ -97,7 +99,7 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
 
         testQuiz = databaseHandler!!.getQuizTopicsForTimerLastPlayed()
 
-
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         val sdf = SimpleDateFormat("dd-MM-yyyy")
         val currentDate = sdf.format(Date())
 
@@ -150,7 +152,7 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
 
         tv_total.text = ""+totalQuestion
         if(count == totalQuestion){
-
+            firebaseAnalytics.setCurrentScreen(this, "TestSuccess", null /* class override */)
             //successRL.background = resources.getDrawable(R.drawable.quiz_time_success)
             tv_correct.setTextColor(resources.getColor(R.color.button_close_text))
 
@@ -182,6 +184,7 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
 
 
         }else{
+            firebaseAnalytics.setCurrentScreen(this, "TestFail", null /* class override */)
             //successRL.background = resources.getDrawable(R.drawable.quiz_time_failure)
             tv_correct.setTextColor(resources.getColor(R.color.test_fail))
 
@@ -334,6 +337,32 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
                 }
+                if(count == totalQuestion){
+                    /*val bundle = Bundle()
+                    bundle.putString("Category", "Test")
+                    bundle.putString("Action", "TestSNewTest")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("TestSuccess", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("TestSNewTest", bundle)
+                }else{
+                    /*val bundle = Bundle()
+                    bundle.putString("Category", "Test")
+                    bundle.putString("Action", "TestFNewTest")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("TestFail", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("TestFNewTest", bundle)
+                }
+
                 readFileLocally()
                 //playNextBtnAction(position!!)
 
@@ -349,6 +378,32 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
                         Log.e("Test", "Played sound...volume..."+ Utils.volume);
                         //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
                     }
+                }
+
+                if(count == totalQuestion){
+//                    val bundle = Bundle()
+//                    bundle.putString("Category", "Test")
+//                    bundle.putString("Action", "TestSReview")
+//                    bundle.putString("Label", topicName)
+//                    firebaseAnalytics?.logEvent("TestSuccess", bundle)
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("TestSReview", bundle)
+                }else{
+                    /*val bundle = Bundle()
+                    bundle.putString("Category", "Test")
+                    bundle.putString("Action", "TestFReview")
+                    bundle.putString("Label", topicName)
+                    firebaseAnalytics?.logEvent("TestFail", bundle)*/
+
+                    val bundle = Bundle()
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+                    bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Test")
+                    // bundle.putString("Label", "TestGo")
+                    firebaseAnalytics?.logEvent("TestFNewTest", bundle)
                 }
                 val sdf = SimpleDateFormat("dd-MM-yyyy")
                 val currentDate = sdf.format(Date())

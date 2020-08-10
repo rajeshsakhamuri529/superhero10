@@ -16,6 +16,7 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import android.media.SoundPool
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
@@ -55,6 +56,7 @@ import android.widget.*
 import com.blobcity.database.QuizGameDataBase
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.SharedPrefs
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_test_question.btn_close
 import kotlinx.android.synthetic.main.activity_test_question.btn_hint
 import kotlinx.android.synthetic.main.activity_test_question.btn_next
@@ -188,6 +190,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     var displayno:Int = 0
     var paths: String = ""
     //lateinit var topic: Topic
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override var layoutID: Int = R.layout.activity_test_question
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -230,6 +233,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         animFadeOut = AnimationUtils.loadAnimation(getApplicationContext(),
             R.anim.fade_out);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
         /*dbRStatus = FirebaseDatabase.getInstance()
             .getReference("topic_status")
         dbTrackingStatus = FirebaseDatabase.getInstance().getReference("quiz_tracking")
@@ -2537,6 +2541,18 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun navigateToSummaryScreenNew(){
+        /*val bundle = Bundle()
+        bundle.putString("Category", "Quiz")
+        bundle.putString("Action", "QuizSubmit")
+        bundle.putString("Label", topicName)
+        firebaseAnalytics?.logEvent("QuizPlay", bundle)*/
+
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+        // bundle.putString("Label", "TestGo")
+        firebaseAnalytics?.logEvent("QuizSubmit", bundle)
+
         val intent = Intent(this, QuizSummaryActivityNew::class.java)
         intent.putExtra(REVIEW_MODEL, reviewModelList)
         intent.putExtra(TOPIC_NAME, topicName)
@@ -2663,6 +2679,18 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
                     addAllDataInDb(false, true)
                 }
             }
+            /*val bundle = Bundle()
+            bundle.putString("Category", "Quiz")
+            bundle.putString("Action", "QuizQuit")
+            bundle.putString("Label", topicName)
+            firebaseAnalytics?.logEvent("QuizPlay", bundle)*/
+
+
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, topicName)
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Quiz")
+            // bundle.putString("Label", "TestGo")
+            firebaseAnalytics?.logEvent("QuizQuit", bundle)
             finish()
         }
         val alertDialog = dialogBuilder.create()
