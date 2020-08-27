@@ -542,9 +542,14 @@ class HomeFragment: Fragment(),View.OnClickListener {
                                 downdata(url)
                             } else {
                                 //   test_btn.isEnabled = true
-                                view!!.progress_bar.visibility = View.GONE
-                                view!!.txt_next.visibility = View.VISIBLE
-                                view!!.right_arrow.visibility = View.VISIBLE
+                                try{
+                                    view!!.progress_bar.visibility = View.GONE
+                                    view!!.txt_next.visibility = View.VISIBLE
+                                    view!!.right_arrow.visibility = View.VISIBLE
+                                }catch (e:Exception){
+
+                                }
+
                                 gotoStartScreen()
                             }
 
@@ -670,8 +675,13 @@ class HomeFragment: Fragment(),View.OnClickListener {
 
                     val iszip = Utils.unpackZip(dirpath.absolutePath, "/testcontent.rar")
                     if (iszip) {
-                        val dirFile = File(activity!!.getExternalFilesDir(null), "testcontent.rar")
-                        dirFile.delete()
+                        try{
+                            val dirFile = File(activity!!.getExternalFilesDir(null), "testcontent.rar")
+                            dirFile.delete()
+                        }catch (e: Exception) {
+
+                        }
+
                         databaseHandler!!.updatetestcontentversion(version)
                         databaseHandler!!.updatetestcontentdownloadstatus(1)
 
@@ -741,8 +751,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
-        val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
-            .fromJson(courseJsonString, courseType)
+        val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile.fromJson(courseJsonString, courseType)
         courseId = courseResponseModel[0].id
         courseName = courseResponseModel[0].syllabus.title
         // tv_class.text = courseName

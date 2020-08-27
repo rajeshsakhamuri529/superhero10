@@ -8,10 +8,12 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.blobcity.BuildConfig
 import com.blobcity.R
 import com.blobcity.activity.DashBoardActivity
 import com.blobcity.activity.SignInActivity
@@ -29,10 +31,14 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import kotlinx.android.synthetic.main.setting_layout.view.*
 
 class SettingFragment : Fragment(), View.OnClickListener {
 
+    private val FEEDBACK_CONFIG_KEY = "feedback"
+    private val WRITETOUS_CONFIG_KEY = "writetous"
     var sharedPrefs: SharedPrefs? = null
     var sound: Boolean = false
     var notification: Boolean = false
@@ -42,6 +48,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
     var databaseHandler1: DatabaseHandler? = null
     private lateinit var auth: FirebaseAuth
     var mLastClickTime:Long = 0;
+    var remoteConfig: FirebaseRemoteConfig? = null
     private var mGoogleSignInClient: GoogleSignInClient? = null
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,6 +69,21 @@ class SettingFragment : Fragment(), View.OnClickListener {
         sharedPrefs = SharedPrefs()
         databaseHandler = QuizGameDataBase(activity);
         databaseHandler1 = DatabaseHandler(activity);
+
+        /*remoteConfig = FirebaseRemoteConfig.getInstance()
+
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setDeveloperModeEnabled(BuildConfig.DEBUG)
+            .build()
+
+        remoteConfig!!.setConfigSettings(configSettings)
+
+        // Set default Remote Config parameter values. An app uses the in-app default values, and
+        // when you need to adjust those defaults, you set an updated value for only the values you
+        // want to change in the Firebase console. See Best Practices in the README for more
+        // information.
+        remoteConfig!!.setDefaults(R.xml.remote_config_defaults)
+        fetchVersion()*/
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
 
@@ -224,7 +246,33 @@ class SettingFragment : Fragment(), View.OnClickListener {
         view.cl_terms_and_conditions.setOnClickListener(this)
         view.cl_write_to_us.setOnClickListener(this)
         view.signout.setOnClickListener(this)
+        view.cl_feedback.setOnClickListener(this)
     }
+
+    /*fun fetchVersion(){
+        var cacheExpiration: Long = 3600 // 1 hour in seconds.
+        // If your app is using developer mode, cacheExpiration is set to 0, so each fetch will
+        // retrieve values from the service.
+        if (remoteConfig!!.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+            cacheExpiration = 0
+        }
+
+        remoteConfig!!.fetch(cacheExpiration)
+            .addOnCompleteListener(this, OnCompleteListener<Void> { task ->
+                if (task.isSuccessful) {
+                    // After config data is successfully fetched, it must be activated before newly fetched
+                    // values are returned.
+                    remoteConfig!!.activateFetched()
+                }
+
+                val writetous = remoteConfig!!.getString(WRITETOUS_CONFIG_KEY)
+                val feedback = remoteConfig!!.getString(FEEDBACK_CONFIG_KEY)
+
+                Log.e("settings","....feedback...."+feedback);
+                Log.e("settings","....writetous...."+writetous);
+                //displayUpdateAlert()
+            })
+    }*/
 
     override fun onClick(v: View?) {
         val intent: Intent
@@ -262,6 +310,16 @@ class SettingFragment : Fragment(), View.OnClickListener {
                 firebaseAnalytics?.logEvent("Contact", bundle)
                 intent = Intent(context, WriteToUsActivity::class.java)
                 intent.putExtra("activityname", "writetous")
+                startActivity(intent)
+            }
+
+            R.id.cl_feedback -> {
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Feedback")
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
+                firebaseAnalytics?.logEvent("Feedback", bundle)
+                intent = Intent(context, WriteToUsActivity::class.java)
+                intent.putExtra("activityname", "feedback")
                 startActivity(intent)
             }
 

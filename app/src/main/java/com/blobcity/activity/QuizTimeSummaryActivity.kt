@@ -94,7 +94,7 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
         level_status = intent.getBooleanExtra(ConstantPath.IS_LEVEL_COMPLETE, false)
         readyCardNumber = intent.getIntExtra(ConstantPath.CARD_NO, -1)
         displayno = intent.getIntExtra("DISPLAY_NO", -1)
-        lastplayed = intent.getStringExtra("LAST_PLAYED")
+        lastplayed = intent.getStringExtra("LAST_PLAYED") ?: "last"
         comingfrom = intent.getStringExtra("comingfrom")
 
         testQuiz = databaseHandler!!.getQuizTopicsForTimerLastPlayed()

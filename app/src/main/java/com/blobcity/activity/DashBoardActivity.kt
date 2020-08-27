@@ -68,6 +68,8 @@ class DashBoardActivity : BaseActivity(),
     var databaseHandler: QuizGameDataBase?= null
     // Remote Config keys
     private val VERSION_CODE_CONFIG_KEY = "upgrade"
+    private val FEEDBACK_CONFIG_KEY = "feedback"
+    private val WRITETOUS_CONFIG_KEY = "writetous"
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     var remoteConfig: FirebaseRemoteConfig? = null
     var version : String = ""
@@ -86,7 +88,12 @@ class DashBoardActivity : BaseActivity(),
             .setPersistenceEnabled(true)
             .setCacheSizeBytes(FirebaseFirestoreSettings.CACHE_SIZE_UNLIMITED)
             .build()
-        db.firestoreSettings = settings
+        try{
+            db.firestoreSettings = settings
+        }catch (e:Exception){
+
+        }
+
         databaseHandler = QuizGameDataBase(this);
         //getPlayerForCorrect(this)
         //getPlayerForwrong(this)
@@ -173,11 +180,6 @@ class DashBoardActivity : BaseActivity(),
                 val revisionItem = navigation.getMenu().getItem(3)
                 // Select home item
                 navigation.setSelectedItemId(revisionItem.getItemId());
-            }else if(fragment == "dailychallenge"){
-                loadFragment(DailyChallengeFragment())
-                val revisionItem = navigation.getMenu().getItem(2)
-                // Select home item
-                navigation.setSelectedItemId(revisionItem.getItemId());
             }else if(fragment == "tests"){
                 loadFragment(TestsFragment())
                 val revisionItem = navigation.getMenu().getItem(2)
@@ -197,6 +199,12 @@ class DashBoardActivity : BaseActivity(),
                 Log.e("dashboard activity","load chapters......")
                 loadFragment(HomeFragment())
             }
+            /*else if(fragment == "dailychallenge"){
+                loadFragment(DailyChallengeFragment())
+                val revisionItem = navigation.getMenu().getItem(2)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
+            }*/
         }else{
             sharedPrefs!!.setPrefVal(this,"data", "")
             if(data.contains("books")){
@@ -254,11 +262,17 @@ class DashBoardActivity : BaseActivity(),
     }
 
     fun displayUpdateAlert(){
+        val feedback = remoteConfig!!.getString(FEEDBACK_CONFIG_KEY)
+        val writetous = remoteConfig!!.getString(WRITETOUS_CONFIG_KEY)
         val play = remoteConfig!!.getString(VERSION_CODE_CONFIG_KEY)
         var playStoreVersionCode = 0
         if (play != null && !play!!.isEmpty() && !play!!.equals("null", ignoreCase = true))
             playStoreVersionCode = Integer.parseInt(play!!)
 
+        Log.e("dashboard activity","....feedback...."+feedback);
+        Log.e("dashboard activity","....writetous...."+writetous);
+        sharedPrefs!!.setPrefVal(this,"feedback", feedback)
+        sharedPrefs!!.setPrefVal(this,"writetous", writetous)
         Log.e("dashboard activity","playStoreVersionCode......."+playStoreVersionCode)
         Log.e("dashboard activity","currentVersion......."+currentVersion)
 

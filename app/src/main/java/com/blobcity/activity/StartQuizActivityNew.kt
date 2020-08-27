@@ -74,8 +74,13 @@ class StartQuizActivityNew : BaseActivity(), View.OnClickListener {
         folderName = intent.getStringExtra(ConstantPath.FOLDER_NAME)
         gradeTitle = intent.getStringExtra(ConstantPath.TITLE_TOPIC)
         readyCardNumber = intent.getIntExtra(ConstantPath.CARD_NO, -1)
-        lastplayed = intent.getStringExtra("LAST_PLAYED")
+
         comingfrom = intent.getStringExtra("comingfrom")
+        try{
+            lastplayed = intent.getStringExtra("LAST_PLAYED")
+        }catch (e:Exception){
+
+        }
         val gsonFile = Gson()
         val questionResponseModel = gsonFile.fromJson(dynamicPath, TopicOneBasicResponseModel::class.java)
         val questionsItems = questionResponseModel.questions

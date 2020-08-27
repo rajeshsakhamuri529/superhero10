@@ -154,14 +154,19 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
             Log.e("revision adapter","frameLL onclick.....")
             view.frameLL.visibility = View.GONE
             view.textbooksrl.isEnabled = false
-            adapter!!.closeMore(position1)
+            if(adapter != null){
+                adapter!!.closeMore(position1)
+            }
         }
 
         view.textbooksrl.setOnClickListener {
             Log.e("revision adapter","textbooksrl onclick.....")
             view.frameLL.visibility = View.GONE
             view.textbooksrl.isEnabled = false
-            adapter!!.closeMore(position1)
+            if(adapter != null){
+                adapter!!.closeMore(position1)
+            }
+
         }
 
 

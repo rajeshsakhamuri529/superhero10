@@ -265,7 +265,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
         webView_option2?.getSettings()?.setUseWideViewPort(true)*/
         //webView_option2?.getSettings()?.setDefaultZoom(WebSettings.ZoomDensity.FAR);
 
-        btn_next!!.setOnClickListener(this)
+       // btn_next!!.setOnClickListener(this)
         btn_hint!!.setOnClickListener(this)
 
         next_btn!!.setOnClickListener(this)

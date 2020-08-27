@@ -131,10 +131,14 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
         /*val jsonString = (activity!! as DashBoardActivity).loadJSONFromAsset( assetTestCoursePath + "topic.json")*/
         val gsonFile = Gson()
         val courseType = object : TypeToken<List<CoursesResponseModel>>() {}.type
-        val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile
-            .fromJson(courseJsonString, courseType)
-        courseId = courseResponseModel[0].id
-        courseName = courseResponseModel[0].syllabus.title
+        try {
+            val courseResponseModel: ArrayList<CoursesResponseModel> = gsonFile.fromJson(courseJsonString, courseType)
+            courseId = courseResponseModel[0].id
+            courseName = courseResponseModel[0].syllabus.title
+
+        }catch (e:Exception){
+
+        }
         // tv_class.text = courseName
         // tv_class_board.text = courseResponseModel[0].syllabus.displayTitle
         localPath = "${dirFile.absolutePath}/$courseName/"
@@ -220,6 +224,7 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
                     if (iszip) {
                         val dirFile = File(activity!!.getExternalFilesDir(null), "testcontent.rar")
                         dirFile.delete()
+
                         databaseHandler!!.updatetestcontentversion(version)
                         databaseHandler!!.updatetestcontentdownloadstatus(1)
 
@@ -239,7 +244,10 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
                     // JobService.enqueueWork(context1,url,version);
                   //  test_btn.isEnabled = true
                     isdownload = false
-                    Toast.makeText(activity,"Please check your network connection.",Toast.LENGTH_LONG).show()
+                    //if(activity != null){
+                        Toast.makeText(activity,"Please check your network connection.",Toast.LENGTH_LONG).show()
+                //}
+
                 }
 
 
@@ -284,17 +292,27 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
 
                                    var dbversion = databaseHandler!!.gettesttopicversion()
                                    if (dbversion != version) {
-                                       view!!.progress_bar.visibility = View.GONE
-                                       view!!.txt_next.visibility = View.VISIBLE
-                                       view!!.right_arrow.visibility = View.VISIBLE
+                                       try {
+                                           view!!.progress_bar.visibility = View.GONE
+                                           view!!.txt_next.visibility = View.VISIBLE
+                                           view!!.right_arrow.visibility = View.VISIBLE
+                                       }catch (e:Exception){
+
+                                       }
+
                                        downloaddialog("We’re downloading the latest Tests. Please try again in a few minutes.")
                                        //showDataFromBackground(activity!!,url,version, mServiceResultReceiver!!)
                                        downdata(url)
                                    } else {
                                        //   test_btn.isEnabled = true
-                                       view!!.progress_bar.visibility = View.GONE
-                                       view!!.txt_next.visibility = View.VISIBLE
-                                       view!!.right_arrow.visibility = View.VISIBLE
+                                       try {
+                                           view!!.progress_bar.visibility = View.GONE
+                                           view!!.txt_next.visibility = View.VISIBLE
+                                           view!!.right_arrow.visibility = View.VISIBLE
+                                       } catch (e:Exception){
+
+                                       }
+
                                        gotoStartScreen()
                                    }
 

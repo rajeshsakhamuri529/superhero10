@@ -378,7 +378,10 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
             override fun onFinish() {
                 timetaken = 12
                 textViewTime.text = "00"
-                timeupDialog()
+                runOnUiThread {
+                    timeupDialog()
+                }
+
             }
         }
         minutescountDownTimer.start()
@@ -557,7 +560,12 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
 
         //alertDialog.getWindow().setBackgroundDrawable(draw);
         alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-        alertDialog.show()
+        try{
+            alertDialog.show()
+        }catch (e:Exception){
+
+        }
+
     }
 
 

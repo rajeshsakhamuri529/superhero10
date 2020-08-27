@@ -94,16 +94,22 @@ class TestsAdapter(val context: Context,
 
 
         val dateFormat = SimpleDateFormat("dd-MM-yyyy")
+        Log.e("test adapter","branchesItemList[position].pdate....."+branchesItemList[position].pdate)
         var oldDate = dateFormat.parse(branchesItemList[position].pdate)
+
         var current = Date().time
+        //Log.e("test adapter","old date....."+oldDate.time)
+        //Log.e("test adapter","current....."+current)
         //val days = Days.daysBetween(date1, date2).getDays()
-        val diff = current - oldDate.time
-        //Log.e("tests adapter","diff date...."+diff);
-        val diff1 = diff.toInt() / (1000 * 60 * 60 * 24)
+        val diff = current - (oldDate.time)
+       // Log.e("tests adapter","diff date...."+diff);
+       // Log.e("tests adapter","diff date...."+diff / (1000 * 60 * 60 * 24));
+       // Log.e("tests adapter","diff diff.toInt()...."+diff.toInt());
+        val diff1 = diff / (1000 * 60 * 60 * 24)
         Log.e("tests adapter","diff date...."+diff1);
-        if(diff1 == 0){
+        if(diff1 == 0L){
             holder.tv_challenge_date.text = "Today"
-        }else if(diff1 == 1){
+        }else if(diff1 == 1L){
             holder.tv_challenge_date.text = "Yesterday"
         }else{
             holder.tv_challenge_date.text = ""+diff1 + "  days ago"
