@@ -244,6 +244,9 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
                     // JobService.enqueueWork(context1,url,version);
                   //  test_btn.isEnabled = true
                     isdownload = false
+                    if(alertDialog != null){
+                        alertDialog!!.dismiss()
+                    }
                     //if(activity != null){
                         Toast.makeText(activity,"Please check your network connection.",Toast.LENGTH_LONG).show()
                 //}

@@ -35,7 +35,11 @@ import com.blobcity.database.DatabaseHandler
 import com.blobcity.entity.RevisionEntity
 import com.blobcity.interfaces.RevisionItemDownloadListener
 import com.blobcity.utils.*
+import com.downloader.Error
+import com.downloader.OnDownloadListener
+import com.downloader.PRDownloader
 import com.google.firebase.analytics.FirebaseAnalytics
+import org.apache.commons.io.FileUtils
 
 import java.io.File
 
@@ -298,6 +302,21 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
 
     }
 
+    fun showDialog(loadText: String) {
+        //hideProgressDialog()
+        try {
+            mPDialog = ProgressDialog.show(
+                ContextThemeWrapper(activity, R.style.DialogCustom),
+                "",
+                loadText
+            )
+            mPDialog!!.setCancelable(false)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
+
     fun hideProgressDialog() {
         try {
             if (mPDialog != null && mPDialog!!.isShowing()) {
@@ -414,8 +433,10 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
                 if(isPDFVersionChange){
 
                     if(Utils.isOnline(activity)){
-                        showProgressDialog("Please wait...")
-                        DownloadTask(activity,revision?.pdfLink,revision?.filename,this@RevisionFragment)
+                        //showProgressDialog("Please wait...")
+                        showDialog("Please wait...")
+                        downdata(revision?.pdfLink,revision?.filename)
+                        //DownloadTask(activity,revision?.pdfLink,revision?.filename,this@RevisionFragment)
                     }else{
                         Toast.makeText(activity,"Internet is required!",Toast.LENGTH_LONG).show();
                     }
@@ -425,8 +446,11 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
                     mFile = File(activity?.getExternalFilesDir(null), revision.filename+".pdf")
                     if(!mFile!!.exists()){
                         if(Utils.isOnline(activity)){
-                            showProgressDialog("Please wait...")
-                            DownloadTask(activity,revision?.pdfLink,revision?.filename,this@RevisionFragment)
+                            showDialog("Please wait...")
+                            downdata(revision?.pdfLink,revision?.filename)
+                            //showProgressDialog("Please wait...")
+
+                            //DownloadTask(activity,revision?.pdfLink,revision?.filename,this@RevisionFragment)
                         }else{
                             Toast.makeText(activity,"Internet is required!",Toast.LENGTH_LONG).show();
                         }
@@ -453,6 +477,101 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
 
 
     }
+
+
+    private fun downdata(url:String?,filename: String?){
+        val dirpath = File((activity!!.getExternalFilesDir(null)).absolutePath)
+
+        val downloadId = PRDownloader.download(url, dirpath.absolutePath, filename+".pdf")
+            .build()
+            .setOnStartOrResumeListener {
+                //showProgressDialog("Please wait...")
+                Log.e("downdata", "onStartOrResume.....")
+                //isdownload = true
+
+            }
+            .setOnPauseListener { Log.e("downdata", "onPause.....") }
+            .setOnCancelListener { Log.e("downdata", "onCancel.....") }
+            .setOnProgressListener { progress ->
+                Log.e(
+                    "downdata",
+                    "onProgress.....$progress")
+
+
+                //isdownload = true
+            }
+            .start(object : OnDownloadListener {
+                override fun onDownloadComplete() {
+                    Log.e("downdata", "onDownloadComplete.....")
+
+                    try{
+
+                        if(isPDFVersionChange){
+                            isPDFVersionChange = false
+                            val revisionEntity = RevisionEntity()
+                            revisionEntity.setDocumentId(revision?.documentid)
+                            revisionEntity.setPdfVersion(revision?.pdfversion)
+                            databaseHandler?.updateContact(revisionEntity)
+                        }
+                        hideProgressDialog()
+
+                        revision?.rId?.let { moveToPDFActivity(it,revision!!.filename) }
+
+                        //revision?.filename?.let { moveToPDFActivity(it) }
+
+                    }catch (e:Exception){
+                        Log.e("revision fragment","...exception...."+e);
+                    }
+                    /*try {
+                        val dirFile = File(activity!!.getExternalFilesDir(null), "test")
+                        FileUtils.deleteDirectory(dirFile)
+                    } catch (e: Exception) {
+
+                    }
+
+                    val iszip = Utils.unpackZip(dirpath.absolutePath, "/testcontent.rar")
+                    if (iszip) {
+                        val dirFile = File(activity!!.getExternalFilesDir(null), "testcontent.rar")
+                        dirFile.delete()
+
+                        databaseHandler!!.updatetestcontentversion(version)
+                        databaseHandler!!.updatetestcontentdownloadstatus(1)
+
+                        if(alertDialog != null){
+                            alertDialog!!.dismiss()
+                        }
+                        //  test_btn.isEnabled = true
+                        isdownload = false
+                        readFileLocally()
+                        gotoStartScreen()
+                    }*/
+
+                }
+
+                override fun onError(error: Error) {
+                    Log.e("downdata", "onerror.....$error")
+                    // JobService.enqueueWork(context1,url,version);
+                    //  test_btn.isEnabled = true
+                    //isdownload = false
+                    hideProgressDialog()
+                    if(activity != null){
+
+                    Toast.makeText(activity,"Please check your network connection.",Toast.LENGTH_LONG).show()
+                    }
+
+                }
+
+
+
+
+            })
+    }
+
+
+
+
+
+
     private fun moveToPDFActivity(rID: String, filename: String?) {
 
         /*val bundle = Bundle()

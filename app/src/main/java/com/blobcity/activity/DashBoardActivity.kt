@@ -195,6 +195,11 @@ class DashBoardActivity : BaseActivity(),
                 val revisionItem = navigation.getMenu().getItem(1)
                 // Select home item
                 navigation.setSelectedItemId(revisionItem.getItemId());
+            }else if(fragment == "Settings"){
+                loadFragment(SettingFragment())
+                val revisionItem = navigation.getMenu().getItem(4)
+                // Select home item
+                navigation.setSelectedItemId(revisionItem.getItemId());
             }else{
                 Log.e("dashboard activity","load chapters......")
                 loadFragment(HomeFragment())

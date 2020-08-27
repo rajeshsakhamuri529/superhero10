@@ -661,4 +661,21 @@ class QuizTimeSummaryActivity : BaseActivity(), View.OnClickListener {
         intent.putExtra(ConstantPath.CARD_NO, "")
         startActivity(intent)
     }
+
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        if(comingfrom.equals("Home")){
+            val intent = Intent(this, DashBoardActivity::class.java)
+            intent.putExtra("fragment","Home")
+            startActivity(intent)
+            finish()
+        }else{
+            val intent = Intent(this, DashBoardActivity::class.java)
+            intent.putExtra("fragment","tests")
+            startActivity(intent)
+            finish()
+        }
+    }
 }

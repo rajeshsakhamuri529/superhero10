@@ -260,7 +260,28 @@ class SignInActivity : BaseActivity(){
         showProgressDialog("Signing In...")
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         Log.e("sign in sctivity","isaccountlinked......"+sharedPrefs?.getBooleanPrefVal(this, ConstantPath.ISACCOUNTLINKED)!!);
-        if (sharedPrefs?.getBooleanPrefVal(this, ConstantPath.ISACCOUNTLINKED)!!) {
+
+
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                   // Log.d(TAG, "signInWithCredential:success")
+                    val user = auth.currentUser
+                    updateUI(user)
+                } else {
+                    // If sign in fails, display a message to the user.
+                    //Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    // ...
+                    //Snackbar.make(view, "Authentication Failed.", Snackbar.LENGTH_SHORT).show()
+                    updateUI(null)
+                }
+
+                // ...
+            }
+
+
+        /*if (sharedPrefs?.getBooleanPrefVal(this, ConstantPath.ISACCOUNTLINKED)!!) {
             try {
                 auth.signInWithCredential(credential)
                     .addOnSuccessListener { result ->
@@ -300,7 +321,7 @@ class SignInActivity : BaseActivity(){
 
                     }
                 }
-        }
+        }*/
 
 
 
@@ -320,6 +341,7 @@ class SignInActivity : BaseActivity(){
                 var android_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
                 Log.e("sign in activity","android_id....."+android_id)
                 Log.e("sign in activity","user.email....."+user.email)
+                sharedPrefs?.setPrefVal(this@SignInActivity, ConstantPath.UID, user!!.uid)
                 val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm:ss")
                 val currentDate = sdf.format(Date())
                 //sharedPrefs.setPrefVal(this@GradeActivity, "created_date", currentDate)

@@ -371,7 +371,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
     @TargetApi(Build.VERSION_CODES.M)
     private fun signin(sharedPrefs: SharedPrefs) {
         if (sharedPrefs.getBooleanPrefVal(this, ConstantPath.IS_LOGGED_IN)) {
-            val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
+            //val uid : String = sharedPrefs.getPrefVal(this, ConstantPath.UID)!!
 
             Log.d("signin","true")
 
@@ -775,53 +775,57 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
             val isConnected: Boolean = activeNetwork?.isConnected == true
             Log.d("isConnected",isConnected.toString()+"!")
             if(isNetworkConnected()) {
-                auth!!.signInAnonymously()
+
+                Log.e("grade activity", "task is successful.............")
+                val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
+                docRef.get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            Log.e("grade activity", "DocumentSnapshot data: ${document.data}")
+                            var version = document.data!!.get("TestContentVersion").toString()
+                            var url = document.data!!.get("TestContentUrl").toString()
+
+                            Log.e("grade activity","version......."+version)
+                            Log.e("grade activity","url......."+url)
+
+                            databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
+
+                            // Sign in success, update UI with the signed-in user's information
+                           // val user = auth!!.currentUser
+                            sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_LOGGED_IN, true)
+                            sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
+                           // sharedPrefs.setPrefVal(this@GradeActivity, ConstantPath.UID, user!!.uid)
+
+                            Log.d("anonymous auth done","true")
+                            TedPermission.with(this@GradeActivity)
+                                .setPermissionListener(this@GradeActivity)
+                                .setDeniedMessage(
+                                    "If you reject permission,you can not use this service\n"
+                                            + "\nPlease turn on permissions at [Setting] > [Permission]"
+                                )
+                                .setPermissions(Manifest.permission.INTERNET)
+                                .check()
+
+
+
+                        } else {
+                            Log.e("grade activity", "No such document")
+                        }
+                    }
+                    .addOnFailureListener { exception ->
+                        Log.e("grade activity", "get failed with ", exception)
+                        Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
+
+                    }
+
+
+                /*auth!!.signInAnonymously()
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
 
-                            Log.e("grade activity", "task is successful.............")
-                            val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
-                            docRef.get()
-                                .addOnSuccessListener { document ->
-                                    if (document != null) {
-                                        Log.e("grade activity", "DocumentSnapshot data: ${document.data}")
-                                        var version = document.data!!.get("TestContentVersion").toString()
-                                        var url = document.data!!.get("TestContentUrl").toString()
-
-                                        Log.e("grade activity","version......."+version)
-                                        Log.e("grade activity","url......."+url)
-
-                                        databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
-
-                                        // Sign in success, update UI with the signed-in user's information
-                                        val user = auth!!.currentUser
-                                        sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_LOGGED_IN, true)
-                                        sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
-                                        sharedPrefs.setPrefVal(this@GradeActivity, ConstantPath.UID, user!!.uid)
-
-                                        Log.d("anonymous auth done","true")
-                                        TedPermission.with(this@GradeActivity)
-                                            .setPermissionListener(this@GradeActivity)
-                                            .setDeniedMessage(
-                                                "If you reject permission,you can not use this service\n"
-                                                        + "\nPlease turn on permissions at [Setting] > [Permission]"
-                                            )
-                                            .setPermissions(Manifest.permission.INTERNET)
-                                            .check()
 
 
-
-                                    } else {
-                                        Log.e("grade activity", "No such document")
-                                    }
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.e("grade activity", "get failed with ", exception)
-                                    Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-
-                                }
-
-                            /*val rootRef = FirebaseFirestore.getInstance()
+                            *//*val rootRef = FirebaseFirestore.getInstance()
                             val attractionsRef = rootRef.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
                             attractionsRef.get().addOnCompleteListener(object: OnCompleteListener<DocumentSnapshot> {
                                 override fun onComplete(@NonNull task:Task<DocumentSnapshot>) {
@@ -859,7 +863,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                             .check()
                                     }
                                 }
-                            })*/
+                            })*//*
 
 
                         } else {
@@ -874,7 +878,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                             mSnackBar?.setAction("Retry", { signin(sharedPrefs) })
                             mSnackBar?.show()
                         }
-                    }
+                    }*/
             }else{
                 mSnackBar = Snackbar.make(
                     findViewById(R.id.splash_cl),

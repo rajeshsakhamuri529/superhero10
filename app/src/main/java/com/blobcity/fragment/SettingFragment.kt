@@ -62,7 +62,7 @@ class SettingFragment : Fragment(), View.OnClickListener {
             var currentVersion = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionName
             var currentCode = activity!!.packageManager.getPackageInfo(activity!!.packageName, 0).versionCode
             //versionname.text = "V "+currentVersion+" ("+currentCode+")"
-            view.versionname.text = "V "+currentVersion
+            view.versionname.text = "V "+currentVersion+" ("+currentCode+")"
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }

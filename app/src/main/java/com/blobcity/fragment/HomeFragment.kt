@@ -700,8 +700,11 @@ class HomeFragment: Fragment(),View.OnClickListener {
                     Log.e("downdata", "onerror.....$error")
                     // JobService.enqueueWork(context1,url,version);
                     //  test_btn.isEnabled = true
+                    if(alertDialog != null){
+                        alertDialog!!.dismiss()
+                    }
                     isdownload = false
-                    Toast.makeText(activity,"Please check your network connection.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity!!,"Please check your network connection.", Toast.LENGTH_LONG).show()
                 }
 
 

@@ -1,22 +1,28 @@
 package com.blobcity.activity
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
 import android.webkit.*
 import com.blobcity.BuildConfig
 import com.blobcity.R
+import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.SharedPrefs
+import com.blobcity.utils.Utils
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import kotlinx.android.synthetic.main.activity_write_to_us.*
 
-class WriteToUsActivity : AppCompatActivity() {
+class WriteToUsActivity : AppCompatActivity(), View.OnClickListener {
+
+
     private val FEEDBACK_CONFIG_KEY = "feedback"
     private val WRITETOUS_CONFIG_KEY = "writetous"
     var url = ""
@@ -24,12 +30,15 @@ class WriteToUsActivity : AppCompatActivity() {
     var feedback = ""
     var remoteConfig: FirebaseRemoteConfig? = null
     var sharedPrefs: SharedPrefs? = null
+    var sound: Boolean = false
+    var mLastClickTime:Long = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write_to_us)
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
         }
+        appBarID.elevation = 20F
         remoteConfig = FirebaseRemoteConfig.getInstance()
 
         val configSettings = FirebaseRemoteConfigSettings.Builder()
@@ -56,6 +65,7 @@ class WriteToUsActivity : AppCompatActivity() {
         }else if(activityname == "feedback"){
             url = feedback
         }
+        backRL.setOnClickListener(this)
         wv_write_to_us.settings.javaScriptEnabled = true
         wv_write_to_us.webViewClient = object : WebViewClient() {
 
@@ -150,5 +160,31 @@ class WriteToUsActivity : AppCompatActivity() {
                 Log.e("settings","....writetous...."+writetous);
                 //displayUpdateAlert()
             })
+    }
+
+    override fun onClick(v: View?) {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < 2000) {
+            return;
+        }
+        mLastClickTime = SystemClock.elapsedRealtime()
+        when (v!!.id) {
+            R.id.backRL -> {
+                sound = sharedPrefs?.getBooleanPrefVal(this, ConstantPath.SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
+                val intent = Intent(this, DashBoardActivity::class.java)
+                intent.putExtra("fragment","Settings")
+                startActivity(intent)
+                finish()
+            }
+
+        }
     }
 }
