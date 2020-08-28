@@ -373,14 +373,14 @@
             android:layout_height="wrap_content"
             android:text="@string/t_amp_c_privacy"
             android:textStyle="bold"
-            android:textColor="#00ce73"
+            android:textColor="#B1B1B1"
             android:textSize="15dp"
             android:fontFamily="@font/lato_regular"
-            android:layout_marginTop="8dp"
+            android:padding="@dimen/_5sdp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
+
+
             app:layout_constraintBottom_toBottomOf="parent"
             />
 
@@ -398,11 +398,10 @@
             android:id="@+id/versionname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="#B1B1B1"
             android:fontFamily="@font/lato_bold"
-            android:textSize="@dimen/_10sdp"
-            />
+            android:text="V3131"
+            android:textColor="#B1B1B1"
+            android:textSize="@dimen/_10sdp" />
 
 
 

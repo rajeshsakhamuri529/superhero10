@@ -24,6 +24,7 @@ import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.ConstantPath.NOTIFICATION
 import com.blobcity.utils.ConstantPath.SOUNDS
 import com.blobcity.utils.SharedPrefs
+import com.blobcity.utils.Utils
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -282,6 +283,16 @@ class SettingFragment : Fragment(), View.OnClickListener {
         mLastClickTime = SystemClock.elapsedRealtime()
         when (v!!.id) {
             R.id.cl_terms_and_conditions -> {
+                sound = sharedPrefs?.getBooleanPrefVal(activity!!, ConstantPath.SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
                 /*val bundle = Bundle()
                 bundle.putString("Category", "Settings")
                 bundle.putString("Action", "Policy")
@@ -298,6 +309,16 @@ class SettingFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.cl_write_to_us -> {
+                sound = sharedPrefs?.getBooleanPrefVal(activity!!, ConstantPath.SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
                 /*val bundle = Bundle()
                 bundle.putString("Category", "Settings")
                 bundle.putString("Action", "Contact")
@@ -314,6 +335,16 @@ class SettingFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.cl_feedback -> {
+                sound = sharedPrefs?.getBooleanPrefVal(activity!!, ConstantPath.SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
                 val bundle = Bundle()
                 bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Feedback")
                 bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "Settings")
@@ -324,6 +355,16 @@ class SettingFragment : Fragment(), View.OnClickListener {
             }
 
             R.id.signout -> {
+                sound = sharedPrefs?.getBooleanPrefVal(activity!!, ConstantPath.SOUNDS) ?: true
+                if(!sound){
+                    // mediaPlayer = MediaPlayer.create(this,R.raw.amount_low)
+                    //  mediaPlayer.start()
+                    if (Utils.loaded) {
+                        Utils.soundPool.play(Utils.soundID, Utils.volume, Utils.volume, 1, 0, 1f);
+                        Log.e("Test", "Played sound...volume..."+ Utils.volume);
+                        //Toast.makeText(context,"end",Toast.LENGTH_SHORT).show()
+                    }
+                }
                 if(view!!.txt_sign_in.text.equals("Sign In")) {
                     val intent = Intent(context!!, SignInActivity::class.java)
                     startActivity(intent)
