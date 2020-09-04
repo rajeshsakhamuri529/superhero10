@@ -2,7 +2,7 @@ package com.blobcity.activity
 
 import android.net.Uri
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.util.Log
 import android.webkit.WebViewClient
@@ -19,13 +19,12 @@ import android.R.attr.path
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.support.v4.app.SupportActivity
-import android.support.v4.app.SupportActivity.ExtraData
-import android.support.v4.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.support.v4.content.FileProvider
 
-import android.support.v4.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import androidx.core.content.FileProvider
+
+import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.view.*
 import com.blobcity.database.DatabaseHandler

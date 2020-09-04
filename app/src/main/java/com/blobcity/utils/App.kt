@@ -6,20 +6,20 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 //import org.junit.experimental.results.ResultMatchers.isSuccessful
 import com.google.android.gms.tasks.Task
-import android.support.annotation.NonNull
+
 import com.downloader.PRDownloader
 import com.google.android.gms.tasks.OnCompleteListener
 //import javax.swing.UIManager.put
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
-import android.support.v4.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.google.android.gms.analytics.GoogleAnalytics
-import android.support.v4.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import com.google.android.gms.analytics.Tracker
 import android.R
-import android.support.v4.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 
 

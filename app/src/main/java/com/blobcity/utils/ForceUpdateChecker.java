@@ -3,9 +3,12 @@ package com.blobcity.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
+
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.blobcity.activity.GradeActivity;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 

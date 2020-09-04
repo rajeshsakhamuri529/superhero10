@@ -1,7 +1,5 @@
 package com.blobcity.activity
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -9,7 +7,7 @@ import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
 import android.media.MediaPlayer
 import android.os.Build
-import android.support.v7.app.AlertDialog
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -18,6 +16,9 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.BranchesItem
@@ -115,7 +116,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
 
     private fun loadDataFromDb() {
         topicStatusVM!!.getSingleTopicStatus(topicId!!, gradeTitle!!).observe(this,
-            object : Observer<List<TopicStatusEntity>>{
+            object : Observer<List<TopicStatusEntity>> {
                 override fun onChanged(t: List<TopicStatusEntity>?) {
                     topicStatusModelList = ArrayList()
                     Glide.with(this@QuizLevelActivity)
@@ -314,7 +315,7 @@ class QuizLevelActivity : BaseActivity(), View.OnClickListener {
         }
 
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
 

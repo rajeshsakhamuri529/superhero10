@@ -1,9 +1,8 @@
 package com.blobcity.activity
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -20,9 +19,9 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 
 import android.widget.LinearLayout
-import android.support.v4.app.SupportActivity
-import android.support.v4.app.SupportActivity.ExtraData
-import android.support.v4.content.ContextCompat.getSystemService
+
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.lifecycle.ViewModelProviders
 import com.blobcity.model.Topic
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlinx.android.synthetic.main.activity_start_quiz_timer.*

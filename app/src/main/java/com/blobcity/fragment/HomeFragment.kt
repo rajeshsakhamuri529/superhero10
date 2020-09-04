@@ -7,8 +7,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.SystemClock
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,8 @@ import android.text.Spanned
 import android.util.Log
 import android.view.Gravity
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.blobcity.activity.DashBoardActivity
 import com.blobcity.activity.SettingsActivity
 import com.blobcity.activity.StartQuizActivityNew
@@ -354,8 +355,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
         mMonth = c.get(Calendar.MONTH)
         mDay = c.get(Calendar.DAY_OF_MONTH)
         //processingdateETID.setText(mDay+"/"+(mMonth+1)+"/"+mYear);
-        val datePickerDialog = DatePickerDialog(activity,
-            DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+        val datePickerDialog = DatePickerDialog(activity!!,DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
                 //cardViewCVID.setVisibility(View.GONE)
                 //processingdateETID.setText(dayOfMonth.toString() + "/" + (monthOfYear + 1) + "/" + year)
                 val sdf = SimpleDateFormat("yyyy-MM-dd")
@@ -646,7 +646,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
     }
 
     private fun downdata(url:String){
-        val dirpath = File((activity!!.getExternalFilesDir(null)).absolutePath)
+        val dirpath = File((activity!!.getExternalFilesDir(null))!!.absolutePath)
 
         val downloadId = PRDownloader.download(url, dirpath.absolutePath, "/testcontent.rar")
             .build()
@@ -738,7 +738,7 @@ class HomeFragment: Fragment(),View.OnClickListener {
         }
 
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog!!.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog!!.show()
     }
 

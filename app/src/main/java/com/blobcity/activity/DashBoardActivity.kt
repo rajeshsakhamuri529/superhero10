@@ -9,10 +9,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+
+import androidx.core.app.ActivityCompat
+
 import android.util.Log
 import android.view.MenuItem
 import android.view.WindowManager
@@ -26,15 +25,15 @@ import com.blobcity.utils.Utils.*
 import kotlinx.android.synthetic.main.activity_dashboard.*
 import java.io.File
 import java.sql.Time
-import android.support.v4.app.SupportActivity
-import android.support.v4.app.SupportActivity.ExtraData
-import android.support.v4.content.ContextCompat.getSystemService
+
+import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.net.Uri
 import android.os.PersistableBundle
-import android.support.constraint.ConstraintLayout
-import android.support.v7.app.AlertDialog
+
 import android.widget.Button
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.blobcity.BuildConfig
 import com.blobcity.Service.JobService
 import com.blobcity.database.QuizGameDataBase
@@ -45,6 +44,7 @@ import com.google.android.gms.analytics.HitBuilders
 import com.google.android.gms.analytics.Tracker
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -328,7 +328,7 @@ class DashBoardActivity : BaseActivity(),
             }
 
             //alertDialog.getWindow().setBackgroundDrawable(draw);
-            alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+            alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
             alertDialog.show()
         }
 

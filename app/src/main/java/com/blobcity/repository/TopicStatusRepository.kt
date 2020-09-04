@@ -1,8 +1,9 @@
 package com.blobcity.repository
 
 import android.app.Application
-import android.arch.lifecycle.LiveData
+
 import android.os.AsyncTask
+import androidx.lifecycle.LiveData
 import com.blobcity.dao.TopicStatusDao
 import com.blobcity.database.QuizDatabase
 import com.blobcity.entity.TopicStatusEntity
@@ -15,7 +16,7 @@ class TopicStatusRepository(application: Application) {
 
     }
 
-    fun getAllTopicStatus(gradeTitle: String) : LiveData<List<TopicStatusEntity>>{
+    fun getAllTopicStatus(gradeTitle: String) : LiveData<List<TopicStatusEntity>> {
         return topicStatusDao!!.getAllTopicStatus(gradeTitle)
     }
 

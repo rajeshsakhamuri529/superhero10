@@ -6,10 +6,11 @@ import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.support.v7.app.AppCompatActivity
+
 import android.util.Log
 import android.view.View
 import android.webkit.*
+import androidx.appcompat.app.AppCompatActivity
 import com.blobcity.BuildConfig
 import com.blobcity.R
 import com.blobcity.utils.ConstantPath

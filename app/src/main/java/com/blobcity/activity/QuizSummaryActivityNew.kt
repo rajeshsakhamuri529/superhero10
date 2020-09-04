@@ -3,10 +3,10 @@ package com.blobcity.activity
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.os.SystemClock
-import android.support.v4.widget.ImageViewCompat
+import androidx.core.widget.ImageViewCompat
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -100,7 +100,7 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
-
+        Log.e("quiz summary","position......"+position)
 
         if(comingfrom.equals("Home")){
             txt_prev.text = "BACK"
@@ -573,8 +573,11 @@ class QuizSummaryActivityNew : BaseActivity(), View.OnClickListener {
 
         branchesItemList = topicResponseModel.branches
 
+        Log.e("quiz summary","position +1......."+(position+1))
+        Log.e("quiz summary","branchesItemList!!.size......."+branchesItemList!!.size)
+        Log.e("quiz summary","branchesItemList!!......."+branchesItemList)
 
-        if((position+1) <= branchesItemList!!.size){
+        if((position+1) < branchesItemList!!.size){
             var topic = branchesItemList!![(position+1)].topic
             databaseHandler!!.deleteQuizPlayRecord(topic.title)
 

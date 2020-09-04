@@ -8,8 +8,7 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.blobcity.R
 import com.blobcity.Service.JobService
 import com.blobcity.Service.ProgressJobService
@@ -63,7 +64,7 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
     var gradeTitle: String?= null
     var version : String = ""
     var url : String = ""
-    var alertDialog:AlertDialog? = null
+    var alertDialog: AlertDialog? = null
     private var mServiceResultReceiver: ServiceResultReceiver? = null
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     var isdownload:Boolean = false
@@ -193,7 +194,7 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
     }
 
     private fun downdata(url:String){
-        val dirpath = File((activity!!.getExternalFilesDir(null)).absolutePath)
+        val dirpath = File((activity!!.getExternalFilesDir(null))!!.absolutePath)
 
         val downloadId = PRDownloader.download(url, dirpath.absolutePath, "/testcontent.rar")
             .build()
@@ -454,7 +455,7 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
         }
 
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog!!.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog!!.show()
     }
 

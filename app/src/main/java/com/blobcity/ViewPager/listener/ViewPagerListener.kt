@@ -1,6 +1,7 @@
 package com.blobcity.ViewPager.listener
 
-import android.support.v4.view.ViewPager
+import androidx.viewpager.widget.ViewPager
+
 
 class ViewPagerListener(private val closure: (Int) -> Unit) : ViewPager.OnPageChangeListener {
 

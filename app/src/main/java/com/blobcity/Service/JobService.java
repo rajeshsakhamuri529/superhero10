@@ -3,13 +3,12 @@ package com.blobcity.Service;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.ResultReceiver;
-import android.support.annotation.NonNull;
-import android.support.v4.app.JobIntentService;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.JobIntentService;
 import android.util.Log;
 
-import com.blobcity.database.DatabaseHandler;
 import com.blobcity.database.QuizGameDataBase;
 import com.blobcity.utils.Utils;
 import com.downloader.Error;

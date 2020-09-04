@@ -9,14 +9,15 @@ import android.graphics.PorterDuff
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.RequiresApi
+
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.blobcity.R
 import com.blobcity.model.ChallengeModel
 import com.blobcity.utils.ConstantPath

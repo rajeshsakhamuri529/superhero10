@@ -145,7 +145,7 @@
             android:resource="@color/black" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.yomplex.simple.files"
             android:exported="false"
             android:grantUriPermissions="true">

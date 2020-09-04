@@ -1,8 +1,8 @@
 package com.blobcity.fragment
 
-import android.arch.lifecycle.ViewModelProviders
+
 import android.os.Bundle
-import android.support.v4.app.Fragment
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.revision_layout.view.*
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.android.gms.tasks.OnCompleteListener
 
-import android.support.annotation.NonNull
+
 import com.blobcity.interfaces.RevisionItemClickListener
 import com.google.android.gms.tasks.Task
 import android.app.Activity
@@ -26,9 +26,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
 import android.view.ContextThemeWrapper
 import android.widget.Toast
+import androidx.annotation.NonNull
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.blobcity.R
 import com.blobcity.activity.PDFViewerActivity
 import com.blobcity.database.DatabaseHandler
@@ -480,7 +483,7 @@ class RevisionFragment: Fragment(), RevisionItemClickListener,RevisionItemDownlo
 
 
     private fun downdata(url:String?,filename: String?){
-        val dirpath = File((activity!!.getExternalFilesDir(null)).absolutePath)
+        val dirpath = File((activity!!.getExternalFilesDir(null))!!.absolutePath)
 
         val downloadId = PRDownloader.download(url, dirpath.absolutePath, filename+".pdf")
             .build()

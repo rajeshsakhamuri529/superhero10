@@ -1,24 +1,25 @@
 package com.blobcity.activity
 
 import android.app.ProgressDialog
-import android.arch.lifecycle.ViewModelProviders
+
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Paint
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.provider.Settings
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
+
+import androidx.core.app.ActivityCompat
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.view.WindowManager
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
 import com.blobcity.R
 import com.blobcity.ViewPager.adapter.MyPagerAdapter
 import com.blobcity.ViewPager.enum.TypeFaceEnum

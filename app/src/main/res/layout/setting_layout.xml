@@ -30,7 +30,7 @@
 
     </RelativeLayout>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
 
 
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_sounds"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -138,9 +138,9 @@
                             android:textColor="#424242"
                             android:text="soundstate"/>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_notification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -192,10 +192,10 @@
                             android:textColor="#424242"
                             android:text="notificationstate"/>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
                 </RelativeLayout>
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_write_to_us"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                             android:layout_marginBottom="4dp"
                             app:layout_constraintBottom_toBottomOf="parent"/>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!--<android.support.constraint.ConstraintLayout
                         android:id="@+id/cl_terms_and_conditions"
@@ -274,7 +274,7 @@
 
                 </android.support.constraint.ConstraintLayout>-->
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_feedback"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -312,10 +312,10 @@
                         android:layout_marginBottom="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <android.support.constraint.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/signout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -353,12 +353,12 @@
                         android:layout_marginBottom="4dp"
                         app:layout_constraintBottom_toBottomOf="parent"/>
 
-                </android.support.constraint.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </RelativeLayout>
 
         </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
         android:id="@+id/cl_terms_and_conditions"

@@ -6,9 +6,10 @@ import android.content.Context
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.os.Build
-import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
+
+import androidx.core.app.NotificationCompat
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.blobcity.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage

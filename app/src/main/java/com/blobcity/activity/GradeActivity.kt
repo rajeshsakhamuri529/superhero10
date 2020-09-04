@@ -12,10 +12,9 @@ import android.net.Uri
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Environment
-import android.support.annotation.NonNull
-import android.support.design.widget.Snackbar
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
+
+import androidx.core.app.ActivityCompat
+
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -32,6 +31,8 @@ import com.blobcity.utils.*
 import com.blobcity.utils.ConstantPath.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 
 import com.google.firebase.auth.FirebaseAuth
@@ -262,7 +263,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
 
                 if(activity.sharedPrefs.getBooleanPrefVal(activity, ConstantPath.IS_FIRST_TIME)){
-                    val dirFile = File((activity.getExternalFilesDir(null)).absolutePath)
+                    val dirFile = File((activity.getExternalFilesDir(null))!!.absolutePath)
                     //dirFile.mkdirs()
                     //var file =  File(dirFile, "testcontent.rar");
                     var iszip = Utils.unpackZip(dirFile.absolutePath,"/testcontent.rar")
@@ -281,7 +282,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                     Log.e("garde activity","dir file directory......."+dirFile)
                     FileUtils.deleteDirectory(dirFile);
 
-                    val dirFile1 = File((activity.getExternalFilesDir(null)).absolutePath)
+                    val dirFile1 = File((activity.getExternalFilesDir(null))!!.absolutePath)
                     //dirFile.mkdirs()
                     //var file =  File(dirFile, "testcontent.rar");
                     var iszip = Utils.unpackZip(dirFile1.absolutePath,"/testcontent.rar")
@@ -885,7 +886,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                     "No Internet Connection",
                     Snackbar.LENGTH_LONG
                 ) //Assume "rootLayout" as the root layout of every activity.
-                mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+                mSnackBar?.duration = BaseTransientBottomBar.LENGTH_INDEFINITE
                 mSnackBar?.setAction("Retry", { signin(sharedPrefs) })
                 mSnackBar?.show()
             }

@@ -8,12 +8,11 @@ import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
-import android.support.annotation.RequiresApi
-import android.support.v7.app.AlertDialog
+
 import android.util.Base64
 import android.util.Log
 import android.view.MotionEvent
@@ -25,6 +24,8 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import com.blobcity.R
 import com.blobcity.database.DatabaseHandler
 import com.blobcity.model.ChallengeModel
@@ -1111,7 +1112,7 @@ class ChallengeQuestionActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
         }
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
     fun getfile(dir: File):ArrayList<File> {

@@ -1,8 +1,7 @@
 package com.blobcity.adapter
 
 import android.app.Activity
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
+
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,6 +10,8 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.RelativeLayout
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 import com.blobcity.R
 import com.blobcity.activity.ReviewActivity
 import com.blobcity.model.ReviewModel

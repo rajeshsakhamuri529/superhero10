@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"/>
     </FrameLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.ConstraintLayout
             android:id="@+id/qs_cl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
                 android:text="8"
                 android:textSize="@dimen/_17ssp"/>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.ConstraintLayout>
 
 
     <TextView

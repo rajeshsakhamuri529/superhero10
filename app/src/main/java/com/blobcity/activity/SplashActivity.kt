@@ -4,11 +4,11 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.os.Handler
 import android.os.PersistableBundle
-import android.support.v7.app.AlertDialog
+
 import android.util.Log
 import com.blobcity.R
 import com.blobcity.fragment.ChapterFragment
@@ -16,12 +16,10 @@ import com.blobcity.utils.ForceUpdateChecker
 import com.blobcity.utils.SharedPrefs
 import com.google.firebase.FirebaseApp
 import kotlinx.android.synthetic.main.activity_dashboard.*
-import android.support.v4.app.SupportActivity
-import android.support.v4.app.SupportActivity.ExtraData
-import android.support.v4.content.ContextCompat.getSystemService
+
+import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
+import androidx.appcompat.app.AlertDialog
 
 
 class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener {
@@ -46,7 +44,7 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
 
         if(intent.hasExtra("screen")){
             if(extras != null){
-                value = extras.getString("screen")
+                value = extras.getString("screen")!!
 
             }
         }
@@ -91,7 +89,7 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
 
         if(intent!!.hasExtra("screen")){
             if(extras != null){
-                value = extras.getString("screen")
+                value = extras.getString("screen")!!
 
             }
         }

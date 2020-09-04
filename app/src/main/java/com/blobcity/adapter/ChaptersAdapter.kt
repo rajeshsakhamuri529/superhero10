@@ -4,8 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.ColorDrawable
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.RecyclerView
+
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -13,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import com.blobcity.R
 import com.blobcity.interfaces.TopicClickListener
 import com.blobcity.model.BranchesItem
@@ -230,7 +231,7 @@ class ChaptersAdapter(val context: Context,
         }
 
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
 

@@ -3,8 +3,7 @@ package com.blobcity.activity
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -13,7 +12,7 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
-import android.support.v7.app.AlertDialog
+
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,6 +22,9 @@ import android.view.WindowManager
 import android.view.animation.Animation
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.blobcity.R
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.model.BranchesItem
@@ -420,7 +422,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
 
     private fun loadDataFromDb() {
         topicStatusVM!!.getSingleTopicStatus(topicId!!, gradeTitle!!).observe(this,
-            object : Observer<List<TopicStatusEntity>> {
+            object : androidx.lifecycle.Observer<List<TopicStatusEntity>> {
                 override fun onChanged(t: List<TopicStatusEntity>?) {
                     topicStatusModelList = ArrayList()
                     topicStatusModelList!!.addAll(t!!)
@@ -601,7 +603,7 @@ class QuizSummaryActivity : BaseActivity(), View.OnClickListener {
         }
 
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
 

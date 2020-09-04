@@ -1,19 +1,19 @@
 package com.blobcity.activity
 
-import android.arch.lifecycle.ViewModelProviders
+
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-import android.support.annotation.RequiresApi
+
+
 import android.text.Html
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.blobcity.R
 import com.blobcity.viewmodel.TopicStatusVM
-import android.support.v4.app.SupportActivity
-import android.support.v4.app.SupportActivity.ExtraData
-import android.support.v4.content.ContextCompat.getSystemService
+
+import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import androidx.annotation.RequiresApi
+import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_test_question_new.*
 
 

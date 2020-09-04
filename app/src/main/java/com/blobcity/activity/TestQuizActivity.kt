@@ -2,7 +2,7 @@ package com.blobcity.activity
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.arch.lifecycle.ViewModelProviders
+
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -20,11 +20,10 @@ import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
-import android.support.annotation.RequiresApi
-import android.support.constraint.ConstraintLayout
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.ImageViewCompat
-import android.support.v7.app.AlertDialog
+
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
+
 import android.text.Html
 import android.text.TextUtils
 import android.util.ArrayMap
@@ -58,6 +57,10 @@ import android.view.*
 import android.view.animation.Animation.RELATIVE_TO_SELF
 import android.view.animation.RotateAnimation
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProviders
 
 import com.blobcity.database.QuizGameDataBase
 import com.blobcity.utils.ConstantPath
@@ -559,7 +562,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
         }
 
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         try{
             alertDialog.show()
         }catch (e:Exception){
@@ -885,7 +888,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
         }
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
 
@@ -921,8 +924,8 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.gravity = Gravity.BOTTOM
-        dialog.getWindow().setAttributes(layoutParams)
-        dialog.getWindow().setWindowAnimations(R.style.DialogNoAnimation);
+        dialog.getWindow()!!.setAttributes(layoutParams)
+        dialog.getWindow()!!.setWindowAnimations(R.style.DialogNoAnimation);
         dialog.show()
 
 
@@ -1056,7 +1059,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
         }
         // val alertDialog = dialogBuilder.create()
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
         // }
         ///}
@@ -1238,7 +1241,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
         }
 
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
         // }
         //}
@@ -3232,7 +3235,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
         }
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
 

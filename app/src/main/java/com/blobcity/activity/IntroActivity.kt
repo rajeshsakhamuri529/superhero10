@@ -1,12 +1,12 @@
 package com.blobcity.activity
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import androidx.lifecycle.ViewModelProviders
 import com.blobcity.R
 import com.blobcity.ViewPager.adapter.MyPagerAdapter
 import com.blobcity.ViewPager.fragments.IntroFirstFragment

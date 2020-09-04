@@ -87,7 +87,7 @@
         android:layout_marginEnd="@dimen/_15sdp"
         android:layout_marginBottom="@dimen/_10sdp">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.ConstraintLayout
             android:id="@+id/tq_cl1"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
                 app:layout_constraintVertical_bias="0.526"
                 app:srcCompat="@drawable/ic_right_arrow" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.ConstraintLayout>
 
 
 
@@ -180,7 +180,7 @@
             android:textColor="@color/hint_text"
             />-->
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.ConstraintLayout
             android:id="@+id/tq_cl2"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
@@ -222,7 +222,7 @@
                 app:layout_constraintVertical_bias="0.533"
                 app:srcCompat="@drawable/ic_left_arrow" />
 
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.ConstraintLayout>
     </RelativeLayout>
     <View
         android:id="@+id/grey_view"

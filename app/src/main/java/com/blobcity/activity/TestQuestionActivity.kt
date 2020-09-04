@@ -2,7 +2,7 @@ package com.blobcity.activity
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.arch.lifecycle.ViewModelProviders
+
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -18,10 +18,10 @@ import android.media.SoundPool
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.RequiresApi
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.ImageViewCompat
-import android.support.v7.app.AlertDialog
+
+import androidx.core.content.ContextCompat
+import androidx.core.widget.ImageViewCompat
+
 import android.text.Html
 import android.text.TextUtils
 import android.util.ArrayMap
@@ -53,6 +53,9 @@ import android.util.Base64
 import android.util.TypedValue
 import android.view.*
 import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProviders
 import com.blobcity.database.QuizGameDataBase
 import com.blobcity.utils.ConstantPath
 import com.blobcity.utils.SharedPrefs
@@ -473,12 +476,12 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
 
         val dialog = builder.create()
         val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(dialog.getWindow().getAttributes())
+        layoutParams.copyFrom(dialog.getWindow()!!.getAttributes())
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.gravity = Gravity.BOTTOM
-        dialog.getWindow().setAttributes(layoutParams)
-        dialog.getWindow().setWindowAnimations(R.style.DialogNoAnimation);
+        dialog.getWindow()!!.setAttributes(layoutParams)
+        dialog.getWindow()!!.setWindowAnimations(R.style.DialogNoAnimation);
         dialog.show()
 
 
@@ -612,7 +615,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
         }
        // val alertDialog = dialogBuilder.create()
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
         // }
         ///}
@@ -794,7 +797,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
         }
 
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
         // }
         //}
@@ -2703,7 +2706,7 @@ class TestQuestionActivity : BaseActivity(), View.OnClickListener {
             alertDialog.dismiss()
         }
         //alertDialog.getWindow().setBackgroundDrawable(draw);
-        alertDialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        alertDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         alertDialog.show()
     }
 

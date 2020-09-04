@@ -1,9 +1,9 @@
 package com.blobcity.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+
 import com.blobcity.entity.TopicStatusEntity
 import com.blobcity.repository.TopicStatusRepository
 
@@ -14,7 +14,7 @@ class TopicStatusVM(application: Application) : AndroidViewModel(Application()) 
         topicStatusRepository = TopicStatusRepository(application)
     }
 
-    fun getAllTopicStatus(gradeTitle: String) : LiveData<List<TopicStatusEntity>>{
+    fun getAllTopicStatus(gradeTitle: String) : LiveData<List<TopicStatusEntity>> {
         return topicStatusRepository!!.getAllTopicStatus(gradeTitle)
     }
 
