@@ -920,7 +920,7 @@ class TestQuizActivity : BaseActivity(), View.OnClickListener {
 
         val dialog = builder.create()
         val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(dialog.getWindow().getAttributes())
+        layoutParams.copyFrom(dialog.getWindow()!!.getAttributes())
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
         layoutParams.gravity = Gravity.BOTTOM

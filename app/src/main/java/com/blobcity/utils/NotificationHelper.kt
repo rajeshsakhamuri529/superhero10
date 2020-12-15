@@ -22,16 +22,28 @@ class NotificationHelper : FirebaseMessagingService() {
     val TAG = "Service"
     var sharedPrefs: SharedPrefs? = null
     var notification: Boolean = true
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+    override fun onNewToken(token: String) {
+        super.onNewToken(token)
+        Log.i(TAG, token)
+        Log.e("NotificationHelper","new token....token...."+token)
+        sharedPrefs?.setPrefVal(applicationContext, "firebasetoken", token)
+    }
+    override fun onMessageReceived(remoteMessage: RemoteMessage) {
         super.onMessageReceived(remoteMessage)
         Log.e("notification helper","on message received......");
         sharedPrefs = SharedPrefs()
-        Log.d(TAG, "From: " + remoteMessage!!.from)
-        Log.d(TAG, "Notification Message Body: " + remoteMessage.notification?.body!!)
-        notification = sharedPrefs?.getBooleanPrefVal(applicationContext, ConstantPath.NOTIFICATION) ?: true
-        if(notification){
-            sendNotification(remoteMessage)
+        Log.e(TAG, "From: " + remoteMessage!!.from)
+        if(remoteMessage.data != null){
+            sharedPrefs!!.setPrefVal(applicationContext,"screen",
+                remoteMessage.data.get("screen")!!
+            )
         }
+
+       // Log.e(TAG, "Notification Message Body: " + remoteMessage.data.get("my_custom_key2"))
+        notification = sharedPrefs?.getBooleanPrefVal(applicationContext, ConstantPath.NOTIFICATION) ?: true
+        //if(notification){
+            sendNotification(remoteMessage)
+        //}
 
         /*val intent = Intent(this@NotificationHelper, GradeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -69,14 +81,14 @@ class NotificationHelper : FirebaseMessagingService() {
             .setContentTitle(remoteMessage.notification!!.title)
             .setContentText(remoteMessage.notification!!.body)
             .setContentInfo("Info")
-            .setColor(Color.RED)
+            .setColor(Color.BLACK)
             .setSound(defaultSoundUri)
-            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_icon))
+            .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_default))
             .setVibrate(vibrate)
             .setContentIntent(pendingIntent)
 
-        notifbuilder.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.large_icon))
-        notifbuilder.color = resources.getColor(R.color.noticolor)
+        notifbuilder.setLargeIcon(BitmapFactory.decodeResource(resources, R.drawable.ic_stat_default))
+        notifbuilder.color = resources.getColor(R.color.black)
 
 
         notificationManager.notify(Random().nextInt(), notifbuilder.build())

@@ -22,14 +22,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private lateinit var notificationManager: NotificationManager
     private val ADMIN_CHANNEL_ID = "Android4Dev"
 
-    override fun onNewToken(token: String?) {
-        super.onNewToken(token)
-        Log.i(TAG, token)
+    override fun onNewToken(p0: String) {
+        super.onNewToken(p0)
+        Log.i(TAG, p0)
+        Log.e("firebase messaging","new token....p0...."+p0)
     }
 
-    override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        super.onMessageReceived(remoteMessage)
-        remoteMessage?.let { message ->
+    override fun onMessageReceived(p0: RemoteMessage) {
+        super.onMessageReceived(p0)
+        p0?.let { message ->
             Log.i(TAG, message.getData().get("message"))
 
             notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

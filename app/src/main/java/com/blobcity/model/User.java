@@ -7,6 +7,7 @@ public class User implements Serializable {
     public String createdon;
     public String deviceuniqueid;
     public String username;
+    public String firebaseToken;
 
 
     public String getCreatedon() {
@@ -33,5 +34,13 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
     }
 }

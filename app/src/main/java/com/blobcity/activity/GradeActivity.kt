@@ -19,6 +19,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.blobcity.BuildConfig
 import com.blobcity.R
 import com.blobcity.Service.JobService
 import com.blobcity.adapter.GradeAdapter
@@ -40,6 +41,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.iid.FirebaseInstanceId
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import com.google.firebase.storage.FileDownloadTask
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -82,6 +84,9 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         startActivity(intent)
         finish()
     }
+    private val SUBSCRIPTION_END_DATE = "subscriptionenddate"
+    private val TEST_CONTENT_URL = "TestContentUrl"
+    private val TEST_CONTENT_VERSION = "TestContentVersion"
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
@@ -132,6 +137,13 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         }
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setDeveloperModeEnabled(BuildConfig.DEBUG)
+            .build()
+
+        remoteConfig!!.setConfigSettings(configSettings)
+        remoteConfig!!.setDefaults(R.xml.remote_config_defaults)
+        fetchVersion()
         //firebaseAnalytics.setCurrentScreen(this, "Signup", null /* class override */)
 
         TedPermission.with(this)
@@ -148,13 +160,42 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                 }
 
                 // Get new Instance ID token
-                val token = task.result?.token
+                var token:String = task.result.token
                 Log.e("grade activity","token...."+token);
-
+                sharedPrefs?.setPrefVal(this@GradeActivity, "firebasetoken", token)
             })
 
     }
 
+    fun fetchVersion(){
+        var cacheExpiration: Long = 3600 // 1 hour in seconds.
+        // If your app is using developer mode, cacheExpiration is set to 0, so each fetch will
+        // retrieve values from the service.
+        if (remoteConfig!!.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
+            cacheExpiration = 0
+        }
+
+        remoteConfig!!.fetch(cacheExpiration)
+            .addOnCompleteListener(this, OnCompleteListener<Void> { task ->
+                if (task.isSuccessful) {
+                    // After config data is successfully fetched, it must be activated before newly fetched
+                    // values are returned.
+                    remoteConfig!!.activateFetched()
+                }
+                displayUpdateAlert()
+            })
+    }
+
+    fun displayUpdateAlert() {
+        val enddate = remoteConfig!!.getString(SUBSCRIPTION_END_DATE)
+        sharedPrefs!!.setPrefVal(this,"enddate", enddate)
+        /*val url = remoteConfig!!.getString(TEST_CONTENT_URL)
+        val version = remoteConfig!!.getString(TEST_CONTENT_VERSION)
+        Log.e("grade activity","displayUpdateAlert.....version......."+version)
+        Log.e("grade activity","displayUpdateAlert......url......."+url)*/
+
+       // databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)*/
+    }
 
     override fun onPermissionGranted() {
         signin(sharedPrefs)

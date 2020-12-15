@@ -45,8 +45,8 @@ import com.google.android.gms.analytics.Tracker
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.*
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import java.text.SimpleDateFormat
@@ -76,6 +76,7 @@ class DashBoardActivity : BaseActivity(),
     var url : String = ""
     var mTracker: Tracker? = null
     private var sAnalytics: GoogleAnalytics? = null
+    private var auth: FirebaseAuth?= null
     override var layoutID: Int = R.layout.activity_dashboard
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {
         super.onSaveInstanceState(outState, outPersistentState)
@@ -106,6 +107,15 @@ class DashBoardActivity : BaseActivity(),
 
         var dburl = databaseHandler!!.gettesttopicurl()
         if(dburl == null){
+
+            version = sharedPrefs!!.getPrefVal(this,"testversion")!!
+            url = sharedPrefs!!.getPrefVal(this,"testurl")!!
+
+            Log.e("dashboard activity","version....."+version);
+            Log.e("dashboard activity","url....."+url);
+            databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
+            downloadDataFromBackground(this@DashBoardActivity,url,version)
+
             val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
             docRef.get().addOnSuccessListener { document ->
                 if (document != null) {
@@ -119,13 +129,7 @@ class DashBoardActivity : BaseActivity(),
                     //if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
                         // var url = databaseHandler!!.gettesttopicurl()
                         downloadDataFromBackground(this@DashBoardActivity,url,version)
-                        //navigateToDashboard("GRADE 6")
-                        /*if(Utils.isOnline(this@GradeActivity)){
-                            val task = MyAsyncTask(this@GradeActivity)
-                            task.execute(url)
-                        }else{
-                            Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                        }*/
+
 
 
 
@@ -142,6 +146,38 @@ class DashBoardActivity : BaseActivity(),
 
                 }
         }
+
+
+        try{
+            auth = FirebaseAuth.getInstance()
+            val docRef = db.collection("users")
+            docRef.whereEqualTo("username",auth!!.currentUser!!.email)
+                .get().addOnCompleteListener(object : OnCompleteListener<QuerySnapshot> {
+                    override fun onComplete(task: Task<QuerySnapshot>) {
+                        if (task.isSuccessful){
+
+                            task.getResult().forEachIndexed { index, document ->
+                                Log.e("dashboard","document id......"+document.id)
+                                if(document.contains("firebaseToken")){
+
+                                }else{
+                                    var token:String = sharedPrefs!!.getPrefVal(this@DashBoardActivity,"firebasetoken")!!
+                                    val data = hashMapOf("firebaseToken" to token)
+
+                                    db.collection("users").document(document.id)
+                                        .set(data, SetOptions.merge())
+                                }
+                            }
+
+                        }
+                    }
+                })
+
+        }catch (e:Exception){
+
+        }
+
+
 
         try {
             currentVersion = packageManager.getPackageInfo(packageName, 0).versionCode
@@ -166,15 +202,17 @@ class DashBoardActivity : BaseActivity(),
         // information.
         remoteConfig!!.setDefaults(R.xml.remote_config_defaults)
         fetchVersion()
-        action = sharedPrefs!!.getPrefVal(this,"action")!!
-        data = sharedPrefs!!.getPrefVal(this,"data")!!
+     //   action = sharedPrefs!!.getPrefVal(this,"action")!!
+        data = sharedPrefs!!.getPrefVal(this,"screen")!!
         /*val action: String? = intent?.action
         val data1: Uri? = intent?.data
             Log.e("dashboard activity","action......"+action);
         Log.e("dashboard activity","data1......"+data1.toString());
         data = data1.toString()*/
+        Log.e("dashboard activity","data........"+data)
         if(data.equals("null") || data.equals("")){
             val fragment = intent.getStringExtra("fragment")
+            Log.e("dashboard activity","fragment........"+fragment)
             if(fragment == "pdf"){
                 loadFragment(RevisionFragment())
                 val revisionItem = navigation.getMenu().getItem(3)
@@ -211,7 +249,8 @@ class DashBoardActivity : BaseActivity(),
                 navigation.setSelectedItemId(revisionItem.getItemId());
             }*/
         }else{
-            sharedPrefs!!.setPrefVal(this,"data", "")
+            Log.e("dashboard activity","data......else.."+data)
+            sharedPrefs!!.setPrefVal(this,"screen", "")
             if(data.contains("books")){
                 loadFragment(RevisionFragment())
                 val revisionItem = navigation.getMenu().getItem(3)

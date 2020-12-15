@@ -25,7 +25,7 @@ import androidx.appcompat.app.AlertDialog
 class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener {
 
     private var mDelayHandler: Handler? = null
-    private val SPLASH_DELAY: Long = 3000 //3 seconds
+    private val SPLASH_DELAY: Long = 1000 //1 seconds
     var sharedPrefs: SharedPrefs? = null
     internal val mRunnable: Runnable = Runnable {
         if (!isFinishing) {
@@ -38,7 +38,7 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
     override fun initView() {
 
         Log.d("onCreate","Splash")
-        val action: String? = intent?.action
+        /*val action: String? = intent?.action
         val data: Uri? = intent?.data
         var extras:Bundle? = intent.extras
 
@@ -60,7 +60,7 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
         }else{
             Log.e("splash activity","value...else..."+value);
             sharedPrefs!!.setPrefVal(this,"data", data.toString())
-        }
+        }*/
 
 
 
@@ -83,7 +83,7 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
         Log.e("splash screen","on new intent....isTaskRoot..."+isTaskRoot);
 
 
-        val action: String? = intent?.action
+        /*val action: String? = intent?.action
         val data: Uri? = intent?.data
         var extras:Bundle? = intent?.extras
 
@@ -103,7 +103,7 @@ class SplashActivity : BaseActivity(), ForceUpdateChecker.OnUpdateNeededListener
             sharedPrefs!!.setPrefVal(this,"data", value)
         }else{
             sharedPrefs!!.setPrefVal(this,"data", data.toString())
-        }
+        }*/
 
 
         //Initialize the Handler

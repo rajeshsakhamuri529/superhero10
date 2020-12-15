@@ -241,6 +241,7 @@ class TestsFragment: Fragment(),View.OnClickListener, TestQuizReviewClickListene
                 }
 
                 override fun onError(error: Error) {
+
                     Log.e("downdata", "onerror.....$error")
                     // JobService.enqueueWork(context1,url,version);
                   //  test_btn.isEnabled = true

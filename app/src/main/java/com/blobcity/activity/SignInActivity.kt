@@ -73,7 +73,7 @@ class SignInActivity : BaseActivity(){
     private var backPressedTime: Long = 0
     private var backPressToastMessage: Toast? = null
     var firestore: FirebaseFirestore? = null
-
+    var enddate = ""
     companion object {
         private const val MIN_SCALE = 0.65f
         private const val MIN_ALPHA = 0.3f
@@ -108,6 +108,9 @@ class SignInActivity : BaseActivity(){
         firstTime = intent.getStringExtra(ConstantPath.FIRST_TIME)
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
+        enddate = sharedPrefs!!.getPrefVal(this,"enddate")!!
+        Log.e("sign in","end date.........."+enddate);
+        text1.setText("valid until "+enddate)
         firebaseAnalytics.setCurrentScreen(this, "Signup", null /* class override */)
         /*if(sharedPrefs!!.getBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME)) {
             sharedPrefs!!.setBooleanPrefVal(this, ConstantPath.IS_FIRST_TIME, false)
@@ -352,12 +355,18 @@ class SignInActivity : BaseActivity(){
                 bundle.putString("Category", "Setup")
                 bundle.putString("Action", "Registered")
                 firebaseAnalytics?.logEvent("On_sucessful_Signup", bundle)
-
+                var token:String = sharedPrefs!!.getPrefVal(this,"firebasetoken")!!
 
                 var userObj = User()
                 userObj.username = user.email
                 userObj.deviceuniqueid = android_id
                 userObj.createdon = currentDate
+                userObj.firebaseToken = token
+
+                /*firestore!!.collection("users").document()
+                    .set(userObj)
+                    .addOnSuccessListener { Log.e("sign in", "DocumentSnapshot successfully written!") }
+                    .addOnFailureListener { e -> Log.e("sign in", "Error writing document", e) }*/
                 firestore!!.collection("users")
                     .add(userObj)
                     .addOnCompleteListener(object : OnCompleteListener<DocumentReference> {
