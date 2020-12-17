@@ -63,20 +63,6 @@ import kotlin.collections.ArrayList
 
 class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
-   /* override fun onUpdateNeeded(updateUrl: String) {
-        val dialog = AlertDialog.Builder(this)
-                .setTitle("New version available")
-                .setMessage("Please, update app to new version to continue reposting.")
-            .setPositiveButton("Update",DialogInterface.OnClickListener { dialog, which ->
-                redirectStore(updateUrl);
-
-            })
-            .setNegativeButton("No ",DialogInterface.OnClickListener { dialog, which ->
-                finish();
-            }).create()
-
-        dialog.show();
-    }*/
 
     fun redirectStore(updateUrl : String) {
         var intent = Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
@@ -107,20 +93,8 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
     var url : String = ""
     override var layoutID: Int = R.layout.activity_splash
 
-    /*private val PERMISSIONS = arrayOf<String>(android.Manifest.permission.READ_EXTERNAL_STORAGE, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    private fun hasPermissions(context: Context, vararg permissions:String):Boolean {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null)
-        {
-            for (permission in permissions)
-            {
-                if (ActivityCompat.checkSelfPermission(context, permission) !== PackageManager.PERMISSION_GRANTED)
-                {
-                    return false
-                }
-            }
-        }
-        return true
-    }*/
+
+
 
     override fun initView() {
 
@@ -211,156 +185,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         gradeVersion = sharedPrefs.getLongPrefVal(this, GRADE_VERSION)
     }
 
-    private fun downloadFile(url:String, outputFile:File) {
-        try
-        {
-            val u = URL(url)
-            val conn = u.openConnection()
-            val contentLength = conn.getContentLength()
-            val stream = DataInputStream(u.openStream())
-            val buffer = ByteArray(contentLength)
-            stream.readFully(buffer)
-            stream.close()
-            val fos = DataOutputStream(FileOutputStream(outputFile))
-            fos.write(buffer)
-            fos.flush()
-            fos.close()
-        }
-        catch (e: FileNotFoundException) {
-            return // swallow a 404
-        }
-        catch (e: IOException) {
-            return // swallow a 404
-        }
-    }
-
-
-
-    companion object {
-        class MyAsyncTask internal constructor(context: GradeActivity) : AsyncTask<String, String, String?>() {
-
-            private var resp: String? = null
-            private val activityReference: WeakReference<GradeActivity> = WeakReference(context)
-            lateinit var activity: GradeActivity
-            override fun onPreExecute() {
-                activity = activityReference.get()!!
-                if (activity == null || activity.isFinishing) return
-                //activity.progressBar.visibility = View.VISIBLE
-            }
-
-            override fun doInBackground(vararg params: String?): String? {
-                /*publishProgress("Sleeping Started") // Calls onProgressUpdate()
-                try {
-                    val time = params[0]?.times(1000)
-                    time?.toLong()?.let { Thread.sleep(it / 2) }
-                    publishProgress("Half Time") // Calls onProgressUpdate()
-                    time?.toLong()?.let { Thread.sleep(it / 2) }
-                    publishProgress("Sleeping Over") // Calls onProgressUpdate()
-                    resp = "Android was sleeping for " + params[0] + " seconds"
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                    resp = e.message
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    resp = e.message
-                }*/
-                try
-                {
-                    resp = params[0]
-                    val dirFile = File(activity.getExternalFilesDir(null), "testcontent.rar")
-                    //dirFile.mkdirs()
-                    dirFile.createNewFile()
-                    val u = URL(params[0])
-                    val conn = u.openConnection()
-                    val contentLength = conn.getContentLength()
-                    val stream = DataInputStream(u.openStream())
-                    val buffer = ByteArray(contentLength)
-                    stream.readFully(buffer)
-                    stream.close()
-                    //var file =  File(dirFile, "testcontent.rar");
-                    val fos = DataOutputStream(FileOutputStream(dirFile))
-                    Log.e("grade activity","buffer......"+buffer.size)
-                    fos.write(buffer)
-                    fos.flush()
-                    fos.close()
-                }
-                catch (e: FileNotFoundException) {
-                    Log.e("grade activity","file not found...."+e);
-                    return "" // swallow a 404
-                }
-                catch (e: IOException) {
-                    Log.e("grade activity","IOException...."+e);
-                    return "" // swallow a 404
-                }
-
-                return resp
-            }
-
-
-            override fun onPostExecute(result: String?) {
-
-                val activity = activityReference.get()
-                if (activity == null || activity.isFinishing) return
-
-
-                if(activity.sharedPrefs.getBooleanPrefVal(activity, ConstantPath.IS_FIRST_TIME)){
-                    val dirFile = File((activity.getExternalFilesDir(null))!!.absolutePath)
-                    //dirFile.mkdirs()
-                    //var file =  File(dirFile, "testcontent.rar");
-                    var iszip = Utils.unpackZip(dirFile.absolutePath,"/testcontent.rar")
-                    if(iszip){
-                        val dirFile = File(activity.getExternalFilesDir(null),"testcontent.rar")
-                        dirFile.delete()
-                        activity.sharedPrefs.setBooleanPrefVal(activity, "iscontentdownload", true)
-                        activity.navigateToIntro()
-
-                    }else{
-                        Log.e("garde activity","zip not done")
-                    }
-
-                }else{
-                    val dirFile = File(activity.getExternalFilesDir(null),"test")
-                    Log.e("garde activity","dir file directory......."+dirFile)
-                    FileUtils.deleteDirectory(dirFile);
-
-                    val dirFile1 = File((activity.getExternalFilesDir(null))!!.absolutePath)
-                    //dirFile.mkdirs()
-                    //var file =  File(dirFile, "testcontent.rar");
-                    var iszip = Utils.unpackZip(dirFile1.absolutePath,"/testcontent.rar")
-                    if(iszip){
-                        val dirFile2 = File(activity.getExternalFilesDir(null),"testcontent.rar")
-                        dirFile2.delete()
-                        activity.updateversion()
-                        activity.navigateToDashboard("GRADE 6")
-
-                    }else{
-                        Log.e("garde activity","zip not done")
-                    }
-
-
-
-                }
-
-
-
-
-                /*activity.progressBar.visibility = View.GONE
-                activity.textView.text = result.let { it }
-                activity.myVariable = 100*/
-            }
-
-            override fun onProgressUpdate(vararg text: String?) {
-
-                /*val activity = activityReference.get()
-                if (activity == null || activity.isFinishing) return
-
-                Toast.makeText(activity, text.firstOrNull(), Toast.LENGTH_SHORT).show()*/
-
-            }
-        }
-    }
-
-
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -383,15 +207,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                     navigateToDashboard("GRADE 6")
                 }
 
-                /*if(Utils.isOnline(this)){
-                    var url = databaseHandler!!.gettesttopicurl()
-                    Log.e("grade actvity","is first time........url....."+url);
-                    val task = MyAsyncTask(this)
-                    task.execute(url)
-                }else{
-                    Toast.makeText(this,"Internet is required!",Toast.LENGTH_LONG).show();
-                }*/
-
             }else {
                 Toast.makeText(this,"Permissions are required to view the file!",Toast.LENGTH_LONG).show()
             }
@@ -406,9 +221,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
         JobService.enqueueWork(mainActivity, url,version)
     }
 
-    private fun updateversion(){
-        databaseHandler!!.updatetestcontentversion(version)
-    }
 
     @TargetApi(Build.VERSION_CODES.M)
     private fun signin(sharedPrefs: SharedPrefs) {
@@ -431,36 +243,17 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                         var version = databaseHandler!!.gettesttopicversion()
                         downloadDataFromBackground(this@GradeActivity,url,version)
                         navigateToIntro()
-                        /*if(Utils.isOnline(this)){
-
-
-                            val task = MyAsyncTask(this)
-                            task.execute(url)
-                        }else{
-                            Toast.makeText(this,"Internet is required!",Toast.LENGTH_LONG).show();
-                        }*/
-
-
 
 
                     }
 
-               /* }else{
-
-                    requestPermissions(PERMISSIONS, 112)
-                }*/
-
-
-                //navigateToIntro()
             }else{
 
                 Log.e("grade activity","sharedPrefs.getBooleanPrefVal(this, ISNOTLOGIN)...."+sharedPrefs.getBooleanPrefVal(this, ISNOTLOGIN))
 
                 if(!sharedPrefs.getBooleanPrefVal(this, ISNOTLOGIN)){
                     //this block is for not sign in users
-                    //if(Utils.isOnline(this@GradeActivity)){
-
-                        val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
+                    val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
                         docRef.get().addOnSuccessListener { document ->
                             if (document != null) {
                                 Log.e("grade activity", "DocumentSnapshot data: ${document.data}")
@@ -472,16 +265,8 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                                 databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
 
-                                //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
-                               // if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
-                                    // var url = databaseHandler!!.gettesttopicurl()
-                                    //var url = databaseHandler!!.gettesttopicurl()
-                                    downloadDataFromBackground(this@GradeActivity,url,version)
-                                    navigateToIntro()
-                                /*}else{
-
-                                    requestPermissions(PERMISSIONS, 112)
-                                }*/
+                                downloadDataFromBackground(this@GradeActivity,url,version)
+                                navigateToIntro()
 
 
                             } else {
@@ -494,42 +279,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                 navigateToIntro()
 
                             }
-                        /*val rootRef = FirebaseFirestore.getInstance()
-                        val attractionsRef = rootRef.collection("testcontentdownload")
-                        attractionsRef.get().addOnCompleteListener(object: OnCompleteListener<QuerySnapshot> {
-                            override fun onComplete(@NonNull task: Task<QuerySnapshot>) {
-                                if (task.isSuccessful()) {
-
-                                    for (document in task.getResult()!!) {
-                                        version = document.data.get("TestContentVersion").toString()
-                                        url = document.data.get("TestContentUrl").toString()
-                                    }
-                                    databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url)
-                                    sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
-                                    if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
-                                        // var url = databaseHandler!!.gettesttopicurl()
-                                        if(Utils.isOnline(this@GradeActivity)){
-                                            val task = MyAsyncTask(this@GradeActivity)
-                                            task.execute(url)
-                                        }else{
-                                            Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                                        }
-
-                                    }else{
-
-                                        requestPermissions(PERMISSIONS, 112)
-                                    }
-
-
-                                }
-                            }
-                        })*/
-
-                    /*}else{
-                        Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                    }*/
-
-
 
                 }else{
 
@@ -537,10 +286,8 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                     var dbversion = databaseHandler!!.gettesttopicversion()
                     if(dbversion == null){
                         //this block is for already logged user but content is not downloded
-                        //if(Utils.isOnline(this@GradeActivity)){
-
-                            val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
-                            docRef.get().addOnSuccessListener { document ->
+                        val docRef = db.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
+                        docRef.get().addOnSuccessListener { document ->
                                 if (document != null) {
                                     Log.e("grade activity", "DocumentSnapshot data: ${document.data}")
                                     version = document.data!!.get("TestContentVersion").toString()
@@ -550,22 +297,8 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                     Log.e("grade activity","url......."+url)
 
                                     databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url,0)
-                                    //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
-                                   // if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
-                                        // var url = databaseHandler!!.gettesttopicurl()
-                                        downloadDataFromBackground(this@GradeActivity,url,version)
-                                        navigateToDashboard("GRADE 6")
-                                        /*if(Utils.isOnline(this@GradeActivity)){
-                                            val task = MyAsyncTask(this@GradeActivity)
-                                            task.execute(url)
-                                        }else{
-                                            Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                                        }*/
-
-                                   /* }else{
-
-                                        requestPermissions(PERMISSIONS, 112)
-                                    }*/
+                                    downloadDataFromBackground(this@GradeActivity,url,version)
+                                    navigateToDashboard("GRADE 6")
 
 
                                 } else {
@@ -579,40 +312,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                                     navigateToDashboard("GRADE 6")
 
                                 }
-                            /*val rootRef = FirebaseFirestore.getInstance()
-                            val attractionsRef = rootRef.collection("testcontentdownload")
-                            attractionsRef.get().addOnCompleteListener(object: OnCompleteListener<QuerySnapshot> {
-                                override fun onComplete(@NonNull task: Task<QuerySnapshot>) {
-                                    if (task.isSuccessful()) {
-
-                                        for (document in task.getResult()!!) {
-                                            version = document.data.get("TestContentVersion").toString()
-                                            url = document.data.get("TestContentUrl").toString()
-                                        }
-                                        databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url)
-                                        //sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
-                                        if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
-                                            // var url = databaseHandler!!.gettesttopicurl()
-                                            if(Utils.isOnline(this@GradeActivity)){
-                                                val task = MyAsyncTask(this@GradeActivity)
-                                                task.execute(url)
-                                            }else{
-                                                Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                                            }
-
-                                        }else{
-
-                                            requestPermissions(PERMISSIONS, 112)
-                                        }
-
-
-                                    }
-                                }
-                            })*/
-
-                        /*}else{
-                            Toast.makeText(this@GradeActivity,"Internet is required!",Toast.LENGTH_LONG).show();
-                        }*/
 
                     }else{
                        //this block is for already logged user but version checking for content downloaded
@@ -630,17 +329,10 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                                             var dbversion = databaseHandler!!.gettesttopicversion()
                                             if(dbversion != version) {
-                                               // if (hasPermissions(this@GradeActivity, *PERMISSIONS)) {
-                                                    // var url = databaseHandler!!.gettesttopicurl()
-                                                    //if(Utils.isOnline(this@GradeActivity)){
-                                                   // val task = MyAsyncTask(this@GradeActivity)
-                                                   // task.execute(url)
-                                                    downloadDataFromBackground(this@GradeActivity,url,version)
-                                                    navigateToDashboard("GRADE 6")
-                                               /* } else {
 
-                                                    requestPermissions(PERMISSIONS, 112)
-                                                }*/
+                                                downloadDataFromBackground(this@GradeActivity,url,version)
+                                                navigateToDashboard("GRADE 6")
+
                                             }else{
 
                                                 navigateToDashboard("GRADE 6")
@@ -656,46 +348,10 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                                     }
 
-                                /*val rootRef = FirebaseFirestore.getInstance()
-                                val attractionsRef = rootRef.collection("testcontentdownload")
-                                attractionsRef.get().addOnCompleteListener(object: OnCompleteListener<QuerySnapshot> {
-                                    override fun onComplete(@NonNull task: Task<QuerySnapshot>) {
-                                        if (task.isSuccessful()) {
-
-                                            for (document in task.getResult()!!) {
-                                                version = document.data.get("TestContentVersion").toString()
-                                                url = document.data.get("TestContentUrl").toString()
-                                            }
-                                            var dbversion = databaseHandler!!.gettesttopicversion()
-                                            if(dbversion != version){
-                                                if(hasPermissions(this@GradeActivity, *PERMISSIONS)){
-                                                    // var url = databaseHandler!!.gettesttopicurl()
-                                                    //if(Utils.isOnline(this@GradeActivity)){
-                                                    val task = MyAsyncTask(this@GradeActivity)
-                                                    task.execute(url)
-
-
-                                            }else{
-
-                                                requestPermissions(PERMISSIONS, 112)
-                                            }
-                                        }else{
-                                            navigateToDashboard("GRADE 6")
-                                        }
-
-                                    }else{
-                                        navigateToDashboard("GRADE 6")
-                                    }
-                                }
-                            })*/
-
-
                         }else {
                                 Log.e("grade activity","user offline..........")
                                 navigateToDashboard("GRADE 6")
                             }
-
-
 
                     }
 
@@ -703,113 +359,8 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
                 }
 
 
-
-
-
-
-
-
-
             }
 
-
-            // GRADE SCREEN
-           /* val gson = Gson()
-            if (!TextUtils.isEmpty(listJson)){
-                if (isNetworkConnected()) {
-                    remoteConfig.fetch().addOnCompleteListener(object : OnCompleteListener<Void> {
-                        override fun onComplete(task: Task<Void>) {
-                            if (task.isSuccessful) {
-                                if (gradeVersion != remoteConfig.getLong("gradesVer")) {
-                                    getdataFromFirestore()
-                                }else{
-                                    setLocalData(gson)
-                                }
-                            }
-                        }
-                    })
-                }
-                else{
-                    setLocalData(gson)
-                }
-            }else{
-                if (isNetworkConnected()){
-                    val root = Environment.getExternalStorageDirectory().toString()
-                    Utils.makeDir("$root/blobcity/images")
-                    getdataFromFirestore()
-                }
-            }*/
-
-
-            /*val storage = FirebaseStorage.getInstance()
-            val storageRef = storage.getReference().child("astra-quiz-v.1.0.zip");
-
-            val imageFile = File.createTempFile("test", "zip");
-
-            Log.d(TAG,"Temp file : " + imageFile.getAbsolutePath());
-
-            storageRef.getFile(imageFile)
-                .addOnSuccessListener(OnSuccessListener<FileDownloadTask.TaskSnapshot> {
-                    Toast.makeText(applicationContext, "file created", Toast.LENGTH_SHORT).show()
-                    Log.d("file","created :  "+it.toString()+"!"+it.totalByteCount);
-
-                    //startApp()
-                }).addOnFailureListener(OnFailureListener {
-                    Log.d("file","not created : "+it.toString());
-                    Toast.makeText(applicationContext, "An error accoured", Toast.LENGTH_SHORT).show()
-                })
-
-            val user = auth.currentUser
-            TedPermission.with(this)
-                .setPermissionListener(this)
-                .setDeniedMessage("If you reject permission,you can not use this service\n"
-                        + "\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check()*/
-
-            //TODO: encryption
-            /* Dexter.withActivity(this)
-                 .withPermissions(*arrayOf(
-                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                     Manifest.permission.READ_EXTERNAL_STORAGE
-                 ))
-                 .withListener(object : MultiplePermissionsListener{
-
-                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                         Log.d(TAG,"onPermmissionChecked");
-                         Toast.makeText(this@DashBoardActivity,"You should ",Toast.LENGTH_LONG).show()
-                     }
-
-                     override fun onPermissionRationaleShouldBeShown(permissions: MutableList<PermissionRequest>?, token: PermissionToken?) {
-                         Log.d(TAG,"onPermissionRationaleShouldBeShown");
-                         Toast.makeText(this@DashBoardActivity,"You should accept permission",Toast.LENGTH_LONG).show()
-                     }
-
-                 })
-                 .check()
-
-             val root = Environment.getExternalStorageDirectory().toString()
-             myDir = File("$root/saved_images")
-             if(!myDir.exists()){
-                 myDir.mkdirs()
-
-                 val drawable = ContextCompat.getDrawable(this,R.drawable.rectangle_tab)
-                 val bitmapDrawable = drawable as BitmapDrawable
-                 val bitmap = bitmapDrawable.bitmap
-                 val stream = ByteArrayOutputStream()
-                 bitmap.compress(Bitmap.CompressFormat.PNG,100,stream)
-                 val input = ByteArrayInputStream(stream.toByteArray())
-
-                 val outputFileEnc = File(myDir, ENC)
-
-                 try{
-                     MyEncrypter.encryptToFile(key, specString,input,FileOutputStream(outputFileEnc))
-                     Toast.makeText(this,"ENCRYPTED",Toast.LENGTH_LONG).show()
-                 }catch (e:Exception)
-                 {
-                     Log.d("EXCEPTION : ",e.toString()+"!")
-                 }
-             }*/
 
         } else {
             val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -860,67 +411,6 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
 
                     }
 
-
-                /*auth!!.signInAnonymously()
-                    .addOnCompleteListener(this) { task ->
-                        if (task.isSuccessful) {
-
-
-
-                            *//*val rootRef = FirebaseFirestore.getInstance()
-                            val attractionsRef = rootRef.collection("testcontentdownload").document("gVBcBjqHQBLjvrUGwkos")
-                            attractionsRef.get().addOnCompleteListener(object: OnCompleteListener<DocumentSnapshot> {
-                                override fun onComplete(@NonNull task:Task<DocumentSnapshot>) {
-                                    if (task.isSuccessful())
-                                    {
-                                        Log.e("grade activity","task......."+task.result)
-                                        Log.e("grade activity","task...isempty...."+task.result!!.isEmpty)
-                                        for (document in task.getResult()!!)
-                                        {
-                                            var version = document.data.get("TestContentVersion").toString()
-                                            var url = document.data.get("TestContentUrl").toString()
-
-                                            Log.e("grade activity","version......."+version)
-                                            Log.e("grade activity","url......."+url)
-
-                                            databaseHandler!!.insertTESTCONTENTDOWNLOAD(version,url)
-                                        }
-
-
-
-                                        // Sign in success, update UI with the signed-in user's information
-                                        val user = auth!!.currentUser
-                                        sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_LOGGED_IN, true)
-                                        sharedPrefs.setBooleanPrefVal(this@GradeActivity, ConstantPath.IS_FIRST_TIME, true)
-                                        sharedPrefs.setPrefVal(this@GradeActivity, ConstantPath.UID, user!!.uid)
-
-                                        Log.d("anonymous auth done","true")
-                                        TedPermission.with(this@GradeActivity)
-                                            .setPermissionListener(this@GradeActivity)
-                                            .setDeniedMessage(
-                                                "If you reject permission,you can not use this service\n"
-                                                        + "\nPlease turn on permissions at [Setting] > [Permission]"
-                                            )
-                                            .setPermissions(Manifest.permission.INTERNET)
-                                            .check()
-                                    }
-                                }
-                            })*//*
-
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            //.makeText(baseContext, "Authentication failed. Check Internet Connection", Toast.LENGTH_SHORT).show()
-                            mSnackBar = Snackbar.make(
-                                findViewById(R.id.splash_cl),
-                                "Auth Failed :(",
-                                Snackbar.LENGTH_LONG
-                            ) //Assume "rootLayout" as the root layout of every activity.
-                            mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
-                            mSnackBar?.setAction("Retry", { signin(sharedPrefs) })
-                            mSnackBar?.show()
-                        }
-                    }*/
             }else{
                 mSnackBar = Snackbar.make(
                     findViewById(R.id.splash_cl),
@@ -1157,6 +647,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
             this@GradeActivity,
             SignInActivity::class.java
         )
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.putExtra(TITLE_TOPIC, title)
         intent.putExtra(FIRST_TIME, "first time")
         startActivity(intent)
@@ -1167,6 +658,7 @@ class GradeActivity : BaseActivity(), GradeClickListener, PermissionListener  {
             this@GradeActivity,
             DashBoardActivity::class.java
         )
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         intent.putExtra(TITLE_TOPIC, title)
         startActivity(intent)
         finish()
