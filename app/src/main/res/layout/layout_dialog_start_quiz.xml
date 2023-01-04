@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_root"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_summary_buttons">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="3">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:weightSum="3">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_alignParentBottom="true">
+                        <LinearLayout
+                            android:id="@+id/titleLL"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+
+
+
+                            <TextView
+                                android:id="@+id/tv_quiz_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="TINY TEST"
+                                android:gravity="center"
+                                android:layout_centerHorizontal="true"
+                                android:textSize="@dimen/_17ssp"
+
+                                android:layout_marginLeft="@dimen/_11sdp"
+                                android:textColor="@color/topic_text"
+                                android:fontFamily="@font/lato_bold"/>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerInParent="true">
+
+
+
+                            <LinearLayout
+                                android:id="@+id/quizLL"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_light"
+                                    android:textColor="@color/topic_text"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:textSize="@dimen/_28ssp"
+                                    android:text="QUIZ 1"
+                                    android:gravity="center"
+
+                                    android:layout_centerInParent="true"
+                                    />
+
+
+                                <TextView
+                                    android:id="@+id/tv_quiz_title2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="TINY TEST"
+                                    android:gravity="center"
+                                    android:layout_centerHorizontal="true"
+                                    android:textSize="@dimen/_18ssp"
+                                    android:visibility="gone"
+                                    android:layout_marginLeft="@dimen/_11sdp"
+                                    android:textColor="@color/topic_text"
+                                    android:fontFamily="@font/lato_bold"/>
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1">
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            >
+
+
+
+                            <LinearLayout
+                                android:id="@+id/quizLL1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:id="@+id/quetxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato_light"
+                                    android:textColor="@color/topic_text"
+                                    android:layout_marginLeft="@dimen/_5sdp"
+                                    android:textSize="@dimen/_16ssp"
+                                    android:text="(4 questions)"
+                                    android:gravity="center"
+
+                                    android:layout_centerInParent="true"
+                                    />
+
+
+
+                            </LinearLayout>
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+            <RelativeLayout
+                android:id="@+id/successRL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                >
+                <!--android:background="@drawable/quiz_time_success"-->
+                <RelativeLayout
+                    android:id="@+id/totalLL"
+                    android:layout_width="@dimen/_28sdp"
+                    android:layout_height="@dimen/_28sdp"
+                    android:background="@drawable/test_summary_0"
+                    android:visibility="gone"
+                    android:orientation="horizontal"
+                    android:layout_centerHorizontal="true">
+
+
+
+                    <TextView
+                        android:id="@+id/tv_correct"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:textSize="@dimen/_16ssp"
+
+                        android:textColor="@color/topic_text"
+                        android:fontFamily="@font/lato_black"/>
+
+                    <TextView
+                        android:id="@+id/tv_total1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="/"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/_18ssp"
+
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:textColor="@color/topic_text"
+                        android:fontFamily="@font/lato_regular"/>
+
+                    <TextView
+                        android:id="@+id/tv_total"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="@dimen/_18ssp"
+
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:textColor="@color/topic_text"
+                        android:fontFamily="@font/lato_regular"/>
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_answers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:layout_below="@+id/totalLL"
+                    android:layout_centerInParent="true"
+
+                    />
+            </RelativeLayout>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/summaryTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_light"
+                    android:textColor="#0080ff"
+                    android:layout_marginTop="@dimen/_20sdp"
+
+                    android:textSize="@dimen/_26ssp"
+                    android:text="ready?"
+                    android:gravity="center"
+
+                    android:layout_centerHorizontal="true"
+                    />
+
+                <Button
+                    android:id="@+id/btn_start1"
+                    android:layout_width="@dimen/_85sdp"
+                    android:layout_height="@dimen/_25sdp"
+
+                    android:layout_below="@+id/summaryTxt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="start"
+                    android:visibility="visible"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:letterSpacing="0.1"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+
+                    android:background="@drawable/submit_active_background"/>
+
+                <Button
+                    android:id="@+id/btn_review"
+                    android:layout_width="@dimen/_85sdp"
+                    android:layout_height="@dimen/_25sdp"
+
+                    android:layout_below="@+id/summaryTxt"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="review"
+                    android:visibility="gone"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:letterSpacing="0.1"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/lato_bold"
+
+                    android:background="@drawable/submit_active_background"/>
+
+            </RelativeLayout>
+
+
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+
+
+
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_summary_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3"
+        android:layout_marginLeft="@dimen/_15sdp"
+        android:layout_marginRight="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:layout_alignParentBottom="true">
+
+        <!--<Button
+            android:id="@+id/btn_play_again"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_weight="1"
+            android:text="Play Again"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:textSize="@dimen/_12ssp"
+            android:paddingRight="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:textColor="@color/play_again_text"
+            android:fontFamily="@font/quicksand_bold"
+            android:background="@drawable/play_again"/>-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/btn_back"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_25sdp"
+
+            android:layout_weight="1"
+
+            android:background="@drawable/close_button">
+
+            <TextView
+
+                android:id="@+id/txt_prev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/lato_bold"
+                android:gravity="center_vertical"
+                android:letterSpacing="0.1"
+                android:text="BACK"
+                android:textColor="#424242"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toEndOf="@+id/left_arrow"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <ImageView
+                android:id="@+id/left_arrow"
+                android:layout_width="11dp"
+                android:layout_height="11dp"
+
+
+                android:layout_marginStart="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5"
+                app:srcCompat="@drawable/ic_left_arrow" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_weight="1"
+            android:text="start"
+            android:visibility="gone"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:letterSpacing="0.1"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/lato_bold"
+            android:layout_marginLeft="@dimen/_24sdp"
+            android:layout_marginRight="@dimen/_7sdp"
+            android:background="@drawable/submit_active_background"/>
+
+        <Button
+            android:id="@+id/btn_play_next"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_25sdp"
+            android:layout_weight="1.1"
+            android:textSize="@dimen/_12ssp"
+            android:visibility="gone"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:text="Play Next"
+            android:fontFamily="@font/quicksand_bold"
+            android:textColor="@color/white"
+            android:background="@drawable/submit_active_background"/>
+
+
+    </LinearLayout>
+
+
+
+
+
+</RelativeLayout>

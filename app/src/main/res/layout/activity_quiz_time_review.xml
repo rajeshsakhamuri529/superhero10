@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_root"
     android:background="@color/white"
-    tools:context=".activity.TestQuestionActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -70,17 +69,35 @@
         android:layout_marginTop="@dimen/_15sdp"
         android:layout_centerHorizontal="true">
 
-        <TextView
-            android:layout_width="@dimen/_50sdp"
+        <LinearLayout
+            android:id="@+id/report_rl"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TEST REVIEW"
-            android:textColor="#0096FF"
-            android:gravity="center"
-            android:fontFamily="@font/lato_black"
-            android:textSize="@dimen/_10sdp"
-            android:layout_marginLeft="@dimen/_10sdp"
             android:layout_centerVertical="true"
-            android:layout_alignParentStart="true"/>
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_15sdp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_error_black"
+                android:tint="#666666"
+                android:layout_gravity="center_vertical"/>
+
+            <TextView
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="wrap_content"
+                android:text="Report"
+                android:textColor="#666666"
+                android:fontFamily="@font/lato_black"
+                android:textSize="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_3sdp"
+                android:layout_gravity="center_vertical"/>
+
+        </LinearLayout>
+
+
 
         <Button
             android:layout_width="wrap_content"
@@ -227,7 +244,7 @@
                 android:fontFamily="@font/lato_bold"
                 android:background="@drawable/submit_active_background"
                 style="@style/Widget.AppCompat.Button.Borderless"
-                android:text="Solution"
+                android:text="Hint"
                 android:paddingLeft="@dimen/_15sdp"
                 android:paddingRight="@dimen/_15sdp"
                 android:textSize="@dimen/_11sdp"
@@ -450,7 +467,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/_14ssp"
-                android:text="Solution"
+                android:text="Hint"
                 android:textColor="#424242"
                 android:layout_marginTop="@dimen/_15sdp"
                 android:fontFamily="@font/lato_bold"

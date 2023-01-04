@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_root"
     android:background="@color/white"
-    tools:context=".activity.TestQuestionActivity"
+    tools:context=".activity.TestQuizActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -77,7 +77,7 @@
             android:id="@+id/progressRL"
             android:layout_width="@dimen/_50sdp"
             android:layout_height="@dimen/_35sdp"
-            android:visibility="visible">
+            android:visibility="gone">
 
 
             <ProgressBar
@@ -473,6 +473,8 @@
             android:layout_marginBottom="@dimen/_20sdp"/>
 
     </LinearLayout>
+
+
 
 
 

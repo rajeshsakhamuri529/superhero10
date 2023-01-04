@@ -85,10 +85,30 @@
     <color name="not_perfect">#FD5E53</color>
 
 
+    <color name="ready">#0080ff</color>
+
     <color name="seriously">#FD5E53</color>
     <color name="not_good">#FD5E53</color>
     <color name="not_bad">#FF9300</color>
     <color name="good">#009193</color>
 
+    <color name="share_btn">#017FFF</color>
+
+    <color name="blue">#0096FF</color>
+    <color name="light_blue">#76D6FF</color>
+
+
+    <color name="chart_color">#40C073</color>
+
+    <color name="chart_axis_color">#C0C0C0</color>
+
+    <color name="chart_text_color">#929292</color>
+
+    <color name="chart_orange_color">#FF9300</color>
+    <color name="chart_purple_color">#D783FF</color>
+    <color name="chart_blue_color">#7A81FF</color>
+    <color name="chart_green_color">#21BF73</color>
+
+    <color name="black_transfarent">#40000000</color>
 
 </resources>

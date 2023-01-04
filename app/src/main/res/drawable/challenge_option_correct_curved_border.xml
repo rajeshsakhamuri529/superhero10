@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/answer_bg"/>
-    <corners android:radius="@dimen/_3sdp"/>
-    <stroke android:color="@color/action_button"
-        android:width="3dp"/>
-</shape>
